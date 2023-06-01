@@ -17,6 +17,8 @@ import {
 } from 'react-native';
 import OpenDetails from '../Screens/OpenDetails';
 import Notifications from '../Screens/Notifications';
+import AppliedDetails from '../Screens/AppliedDetails';
+import Filter from '../Screens/Filter';
 
 
 const Stack = createNativeStackNavigator();
@@ -282,6 +284,8 @@ function AppNavigation() {
           <Stack.Screen options={{headerShown:false}} name="Main" component={BottomNavigation}  />
           <Stack.Screen options={{headerShown:false}} name="OpenDetails" component={OpenDetails} />
         <Stack.Screen options={{headerShown:false}} name="Notifications" component={Notifications} />
+        <Stack.Screen options={{headerShown:false}} name="AppliedDetails" component={AppliedDetails} />
+        <Stack.Screen options={{headerShown:false}} name="Filter" component={Filter} />
         </Stack.Navigator>
       </NavigationContainer>
     );

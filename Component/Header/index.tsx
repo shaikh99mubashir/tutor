@@ -39,17 +39,7 @@ import { Theme } from '../../constant/theme';
           borderBottomWidth:1
         }}>
         <>
-          {Drawer ? (
-            <TouchableOpacity
-              style={{
-                flex: 1,
-              }}
-              activeOpacity={0.8}
-              onPress={() => navigation.openDrawer()}>
-              <Text>
-              </Text>
-            </TouchableOpacity>
-          ) :backBtn ? (
+          {backBtn ? (
             <View
               style={{
                 flex: 1,
@@ -93,7 +83,7 @@ import { Theme } from '../../constant/theme';
                   alignItems: 'flex-end',
                 }}
                 activeOpacity={0.8}
-                onPress={() => {}}>
+                onPress={() => navigation.navigate('Filter')}>
                 <Image source={require('../../Assets/Images/funnel.png')} style={{width:20, height:20}} resizeMode='contain'/>
                    
               </TouchableOpacity>
