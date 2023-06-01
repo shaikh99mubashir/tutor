@@ -21,6 +21,8 @@ import AppliedDetails from '../Screens/AppliedDetails';
 import Filter from '../Screens/Filter';
 import Profile from '../Screens/Profile';
 import Students from '../Screens/Students';
+import StudentsDetails from '../Screens/StudentsDetails';
+import Status from '../Screens/Status';
 
 
 const Stack = createNativeStackNavigator();
@@ -290,6 +292,8 @@ function AppNavigation() {
         <Stack.Screen options={{headerShown:false}} name="Filter" component={Filter} />
         <Stack.Screen options={{headerShown:false}} name="Profile" component={Profile} />
         <Stack.Screen options={{headerShown:false}} name="Students" component={Students} />
+        <Stack.Screen options={{headerShown:false}} name="StudentsDetails" component={StudentsDetails} />
+        <Stack.Screen options={{headerShown:false}} name="Status" component={Status} />
         </Stack.Navigator>
       </NavigationContainer>
     );
