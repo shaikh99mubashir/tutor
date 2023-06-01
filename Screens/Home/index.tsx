@@ -7,6 +7,7 @@ import {
   Dimensions,
   TouchableOpacity,
   FlatList,
+  ScrollView,
 } from 'react-native';
 import {Theme} from '../../constant/theme';
 
@@ -40,6 +41,7 @@ function Home({navigation}:any) {
 
   return (
     <View style={styles.container}>
+      <ScrollView>
       <View>
         <Text style={styles.text}>Hello,</Text>
         <Text style={styles.heading}>Muhammad</Text>
@@ -177,6 +179,8 @@ function Home({navigation}:any) {
       <FlatList
         data={upCommingClasses}
         horizontal
+        nestedScrollEnabled
+        showsHorizontalScrollIndicator={false}
         renderItem={({item, index}: any) => {
           return (
             <View style={{borderWidth: 1, paddingHorizontal:15,width:250,height:150,marginTop:10,paddingVertical:15,borderRadius:10,gap:10, marginRight:10, borderColor:'#eee'}}>
@@ -203,6 +207,7 @@ function Home({navigation}:any) {
       :
       <View style={{marginTop:35}}><Text style={{color:Theme.black, fontSize:14, textAlign:'center'}}>No UpComming Classes...</Text></View>
        }
+       </ScrollView>
           </View>
   );
 }

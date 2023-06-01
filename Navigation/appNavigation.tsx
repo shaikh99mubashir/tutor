@@ -19,6 +19,8 @@ import OpenDetails from '../Screens/OpenDetails';
 import Notifications from '../Screens/Notifications';
 import AppliedDetails from '../Screens/AppliedDetails';
 import Filter from '../Screens/Filter';
+import Profile from '../Screens/Profile';
+import Students from '../Screens/Students';
 
 
 const Stack = createNativeStackNavigator();
@@ -286,6 +288,8 @@ function AppNavigation() {
         <Stack.Screen options={{headerShown:false}} name="Notifications" component={Notifications} />
         <Stack.Screen options={{headerShown:false}} name="AppliedDetails" component={AppliedDetails} />
         <Stack.Screen options={{headerShown:false}} name="Filter" component={Filter} />
+        <Stack.Screen options={{headerShown:false}} name="Profile" component={Profile} />
+        <Stack.Screen options={{headerShown:false}} name="Students" component={Students} />
         </Stack.Navigator>
       </NavigationContainer>
     );
