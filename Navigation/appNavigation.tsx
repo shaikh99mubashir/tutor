@@ -23,6 +23,8 @@ import Profile from '../Screens/Profile';
 import Students from '../Screens/Students';
 import StudentsDetails from '../Screens/StudentsDetails';
 import Status from '../Screens/Status';
+import FAQs from '../Screens/FAQs';
+import ReportSubmissionHistory from '../Screens/ReportSubmissionHistory';
 
 
 const Stack = createNativeStackNavigator();
@@ -294,6 +296,8 @@ function AppNavigation() {
         <Stack.Screen options={{headerShown:false}} name="Students" component={Students} />
         <Stack.Screen options={{headerShown:false}} name="StudentsDetails" component={StudentsDetails} />
         <Stack.Screen options={{headerShown:false}} name="Status" component={Status} />
+        <Stack.Screen options={{headerShown:false}} name="FAQs" component={FAQs} />
+        <Stack.Screen options={{headerShown:false}} name="ReportSubmissionHistory" component={ReportSubmissionHistory} />
         </Stack.Navigator>
       </NavigationContainer>
     );

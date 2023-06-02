@@ -12,8 +12,8 @@ import React, {useState} from 'react';
 import {Theme} from '../../constant/theme';
 import Header from '../../Component/Header';
 
-const Students = ({navigation}: any) => {
-  const [students, setstudents] = useState([
+const ReportSubmissionHistory = ({navigation}: any) => {
+  const [reportSubmission, setreportSubmission] = useState([
     {
       id: 1,
       image: require('../../Assets/Images/woman.png'),
@@ -49,7 +49,7 @@ const Students = ({navigation}: any) => {
   const searchStudent = (e: any) => {
     console.log(e, 'eee');
     setSearchText(e);
-    let filteredItems: any = students.filter(x =>
+    let filteredItems: any = reportSubmission.filter(x =>
       x.code.toLowerCase().includes(e.toLowerCase()),
     );
     setFoundName(filteredItems);
@@ -88,14 +88,17 @@ const Students = ({navigation}: any) => {
             </View>
           </View>
 
-          {students && students.length > 0 ? (
+          {reportSubmission && reportSubmission.length > 0 ? (
             <FlatList
-              data={searchText && foundName.length > 0 ? foundName : students}
+              data={
+                searchText && foundName.length > 0
+                  ? foundName
+                  : reportSubmission
+              }
               nestedScrollEnabled
               renderItem={({item, index}: any) => {
                 return (
-                  <TouchableOpacity
-                  onPress={()=> navigation.navigate('StudentsDetails',item)}
+                  <View
                     key={index}
                     style={{
                       borderWidth: 1,
@@ -108,31 +111,50 @@ const Students = ({navigation}: any) => {
                       borderColor: '#eee',
                       width: '100%',
                     }}>
-                    <View
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        gap: 15,
-                        alignItems: 'center',
-                      }}>
-                      <Image
-                        source={require('../../Assets/Images/woman.png')}
+                    {/* Avaiable Subject */}
+                    <View style={{}}>
+                      <Text
                         style={{
-                          width: 45,
-                          height: 45,
-                          borderRadius: 50,
-                        }}
-                      />
-                      <View>
-                        <Text style={{color: Theme.gray, fontSize: 16}}>
-                          {item.code}
+                          color: Theme.black,
+                          fontSize: 15,
+                          fontWeight: '600',
+                        }}>
+                        {item.code}
+                      </Text>
+                      <Text
+                        style={{
+                          color: Theme.gray,
+                          fontSize: 15,
+                          fontWeight: '600',
+                          paddingVertical: 10,
+                        }}>
+                        {item.name}
+                      </Text>
+                      <Text
+                        style={{
+                          color: Theme.black,
+                          fontSize: 15,
+                          fontWeight: '600',
+                        }}>
+                        Subimited on {item.date}
+                      </Text>
+                      <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                        <Text
+                          style={{
+                            color: Theme.gray,
+                            fontSize: 15,
+                            fontWeight: '600',
+                            paddingTop: 10,
+                          }}>
+                          Evalution Report
                         </Text>
-                        <Text style={{color: Theme.black, fontSize: 14}}>
-                          {item.name}
-                        </Text>
+                        <TouchableOpacity style={{alignItems:"center"}}>
+                        <Image source={require('../../Assets/Images/inbox.png')} style={{width:30,height:30}} resizeMode='contain'/>
+                        <Text style={{fontSize:10}}>Download</Text>
+                        </TouchableOpacity>
                       </View>
                     </View>
-                  </TouchableOpacity>
+                  </View>
                 );
               }}
             />
@@ -140,7 +162,7 @@ const Students = ({navigation}: any) => {
             <View style={{marginTop: 35}}>
               <Text
                 style={{color: Theme.black, fontSize: 14, textAlign: 'center'}}>
-                No Student Found...
+                No Record Found...
               </Text>
             </View>
           )}
@@ -150,6 +172,6 @@ const Students = ({navigation}: any) => {
   );
 };
 
-export default Students;
+export default ReportSubmissionHistory;
 
 const styles = StyleSheet.create({});
