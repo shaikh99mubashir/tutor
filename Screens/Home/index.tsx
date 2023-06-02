@@ -41,7 +41,7 @@ function Home({navigation}:any) {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
       <View>
         <Text style={styles.text}>Hello,</Text>
         <Text style={styles.heading}>Muhammad</Text>
