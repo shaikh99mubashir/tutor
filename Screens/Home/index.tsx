@@ -91,9 +91,9 @@ console.log('currentDate===>',currentDate);
             <Text style={[styles.text, { marginTop: 20, fontWeight: "500" }]} >
                 Upcoming Classes
             </Text>
-            <View style={{alignItems:"center",position: "absolute", bottom: 10}} >
-            <Text style={[styles.text,{fontSize:16,color:Theme.gray,width:"100%",textAlign:"center",borderWidth:1,borderColor:"red" }]} >
-                No upcoming classes
+            <View style={{alignItems:"center",position: "absolute", bottom: 10,width:"110%"}} >
+            <Text style={[styles.text,{fontSize:14,color:Theme.gray,width:"100%",textAlign:"center" }]} >
+                No upcoming classes...
             </Text>
             </View>
         </View>
