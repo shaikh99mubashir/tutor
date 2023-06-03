@@ -13,10 +13,11 @@ interface Props {
   back?: boolean;
   navigation?: any;
   iconStyle?:any
-  iconRight?:boolean
+  iconRight?:boolean,
+  containerStyle?:any
 }
 
-function CustomHeader({headerName, icon, icon_name, source,back,navigation,iconStyle,iconRight}: Props) {
+function CustomHeader({headerName, icon, icon_name, source,back,navigation,iconStyle,iconRight,containerStyle}: Props) {
   return (
     <View
       style={{
@@ -28,6 +29,7 @@ function CustomHeader({headerName, icon, icon_name, source,back,navigation,iconS
         borderColor:"red",
         borderBottomWidth:1,
         borderBottomColor:Theme.darkGray,
+        
       }}>
 
       

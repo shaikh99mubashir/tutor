@@ -1,10 +1,10 @@
 import React, { useState, useCallback } from "react"
 import { View, Text, TouchableOpacity, Platform, FlatList, Image, ScrollView, Modal } from "react-native"
-import CustomHeader from "../../components/header"
 import { Theme } from "../../constant/theme"
 import AntDesign from "react-native-vector-icons/EvilIcons"
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { StyleSheet } from "react-native"
+import CustomHeader from "../../Component/Header"
 // import { ScrollView } from "react-native-gesture-handler"
 
 function Schedule({ navigation }: any) {
@@ -47,7 +47,7 @@ function Schedule({ navigation }: any) {
     const [selectedDate, setSelectedDate] = useState(new Date())
     const [selectedData, setSelectedData] = useState({})
 
-    const [mode, setMode] = useState('date');
+    const [mode, setMode] = useState<any>('date');
     const [confirm, setConfirm] = useState(false)
     const [show, setShow] = useState(false);
 
@@ -211,7 +211,7 @@ function Schedule({ navigation }: any) {
                             Edit
                         </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{ backgroundColor: Theme.darkGray, width: "48%", padding: 10, borderRadius: 10 }} >
+                    <TouchableOpacity onPress={() => navigation.navigate("ClockIn", item)} style={{ backgroundColor: Theme.darkGray, width: "48%", padding: 10, borderRadius: 10 }} >
                         <Text style={{ textAlign: "center", fontSize: 16 }}>
                             Attend
                         </Text>
@@ -222,10 +222,10 @@ function Schedule({ navigation }: any) {
     }
 
     return (
-        <View style={{ flex: 1, backgroundColor: Theme.white }} >
-            <View>
-                <CustomHeader headerName="Schedule" iconRight icon_name={"plus"} />
-            </View>
+        <View style={{ flex: 1 }} >
+
+            <CustomHeader title="Schedule" plus navigation={navigation} />
+
             <ScrollView nestedScrollEnabled={true} >
                 <View style={{ padding: 20 }} >
                     <TouchableOpacity onPress={() => setShow(true)} style={{ flexDirection: "row", justifyContent: "flex-start", alignItems: "center" }} >
@@ -244,6 +244,7 @@ function Schedule({ navigation }: any) {
                     )}
 
                     <FlatList
+
                         nestedScrollEnabled={true}
                         data={scheduleData}
                         renderItem={renderScheduleData}

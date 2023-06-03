@@ -1,149 +1,422 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome';
-import IonIcons from 'react-native-vector-icons/Ionicons'
-import { Theme } from '../constant/theme';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+// import FontAwesome5 from 'react-native-vector-icons/FontAwesome';
+// import IonIcons from  'react-native-vector-icons/Ionicons'
+import {Theme} from '../constant/theme';
 import Home from '../Screens/Home';
 import JobTicket from '../Screens/JobTicket';
 import Schedule from '../Screens/Schedule';
 import Index from '../Screens/Index';
 import More from '../Screens/More';
+import {View, Text, StyleSheet, Image} from 'react-native';
+import OpenDetails from '../Screens/OpenDetails';
+import Notifications from '../Screens/Notifications';
+import AppliedDetails from '../Screens/AppliedDetails';
+import Filter from '../Screens/Filter';
+import Profile from '../Screens/Profile';
+import Students from '../Screens/Students';
+import StudentsDetails from '../Screens/StudentsDetails';
+import Status from '../Screens/Status';
+import FAQs from '../Screens/FAQs';
+import ReportSubmissionHistory from '../Screens/ReportSubmissionHistory';
+import OnBoarding from '../Screens/OnBoarding';
+import Login from '../Screens/Login';
+import Verification from '../Screens/Verification';
+import Splash from '../Screens/Splash';
 import EditScheduleClass from '../Screens/EditScheduleClass.tsx';
-import EditPostpondClass from '../Screens/EditPostpondClass';
-import EditCancelledClass from '../Screens/EditCancelledClass';
 import EditAttendedClass from '../Screens/EditAttendedClass/EditAttendedClass';
+import EditPostpondClass from '../Screens/EditPostpondClass';
+import EditCancelledClass from "../Screens/EditCancelledClass"
 import InboxDetail from '../Screens/InboxDetailScreen';
-
-
+import AddClass from '../Screens/AddClass';
+import BackToDashboard from '../Screens/BackToDashboardScreen';
+import ClockIn from '../Screens/ClockInScreen/ClockIn';
+import ClassTimerCount from '../Screens/ClassTimerCountScreen';
+import ClockOut from '../Screens/ClockOutScreen';
+ 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-
-
-
-
-
-
 function BottomNavigation() {
-
   return (
     <Tab.Navigator
-      screenOptions={{
+      screenOptions={({route}) => ({
         headerShown: false,
-        //   tabBarStyle: {
-        //     backgroundColor: Theme.secondary,
-        //     padding: 10,
-        //     height: 70,
-        //   },
-        //   tabBarInactiveTintColor: Theme.white,
-        //   tabBarActiveTintColor: '#b9be4d',
-        //   tabBarShowLabel: true,
-      }}
+        // tabBarShowLabel: false,
+        tabBarInactiveTintColor: Theme.darkGray,
+        // tabBarStyle: styles.tabBarStyle,
+        tabBarActiveTintColor: 'black',
+      })}
       initialRouteName="home">
       <Tab.Screen
         name="Home"
         component={Home}
         options={{
-          // tabBarIcon: ({color, size}) => {
-          //   return (
-          //     <Image
-          //       source={require('../assets/Images/gameicon.png')}
-          //       style={{width: 30, height: 30, borderRadius: 100}}
-          //     />
-          //   );
-          // },
-          // tabBarIconStyle: {marginTop: 0, padding: 0},
-          // tabBarItemStyle: {marginBottom: 15, padding: 0},
-          // tabBarShowLabel: true,
+          tabBarIcon: ({focused, color}) => (
+            <View>
+              {focused == true ? (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    padding: 5,
+                    borderRadius: 5,
+                  }}>
+                  <Image
+                    source={require('../Assets/Images/home.png')}
+                    resizeMode="contain"
+                    style={{
+                      height: 30,
+                      width: 30,
+                      tintColor: focused ? Theme.darkGray : Theme.lightGray,
+                    }}
+                  />
+                </View>
+              ) : (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                  }}>
+                  <Image
+                    source={require('../Assets/Images/home.png')}
+                    resizeMode="contain"
+                    style={{
+                      height: 25,
+                      width: 25,
+                      tintColor: focused ? Theme.darkGray : Theme.lightGray,
+                    }}
+                  />
+                </View>
+              )}
+            </View>
+          ),
         }}
       />
       <Tab.Screen
         name="Job Ticket"
         component={JobTicket}
         options={{
-          // tabBarIcon: ({color, size}) => {
-          //   return (
-          //     <IonIcons
-          //       name="chatbubble-ellipses-sharp"
-          //       color={color}
-          //       size={30}
-          //     />
-          //   );
-          // },
-          // tabBarIconStyle: {marginTop: 0, padding: 0},
-          // tabBarItemStyle: {marginBottom: 15, padding: 0},
-          // tabBarShowLabel: true,
+          tabBarIcon: ({focused, color}) => (
+            <View>
+              {focused == true ? (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    padding: 5,
+                    borderRadius: 5,
+                  }}>
+                  <Image
+                    source={require('../Assets/Images/ticket.png')}
+                    resizeMode="contain"
+                    style={{
+                      height: 30,
+                      width: 30,
+                      tintColor: focused ? Theme.darkGray : Theme.lightGray,
+                    }}
+                  />
+                </View>
+              ) : (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                  }}>
+                  <Image
+                    source={require('../Assets/Images/ticket.png')}
+                    resizeMode="contain"
+                    style={{
+                      height: 25,
+                      width: 25,
+                      tintColor: focused ? Theme.darkGray : Theme.lightGray,
+                    }}
+                  />
+                </View>
+              )}
+            </View>
+          ),
         }}
       />
       <Tab.Screen
         name="Schedule"
         component={Schedule}
         options={{
-          // tabBarIcon: ({color, size}) => {
-          //   return (
-          //     <Image
-          //       source={require('../assets/Images/PancheeIcon.png')}
-          //       style={{width: 80, height: 80, borderRadius: 100}}
-          //     />
-          //   );
-          // },
-          // tabBarIconStyle: {marginTop: 0, padding: 0},
-          // tabBarItemStyle: {
-          //   marginBottom: 60,
-          //   padding: 0,
-          //   position: 'relative',
-          //   bottom: 10,
-          // },
-          // tabBarShowLabel: true,
+          tabBarIcon: ({focused, color}) => (
+            <View>
+              {focused == true ? (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    padding: 5,
+                    borderRadius: 5,
+                  }}>
+                  <Image
+                    source={require('../Assets/Images/schedule.png')}
+                    resizeMode="contain"
+                    style={{
+                      height: 30,
+                      width: 30,
+                      tintColor: focused ? Theme.darkGray : Theme.lightGray,
+                    }}
+                  />
+                </View>
+              ) : (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                  }}>
+                  <Image
+                    source={require('../Assets/Images/schedule.png')}
+                    resizeMode="contain"
+                    style={{
+                      height: 25,
+                      width: 25,
+                      tintColor: focused ? Theme.darkGray : Theme.lightGray,
+                    }}
+                  />
+                </View>
+              )}
+            </View>
+          ),
         }}
       />
       <Tab.Screen
-        name="Index"
+        name="inbox"
         component={Index}
         options={{
-          // tabBarIcon: ({color, size}) => {
-          //   return <FontAwesome5 name="history" color={color} size={30} />;
-          // },
-          // tabBarIconStyle: {marginTop: 0, padding: 0},
-          // tabBarItemStyle: {marginBottom: 15, padding: 0},
-          // tabBarShowLabel: true,
+          tabBarIcon: ({focused, color}) => (
+            <View>
+              {focused == true ? (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    padding: 5,
+                    borderRadius: 5,
+                  }}>
+                  <Image
+                    source={require('../Assets/Images/inbox.png')}
+                    resizeMode="contain"
+                    style={{
+                      height: 30,
+                      width: 30,
+                      tintColor: focused ? Theme.darkGray : Theme.lightGray,
+                    }}
+                  />
+                </View>
+              ) : (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                  }}>
+                  <Image
+                    source={require('../Assets/Images/inbox.png')}
+                    resizeMode="contain"
+                    style={{
+                      height: 25,
+                      width: 25,
+                      tintColor: focused ? Theme.darkGray : Theme.lightGray,
+                    }}
+                  />
+                </View>
+              )}
+            </View>
+          ),
         }}
       />
       <Tab.Screen
         name="More"
         component={More}
-      //   options={{
-      //     tabBarIcon: ({color, size}) => {
-      //       return <FontAwesome5 name="user" color={color} size={30} />;
-      //     },
-      //     tabBarIconStyle: {marginTop: 0, padding: 0},
-      //     tabBarItemStyle: {marginBottom: 15, padding: 0},
-      //     tabBarShowLabel: true,
-      //   }}
+        options={{
+          tabBarIcon: ({focused, color}) => (
+            <View>
+              {focused == true ? (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    padding: 5,
+                    borderRadius: 5,
+                  }}>
+                  <Image
+                    source={require('../Assets/Images/settings.png')}
+                    resizeMode="contain"
+                    style={{
+                      height: 30,
+                      width: 30,
+                      tintColor: focused ? Theme.darkGray : Theme.lightGray,
+                    }}
+                  />
+                </View>
+              ) : (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                  }}>
+                  <Image
+                    source={require('../Assets/Images/settings.png')}
+                    resizeMode="contain"
+                    style={{
+                      height: 25,
+                      width: 25,
+                      tintColor: focused ? Theme.darkGray : Theme.lightGray,
+                    }}
+                  />
+                </View>
+              )}
+            </View>
+          ),
+        }}
       />
     </Tab.Navigator>
-  )
-
-
-
-
+  );
 }
 
 function AppNavigation() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen options={{ headerShown: false }} name="Main" component={BottomNavigation} />
-        <Stack.Screen options={{ headerShown: false }} name="EditScheduleClass" component={EditScheduleClass} />
-        <Stack.Screen options={{ headerShown: false }} name="EditPostpondClass" component={EditPostpondClass} />
-        <Stack.Screen options={{ headerShown: false }} name="EditCancelledClass" component={EditCancelledClass} />
-        <Stack.Screen options={{ headerShown: false }} name="EditAttendedClass" component={EditAttendedClass} />
-        <Stack.Screen options={{ headerShown: false }} name="InboxDetail" component={InboxDetail} />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="Splash"
+          component={Splash}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="OnBoarding"
+          component={OnBoarding}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="Login"
+          component={Login}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="Verification"
+          component={Verification}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="Main"
+          component={BottomNavigation}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="OpenDetails"
+          component={OpenDetails}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="Notifications"
+          component={Notifications}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="AppliedDetails"
+          component={AppliedDetails}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="Filter"
+          component={Filter}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="Profile"
+          component={Profile}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="Students"
+          component={Students}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="StudentsDetails"
+          component={StudentsDetails}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="Status"
+          component={Status}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="FAQs"
+          component={FAQs}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="EditScheduleClass"
+          component={EditScheduleClass}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="EditAttendedClass"
+          component={EditAttendedClass}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="EditPostpondClass"
+          component={EditPostpondClass}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="EditCancelledClass"
+          component={EditCancelledClass}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="InboxDetail"
+          component={InboxDetail}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="AddClass"
+          component={AddClass}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="BackToDashboard"
+          component={BackToDashboard}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="ClockIn"
+          component={ClockIn}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="ClassTimerCount"
+          component={ClassTimerCount}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="ClockOut"
+          component={ClockOut}
+        />
+      
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
 
-export default AppNavigation
-
+export default AppNavigation;

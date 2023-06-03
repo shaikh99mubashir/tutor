@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity,TextInput,ScrollView,KeyboardAvoidingView } from "react-native"
 import { Theme } from "../../constant/theme";
 
-import CustomHeader from "../../components/header";
+import CustomHeader from "../../Component/Header";
 
 import AntDesign from "react-native-vector-icons/EvilIcons"
 
@@ -15,9 +15,9 @@ function EditCancelledClass({ navigation, route }: any) {
     return (
         <KeyboardAvoidingView behavior="height" style={{ flex: 1, backgroundColor: Theme.white }} >
             <View>
-                <CustomHeader headerName="Edit Class" iconRight icon_name={"plus"} />
+            <CustomHeader title="Edit Class" backBtn />
             </View>
-            <ScrollView>
+            <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}  >
             <View style={{ flex: 1, padding: 20 }} >
                 <Text style={{ color: Theme.black, fontSize: 18, fontWeight: "600" }} >
                     Student

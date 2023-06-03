@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Linking, TouchableOpacity, ScrollView } from "react-native";
-import CustomHeader from "../../components/header";
+import CustomHeader from "../../Component/Header";
 import { Theme } from "../../constant/theme";
 
 
@@ -15,12 +15,10 @@ function InboxDetail({ navigation, route }: any) {
         Linking.openURL(`https://${url}`);
     };
 
-    console.log(data, "data")
-
     return (
         <View style={{ flex: 1, backgroundColor: Theme.white }} >
             <View>
-                <CustomHeader />
+                <CustomHeader backBtn navigation = {navigation} containerStyle={{height:60}} />
             </View>
 
             <ScrollView style={{ height: "100%", padding: 20 }} >

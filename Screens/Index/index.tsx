@@ -2,10 +2,10 @@ import React, { useState } from "react"
 import { View, Text, FlatList, TouchableOpacity, Image } from "react-native"
 import { Theme } from "../../constant/theme"
 import { ScrollView } from "react-native-gesture-handler"
-import CustomHeader from "../../components/header"
+import CustomHeader from "../../Component/Header"
 import { Colors } from "react-native/Libraries/NewAppScreen"
-import Icon from "react-native-vector-icons/MaterialIcons"
-import EvilIcons from "react-native-vector-icons/EvilIcons"
+import Icon from "react-native-vector-icons/Ionicons"
+import AntDesign from "react-native-vector-icons/AntDesign"
 
 
 function Index({navigation}:any) {
@@ -312,11 +312,11 @@ function Index({navigation}:any) {
                 <View style={{ flexDirection: "row", width: "70%" }} >
                     <View style={{ borderWidth: 1, borderColor: Theme.lightGray, borderRadius: 100, width: 60, height: 60, alignItems: "center", justifyContent: "center" }} >
 
-                        <View style={{ position: "absolute", height: 15, width: 15, backgroundColor: Theme.darkGray, borderRadius: 100, left: 2, top: 0 }} >
+                        <View style={{ position: "absolute", height: 15, width: 15, backgroundColor: Theme.lightGray, borderRadius: 100, left: 2, top: 0 }} >
 
                         </View>
 
-                        <Icon name="chat" size={30} color={Theme.black} />
+                        <Icon name="chatbubble-ellipses-outline" size={30} color={Theme.gray} />
                     </View>
 
                     <View style={{ marginLeft: 10 }} >
@@ -331,7 +331,7 @@ function Index({navigation}:any) {
 
                 <View style={{ alignItems: "center", justifyContent: "center" }} >
 
-                    <Icon name="chevron-right" color={Theme.gray} size={30} />
+                    <AntDesign name="right" color={Theme.gray} size={20} />
 
                 </View>
 
@@ -347,7 +347,7 @@ function Index({navigation}:any) {
         <View style={{ flex: 1, backgroundColor: Theme.white }} >
 
             <View>
-                <CustomHeader headerName="Inbox" iconRight icon_name={"plus"} />
+                <CustomHeader title="Inbox"  />
             </View>
 
             <FlatList

@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native"
 import { Theme } from "../../constant/theme";
 
-import CustomHeader from "../../components/header";
+import CustomHeader from "../../Component/Header";
 
 import AntDesign from "react-native-vector-icons/EvilIcons"
 
@@ -13,7 +13,7 @@ function EditScheduleClass({ navigation, route }: any) {
     return (
         <View style={{ flex: 1, backgroundColor: Theme.white }} >
             <View>
-                <CustomHeader headerName="Edit Class" iconRight icon_name={"plus"} />
+            <CustomHeader title="Edit Class" backBtn />
             </View>
 
             <View style={{ flex: 1, padding: 20 }} >

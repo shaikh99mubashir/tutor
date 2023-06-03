@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity,TextInput,ScrollView,KeyboardAvoidingView } from "react-native"
 import { Theme } from "../../constant/theme";
-
-import CustomHeader from "../../components/header";
-
+import CustomHeader from "../../Component/Header";
+import DocumentPicker from 'react-native-document-picker'
 import AntDesign from "react-native-vector-icons/EvilIcons"
 
 function EditAttendedClass({ navigation, route }: any) {
@@ -11,13 +10,35 @@ function EditAttendedClass({ navigation, route }: any) {
     let data = route.params?.data
 
     const [cancelledReason,setCancelledReason] = useState("")
+    const [file,setFile] = useState<any>({})
+
+
+
+    const FilePicker = async () => {
+        
+          try {
+            const res = await DocumentPicker.pick({
+              type: [DocumentPicker.types.allFiles],
+            });
+            console.log('Selected file:', res);
+            setFile(res[0])
+          } catch (err) {
+            if (DocumentPicker.isCancel(err)) {
+              console.log('User canceled file selection');
+            } else {
+              console.log('Error while picking the file:', err);
+            }
+          }
+        
+    }
+
 
     return (
         <KeyboardAvoidingView behavior="height" style={{ flex: 1, backgroundColor: Theme.white }} >
             <View>
-                <CustomHeader headerName="Edit Class" iconRight icon_name={"plus"} />
+                <CustomHeader title="Edit Class" backBtn />
             </View>
-            <ScrollView>
+            <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}  >
             <View style={{ flex: 1, padding: 20 }} >
                 <Text style={{ color: Theme.black, fontSize: 18, fontWeight: "600" }} >
                     Student
@@ -81,10 +102,10 @@ function EditAttendedClass({ navigation, route }: any) {
                 </View>
 
                 <View>
-                    <Text style={{ color: Theme.black, fontSize: 16, fontWeight: "600", marginTop: 5 }}>Postponed Reason</Text>
+                    <Text style={{ color: Theme.black, fontSize: 16, fontWeight: "600", marginTop: 5 }}>Attachment</Text>
 
-                    <TouchableOpacity style={{padding: 20,backgroundColor: Theme.lightGray, borderRadius: 5, marginTop: 5 }}>
-                            <Text style={{fontSize:14,color:Theme.gray}} >Select File</Text>
+                    <TouchableOpacity onPress={FilePicker} style={{padding: 20,backgroundColor: Theme.lightGray, borderRadius: 5, marginTop: 5 }}>
+                            <Text style={{fontSize:14,color:Theme.gray}} >{file.name ?? "Select File"}</Text>
                     </TouchableOpacity>
                 </View>
 
