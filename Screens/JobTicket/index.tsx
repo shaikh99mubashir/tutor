@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,11 +9,17 @@ import {
   Image,
 } from 'react-native';
 import Header from '../../Component/Header';
-import {Theme} from '../../constant/theme';
+import { Theme } from '../../constant/theme';
 import CustomTabView from '../../Component/CustomTabView';
+import { Base_Uri } from '../../constant/BaseUri';
+import axios from "axios"
 
-function JobTicket({navigation}: any) {
+
+
+function JobTicket({ navigation }: any) {
   const [isSearchItems, setIsSearchItems] = useState(false);
+
+
   const [currentTab, setCurrentTab]: any = useState([
     {
       index: 0,
@@ -29,20 +35,20 @@ function JobTicket({navigation}: any) {
   const activateTab = (index: any) => {
     setCurrentTab(
       currentTab &&
-        currentTab.length > 0 &&
-        currentTab.map((e: any, i: any) => {
-          if (e.index == index) {
-            return {
-              ...e,
-              selected: true,
-            };
-          } else {
-            return {
-              ...e,
-              selected: false,
-            };
-          }
-        }),
+      currentTab.length > 0 &&
+      currentTab.map((e: any, i: any) => {
+        if (e.index == index) {
+          return {
+            ...e,
+            selected: true,
+          };
+        } else {
+          return {
+            ...e,
+            selected: false,
+          };
+        }
+      }),
     );
   };
   const [openData, setOpenData] = useState([
@@ -92,6 +98,26 @@ function JobTicket({navigation}: any) {
     },
   ]);
 
+
+  const getTicketsData = () => {
+
+    axios.get("https://sifututor.odits.co/new/ticketsAPI").then(({ data }) => {
+      console.log(data, "data")
+    }).catch((error) => {
+      console.log(error)
+    })
+
+  }
+
+
+  useEffect(() => {
+
+    getTicketsData()
+
+  }, [])
+
+
+
   const checkSearchItems = () => {
     searchText && foundName.length == 0 && setIsSearchItems(true);
   };
@@ -116,8 +142,8 @@ function JobTicket({navigation}: any) {
   };
   console.log('foundName===>', foundName);
 
- 
-  const renderOpenData: any = ({item}: any) => {
+
+  const renderOpenData: any = ({ item }: any) => {
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('OpenDetails', item)}
@@ -135,10 +161,10 @@ function JobTicket({navigation}: any) {
             justifyContent: 'space-between',
             width: '100%',
           }}>
-          <Text style={{color: 'green', fontSize: 14, fontWeight: '600'}}>
+          <Text style={{ color: 'green', fontSize: 14, fontWeight: '600' }}>
             {item.code}
           </Text>
-          <Text style={{color: 'green', fontSize: 14, fontWeight: '600'}}>
+          <Text style={{ color: 'green', fontSize: 14, fontWeight: '600' }}>
             {item.code2}
           </Text>
         </View>
@@ -161,7 +187,7 @@ function JobTicket({navigation}: any) {
             }}>
             Details
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 14, fontWeight: '600'}}>
+          <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
             {item.details}
           </Text>
         </View>
@@ -183,10 +209,10 @@ function JobTicket({navigation}: any) {
           }}>
           {item.details3}
         </Text>
-        <Text style={{color: Theme.gray, fontSize: 14, fontWeight: '600'}}>
+        <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
           {item.details4}
         </Text>
-        <Text style={{color: Theme.gray, fontSize: 14, fontWeight: '600'}}>
+        <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
           {item.details5}
         </Text>
         <Text
@@ -201,7 +227,7 @@ function JobTicket({navigation}: any) {
       </TouchableOpacity>
     );
   };
-  const renderCloseData = ({item}: any) => {
+  const renderCloseData = ({ item }: any) => {
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('AppliedDetails', item)}
@@ -219,10 +245,10 @@ function JobTicket({navigation}: any) {
             justifyContent: 'space-between',
             width: '100%',
           }}>
-          <Text style={{color: 'green', fontSize: 14, fontWeight: '600'}}>
+          <Text style={{ color: 'green', fontSize: 14, fontWeight: '600' }}>
             {item.code}
           </Text>
-          <Text style={{color: 'green', fontSize: 14, fontWeight: '600'}}>
+          <Text style={{ color: 'green', fontSize: 14, fontWeight: '600' }}>
             {item.code2}
           </Text>
         </View>
@@ -245,11 +271,11 @@ function JobTicket({navigation}: any) {
             }}>
             Details
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 14, fontWeight: '600'}}>
+          <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
             {item.details}
           </Text>
         </View>
-        <Text style={{color: Theme.gray, fontSize: 14, fontWeight: '600',marginTop: 10,}}>
+        <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600', marginTop: 10, }}>
           {item.details5}
         </Text>
         <Text
@@ -266,9 +292,9 @@ function JobTicket({navigation}: any) {
   };
   const firstRoute = useCallback(() => {
     return (
-      <View style={{marginVertical: 20, marginBottom: 10}}>
+      <View style={{ marginVertical: 20, marginBottom: 10 }}>
         {/* Search */}
-        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <View
             style={{
               width: '100%',
@@ -285,12 +311,12 @@ function JobTicket({navigation}: any) {
               placeholder="Search"
               placeholderTextColor="black"
               onChangeText={e => searchOpen(e)}
-              style={{width: '90%', padding: 8, color: 'black'}}
+              style={{ width: '90%', padding: 8, color: 'black' }}
             />
             <TouchableOpacity onPress={() => navigation}>
               <Image
                 source={require('../../Assets/Images/search.png')}
-                style={{width: 20, height: 20}}
+                style={{ width: 20, height: 20 }}
               />
             </TouchableOpacity>
           </View>
@@ -298,24 +324,24 @@ function JobTicket({navigation}: any) {
 
         {openData.length > 0 ? (
           <FlatList
-            data={searchText && foundName.length > 0 ?  foundName : openData}
+            data={searchText && foundName.length > 0 ? foundName : openData}
             renderItem={renderOpenData}
             scrollEnabled={true}
             nestedScrollEnabled={true}
             keyExtractor={(items: any, index: number): any => index}
           />
         ) : (
-          <Text style={{fontWeight: 'bold', fontSize: 16}}>no data found</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 16 }}>no data found</Text>
         )}
       </View>
     );
-  }, [openData,searchText,foundName]);
+  }, [openData, searchText, foundName]);
 
   const secondRoute = useCallback(() => {
     return (
-      <View style={{marginVertical: 20, marginBottom: 10}}>
+      <View style={{ marginVertical: 20, marginBottom: 10 }}>
         {/* Search */}
-        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <View
             style={{
               width: '100%',
@@ -332,35 +358,35 @@ function JobTicket({navigation}: any) {
               placeholder="Search"
               placeholderTextColor="black"
               onChangeText={e => searchApplied(e)}
-              style={{width: '90%', padding: 8, color: 'black'}}
+              style={{ width: '90%', padding: 8, color: 'black' }}
             />
             <TouchableOpacity onPress={() => navigation}>
               <Image
                 source={require('../../Assets/Images/search.png')}
-                style={{width: 20, height: 20}}
+                style={{ width: 20, height: 20 }}
               />
             </TouchableOpacity>
           </View>
         </View>
         {closeData.length > 0 ? (
           <FlatList
-            data={searchText && foundName.length > 0 ?  foundName : closeData}
+            data={searchText && foundName.length > 0 ? foundName : closeData}
             renderItem={renderCloseData}
             nestedScrollEnabled={true}
             keyExtractor={(items: any, index: number): any => index}
           />
         ) : (
-          <Text style={{fontWeight: 'bold', fontSize: 16}}>no data found</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 16 }}>no data found</Text>
         )}
       </View>
     );
-  }, [closeData,searchText,foundName]);
+  }, [closeData, searchText, foundName]);
   return (
-    <View style={{backgroundColor: Theme.white, height: '100%'}}>
+    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="Job Ticket" filter navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{paddingHorizontal: 15, marginTop: 20}}>
-            <CustomTabView
+        <View style={{ paddingHorizontal: 15, marginTop: 20 }}>
+          <CustomTabView
             currentTab={currentTab}
             firstRoute={firstRoute}
             secondRoute={secondRoute}

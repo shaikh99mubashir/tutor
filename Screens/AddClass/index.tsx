@@ -1,9 +1,11 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { View, Text, TouchableOpacity, FlatList, ScrollView, Platform } from "react-native"
 import { Theme } from "../../constant/theme"
 import CustomDropDown from "../../Component/CustomDropDown"
 import Header from "../../Component/Header"
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { Base_Uri } from "../../constant/BaseUri"
+import axios from "axios"
 
 function AddClass({ navigation }: any) {
 
@@ -54,6 +56,48 @@ function AddClass({ navigation }: any) {
             endTime: "-",
         }
     ])
+
+
+
+
+    const getSubject = () => {
+
+        axios.get(`${Base_Uri}getSubjects`).then(({ data }) => {
+
+
+
+            let { subjects } = data
+
+            let mySubject = subjects && subjects.length > 0 && subjects.map((e: any, i: Number) => {
+                if (e.name) {
+                    return {
+                        subject: e.name,
+                        id: e.id
+                    }
+                }
+            })
+
+            setSubject(mySubject)
+
+
+        }).catch((error) => {
+
+            console.log(error)
+
+        })
+    }
+
+
+
+
+    useEffect(() => {
+
+        getSubject()
+
+
+    }, [])
+
+
 
     const deleteClass = (index: Number) => {
         let data: any = (classes && classes.length > 0 && classes.filter((e, i) => {
@@ -186,7 +230,7 @@ function AddClass({ navigation }: any) {
 
                         <TouchableOpacity onPress={() => setClassDate("time", index, true)} style={{ minWidth: 50, alignItems: "flex-end" }} >
                             <Text style={{ color: Theme.black, fontSize: 14, fontWeight: "500" }} >
-                                {item?.startTime !== "-"  ? item?.startTime.toLocaleString().slice(10) : "-"}
+                                {item?.startTime !== "-" ? item?.startTime.toLocaleString().slice(10) : "-"}
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -197,7 +241,7 @@ function AddClass({ navigation }: any) {
 
                         <TouchableOpacity onPress={() => setClassDate("time", index)} style={{ minWidth: 50, alignItems: "flex-end" }} >
                             <Text style={{ color: Theme.black, fontSize: 14, fontWeight: "500" }} >
-                                {item?.endTime !== "-"  ? item?.endTime.toLocaleString().slice(10) : "-"}
+                                {item?.endTime !== "-" ? item?.endTime.toLocaleString().slice(10) : "-"}
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -220,10 +264,10 @@ function AddClass({ navigation }: any) {
     }
 
 
-const confirmClass = () => {
+    const confirmClass = () => {
 
-    navigation.navigate("BackToDashboard")
-}
+        navigation.navigate("BackToDashboard")
+    }
 
 
 
@@ -239,7 +283,7 @@ const confirmClass = () => {
                     <View>
 
                         <CustomDropDown ddTitle={"Student"} dropdownContainerStyle={{ backgroundColor: Theme.lightGray, paddingVertical: 17, borderColor: "", borderWidth: 0, borderBottomWidth: 0 }} dropdownPlace={"Select Student "} subject={student} headingStyle={{ color: Theme.black, fontSize: 18, fontWeight: "700" }} />
-                        <CustomDropDown ddTitle={"Subject"} dropdownContainerStyle={{ backgroundColor: Theme.lightGray, paddingVertical: 17, borderColor: "", borderWidth: 0, borderBottomWidth: 0 }} dropdownPlace={"Select Subject "} subject={student} headingStyle={{ color: Theme.black, fontSize: 18, fontWeight: "700" }} />
+                        <CustomDropDown ddTitle={"Subject"} dropdownContainerStyle={{ backgroundColor: Theme.lightGray, paddingVertical: 17, borderColor: "", borderWidth: 0, borderBottomWidth: 0 }} dropdownPlace={"Select Subject "} subject={subject} headingStyle={{ color: Theme.black, fontSize: 18, fontWeight: "700" }} />
                     </View>
 
                     <FlatList
@@ -274,7 +318,7 @@ const confirmClass = () => {
 
 
             <View style={{ width: "100%", alignItems: "center", position: "absolute", bottom: 20 }} >
-                <TouchableOpacity onPress={()=>confirmClass()} style={{ backgroundColor: Theme.darkGray, padding: 15, borderRadius: 10, width: "95%" }} >
+                <TouchableOpacity onPress={() => confirmClass()} style={{ backgroundColor: Theme.darkGray, padding: 15, borderRadius: 10, width: "95%" }} >
                     <Text style={{ textAlign: "center", fontSize: 16, color: Theme.white }} >
                         Confirm Class
                     </Text>

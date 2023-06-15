@@ -1,15 +1,15 @@
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // import FontAwesome5 from 'react-native-vector-icons/FontAwesome';
 // import IonIcons from  'react-native-vector-icons/Ionicons'
-import {Theme} from '../constant/theme';
+import { Theme } from '../constant/theme';
 import Home from '../Screens/Home';
 import JobTicket from '../Screens/JobTicket';
 import Schedule from '../Screens/Schedule';
 import Index from '../Screens/Index';
 import More from '../Screens/More';
-import {View, Text, StyleSheet, Image} from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import OpenDetails from '../Screens/OpenDetails';
 import Notifications from '../Screens/Notifications';
 import AppliedDetails from '../Screens/AppliedDetails';
@@ -34,14 +34,14 @@ import BackToDashboard from '../Screens/BackToDashboardScreen';
 import ClockIn from '../Screens/ClockInScreen/ClockIn';
 import ClassTimerCount from '../Screens/ClassTimerCountScreen';
 import ClockOut from '../Screens/ClockOutScreen';
- 
+
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function BottomNavigation() {
   return (
     <Tab.Navigator
-      screenOptions={({route}) => ({
+      screenOptions={({ route }) => ({
         headerShown: false,
         // tabBarShowLabel: false,
         tabBarInactiveTintColor: Theme.darkGray,
@@ -53,7 +53,7 @@ function BottomNavigation() {
         name="Home"
         component={Home}
         options={{
-          tabBarIcon: ({focused, color}) => (
+          tabBarIcon: ({ focused, color }) => (
             <View>
               {focused == true ? (
                 <View
@@ -100,7 +100,7 @@ function BottomNavigation() {
         name="Job Ticket"
         component={JobTicket}
         options={{
-          tabBarIcon: ({focused, color}) => (
+          tabBarIcon: ({ focused, color }) => (
             <View>
               {focused == true ? (
                 <View
@@ -147,7 +147,7 @@ function BottomNavigation() {
         name="Schedule"
         component={Schedule}
         options={{
-          tabBarIcon: ({focused, color}) => (
+          tabBarIcon: ({ focused, color }) => (
             <View>
               {focused == true ? (
                 <View
@@ -194,7 +194,7 @@ function BottomNavigation() {
         name="inbox"
         component={Index}
         options={{
-          tabBarIcon: ({focused, color}) => (
+          tabBarIcon: ({ focused, color }) => (
             <View>
               {focused == true ? (
                 <View
@@ -241,7 +241,7 @@ function BottomNavigation() {
         name="More"
         component={More}
         options={{
-          tabBarIcon: ({focused, color}) => (
+          tabBarIcon: ({ focused, color }) => (
             <View>
               {focused == true ? (
                 <View
@@ -291,129 +291,129 @@ function BottomNavigation() {
 function AppNavigation() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator  >
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="Splash"
           component={Splash}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="OnBoarding"
           component={OnBoarding}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="Login"
           component={Login}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="Verification"
           component={Verification}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="Main"
           component={BottomNavigation}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="OpenDetails"
           component={OpenDetails}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="Notifications"
           component={Notifications}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="AppliedDetails"
           component={AppliedDetails}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="Filter"
           component={Filter}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="Profile"
           component={Profile}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="Students"
           component={Students}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="StudentsDetails"
           component={StudentsDetails}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="Status"
           component={Status}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="FAQs"
           component={FAQs}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="EditScheduleClass"
           component={EditScheduleClass}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="EditAttendedClass"
           component={EditAttendedClass}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="EditPostpondClass"
           component={EditPostpondClass}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="EditCancelledClass"
           component={EditCancelledClass}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="InboxDetail"
           component={InboxDetail}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="AddClass"
           component={AddClass}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="BackToDashboard"
           component={BackToDashboard}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="ClockIn"
           component={ClockIn}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="ClassTimerCount"
           component={ClassTimerCount}
         />
         <Stack.Screen
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
           name="ClockOut"
           component={ClockOut}
         />
-      
-        
+
+
       </Stack.Navigator>
     </NavigationContainer>
   );

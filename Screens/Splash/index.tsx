@@ -1,22 +1,27 @@
-import {Image, StyleSheet, Text, View, Dimensions} from 'react-native';
-import React, {useEffect} from 'react';
+import { Image, StyleSheet, Text, View, Dimensions } from 'react-native';
+import React, { useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
 
-const Splash = ({navigation}: any) => {
+const Splash = ({ navigation }: any) => {
 
   const navigateToHomeScreen = () => {
-    setTimeout(async() => {
+    setTimeout(async () => {
 
-        let data = await AsyncStorage.getItem("login")
+      let data = await AsyncStorage.getItem("login")
 
-        if("login"){
 
-          navigation.replace('Login');
+      let authData = await AsyncStorage.getItem("loginAuth")
 
-          return
+      if (authData) {
+        navigation.replace("Main", authData)
+        return
+      }
 
-        }
+      if (data) {
+        navigation.replace('Login');
+        return
+      }
       navigation.replace('OnBoarding');
     }, 3000);
   };
@@ -24,14 +29,14 @@ const Splash = ({navigation}: any) => {
     navigateToHomeScreen();
   }, []);
   return (
-    <View style={{backgroundColor:'white', height:'100%', paddingHorizontal:15, alignItems:'center'}}>
+    <View style={{ backgroundColor: 'white', height: '100%', paddingHorizontal: 15, alignItems: 'center' }}>
 
       <Image
         source={require('../../Assets/Images/logo.png')}
         resizeMode="contain"
         style={styles.logo}
-        />
-        </View>
+      />
+    </View>
   );
 };
 
@@ -45,6 +50,6 @@ const styles = StyleSheet.create({
   },
   logo: {
     height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width/1.1,
+    width: Dimensions.get('window').width / 1.1,
   },
 });
