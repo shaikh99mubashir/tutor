@@ -15,16 +15,11 @@ const Login = ({ navigation }: any) => {
 
   const handleLoginPress = () => {
 
-
     if (phoneNumber.length < 13) {
       ToastAndroid.show("Invalid Phone Number", ToastAndroid.SHORT)
       return
     }
-
     setLoading(true)
-
-    phoneNumber = "0" + phoneNumber.slice(3)
-
     axios.get(`${Base_Uri}loginAPI/${phoneNumber}`).then(({ data }) => {
       if (data.status == 404) {
         setLoading(false)
@@ -41,10 +36,6 @@ const Login = ({ navigation }: any) => {
       ToastAndroid.show("Internal Server Error", ToastAndroid.SHORT)
     })
   }
-
-
-
-
   return (
     <View style={{ backgroundColor: 'white', height: '100%', justifyContent: 'center', paddingHorizontal: 15 }}>
       <Text style={{ fontSize: 25, color: 'black' }}>Enter your{'\n'}mobile number</Text>
@@ -83,7 +74,7 @@ const Login = ({ navigation }: any) => {
           width: '100%',
         }}>
         <TouchableOpacity
-          onPress={() => !loading && handleLoginPress()}
+          onPress={() => handleLoginPress()}
           style={{
             alignItems: 'center',
             padding: 10,

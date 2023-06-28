@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useState,useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import {
     SafeAreaView,
     Image,
@@ -12,6 +12,7 @@ import {
     Dimensions,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { Theme } from '../../constant/theme';
 
 const { width, height } = Dimensions.get('window');
 
@@ -38,7 +39,7 @@ const slides = [
     },
 ];
 
-const Slide = ({ item }:any) => {
+const Slide = ({ item }: any) => {
     return (
         <View style={{ alignItems: 'center' }}>
             <Image
@@ -53,10 +54,10 @@ const Slide = ({ item }:any) => {
     );
 };
 
-const OnBoarding = ({ navigation }:any) => {
+const OnBoarding = ({ navigation }: any) => {
     const [currentSlideIndex, setCurrentSlideIndex] = React.useState(0);
-    const ref:any = React.useRef();
-    const updateCurrentSlideIndex = (e:any) => {
+    const ref: any = React.useRef();
+    const updateCurrentSlideIndex = (e: any) => {
         const contentOffsetX = e.nativeEvent.contentOffset.x;
         const currentIndex = Math.round(contentOffsetX / width);
         setCurrentSlideIndex(currentIndex);
@@ -78,11 +79,10 @@ const OnBoarding = ({ navigation }:any) => {
         setCurrentSlideIndex(lastSlideIndex);
     };
 
-const handleDonePress = () => {
-
-    AsyncStorage.setItem("login","login")
-    navigation.replace('Login')
-} 
+    const handleDonePress = () => {
+        AsyncStorage.setItem("login", "login")
+        navigation.replace('Login')
+    }
 
     const Footer = () => {
         return (
@@ -157,6 +157,7 @@ const handleDonePress = () => {
                                     style={{
                                         fontWeight: 'bold',
                                         fontSize: 15,
+                                        color: Theme.white
                                     }}>
                                     NEXT
                                 </Text>

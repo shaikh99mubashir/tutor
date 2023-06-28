@@ -17,6 +17,7 @@ function More({navigation}: any) {
 
   const ApplyButton = () => {
     handleCloseModal();
+    navigation.navigate("Login")
   };
   const CancelButton = () => {
     handleCloseModal();

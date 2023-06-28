@@ -5,25 +5,67 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
+  ToastAndroid
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Header from '../../Component/Header';
-import {Theme} from '../../constant/theme';
+import { Theme } from '../../constant/theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { Base_Uri } from '../../constant/BaseUri';
 
-const OpenDetails = ({route, navigation}: any) => {
+const OpenDetails = ({ route, navigation }: any) => {
   const data = route.params;
 
   const [openDetailItem, setopenDetailItem] = useState({
     comment: '',
   });
+  const [loading, setLoading] = useState(false)
 
-  const sendOpenDetailData = () => {};
+
+
+
+  const sendOpenDetailData = async () => {
+
+    let tutorData: any = await AsyncStorage.getItem("loginAuth")
+
+    tutorData = await JSON.parse(tutorData)
+
+    let subjectId = data?.subject_id
+    let ticket_id = data?.ticket_id
+    let tutor_id = tutorData?.tutorID
+
+    setLoading(true)
+
+    axios.get(`${Base_Uri}offerSendByTutor/${subjectId}/${tutor_id}/${ticket_id}`).then(({ data }) => {
+
+      if (data?.result?.status == "Applied") {
+        setLoading(false)
+        ToastAndroid.show("You have successfully applied for this ticket", ToastAndroid.SHORT)
+        navigation.navigate("Job Ticket")
+      } else {
+        ToastAndroid.show("Failed to Apply for ticket", ToastAndroid.SHORT)
+        setLoading(false)
+      }
+
+
+    }).catch((error) => {
+      setLoading(false)
+      ToastAndroid.show("Internal Server Error", ToastAndroid.SHORT)
+    })
+
+
+
+
+
+  };
 
   return (
-    <View style={{backgroundColor: Theme.white, height: '100%'}}>
+    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title={data.code} backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{paddingHorizontal: 15}}>
+        <View style={{ paddingHorizontal: 15 }}>
           <Text
             style={{
               color: 'green',
@@ -33,47 +75,50 @@ const OpenDetails = ({route, navigation}: any) => {
               borderBottomWidth: 1,
               borderColor: '#eee',
             }}>
-            jkfs fsdjk fsd f dsfj ksdf sdf jdf
+            {data?.subject_name}
           </Text>
           <View>
             <Text
               style={{
                 color: Theme.black,
-                fontSize: 15,
+                fontSize: 14,
                 fontWeight: '600',
                 marginTop: 10,
               }}>
               Details
             </Text>
-            <Text style={{color: Theme.gray, fontSize: 15, fontWeight: '600'}}>
-              {data.details}
+            <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
+              Student: {data.studentName}
+            </Text>
+            <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
+              Student City: {data.studentCity}
+            </Text>
+            <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
+              Student Address 1: {data.studentAddress1}
+            </Text>
+            <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
+              Student Address 2: {data.studentAddress2}
             </Text>
           </View>
           <Text
             style={{
               color: Theme.gray,
-              fontSize: 15,
+              fontSize: 14,
               fontWeight: '600',
               marginTop: 10,
             }}>
-            {data.details2}
+            Day: {data.day}
           </Text>
           <Text
             style={{
               color: Theme.gray,
-              fontSize: 15,
+              fontSize: 14,
               fontWeight: '600',
               marginTop: 10,
             }}>
-            {data.details3}
+            Time: {data.time}
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 15, fontWeight: '600'}}>
-            {data.details4}
-          </Text>
-          <Text style={{color: Theme.gray, fontSize: 15, fontWeight: '600'}}>
-            {data.details5}
-          </Text>
-          <View style={{marginVertical: 15}}>
+          <View style={{ marginVertical: 15 }}>
             <Text
               style={{
                 color: Theme.black,
@@ -89,11 +134,11 @@ const OpenDetails = ({route, navigation}: any) => {
                 fontWeight: '600',
                 marginTop: 5,
               }}>
-              RM {data.RS}/subject
+              RM {data.receiving_account}/subject
             </Text>
           </View>
           {/* Avaiable Subject */}
-          <View style={{marginVertical: 15}}>
+          <View style={{ marginVertical: 15 }}>
             <Text
               style={{
                 color: Theme.black,
@@ -117,7 +162,7 @@ const OpenDetails = ({route, navigation}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                {data.title}
+                {data.subject_name}
               </Text>
               <Text
                 style={{
@@ -126,12 +171,12 @@ const OpenDetails = ({route, navigation}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                {data.title}
+                {/* {data.subject_id} */}
               </Text>
             </View>
           </View>
           {/* Comment */}
-          <View style={{marginBottom:100}}>
+          <View style={{ marginBottom: 100 }}>
             <Text
               style={{
                 color: Theme.black,
@@ -155,13 +200,14 @@ const OpenDetails = ({route, navigation}: any) => {
                 multiline={true}
                 maxLength={300}
                 onChangeText={e =>
-                  setopenDetailItem({...openDetailItem, comment: e})
+                  setopenDetailItem({ ...openDetailItem, comment: e })
                 }
                 style={[
                   styles.textArea,
                   {
                     backgroundColor: Theme.lightGray,
                     padding: 12,
+                    color: Theme.black
                   },
                 ]}
                 underlineColorAndroid="transparent"
@@ -196,14 +242,14 @@ const OpenDetails = ({route, navigation}: any) => {
               backgroundColor: Theme.darkGray,
               borderRadius: 10,
             }}>
-            <Text
+            {loading ? <ActivityIndicator size={"small"} color={"white"} /> : <Text
               style={{
                 color: 'white',
                 fontSize: 18,
                 fontFamily: 'Poppins-Regular',
               }}>
               Send
-            </Text>
+            </Text>}
           </TouchableOpacity>
         </View>
       </View>
