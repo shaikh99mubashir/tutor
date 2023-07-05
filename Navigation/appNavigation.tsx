@@ -34,6 +34,7 @@ import BackToDashboard from '../Screens/BackToDashboardScreen';
 import ClockIn from '../Screens/ClockInScreen/ClockIn';
 import ClassTimerCount from '../Screens/ClassTimerCountScreen';
 import ClockOut from '../Screens/ClockOutScreen';
+import ReportSubmission from '../Screens/ReportSubmission';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -306,6 +307,16 @@ function AppNavigation() {
           options={{ headerShown: false }}
           name="Login"
           component={Login}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="ReportSubmission"
+          component={ReportSubmission}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="ReportSubmissionHistory"
+          component={ReportSubmissionHistory}
         />
         <Stack.Screen
           options={{ headerShown: false }}

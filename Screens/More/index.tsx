@@ -152,6 +152,7 @@ function More({navigation}: any) {
           </TouchableOpacity>
           {/* Payment History */}
           <TouchableOpacity
+          onPress={()=> navigation.navigate('ReportSubmission')}
             activeOpacity={0.8}
             style={{
               paddingVertical: 15,

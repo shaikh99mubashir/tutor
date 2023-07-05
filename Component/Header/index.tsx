@@ -51,7 +51,7 @@ import { Theme } from '../../constant/theme';
                 justifyContent: 'flex-start',
               }}>
               <TouchableOpacity style={{}} onPress={() => navigation.goBack()}>
-                <Image source={require('../../Assets/Images/back.png')} style={{width:20, height:20}} resizeMode='contain'/>
+                <Image source={require('../../Assets/Images/back.png')} style={{width:12, height:12}} resizeMode='contain'/>
               </TouchableOpacity>
             </View>
           ) : (
@@ -66,7 +66,7 @@ import { Theme } from '../../constant/theme';
               <Text
                 style={{
                   fontFamily: 'Poppins-Regular',
-                  fontSize: 20,
+                  fontSize: 16,
                   color: Theme.darkGray,
                   marginVertical: 15,
                   fontWeight: 'bold',
