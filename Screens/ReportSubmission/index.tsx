@@ -138,7 +138,7 @@ const ReportSubmission = ({navigation}: any) => {
           </View>
         </View>
       </ScrollView>
-        <Modal visible={modalVisible} animationType="slide" transparent={true}>
+        <Modal onRequestClose={()=>setModalVisible(false)} visible={modalVisible} animationType="slide" transparent={true}>
           <View
             style={{
               flex: 1,

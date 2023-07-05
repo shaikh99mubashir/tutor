@@ -2,18 +2,61 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  ToastAndroid,
   View,
   TextInput,
   TouchableOpacity,
   Image,
 } from 'react-native';
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import Header from '../../Component/Header';
 import {Theme} from '../../constant/theme';
 import {PermissionsAndroid} from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { Base_Uri } from '../../constant/BaseUri';
 
 const Profile = ({navigation}: any) => {
+
+  const [tutorDetail,setTutorDetail] = useState({})
+
+
+
+  const getTutorDetails = async () => {
+
+
+
+    interface LoginAuth {
+      status: Number;
+      tutorID: Number;
+      token: string;
+    }
+    const data: any = await AsyncStorage.getItem('loginAuth');
+    let loginData: LoginAuth = JSON.parse(data);
+    let {tutorID} = loginData;
+    
+    axios
+    .get(`${Base_Uri}getTutorDetailByID/${tutorID}`)
+    .then(({data}) => {
+      
+      let {tutorDetailById} = data
+
+        setTutorDetail(tutorDetailById[0])
+
+    })
+    .catch(error => {
+      ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+    });
+
+  }
+
+console.log(tutorDetail,"tutorDetauks")
+
+  useEffect(()=>{
+    getTutorDetails()
+  },[])
+
   const uploadProfilePicture = async () => {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -62,11 +105,11 @@ const Profile = ({navigation}: any) => {
             <View style={{alignItems:'center'}}>
                 <Text
                   style={{fontSize: 18, fontWeight: '600', color: Theme.black}}>
-                  Muhammad
+                  {tutorDetail?.full_name}
                 </Text>
                 <Text
                   style={{fontSize: 14, fontWeight: '300', color: Theme.gray}}>
-                  Muhammad@gmail.com
+                  {tutorDetail?.email}
                 </Text>
               </View>
           </View>
@@ -95,7 +138,7 @@ const Profile = ({navigation}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                Muhammad
+                {tutorDetail?.full_name}
               </Text>
               
             </View>
@@ -125,7 +168,7 @@ const Profile = ({navigation}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                Muhammad@sdfbhsd.com
+                {tutorDetail?.email}
               </Text>
               
             </View>
@@ -155,7 +198,7 @@ const Profile = ({navigation}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                Muhammad@sdfbhsd.com
+                {tutorDetail?.full_name}
               </Text>
               
             </View>
@@ -185,7 +228,7 @@ const Profile = ({navigation}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                6516516116116
+                {tutorDetail?.phoneNumber}
               </Text>
             </View>
           </View>
@@ -214,7 +257,7 @@ const Profile = ({navigation}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                Male
+                {tutorDetail?.gender ? tutorDetail?.gender : "not provided"}
               </Text>
             </View>
           </View>
@@ -243,7 +286,7 @@ const Profile = ({navigation}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                211
+                {tutorDetail?.age}
               </Text>
             </View>
           </View>
@@ -272,7 +315,7 @@ const Profile = ({navigation}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                56161561211
+                {tutorDetail?.nric ? tutorDetail?.nric : "not Provided"}
               </Text>
             </View>
           </View>

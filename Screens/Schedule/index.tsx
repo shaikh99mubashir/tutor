@@ -73,7 +73,6 @@ function Schedule({navigation}: any) {
     const data: any = await AsyncStorage.getItem('loginAuth');
     let loginData: LoginAuth = JSON.parse(data);
     let {tutorID} = loginData;
-
     axios
       .get(`${Base_Uri}getClassSchedulesForTutors/${tutorID}`)
       .then(({data}) => {
