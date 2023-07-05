@@ -96,7 +96,7 @@ function AddClass({navigation}: any) {
     let {tutorID} = data;
 
     axios
-      .get(`${Base_Uri}getTutorStudents/${17}`)
+      .get(`${Base_Uri}getTutorStudents/${tutorID}`)
       .then(({data}) => {
         let {tutorStudents} = data;
 

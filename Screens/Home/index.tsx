@@ -136,7 +136,7 @@ function Home({navigation}: any) {
 
   const getUpcomingClasses = () => {
     axios
-      .get(`${Base_Uri}getUpcomingClassesByTutorID/${17}`)
+      .get(`${Base_Uri}getUpcomingClassesByTutorID/${tutorId}`)
       .then(({data}) => {
         const {classSchedules} = data;
         setUpCommingClasses(classSchedules);

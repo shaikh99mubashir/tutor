@@ -96,24 +96,24 @@ function JobTicket({navigation}: any) {
     },
   ]);
   const [closeData, setCloseData] = useState([
-    {
-      id: 1,
-      code: 'SS545455',
-      code2: 'Approved',
-      title: 'Mathematics (UPSR) - PHYSICAL - Weekday',
-      details: 'Weekday at 90:00Am for 1.5 hour(S) of each class',
-      details5: 'Testing',
-      RS: '180',
-    },
-    {
-      id: 2,
-      code: 'SS545455',
-      code2: 'Approved',
-      title: 'Algebra (UPSR) - PHYSICAL - Weekday',
-      details: 'Weekday at 90:00Am for 1.5 hour(S) of each class',
-      details5: 'Testing',
-      RS: '180',
-    },
+    // {
+    //   id: 1,
+    //   code: 'SS545455',
+    //   code2: 'Approved',
+    //   title: 'Mathematics (UPSR) - PHYSICAL - Weekday',
+    //   details: 'Weekday at 90:00Am for 1.5 hour(S) of each class',
+    //   details5: 'Testing',
+    //   RS: '180',
+    // },
+    // {
+    //   id: 2,
+    //   code: 'SS545455',
+    //   code2: 'Approved',
+    //   title: 'Algebra (UPSR) - PHYSICAL - Weekday',
+    //   details: 'Weekday at 90:00Am for 1.5 hour(S) of each class',
+    //   details5: 'Testing',
+    //   RS: '180',
+    // },
   ]);
 
   const [appliedData, setAppliedData] = useState([]);
@@ -154,7 +154,7 @@ function JobTicket({navigation}: any) {
       .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
       .then(({data}) => {
         let {getTutorOffers} = data;
-        setAppliedData(getTutorOffers);
+        setCloseData(getTutorOffers);
         setLoading(false);
       })
       .catch(error => {
@@ -167,8 +167,6 @@ function JobTicket({navigation}: any) {
     getTicketsData();
     getAppliedData();
   }, []);
-
-  console.log(appliedData, 'applied');
 
   const checkSearchItems = () => {
     searchText && foundName.length == 0 && setIsSearchItems(true);
@@ -186,7 +184,7 @@ function JobTicket({navigation}: any) {
   const searchApplied = (e: any) => {
     setSearchText(e);
     let filteredItems: any = closeData.filter(x =>
-      x.title.toLowerCase().includes(e.toLowerCase()),
+      x.subjectName.toLowerCase().includes(e.toLowerCase()),
     );
     setFoundName(filteredItems);
   };
@@ -294,6 +292,8 @@ function JobTicket({navigation}: any) {
     );
   };
   const renderCloseData = ({item}: any) => {
+    console.log(item, 'item');
+
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('AppliedDetails', item)}
@@ -312,10 +312,10 @@ function JobTicket({navigation}: any) {
             width: '100%',
           }}>
           <Text style={{color: 'green', fontSize: 14, fontWeight: '600'}}>
-            {item.code}
+            {item.jtuid}
           </Text>
           <Text style={{color: 'green', fontSize: 14, fontWeight: '600'}}>
-            {item.code2}
+            {item.ticketStatus}
           </Text>
         </View>
         <Text
@@ -325,7 +325,7 @@ function JobTicket({navigation}: any) {
             fontWeight: '600',
             marginTop: 10,
           }}>
-          {item.title}
+          {item.subjectName}
         </Text>
         <View>
           <Text
@@ -338,7 +338,19 @@ function JobTicket({navigation}: any) {
             Details
           </Text>
           <Text style={{color: Theme.gray, fontSize: 14, fontWeight: '600'}}>
-            {item.details}
+            Student: {item.studentName}
+          </Text>
+          <Text style={{color: Theme.gray, fontSize: 14, fontWeight: '600'}}>
+            Student ID: {item.studentID}
+          </Text>
+          <Text style={{color: Theme.gray, fontSize: 14, fontWeight: '600'}}>
+            Student City: {item.studentName}
+          </Text>
+          <Text style={{color: Theme.gray, fontSize: 14, fontWeight: '600'}}>
+            Student Address: {item.studentAddress}
+          </Text>
+          <Text style={{color: Theme.gray, fontSize: 14, fontWeight: '600'}}>
+            Student City: {item.studentCity}
           </Text>
         </View>
         <Text
@@ -348,7 +360,15 @@ function JobTicket({navigation}: any) {
             fontWeight: '600',
             marginTop: 10,
           }}>
-          {item.details5}
+          {item.classDay}
+        </Text>
+        <Text
+          style={{
+            color: Theme.gray,
+            fontSize: 14,
+            fontWeight: '600',
+          }}>
+          {item.classTime}
         </Text>
         <Text
           style={{
@@ -357,7 +377,7 @@ function JobTicket({navigation}: any) {
             fontWeight: '600',
             marginTop: 10,
           }}>
-          RM {item.RS}/subject
+          RM {item.subjectPrice}/subject
         </Text>
       </TouchableOpacity>
     );
