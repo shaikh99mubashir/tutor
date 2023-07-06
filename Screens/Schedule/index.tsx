@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Platform,
   FlatList,
+  Dimensions,
   Image,
   ScrollView,
   Modal,
@@ -88,7 +89,7 @@ function Schedule({navigation}: any) {
           });
 
         setLoading(false);
-        console.log(classSchedules, 'schedule');
+
         setScheduleData(classSchedules ? classSchedules : []);
       })
       .catch(error => {
@@ -362,22 +363,13 @@ function Schedule({navigation}: any) {
     );
   };
 
-  console.log(scheduleData, 'schedulee');
-
   return loading ? (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <ActivityIndicator size={'large'} color={Theme.black} />
     </View>
-  ) : scheduleData.length == 0 ? (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text style={{fontSize: 32, fontWeight: 'bold', color: Theme.black}}>
-        No Schedule Data...
-      </Text>
-    </View>
   ) : (
     <View style={{flex: 1}}>
       <CustomHeader title="Schedule" plus navigation={navigation} />
-
       <ScrollView nestedScrollEnabled={true}>
         <View style={{padding: 20}}>
           <TouchableOpacity
@@ -392,7 +384,6 @@ function Schedule({navigation}: any) {
             </Text>
             <AntDesign name="chevron-down" color={Theme.black} size={30} />
           </TouchableOpacity>
-
           {show && (
             <DateTimePicker
               testID="dateTimePicker"
@@ -403,11 +394,25 @@ function Schedule({navigation}: any) {
             />
           )}
 
-          <FlatList
-            nestedScrollEnabled={true}
-            data={scheduleData}
-            renderItem={renderScheduleData}
-          />
+          {scheduleData.length == 0 ? (
+            <View
+              style={{
+                height: Dimensions.get('window').height - 180,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{fontSize: 32, fontWeight: 'bold', color: Theme.black}}>
+                No Schedule Data...
+              </Text>
+            </View>
+          ) : (
+            <FlatList
+              nestedScrollEnabled={true}
+              data={scheduleData}
+              renderItem={renderScheduleData}
+            />
+          )}
         </View>
 
         {confirm && confirmModal()}

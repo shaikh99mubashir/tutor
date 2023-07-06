@@ -44,7 +44,7 @@ function Home({navigation}: any) {
       date: '20 May 2023',
     },
   ]);
-
+  const [notificationLenght,setNotificationLength] = useState(0)
   const [tutorId, setTutorId] = useState<Number | null>(null);
 
   const [tutorData, setTutorData] = useState({
@@ -54,9 +54,7 @@ function Home({navigation}: any) {
     cancelledHours: '',
     scheduledHours: '',
   });
-
   const [tutorStudents, setTutorStudents] = useState([]);
-
   const getTutorId = async () => {
     interface LoginAuth {
       status: Number;
@@ -69,11 +67,47 @@ function Home({navigation}: any) {
     setTutorId(tutorID);
   };
 
+
+const getNotificationLength = async () => {
+
+  axios
+      .get(`${Base_Uri}getTutorDetailByID/${tutorId}`)
+      .then(({data}) => {
+        let {tutorDetailById} = data;
+        let tutorUid = tutorDetailById[0]?.uid;
+
+        axios
+          .get(`${Base_Uri}api/notifications`)
+          .then(async({data}) => {
+            let {notifications} = data;
+            let tutorNotification =
+              notifications.length > 0 &&
+              notifications.filter((e: any, i: number) => {
+                return e.tutorID == tutorUid;
+              });
+            setNotificationLength(tutorNotification.length);
+          })
+          .catch(error => {
+          
+            ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+          });
+      })
+      .catch(error => {
+        
+        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+      });
+    
+}
+
   useEffect(() => {
     getTutorId();
+
   }, []);
 
-  console.log(tutorId, 'tutod');
+
+useEffect(()=>{
+  tutorId && getNotificationLength()
+},[tutorId])
 
   const getCummulativeCommission = () => {
     axios
@@ -233,7 +267,7 @@ function Home({navigation}: any) {
               justifyContent: 'center',
             }}>
             <Text style={[styles.text, {fontSize: 12, color: Theme.white}]}>
-              3
+              {notificationLenght}
             </Text>
           </View>
         </TouchableOpacity>
