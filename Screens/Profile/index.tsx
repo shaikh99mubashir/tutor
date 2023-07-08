@@ -2,18 +2,76 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  ToastAndroid,
   View,
   TextInput,
   TouchableOpacity,
   Image,
 } from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Header from '../../Component/Header';
 import {Theme} from '../../constant/theme';
 import {PermissionsAndroid} from 'react-native';
 import {launchImageLibrary} from 'react-native-image-picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import {Base_Uri} from '../../constant/BaseUri';
 
 const Profile = ({navigation}: any) => {
+  interface ITutorDetails {
+    full_name: string | undefined;
+    email: string | undefined;
+    gender: string | undefined;
+    phoneNumber: string | undefined;
+    age: any;
+    nric: string | undefined;
+  }
+
+  const [tutorDetail, setTutorDetail] = useState<ITutorDetails>({
+    full_name: '',
+    email: '',
+    gender: '',
+    phoneNumber: '',
+    age: null,
+    nric: '',
+  });
+
+  const getTutorDetails = async () => {
+    interface LoginAuth {
+      status: Number;
+      tutorID: Number;
+      token: string;
+    }
+    const data: any = await AsyncStorage.getItem('loginAuth');
+    let loginData: LoginAuth = JSON.parse(data);
+    let {tutorID} = loginData;
+
+    axios
+      .get(`${Base_Uri}getTutorDetailByID/${tutorID}`)
+      .then(({data}) => {
+        let {tutorDetailById} = data;
+
+        let tutorDetails = tutorDetailById[0];
+
+        let details: ITutorDetails = {
+          full_name: tutorDetails?.full_name,
+          email: tutorDetails?.email,
+          gender: tutorDetails?.gender,
+          phoneNumber: tutorDetails.phoneNumber,
+          age: tutorDetails.age,
+          nric: tutorDetails.nric,
+        };
+        setTutorDetail(details);
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+      });
+  };
+
+  useEffect(() => {
+    getTutorDetails();
+  }, []);
+
   const uploadProfilePicture = async () => {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -43,7 +101,7 @@ const Profile = ({navigation}: any) => {
     <View style={{backgroundColor: Theme.white, height: '100%'}}>
       <Header title="Profile" navigation={navigation} backBtn />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{paddingHorizontal: 15, marginBottom:100}}>
+        <View style={{paddingHorizontal: 15, marginBottom: 100}}>
           <View style={{paddingVertical: 15, alignItems: 'center'}}>
             <Image
               source={require('../../Assets/Images/avatar.png')}
@@ -59,19 +117,19 @@ const Profile = ({navigation}: any) => {
                 resizeMode="contain"
               />
             </TouchableOpacity>
-            <View style={{alignItems:'center'}}>
-                <Text
-                  style={{fontSize: 18, fontWeight: '600', color: Theme.black}}>
-                  Muhammad
-                </Text>
-                <Text
-                  style={{fontSize: 14, fontWeight: '300', color: Theme.gray}}>
-                  Muhammad@gmail.com
-                </Text>
-              </View>
+            <View style={{alignItems: 'center'}}>
+              <Text
+                style={{fontSize: 18, fontWeight: '600', color: Theme.black}}>
+                {tutorDetail?.full_name}
+              </Text>
+              <Text
+                style={{fontSize: 14, fontWeight: '300', color: Theme.gray}}>
+                {tutorDetail?.email}
+              </Text>
+            </View>
           </View>
-        {/* Full Name */}
-        <View style={{marginVertical: 15}}>
+          {/* Full Name */}
+          <View style={{marginVertical: 15}}>
             <Text
               style={{
                 color: Theme.black,
@@ -95,13 +153,12 @@ const Profile = ({navigation}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                Muhammad
+                {tutorDetail?.full_name}
               </Text>
-              
             </View>
           </View>
           {/* Email */}
-        <View style={{marginBottom: 15}}>
+          <View style={{marginBottom: 15}}>
             <Text
               style={{
                 color: Theme.black,
@@ -125,13 +182,12 @@ const Profile = ({navigation}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                Muhammad@sdfbhsd.com
+                {tutorDetail?.email}
               </Text>
-              
             </View>
           </View>
           {/* Displlay name */}
-        <View style={{marginBottom: 15}}>
+          <View style={{marginBottom: 15}}>
             <Text
               style={{
                 color: Theme.black,
@@ -155,13 +211,12 @@ const Profile = ({navigation}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                Muhammad@sdfbhsd.com
+                {tutorDetail?.full_name}
               </Text>
-              
             </View>
           </View>
           {/* MObile number*/}
-        <View style={{marginBottom: 15}}>
+          <View style={{marginBottom: 15}}>
             <Text
               style={{
                 color: Theme.black,
@@ -185,12 +240,12 @@ const Profile = ({navigation}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                6516516116116
+                {tutorDetail?.phoneNumber}
               </Text>
             </View>
           </View>
           {/* Gender*/}
-        <View style={{marginBottom: 15}}>
+          <View style={{marginBottom: 15}}>
             <Text
               style={{
                 color: Theme.black,
@@ -214,12 +269,12 @@ const Profile = ({navigation}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                Male
+                {tutorDetail?.gender ? tutorDetail?.gender : 'not provided'}
               </Text>
             </View>
           </View>
           {/* Age*/}
-        <View style={{marginBottom: 15}}>
+          <View style={{marginBottom: 15}}>
             <Text
               style={{
                 color: Theme.black,
@@ -243,12 +298,12 @@ const Profile = ({navigation}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                211
+                {tutorDetail.age}
               </Text>
             </View>
           </View>
           {/* Nric*/}
-        <View style={{marginBottom: 15}}>
+          <View style={{marginBottom: 15}}>
             <Text
               style={{
                 color: Theme.black,
@@ -272,14 +327,14 @@ const Profile = ({navigation}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                56161561211
+                {tutorDetail?.nric ? tutorDetail?.nric : 'not Provided'}
               </Text>
             </View>
           </View>
         </View>
       </ScrollView>
-        {/* Submit Button */}
-        <View
+      {/* Submit Button */}
+      <View
         style={{
           backgroundColor: Theme.white,
           position: 'absolute',

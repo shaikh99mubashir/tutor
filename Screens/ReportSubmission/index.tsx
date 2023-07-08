@@ -184,7 +184,6 @@ const ReportSubmission = ({navigation}: any) => {
           </View>
         </View>
       </ScrollView>
-
       {/* Submit Button */}
       <View
         style={{

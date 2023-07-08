@@ -8,52 +8,54 @@ import {
   FlatList,
   TextInput,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Theme} from '../../constant/theme';
 import Header from '../../Component/Header';
+import axios from 'axios';
+import {Base_Uri} from '../../constant/BaseUri';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Students = ({navigation}: any) => {
-  const [students, setstudents] = useState([
-    {
-      id: 1,
-      image: require('../../Assets/Images/woman.png'),
-      name: 'testing1',
-      code: 'sdf544',
-      title: 'Add Math (DEGREE) Online',
-      time: '12:00 PM to 7:00 PM',
-      gender: 'male',
-      ade: '51',
-      studentName: 'testing',
-      email: 'dsdds@sd.com',
-      address: 'dsfdssd sds',
-      contactno: 'as324324324',
-      date: '20 May 2023',
-    },
-    {
-      id: 2,
-      image: require('../../Assets/Images/woman.png'),
-      name: 'testing2',
-      code: 'sd52442',
-      gender: 'male',
-      ade: '51',
-      studentName: 'testing',
-      email: 'dsdds@sd.com',
-      address: 'dsfdssd sds',
-      contactno: 'as324324324',
-      date: '20 May 2023',
-    },
-  ]);
+  const [students, setstudents] = useState([]);
 
   const [foundName, setFoundName] = useState([]);
   const [searchText, setSearchText] = useState('');
+
+  const getStudentData = async () => {
+    let data: any = await AsyncStorage.getItem('loginAuth');
+    data = JSON.parse(data);
+
+    let {tutorID} = data;
+
+    axios
+      .get(`${Base_Uri}getTutorStudents/${16}`)
+      .then(({data}) => {
+        let {tutorStudents} = data;
+
+        
+        
+        setstudents(tutorStudents);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    getStudentData();
+  }, []);
+
   const searchStudent = (e: any) => {
     console.log(e, 'eee');
     setSearchText(e);
     let filteredItems: any = students.filter(x =>
-      x.code.toLowerCase().includes(e.toLowerCase()),
+      x.studentID.toLowerCase().includes(e.toLowerCase()),
     );
     setFoundName(filteredItems);
   };
+
+  
+
   return (
     <View style={{backgroundColor: Theme.white, height: '100%'}}>
       <Header title="Student" backBtn navigation={navigation} />
@@ -95,7 +97,7 @@ const Students = ({navigation}: any) => {
               renderItem={({item, index}: any) => {
                 return (
                   <TouchableOpacity
-                  onPress={()=> navigation.navigate('StudentsDetails',item)}
+                    onPress={() => navigation.navigate('StudentsDetails', item)}
                     key={index}
                     style={{
                       borderWidth: 1,
@@ -125,10 +127,10 @@ const Students = ({navigation}: any) => {
                       />
                       <View>
                         <Text style={{color: Theme.gray, fontSize: 16}}>
-                          {item.code}
+                          {item.studentID}
                         </Text>
                         <Text style={{color: Theme.black, fontSize: 14}}>
-                          {item.name}
+                          {item.studentName}
                         </Text>
                       </View>
                     </View>
