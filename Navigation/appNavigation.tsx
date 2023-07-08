@@ -35,6 +35,7 @@ import ClockIn from '../Screens/ClockInScreen/ClockIn';
 import ClassTimerCount from '../Screens/ClassTimerCountScreen';
 import ClockOut from '../Screens/ClockOutScreen';
 import ReportSubmission from '../Screens/ReportSubmission';
+import AttendedDetails from '../Screens/AttendedDetails';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -422,6 +423,11 @@ function AppNavigation() {
           options={{ headerShown: false }}
           name="ClockOut"
           component={ClockOut}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="AttendedDetails"
+          component={AttendedDetails}
         />
 
 
