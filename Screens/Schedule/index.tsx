@@ -255,7 +255,7 @@ function Schedule({navigation}: any) {
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                onPress={() => navigateToEditScreen('attended', selectedData)}
+                onPress={() => navigateToEditScreen('attended')}
                 style={{width: '100%'}}>
                 <Text
                   style={[

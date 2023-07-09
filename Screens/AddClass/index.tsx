@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,16 +6,17 @@ import {
   FlatList,
   ScrollView,
   Platform,
+  ToastAndroid,
 } from 'react-native';
-import {Theme} from '../../constant/theme';
+import { Theme } from '../../constant/theme';
 import CustomDropDown from '../../Component/CustomDropDown';
 import Header from '../../Component/Header';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {Base_Uri} from '../../constant/BaseUri';
+import { Base_Uri } from '../../constant/BaseUri';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function AddClass({navigation}: any) {
+function AddClass({ navigation }: any) {
   const [student, setStudent] = useState([
     {
       id: 1,
@@ -54,20 +55,38 @@ function AddClass({navigation}: any) {
     },
   ]);
 
-  const [classes, setClasses] = useState([
+  const [tutorId, setTutorId] = useState(null)
+  const [mode, setMode] = useState<any>('date');
+  const [confirm, setConfirm] = useState(false);
+  const [clickedStartTime, setClickedStartTime] = useState(false);
+  const [show, setShow] = useState(false);
+  const [indexClicked, setIndexClicked] = useState<null | Number>(null);
+  const [value, setValue] = useState(new Date());
+  const [selectedStudent, setSelectedStudent] = useState("")
+  const [selectedSubject, setSelectedSubject] = useState("")
+
+
+
+  const [classes, setClasses] = useState<any>([
     {
-      id: 1,
-      classDate: new Date(),
+      tutorID: tutorId,
+      studentID: selectedStudent?.studentID,
+      subjectID: selectedSubject?.id,
       startTime: '-',
       endTime: '-',
+      date: new Date(),
     },
   ]);
+
+  console.log(classes, "classed")
+
+
 
   const getSubject = () => {
     axios
       .get(`${Base_Uri}getSubjects`)
-      .then(({data}) => {
-        let {subjects} = data;
+      .then(({ data }) => {
+        let { subjects } = data;
 
         let mySubject =
           subjects &&
@@ -88,17 +107,21 @@ function AddClass({navigation}: any) {
       });
   };
 
+
+
   const getStudents = async () => {
     let data: any = await AsyncStorage.getItem('loginAuth');
 
     data = JSON.parse(data);
 
-    let {tutorID} = data;
+    let { tutorID } = data;
+
+    setTutorId(tutorID)
 
     axios
-      .get(`${Base_Uri}getTutorStudents/${tutorID}`)
-      .then(({data}) => {
-        let {tutorStudents} = data;
+      .get(`${Base_Uri}getTutorStudents/${16}`)
+      .then(({ data }) => {
+        let { tutorStudents } = data;
 
         let myStudents =
           tutorStudents &&
@@ -106,10 +129,8 @@ function AddClass({navigation}: any) {
           tutorStudents.map((e: any, i: Number) => {
             if (e.studentName) {
               return {
-                subject: e.studentName,
-                studentAddress1: e.studentAddress1,
-                studentAddress2: e.studentAddress2,
-                studentCity: e.studentCity,
+                ...e,
+                subject: e.studentName
               };
             }
           });
@@ -130,38 +151,33 @@ function AddClass({navigation}: any) {
     let data: any =
       classes &&
       classes.length > 0 &&
-      classes.filter((e, i) => {
+      classes.filter((e: any, i: Number) => {
         return i !== index;
       });
 
     setClasses(data);
   };
 
-  const [mode, setMode] = useState<any>('date');
-  const [confirm, setConfirm] = useState(false);
-  const [clickedStartTime, setClickedStartTime] = useState(false);
-  const [show, setShow] = useState(false);
-  const [indexClicked, setIndexClicked] = useState<null | Number>(null);
-  const [value, setValue] = useState(new Date());
+
 
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
-
     let data;
+
+
 
     if (mode == 'date') {
       data = classes.map((e: any, i: Number) => {
         if (i == indexClicked) {
           return {
             ...e,
-            classDate: currentDate,
+            date: currentDate,
           };
         } else {
           return e;
         }
       });
     } else if (mode == 'time' && clickedStartTime) {
-      console.log('hello');
 
       data = classes.map((e: any, i: Number) => {
         if (i == indexClicked) {
@@ -193,7 +209,6 @@ function AddClass({navigation}: any) {
   };
 
   const setClassDate = (mode: any, index: Number, startTime?: Boolean) => {
-    console.log('hello');
 
     if (startTime) {
       setClickedStartTime(true);
@@ -203,7 +218,7 @@ function AddClass({navigation}: any) {
     setShow(true);
   };
 
-  const renderClasses = ({item, index}: any) => {
+  const renderClasses = ({ item, index }: any) => {
     return (
       <View>
         <View
@@ -247,13 +262,13 @@ function AddClass({navigation}: any) {
               justifyContent: 'space-between',
               alignItems: 'center',
             }}>
-            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '500'}}>
+            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '500' }}>
               Date
             </Text>
             <TouchableOpacity onPress={() => setClassDate('date', index)}>
               <Text
-                style={{color: Theme.black, fontSize: 14, fontWeight: '500'}}>
-                {item.classDate.toString().slice(0, 15)}
+                style={{ color: Theme.black, fontSize: 14, fontWeight: '500' }}>
+                {item.date.toString().slice(0, 15)}
               </Text>
             </TouchableOpacity>
           </View>
@@ -265,15 +280,15 @@ function AddClass({navigation}: any) {
               marginTop: 10,
               width: '100%',
             }}>
-            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '500'}}>
+            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '500' }}>
               Start Time
             </Text>
 
             <TouchableOpacity
               onPress={() => setClassDate('time', index, true)}
-              style={{minWidth: 50, alignItems: 'flex-end'}}>
+              style={{ minWidth: 50, alignItems: 'flex-end' }}>
               <Text
-                style={{color: Theme.black, fontSize: 14, fontWeight: '500'}}>
+                style={{ color: Theme.black, fontSize: 14, fontWeight: '500' }}>
                 {item?.startTime !== '-'
                   ? item?.startTime.toLocaleString().slice(10)
                   : '-'}
@@ -287,15 +302,15 @@ function AddClass({navigation}: any) {
               alignItems: 'center',
               marginTop: 10,
             }}>
-            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '500'}}>
+            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '500' }}>
               End Time
             </Text>
 
             <TouchableOpacity
               onPress={() => setClassDate('time', index)}
-              style={{minWidth: 50, alignItems: 'flex-end'}}>
+              style={{ minWidth: 50, alignItems: 'flex-end' }}>
               <Text
-                style={{color: Theme.black, fontSize: 14, fontWeight: '500'}}>
+                style={{ color: Theme.black, fontSize: 14, fontWeight: '500' }}>
                 {item?.endTime !== '-'
                   ? item?.endTime.toLocaleString().slice(10)
                   : '-'}
@@ -307,30 +322,68 @@ function AddClass({navigation}: any) {
     );
   };
 
+
   const addClass = () => {
     let newClass = {
-      id: classes.length + 1,
-      classDate: new Date(),
+      tutorID: tutorId,
+      studentId: selectedStudent?.studentID,
+      subjectId: selectedSubject?.id,
       startTime: '-',
       endTime: '-',
+      date: new Date(),
     };
 
     setClasses([...classes, newClass]);
   };
+
+
   const confirmClass = () => {
-    navigation.navigate('BackToDashboard');
+
+
+    let classesToAdd = [...classes]
+
+    console.log(classesToAdd, "adding")
+
+    classesToAdd = classesToAdd && classesToAdd.length > 0 && classesToAdd.map((e, i) => {
+      return {
+        ...e,
+        studentID: selectedStudent?.studentID,
+        subjectID: selectedSubject?.id,
+        tutorID: tutorId
+      }
+    })
+
+    let item = {}
+    item.classes = classesToAdd
+
+    console.log(item,"itemsss")
+
+    axios.post(`${Base_Uri}api/addMultipleClasses`, item).then((res) => {
+      navigation.navigate('BackToDashboard');
+    }).catch((error) => {
+
+      console.log(error,"error")
+
+      ToastAndroid.show("Internal Server Error", ToastAndroid.SHORT)
+
+    })
+
+
+
+
   };
   return (
-    <View style={{flex: 1, backgroundColor: Theme.white}}>
+    <View style={{ flex: 1, backgroundColor: Theme.white }}>
       <View>
         <Header title={'Add Class'} backBtn navigation={navigation} />
       </View>
-
-      <View style={{padding: 20, flex: 1}}>
+      <View style={{ padding: 20, flex: 1 }}>
         <ScrollView>
           <View>
             <CustomDropDown
               ddTitle={'Student'}
+              setSelectedSubject={setSelectedStudent}
+              selectedSubject={selectedStudent}
               dropdownContainerStyle={{
                 backgroundColor: Theme.lightGray,
                 paddingVertical: 17,
@@ -338,7 +391,7 @@ function AddClass({navigation}: any) {
                 borderWidth: 0,
                 borderBottomWidth: 0,
               }}
-              dropdownPlace={'Select Student '}
+              dropdownPlace={'Select Student'}
               subject={student}
               headingStyle={{
                 color: Theme.black,
@@ -348,6 +401,8 @@ function AddClass({navigation}: any) {
             />
             <CustomDropDown
               ddTitle={'Subject'}
+              selectedSubject={selectedSubject}
+              setSelectedSubject={setSelectedSubject}
               dropdownContainerStyle={{
                 backgroundColor: Theme.lightGray,
                 paddingVertical: 17,
@@ -383,7 +438,7 @@ function AddClass({navigation}: any) {
                 width: '100%',
               }}>
               <Text
-                style={{textAlign: 'center', fontSize: 16, color: Theme.white}}>
+                style={{ textAlign: 'center', fontSize: 16, color: Theme.white }}>
                 {classes.length > 0 ? 'Add More Classes' : 'Add Classes'}
               </Text>
             </TouchableOpacity>
@@ -416,7 +471,7 @@ function AddClass({navigation}: any) {
             borderRadius: 10,
             width: '95%',
           }}>
-          <Text style={{textAlign: 'center', fontSize: 16, color: Theme.white}}>
+          <Text style={{ textAlign: 'center', fontSize: 16, color: Theme.white }}>
             Confirm Class
           </Text>
         </TouchableOpacity>

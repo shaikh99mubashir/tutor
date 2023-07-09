@@ -13,12 +13,18 @@ import React, { useState, useEffect } from 'react';
 import { Theme } from '../../constant/theme';
 
 const CustomDropDown = (props: any) => {
-  let { ddTitle, categoryData, subject, headingStyle, categoryShow, dropdownPlace, dropdownContainerStyle } = props
+  let { ddTitle, categoryData, subject, headingStyle, categoryShow, dropdownPlace, dropdownContainerStyle, setSelectedSubject,selectedSubject } = props
+
+
+console.log(selectedSubject,"suvjext")
 
   const [selectedServicedata, setSelectedServicedata]: any = useState({});
   const [serviceDD, setServiceDD] = useState(false);
   const SelectedServices = (item: any) => {
-    setSelectedServicedata(item);
+
+    console.log(item, "item")
+
+    setSelectedSubject(item);
     setServiceDD(!serviceDD);
   };
 
@@ -96,7 +102,7 @@ const CustomDropDown = (props: any) => {
                   fontFamily: 'Poppins-SemiBold',
                   fontSize: 16,
                 }}>
-                {dropdownPlace ?? ddTitle}
+                {selectedSubject ? selectedSubject.subject : dropdownPlace ?? ddTitle}
               </Text>
               {serviceDD ? (
                 <Image source={require('../../Assets/Images/up.png')} style={{ width: 15, height: 20 }} resizeMode='contain' />
@@ -190,7 +196,7 @@ const CustomDropDown = (props: any) => {
                         fontFamily: 'Poppins-SemiBold',
                         fontSize: 16,
                       }}>
-                      {e}
+                      {e ?? selectedSubject}
                     </Text>
                   </TouchableOpacity>
                 );
