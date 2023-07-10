@@ -1,16 +1,32 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity,TextInput,ScrollView,KeyboardAvoidingView } from "react-native"
+import { View, Text, TouchableOpacity,TextInput,ScrollView,KeyboardAvoidingView,ToastAndroid } from "react-native"
 import { Theme } from "../../constant/theme";
 
 import CustomHeader from "../../Component/Header";
 
 import AntDesign from "react-native-vector-icons/EvilIcons"
+import axios from "axios";
+import { Base_Uri } from "../../constant/BaseUri";
 
 function EditCancelledClass({ navigation, route }: any) {
 
     let data = route.params?.data
-
     const [cancelledReason,setCancelledReason] = useState("")
+
+
+    const editTutorCancelledClass = () => {
+
+
+        axios.get(`${Base_Uri}attendedClassStatus/${data?.class_schedule_id}/cancelled`).then(({data})=>{
+    
+            ToastAndroid.show(data?.SuccessMessage,ToastAndroid.SHORT)
+    
+        }).catch((error)=>{
+            ToastAndroid.show('Internal Server Error',ToastAndroid.SHORT)
+        })
+    
+    }
+
 
     return (
         <KeyboardAvoidingView behavior="height" style={{ flex: 1, backgroundColor: Theme.white }} >
@@ -23,13 +39,13 @@ function EditCancelledClass({ navigation, route }: any) {
                     Student
                 </Text>
                 <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: "500", marginTop: 5 }} >
-                    {data?.name}
+                    {data?.studentName}
                 </Text>
                 <Text style={{ color: Theme.black, fontSize: 18, fontWeight: "600", marginTop: 20 }} >
                     Subject
                 </Text>
                 <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: "500", marginTop: 5 }} >
-                    {data?.Subject}
+                    {data?.subjectName}
                 </Text>
 
                 <Text style={{ color: Theme.black, fontSize: 18, fontWeight: "600", marginTop: 20 }} >
@@ -97,7 +113,7 @@ function EditCancelledClass({ navigation, route }: any) {
             </View>
             </ScrollView>
             <View style={{ width: "100%",alignItems: "center",marginBottom:20}} >
-                <TouchableOpacity style={{ backgroundColor: Theme.darkGray, padding: 15, borderRadius: 10, width: "95%" }} >
+                <TouchableOpacity onPress={()=>editTutorCancelledClass()} style={{ backgroundColor: Theme.darkGray, padding: 15, borderRadius: 10, width: "95%" }} >
                     <Text style={{ textAlign: "center", fontSize: 16, color: Theme.white }} >
                         Confirm Class
                     </Text>

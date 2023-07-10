@@ -4,6 +4,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  ToastAndroid,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import Header from '../../Component/Header';
@@ -12,9 +13,20 @@ import CustomDropDown from '../../Component/CustomDropDown';
 import { Base_Uri } from '../../constant/BaseUri';
 import axios from "axios"
 import { Callout } from 'react-native-maps';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import JobTicket from '../JobTicket';
 
 
 const Filter = ({ navigation }: any) => {
+
+  const [selectedCategory, setSelectedCategory] = useState('')
+  const [selectedSubject, setSelectedSubject] = useState('')
+  const [selectedMode, setSelectedMode] = useState('')
+  const [selectedState, setSelectedState] = useState('')
+  const [selectedCity, setSelectedCity] = useState('')
+
+
+
   const [categoryData, setCategory] = useState([
     {
       id: 1,
@@ -54,20 +66,13 @@ const Filter = ({ navigation }: any) => {
   const [classMode, setClassMode] = useState([
     {
       id: 1,
-      subject: 'Mode A',
+      subject: 'Physical',
     },
     {
       id: 2,
-      subject: 'Mode B',
+      subject: 'Online',
     },
-    {
-      id: 3,
-      subject: 'Mode C',
-    },
-    {
-      id: 3,
-      subject: 'Mode D',
-    },
+
   ]);
 
   const [State, setState] = useState([
@@ -238,20 +243,55 @@ const Filter = ({ navigation }: any) => {
 
   }, [])
 
-  console.log(city, "city")
 
+  const applyFilter = async () => {
 
+    let jobFilter = {
+      Cateory: selectedCategory,
+      subject: selectedSubject,
+      mode: selectedMode,
+      state: selectedState,
+      city: selectedCity
+    }
+
+    let myFilter = JSON.stringify(jobFilter)
+    await AsyncStorage.setItem('filter', myFilter)
+    ToastAndroid.show('your data has been successfully filtered', ToastAndroid.SHORT)
+
+  }
+
+  const resetFilter = async () => {
+    await AsyncStorage.removeItem('filter').then((res) => {
+      ToastAndroid.show('Filtered has been Successfully reset', ToastAndroid.SHORT)
+    }).catch((error) => {
+      ToastAndroid.show('Filter reset unsuccessfull', ToastAndroid.SHORT)
+    })
+
+  }
 
   return (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="Filter" backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <View style={{ paddingHorizontal: 15 }}>
-          <CustomDropDown ddTitle="Category" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select Category"} dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }} subject={categoryData} categoryShow={"complain_name"} />
-          <CustomDropDown ddTitle="Subject" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select Subject"} dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }} subject={subject} categoryShow={"subject"} />
-          <CustomDropDown ddTitle="Mode" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select Mode"} dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }} subject={classMode} categoryShow={"subject"} />
-          <CustomDropDown ddTitle="State" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select State"} dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }} subject={State} categoryShow={"subject"} />
-          <CustomDropDown ddTitle="City" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select City"} dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }} subject={city} categoryShow={"subject"} />
+          <CustomDropDown
+            setSelectedSubject={setSelectedCategory}
+            selectedSubject={selectedCategory}
+            ddTitle="Category" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select Category"} dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }} subject={categoryData} categoryShow={"complain_name"} />
+          <CustomDropDown
+            setSelectedSubject={setSelectedSubject}
+            selectedSubject={selectedSubject}
+            ddTitle="Subject" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select Subject"} dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }} subject={subject} categoryShow={"subject"} />
+          <CustomDropDown
+            setSelectedSubject={setSelectedMode}
+            selectedSubject={selectedMode}
+            ddTitle="Mode" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select Mode"} dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }} subject={classMode} categoryShow={"subject"} />
+          <CustomDropDown setSelectedSubject={setSelectedState}
+            selectedSubject={selectedState} ddTitle="State" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select State"} dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }} subject={State} categoryShow={"subject"} />
+          <CustomDropDown ddTitle="City"
+            setSelectedSubject={setSelectedCity}
+            selectedSubject={selectedCity}
+            headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select City"} dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }} subject={city} categoryShow={"subject"} />
         </View>
       </ScrollView>
       <View style={{ width: "100%", alignItems: "center" }} >
@@ -272,7 +312,9 @@ const Filter = ({ navigation }: any) => {
               backgroundColor: Theme.darkGray,
               padding: 10,
               borderRadius: 10,
-            }}>
+            }}
+            onPress={() => applyFilter()}
+          >
             <Text style={{ color: 'white', fontWeight: '700', fontSize: 15 }}>
               Apply
             </Text>
@@ -284,7 +326,9 @@ const Filter = ({ navigation }: any) => {
               backgroundColor: Theme.gray,
               padding: 10,
               borderRadius: 10,
-            }}>
+            }}
+            onPress={() => resetFilter()}
+          >
             <Text style={{ color: 'white', fontWeight: '700', fontSize: 15 }}>
               Reset
             </Text>

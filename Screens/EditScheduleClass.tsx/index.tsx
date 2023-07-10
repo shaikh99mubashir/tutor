@@ -1,14 +1,30 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native"
+import { View, Text, TouchableOpacity, ToastAndroid } from "react-native"
 import { Theme } from "../../constant/theme";
 
 import CustomHeader from "../../Component/Header";
 
 import AntDesign from "react-native-vector-icons/EvilIcons"
+import axios from "axios";
+import { Base_Uri } from "../../constant/BaseUri";
 
 function EditScheduleClass({ navigation, route }: any) {
 
     let data = route.params?.data
+    console.log(data,'dataaa')
+
+const editTutorScheduleClass = () => {
+
+
+    axios.get(`${Base_Uri}attendedClassStatus/${data?.class_schedule_id}/schedule`).then(({data})=>{
+
+        ToastAndroid.show(data?.SuccessMessage,ToastAndroid.SHORT)
+
+    }).catch((error)=>{
+        ToastAndroid.show('Internal Server Error',ToastAndroid.SHORT)
+    })
+
+}
 
     return (
         <View style={{ flex: 1, backgroundColor: Theme.white }} >
@@ -21,13 +37,13 @@ function EditScheduleClass({ navigation, route }: any) {
                     Student
                 </Text>
                 <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: "500", marginTop: 5 }} >
-                    {data?.name}
+                    {data?.studentName}
                 </Text>
                 <Text style={{ color: Theme.black, fontSize: 18, fontWeight: "600", marginTop: 20 }} >
                     Subject
                 </Text>
                 <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: "500", marginTop: 5 }} >
-                    {data?.Subject}
+                    {data?.subjectName}
                 </Text>
 
                 <Text style={{ color: Theme.black, fontSize: 18, fontWeight: "600", marginTop: 20 }} >
@@ -80,7 +96,7 @@ function EditScheduleClass({ navigation, route }: any) {
             </View>
 
             <View style={{ position: "absolute", width: "100%", bottom: 20, alignItems: "center" }} >
-                <TouchableOpacity style={{ backgroundColor: Theme.darkGray, padding: 15, borderRadius: 10, width: "95%" }} >
+                <TouchableOpacity onPress={()=>editTutorScheduleClass()} style={{ backgroundColor: Theme.darkGray, padding: 15, borderRadius: 10, width: "95%" }} >
                     <Text style={{ textAlign: "center", fontSize: 16, color: Theme.white }} >
                         Confirm Class
                     </Text>

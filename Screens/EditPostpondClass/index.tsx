@@ -1,14 +1,29 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView } from "react-native"
+import { View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView,ToastAndroid } from "react-native"
 import { Theme } from "../../constant/theme";
 import CustomHeader from "../../Component/Header";
 import AntDesign from "react-native-vector-icons/EvilIcons"
 import DateTimePicker from "@react-native-community/datetimepicker"
+import axios from "axios";
+import { Base_Uri } from "../../constant/BaseUri";
 
 function EditPostpondClass({ navigation, route }: any) {
 
     let data = route.params?.data
 
+    const editTutorPostPonedClass = () => {
+
+
+        axios.get(`${Base_Uri}attendedClassStatus/${data?.class_schedule_id}/postponed`).then(({data})=>{
+    
+            ToastAndroid.show(data?.SuccessMessage,ToastAndroid.SHORT)
+    
+        }).catch((error)=>{
+            ToastAndroid.show('Internal Server Error',ToastAndroid.SHORT)
+        })
+    
+    }
+    
 
 
     const [postponedReason, setPostponedReason] = useState<any>("")
@@ -164,7 +179,7 @@ function EditPostpondClass({ navigation, route }: any) {
                 </ScrollView>
             </View>
             <View style={{ width: "100%", alignItems: "center", marginBottom: 20 }} >
-                <TouchableOpacity style={{ backgroundColor: Theme.darkGray, padding: 15, borderRadius: 10, width: "95%" }} >
+                <TouchableOpacity onPress={()=>editTutorPostPonedClass()} style={{ backgroundColor: Theme.darkGray, padding: 15, borderRadius: 10, width: "95%" }} >
                     <Text style={{ textAlign: "center", fontSize: 16, color: Theme.white }} >
                         Confirm Class
                     </Text>

@@ -1,28 +1,38 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
+  ToastAndroid,
   TouchableOpacity,
   TextInput,
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
-import {Theme} from '../../constant/theme';
+import { Theme } from '../../constant/theme';
 import CustomHeader from '../../Component/Header';
 import DocumentPicker from 'react-native-document-picker';
 import AntDesign from 'react-native-vector-icons/EvilIcons';
+import axios from 'axios';
+import { Base_Uri } from '../../constant/BaseUri';
 
-function EditAttendedClass({navigation, route}: any) {
+function EditAttendedClass({ navigation, route }: any) {
   let data = route.params?.data;
 
   const [cancelledReason, setCancelledReason] = useState('');
   const [file, setFile] = useState<any>({});
 
   const changeStatus = () => {
-    console.log('heloooooo');
 
-    console.log(data, 'data');
+    axios.get(`${Base_Uri}attendedClassStatus/${data?.class_schedule_id}/attended`).then(({ data }) => {
+
+      ToastAndroid.show(data?.SuccessMessage, ToastAndroid.SHORT)
+
+    }).catch((error) => {
+      ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT)
+    })
+
   };
+
 
   const FilePicker = async () => {
     try {
@@ -43,15 +53,15 @@ function EditAttendedClass({navigation, route}: any) {
   return (
     <KeyboardAvoidingView
       behavior="height"
-      style={{flex: 1, backgroundColor: Theme.white}}>
+      style={{ flex: 1, backgroundColor: Theme.white }}>
       <View>
         <CustomHeader title="Edit Class" backBtn />
       </View>
       <ScrollView
         nestedScrollEnabled={true}
         showsVerticalScrollIndicator={false}>
-        <View style={{flex: 1, padding: 20}}>
-          <Text style={{color: Theme.black, fontSize: 18, fontWeight: '600'}}>
+        <View style={{ flex: 1, padding: 20 }}>
+          <Text style={{ color: Theme.black, fontSize: 18, fontWeight: '600' }}>
             Student
           </Text>
           <Text
@@ -61,7 +71,7 @@ function EditAttendedClass({navigation, route}: any) {
               fontWeight: '500',
               marginTop: 5,
             }}>
-            {data?.name}
+            {data?.studentName}
           </Text>
           <Text
             style={{
@@ -79,7 +89,7 @@ function EditAttendedClass({navigation, route}: any) {
               fontWeight: '500',
               marginTop: 5,
             }}>
-            {data?.Subject}
+            {data?.subjectName}
           </Text>
 
           <Text
@@ -105,12 +115,12 @@ function EditAttendedClass({navigation, route}: any) {
                 alignItems: 'center',
               }}>
               <Text
-                style={{color: Theme.gray, fontSize: 16, fontWeight: '500'}}>
+                style={{ color: Theme.gray, fontSize: 16, fontWeight: '500' }}>
                 Date
               </Text>
 
               <Text
-                style={{color: Theme.black, fontSize: 14, fontWeight: '500'}}>
+                style={{ color: Theme.black, fontSize: 14, fontWeight: '500' }}>
                 {(data?.date).toString()}
               </Text>
             </View>
@@ -122,12 +132,12 @@ function EditAttendedClass({navigation, route}: any) {
                 marginTop: 10,
               }}>
               <Text
-                style={{color: Theme.gray, fontSize: 16, fontWeight: '500'}}>
+                style={{ color: Theme.gray, fontSize: 16, fontWeight: '500' }}>
                 Start Time
               </Text>
 
               <Text
-                style={{color: Theme.black, fontSize: 14, fontWeight: '500'}}>
+                style={{ color: Theme.black, fontSize: 14, fontWeight: '500' }}>
                 {(data?.startTime).toString()}
               </Text>
             </View>
@@ -139,12 +149,12 @@ function EditAttendedClass({navigation, route}: any) {
                 marginTop: 10,
               }}>
               <Text
-                style={{color: Theme.gray, fontSize: 16, fontWeight: '500'}}>
+                style={{ color: Theme.gray, fontSize: 16, fontWeight: '500' }}>
                 End Time
               </Text>
 
               <Text
-                style={{color: Theme.black, fontSize: 14, fontWeight: '500'}}>
+                style={{ color: Theme.black, fontSize: 14, fontWeight: '500' }}>
                 {(data?.endTime).toString()}
               </Text>
             </View>
@@ -173,14 +183,14 @@ function EditAttendedClass({navigation, route}: any) {
                 alignItems: 'center',
               }}>
               <Text
-                style={{color: Theme.black, fontSize: 16, fontWeight: '500'}}>
+                style={{ color: Theme.black, fontSize: 16, fontWeight: '500' }}>
                 {route?.params?.schedule
                   ? 'Scheduled'
                   : route?.params?.postpond
-                  ? 'Postponed'
-                  : route?.params?.cancelled
-                  ? 'Cancelled'
-                  : 'Attended'}
+                    ? 'Postponed'
+                    : route?.params?.cancelled
+                      ? 'Cancelled'
+                      : 'Attended'}
               </Text>
 
               <AntDesign name="chevron-down" color={Theme.black} size={30} />
@@ -206,14 +216,14 @@ function EditAttendedClass({navigation, route}: any) {
                 borderRadius: 5,
                 marginTop: 5,
               }}>
-              <Text style={{fontSize: 14, color: Theme.gray}}>
+              <Text style={{ fontSize: 14, color: Theme.gray }}>
                 {file.name ?? 'Select File'}
               </Text>
             </TouchableOpacity>
           </View>
         </View>
       </ScrollView>
-      <View style={{width: '100%', alignItems: 'center', marginBottom: 20}}>
+      <View style={{ width: '100%', alignItems: 'center', marginBottom: 20 }}>
         <TouchableOpacity
           onPress={() => changeStatus()}
           style={{
@@ -222,7 +232,7 @@ function EditAttendedClass({navigation, route}: any) {
             borderRadius: 10,
             width: '95%',
           }}>
-          <Text style={{textAlign: 'center', fontSize: 16, color: Theme.white}}>
+          <Text style={{ textAlign: 'center', fontSize: 16, color: Theme.white }}>
             Confirm Class
           </Text>
         </TouchableOpacity>

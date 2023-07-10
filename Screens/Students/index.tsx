@@ -8,14 +8,14 @@ import {
   FlatList,
   TextInput,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {Theme} from '../../constant/theme';
+import React, { useState, useEffect } from 'react';
+import { Theme } from '../../constant/theme';
 import Header from '../../Component/Header';
 import axios from 'axios';
-import {Base_Uri} from '../../constant/BaseUri';
+import { Base_Uri } from '../../constant/BaseUri';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Students = ({navigation}: any) => {
+const Students = ({ navigation }: any) => {
   const [students, setstudents] = useState([]);
 
   const [foundName, setFoundName] = useState([]);
@@ -25,15 +25,13 @@ const Students = ({navigation}: any) => {
     let data: any = await AsyncStorage.getItem('loginAuth');
     data = JSON.parse(data);
 
-    let {tutorID} = data;
+    let { tutorID } = data;
 
     axios
-      .get(`${Base_Uri}getTutorStudents/${16}`)
-      .then(({data}) => {
-        let {tutorStudents} = data;
+      .get(`${Base_Uri}getTutorStudents/${tutorID}`)
+      .then(({ data }) => {
+        let { tutorStudents } = data;
 
-        
-        
         setstudents(tutorStudents);
       })
       .catch(error => {
@@ -54,15 +52,15 @@ const Students = ({navigation}: any) => {
     setFoundName(filteredItems);
   };
 
-  
+
 
   return (
-    <View style={{backgroundColor: Theme.white, height: '100%'}}>
+    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="Student" backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{paddingHorizontal: 15}}>
+        <View style={{ paddingHorizontal: 15 }}>
           {/* Search */}
-          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <View
               style={{
                 width: '100%',
@@ -79,12 +77,12 @@ const Students = ({navigation}: any) => {
                 placeholder="Search"
                 placeholderTextColor="black"
                 onChangeText={e => searchStudent(e)}
-                style={{width: '90%', padding: 8, color: 'black'}}
+                style={{ width: '90%', padding: 8, color: 'black' }}
               />
               <TouchableOpacity onPress={() => navigation}>
                 <Image
                   source={require('../../Assets/Images/search.png')}
-                  style={{width: 20, height: 20}}
+                  style={{ width: 20, height: 20 }}
                 />
               </TouchableOpacity>
             </View>
@@ -94,7 +92,7 @@ const Students = ({navigation}: any) => {
             <FlatList
               data={searchText && foundName.length > 0 ? foundName : students}
               nestedScrollEnabled
-              renderItem={({item, index}: any) => {
+              renderItem={({ item, index }: any) => {
                 return (
                   <TouchableOpacity
                     onPress={() => navigation.navigate('StudentsDetails', item)}
@@ -126,10 +124,10 @@ const Students = ({navigation}: any) => {
                         }}
                       />
                       <View>
-                        <Text style={{color: Theme.gray, fontSize: 16}}>
+                        <Text style={{ color: Theme.gray, fontSize: 16 }}>
                           {item.studentID}
                         </Text>
-                        <Text style={{color: Theme.black, fontSize: 14}}>
+                        <Text style={{ color: Theme.black, fontSize: 14 }}>
                           {item.studentName}
                         </Text>
                       </View>
@@ -139,9 +137,9 @@ const Students = ({navigation}: any) => {
               }}
             />
           ) : (
-            <View style={{marginTop: 35}}>
+            <View style={{ marginTop: 35 }}>
               <Text
-                style={{color: Theme.black, fontSize: 14, textAlign: 'center'}}>
+                style={{ color: Theme.black, fontSize: 14, textAlign: 'center' }}>
                 No Student Found...
               </Text>
             </View>

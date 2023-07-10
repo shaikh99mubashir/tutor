@@ -62,8 +62,8 @@ function AddClass({ navigation }: any) {
   const [show, setShow] = useState(false);
   const [indexClicked, setIndexClicked] = useState<null | Number>(null);
   const [value, setValue] = useState(new Date());
-  const [selectedStudent, setSelectedStudent] = useState("")
-  const [selectedSubject, setSelectedSubject] = useState("")
+  const [selectedStudent, setSelectedStudent] = useState<any>("")
+  const [selectedSubject, setSelectedSubject] = useState<any>("")
 
 
 
@@ -119,7 +119,7 @@ function AddClass({ navigation }: any) {
     setTutorId(tutorID)
 
     axios
-      .get(`${Base_Uri}getTutorStudents/${16}`)
+      .get(`${Base_Uri}getTutorStudents/${tutorID}`)
       .then(({ data }) => {
         let { tutorStudents } = data;
 
@@ -134,7 +134,6 @@ function AddClass({ navigation }: any) {
               };
             }
           });
-
         setStudent(myStudents);
       })
       .catch(error => {
@@ -323,11 +322,12 @@ function AddClass({ navigation }: any) {
   };
 
 
+
   const addClass = () => {
     let newClass = {
       tutorID: tutorId,
-      studentId: selectedStudent?.studentID,
-      subjectId: selectedSubject?.id,
+      studentID: selectedStudent?.studentID,
+      subjectID: selectedSubject?.id,
       startTime: '-',
       endTime: '-',
       date: new Date(),
@@ -337,40 +337,49 @@ function AddClass({ navigation }: any) {
   };
 
 
+
+
+
   const confirmClass = () => {
 
 
-    let classesToAdd = [...classes]
+    let classesToAdd: any = [...classes]
 
-    console.log(classesToAdd, "adding")
+    console.log(classesToAdd, 'calssesToAddd')
 
-    classesToAdd = classesToAdd && classesToAdd.length > 0 && classesToAdd.map((e, i) => {
+    classesToAdd = classesToAdd && classesToAdd.length > 0 && classesToAdd.map((e: any, i: number) => {
+
+      const year = e.date.getFullYear();
+      const month = (e.date.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 since month is zero-based
+      const day = e.date.getDate().toString().padStart(2, '0');
+
       return {
-        ...e,
+        tutorID: tutorId,
         studentID: selectedStudent?.studentID,
         subjectID: selectedSubject?.id,
-        tutorID: tutorId
+        startTime: e.startTime.toLocaleString().length > 21 ? e.startTime.toLocaleString().slice(11, 19) : e.startTime.toLocaleString().slice(11, 18),
+        endTime: e.endTime.toLocaleString().length > 21 ? e.endTime.toLocaleString().slice(11, 19) : e.endTime.toLocaleString().slice(11, 18),
+        date: year + '/' + month + '/' + day
       }
     })
 
-    let item = {}
-    item.classes = classesToAdd
+    console.log(classesToAdd, 'toadd')
 
-    console.log(item,"itemsss")
+    let classesss = {
+      classes: classesToAdd
+    }
 
-    axios.post(`${Base_Uri}api/addMultipleClasses`, item).then((res) => {
+    console.log(classesss, 'classssseeeesss')
+
+
+
+    axios.post(`${Base_Uri}api/addMultipleClasses`, classesss).then((res) => {
       navigation.navigate('BackToDashboard');
+      ToastAndroid.show(res?.data?.message, ToastAndroid.SHORT)
     }).catch((error) => {
-
-      console.log(error,"error")
-
+      console.log(error, "error")
       ToastAndroid.show("Internal Server Error", ToastAndroid.SHORT)
-
     })
-
-
-
-
   };
   return (
     <View style={{ flex: 1, backgroundColor: Theme.white }}>
@@ -449,7 +458,7 @@ function AddClass({ navigation }: any) {
               testID="dateTimePicker"
               value={value}
               mode={mode}
-              is24Hour={false}
+              is24Hour={true}
               onChange={onChange}
             />
           )}
