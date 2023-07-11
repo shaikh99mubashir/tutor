@@ -5,11 +5,17 @@ import { Theme } from "../../constant/theme"
 import Header from "../../Component/Header"
 import { launchCamera } from "react-native-image-picker"
 import Geolocation from "@react-native-community/geolocation"
+import axios from "axios"
+import { Base_Uri } from "../../constant/BaseUri"
 
-function ClockIn({ navigation, route }: any) {
+function ClockOut({ navigation, route }: any) {
 
-    let startTime = route.params.startTime
-    let endTime = route.params.endTime
+    let startTime = route?.params?.startTime
+    let endTime = route?.params?.endTime
+
+    const item = route?.params
+
+    const [loading,setLoading] = useState(false)
 
 
     console.log(startTime,"start")
@@ -44,9 +50,10 @@ function ClockIn({ navigation, route }: any) {
     const handleClockInPress = async () => {
 
 
-        navigation.navigate("Home")
+                navigation.navigate("Home")
 
-    }
+                
+                }
 
 
     return (
@@ -100,4 +107,4 @@ function ClockIn({ navigation, route }: any) {
     )
 }
 
-export default ClockIn
+export default ClockOut

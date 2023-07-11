@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,30 +11,30 @@ import {
   Modal,
   ActivityIndicator,
 } from 'react-native';
-import {Theme} from '../../constant/theme';
+import { Theme } from '../../constant/theme';
 import AntDesign from 'react-native-vector-icons/EvilIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import CustomHeader from '../../Component/Header';
-import {Base_Uri} from '../../constant/BaseUri';
+import { Base_Uri } from '../../constant/BaseUri';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {ToastAndroid} from 'react-native';
+import { ToastAndroid } from 'react-native';
 // import { ScrollView } from "react-native-gesture-handler"
 
-function Schedule({navigation}: any) {
-  type ISchedule = {
-    imageUrl: any;
-    name: String;
-    Subject: String;
-    date: any;
-    startTime: any;
-    endTime: any;
-    status: String;
-    selected?: Boolean;
-  }[];
+function Schedule({ navigation }: any) {
+  // type ISchedule = {
+  //   imageUrl: any;
+  //   name: String;
+  //   Subject: String;
+  //   date: any;
+  //   startTime: any;
+  //   endTime: any;
+  //   status: String;
+  //   selected?: Boolean;
+  // }[];
   const [loading, setLoading] = useState(false);
-  const [scheduleData, setScheduleData] = useState<ISchedule>([
+  const [scheduleData, setScheduleData] = useState([
     {
       imageUrl: require('../../Assets/Images/student.png'),
       name: 'Testing',
@@ -71,26 +71,52 @@ function Schedule({navigation}: any) {
       token: string;
     }
 
-    const data: any = await AsyncStorage.getItem('loginAuth');
-    let loginData: LoginAuth = JSON.parse(data);
-    let {tutorID} = loginData;
+    const login: any = await AsyncStorage.getItem('loginAuth');
+    let loginData: LoginAuth = JSON.parse(login);
+    let { tutorID } = loginData;
     axios
-      .get(`${Base_Uri}getClassSchedulesForTutors/${16}`)
-      .then(({data}) => {
-        let {classSchedules} = data;
-        classSchedules =
-          classSchedules &&
-          classSchedules.length > 0 &&
-          classSchedules.map((e: any, i: number) => {
-            return {
-              ...e,
-              imageUrl: require('../../Assets/Images/student.png'),
-            };
-          });
+      .get(`${Base_Uri}getClassSchedulesTime/${16}`)
+      .then(({ data }) => {
 
-        setLoading(false);
+        console.log(data, "dataaaaa")
 
-        setScheduleData(classSchedules ? classSchedules : []);
+        let { classSchedulesTime } = data;
+
+        console.log(classSchedulesTime, "classScheduleTIe")
+
+        classSchedulesTime =
+          classSchedulesTime &&
+            classSchedulesTime.length > 0 ?
+            classSchedulesTime.map((e: any, i: number) => {
+              return {
+                ...e,
+                imageUrl: require('../../Assets/Images/student.png'),
+              };
+            }) : []
+
+        axios.get(`${Base_Uri}getClassAttendedTime/${tutorID}`).then(({ data }) => {
+
+          let { classAttendedTime } = data
+
+          classAttendedTime =
+            classAttendedTime &&
+              classAttendedTime.length > 0 ?
+              classAttendedTime.map((e: any, i: number) => {
+                return {
+                  ...e,
+                  imageUrl: require('../../Assets/Images/student.png'),
+                };
+              }) : [];
+
+          setLoading(false);
+
+          let dataToSend = [...classSchedulesTime, ...classAttendedTime]
+          setScheduleData(dataToSend);
+
+
+        })
+
+
       })
       .catch(error => {
         setLoading(false);
@@ -98,9 +124,12 @@ function Schedule({navigation}: any) {
       });
   };
 
-  // useEffect(() => {
-  //   getScheduledData();
-  // }, []);
+
+
+
+  useEffect(() => {
+    getScheduledData();
+  }, []);
 
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
@@ -125,7 +154,7 @@ function Schedule({navigation}: any) {
   };
 
   const handleSelectPress = (index: Number) => {
-    let data = scheduleData.map((e, i) => {
+    let data = scheduleData.map((e: any, i: Number) => {
       if (i == index) {
         return {
           ...e,
@@ -205,7 +234,7 @@ function Schedule({navigation}: any) {
               </Text>
               <TouchableOpacity
                 onPress={() => navigateToEditScreen('schedule')}
-                style={{width: '100%'}}>
+                style={{ width: '100%' }}>
                 <Text
                   style={[
                     styles.text,
@@ -222,7 +251,7 @@ function Schedule({navigation}: any) {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => navigateToEditScreen('postponed')}
-                style={{width: '100%'}}>
+                style={{ width: '100%' }}>
                 <Text
                   style={[
                     styles.text,
@@ -239,7 +268,7 @@ function Schedule({navigation}: any) {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => navigateToEditScreen('cancelled')}
-                style={{width: '100%'}}>
+                style={{ width: '100%' }}>
                 <Text
                   style={[
                     styles.text,
@@ -256,11 +285,11 @@ function Schedule({navigation}: any) {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => navigateToEditScreen('attended')}
-                style={{width: '100%'}}>
+                style={{ width: '100%' }}>
                 <Text
                   style={[
                     styles.text,
-                    {color: Theme.black, paddingTop: 20, width: '100%'},
+                    { color: Theme.black, paddingTop: 20, width: '100%' },
                   ]}>
                   Attended
                 </Text>
@@ -279,7 +308,7 @@ function Schedule({navigation}: any) {
 
   console.log(selectedData);
 
-  const renderScheduleData = ({item, index}: any): any => {
+  const renderScheduleData = ({ item, index }: any): any => {
     return (
       <TouchableOpacity
         onPress={() => handleSelectPress(index)}
@@ -291,7 +320,7 @@ function Schedule({navigation}: any) {
           marginTop: 20,
           borderRadius: 10,
         }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View
             style={{
               borderWidth: 1,
@@ -303,14 +332,14 @@ function Schedule({navigation}: any) {
               justifyContent: 'center',
               backgroundColor: Theme.darkGray,
             }}>
-            <Image source={item.imageUrl} style={{width: 55, height: 55}} />
+            <Image source={item.imageUrl} style={{ width: 55, height: 55 }} />
           </View>
-          <Text style={{fontSize: 14, color: Theme.gray, marginLeft: 10}}>
-            {item.tutorName}
+          <Text style={{ fontSize: 14, color: Theme.gray, marginLeft: 10 }}>
+            {item?.studentName}
           </Text>
         </View>
 
-        <View style={{marginTop: 10, flexDirection: 'row'}}>
+        <View style={{ marginTop: 10, flexDirection: 'row' }}>
           <Text
             style={{
               fontSize: 16,
@@ -322,16 +351,15 @@ function Schedule({navigation}: any) {
           </Text>
         </View>
 
-        <Text style={{color: Theme.gray, marginTop: 10}}>{item.date}</Text>
-        <Text style={{color: Theme.gray}}>
+        <Text style={{ color: Theme.gray, marginTop: 10 }}>{item.date}</Text>
+        <Text style={{ color: Theme.gray }}>
           {item.startTime} to {item.endTime}
         </Text>
-        <View style={{flexDirection:'row', alignItems:"center", justifyContent:'space-between'}}>
-        <Text style={{color: Theme.gray, marginTop: 10}}>{item.status}</Text>
-        {item.status == 'Attended' ? <TouchableOpacity activeOpacity={0.8} onPress={()=> navigation.navigate('AttendedDetails')}><Text style={{color: Theme.gray, marginTop: 10}}>View Details</Text></TouchableOpacity>:''}
+        <View style={{ flexDirection: 'row', alignItems: "center", justifyContent: 'space-between' }}>
+          <Text style={{ color: Theme.gray, marginTop: 10 }}>{item.status}</Text>
+          {item.status == 'Attended' ? <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('AttendedDetails')}><Text style={{ color: Theme.gray, marginTop: 10 }}>View Details</Text></TouchableOpacity> : ''}
         </View>
-        
-        {item.selected && (
+        {item.selected && item.status == "schedule" && (
           <View
             style={{
               flexDirection: 'row',
@@ -348,7 +376,7 @@ function Schedule({navigation}: any) {
                 padding: 10,
                 borderRadius: 10,
               }}>
-              <Text style={{textAlign: 'center', fontSize: 16}}>Edit</Text>
+              <Text style={{ textAlign: 'center', fontSize: 16 }}>Edit</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => navigation.navigate('ClockIn', item)}
@@ -358,7 +386,29 @@ function Schedule({navigation}: any) {
                 padding: 10,
                 borderRadius: 10,
               }}>
-              <Text style={{textAlign: 'center', fontSize: 16}}>Attend</Text>
+              <Text style={{ textAlign: 'center', fontSize: 16 }}>Attend</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        {item.selected && item.status == "attended" && (
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'center',
+              width: '100%',
+              alignItems: 'center',
+              marginTop: 10,
+            }}>
+            
+            <TouchableOpacity
+              onPress={() => navigation.navigate('AttendedDetails', item)}
+              style={{
+                backgroundColor: Theme.darkGray,
+                width: '48%',
+                padding: 10,
+                borderRadius: 10,
+              }}>
+              <Text style={{ textAlign: 'center', fontSize: 16 }}>View</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -367,14 +417,14 @@ function Schedule({navigation}: any) {
   };
 
   return loading ? (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator size={'large'} color={Theme.black} />
     </View>
   ) : (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <CustomHeader title="Schedule" plus navigation={navigation} />
       <ScrollView nestedScrollEnabled={true}>
-        <View style={{padding: 20}}>
+        <View style={{ padding: 20 }}>
           <TouchableOpacity
             onPress={() => setShow(true)}
             style={{
@@ -382,7 +432,7 @@ function Schedule({navigation}: any) {
               justifyContent: 'flex-start',
               alignItems: 'center',
             }}>
-            <Text style={{fontSize: 18, color: Theme.black, fontWeight: '700'}}>
+            <Text style={{ fontSize: 18, color: Theme.black, fontWeight: '700' }}>
               {selectedDate.toString().slice(4, 15)}
             </Text>
             <AntDesign name="chevron-down" color={Theme.black} size={30} />
@@ -405,7 +455,7 @@ function Schedule({navigation}: any) {
                 alignItems: 'center',
               }}>
               <Text
-                style={{fontSize: 16, fontWeight: 'bold', color: Theme.black}}>
+                style={{ fontSize: 16, fontWeight: 'bold', color: Theme.black }}>
                 No Schedule Data...
               </Text>
             </View>
