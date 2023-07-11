@@ -8,7 +8,7 @@ import {
   } from 'react-native';
   import React from 'react';
 import { Theme } from '../../constant/theme';
-
+import Icon from 'react-native-vector-icons/AntDesign';
   export type Props = {
     navigation: any;
   };
@@ -109,17 +109,18 @@ import { Theme } from '../../constant/theme';
           <TouchableOpacity
             style={{
               // flex: 1,
-              width:40,
-              height:40,
+              width:24,
+              height:24,
               justifyContent: 'center',
               alignItems: 'center',
               borderRadius:100,
-              backgroundColor:Theme.darkGray
+              backgroundColor:Theme.darkGray,
+              padding:5
             }}
             activeOpacity={0.8}
             onPress={() => navigation.navigate('AddClass')}>
-            <Image source={require('../../Assets/Images/plus2.png')} style={{width:20, height:20}} resizeMode='contain'/>
-               
+            {/* <Image source={require('../../Assets/Images/plus2.png')} style={{width:20, height:20}} resizeMode='contain'/> */}
+            <Icon name={"plus"} size={14} color={Theme.white} />
           </TouchableOpacity>
         </View> :  (
             <View style={{flex: 1}}>

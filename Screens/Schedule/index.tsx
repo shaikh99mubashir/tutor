@@ -98,9 +98,9 @@ function Schedule({navigation}: any) {
       });
   };
 
-  useEffect(() => {
-    getScheduledData();
-  }, []);
+  // useEffect(() => {
+  //   getScheduledData();
+  // }, []);
 
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
@@ -326,8 +326,11 @@ function Schedule({navigation}: any) {
         <Text style={{color: Theme.gray}}>
           {item.startTime} to {item.endTime}
         </Text>
+        <View style={{flexDirection:'row', alignItems:"center", justifyContent:'space-between'}}>
         <Text style={{color: Theme.gray, marginTop: 10}}>{item.status}</Text>
-
+        {item.status == 'Attended' ? <TouchableOpacity activeOpacity={0.8} onPress={()=> navigation.navigate('AttendedDetails')}><Text style={{color: Theme.gray, marginTop: 10}}>View Details</Text></TouchableOpacity>:''}
+        </View>
+        
         {item.selected && (
           <View
             style={{
@@ -402,7 +405,7 @@ function Schedule({navigation}: any) {
                 alignItems: 'center',
               }}>
               <Text
-                style={{fontSize: 32, fontWeight: 'bold', color: Theme.black}}>
+                style={{fontSize: 16, fontWeight: 'bold', color: Theme.black}}>
                 No Schedule Data...
               </Text>
             </View>
