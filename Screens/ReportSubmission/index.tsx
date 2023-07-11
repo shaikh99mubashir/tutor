@@ -17,6 +17,20 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import DropDownModalView from '../../Component/DropDownModalView';
 
 const ReportSubmission = ({navigation}: any) => {
+  const currentDate = new Date();
+  const options: any = {day: 'numeric', month: 'long', year: 'numeric'};
+  const formattedDate = currentDate.toLocaleDateString('en-US', options);
+
+  const [questions, setQuestions] = useState({
+    reportType: '',
+    date: currentDate.toISOString().slice(0, 10),
+    student: '',
+    knowledge: '',
+    understanding: '',
+    analysis: '',
+    addationalAssessments: '',
+    plan: '',
+  });
   const EvalutionOption = [
     {
       option: 'Hello World',
@@ -25,6 +39,43 @@ const ReportSubmission = ({navigation}: any) => {
       option: 'Hello World2',
     },
   ];
+  const Analysis = [
+    {
+      option: 'Poor - Able to solve different types of problems with guidance.',
+    },
+    {
+      option:
+        'Average - Able to solve different types of problems with some hint.',
+    },
+    {
+      option: 'Good - Able to solve problems with different ways.',
+    },
+  ];
+  const understanding = [
+    {
+      option: 'Poor - Able to explain/demonstrate facts with difficulty.',
+    },
+    {
+      option: 'Average - Able to explain/demonstrate facts with some error.',
+    },
+    {
+      option:
+        'Good - Able to explain/demonstrate facts concisely with little error',
+    },
+  ];
+  const knowledge = [
+    {
+      option:
+        'Poor - Able to recall basic facts after giving hints about the subject matter.',
+    },
+    {
+      option: 'Average - Able to recall some basic facts independently.',
+    },
+    {
+      option: 'Good - Able to recall basic facts with ease and little error.',
+    },
+  ];
+
   return (
     <View style={{backgroundColor: Theme.white, height: '100%'}}>
       <Header title="Report Submission" backBtn navigation={navigation} />
@@ -63,7 +114,7 @@ const ReportSubmission = ({navigation}: any) => {
                   fontFamily: 'Poppins-SemiBold',
                   fontSize: 16,
                 }}>
-                7 June 2023
+                {formattedDate}
               </Text>
             </View>
           </View>
@@ -86,7 +137,7 @@ const ReportSubmission = ({navigation}: any) => {
             title="1. Knowledge"
             subTitle="What can you tell us about the student's knowledge of this Subject"
             placeHolder="Select Answer"
-            option={EvalutionOption}
+            option={knowledge}
             modalHeading="Knowledge"
           />
           {/* Understanding */}
@@ -94,7 +145,7 @@ const ReportSubmission = ({navigation}: any) => {
             title="2. Understanding"
             subTitle="What can you tell us about the student's Understanding of this Subject"
             placeHolder="Select Answer"
-            option={EvalutionOption}
+            option={understanding}
             modalHeading="Understanding"
           />
           {/* Analysis */}
@@ -102,7 +153,7 @@ const ReportSubmission = ({navigation}: any) => {
             title="3. Analysis"
             subTitle="What can you tell us about the student's ablity to apply analyse fact and theory of this Subject"
             placeHolder="Select Answer"
-            option={EvalutionOption}
+            option={Analysis}
             modalHeading="Analysis"
           />
 
@@ -137,6 +188,7 @@ const ReportSubmission = ({navigation}: any) => {
               placeholder="Message"
               multiline={true}
               maxLength={300}
+              onChangeText={(e)=> setQuestions({...questions, addationalAssessments:e})}
               style={[
                 styles.textArea,
                 {
@@ -153,7 +205,7 @@ const ReportSubmission = ({navigation}: any) => {
               color: Theme.gray,
               fontFamily: 'Poppins-SemiBold',
               fontSize: 16,
-              marginTop:8
+              marginTop: 8,
             }}>
             Elaborate your Plan to Help Student?
           </Text>
@@ -171,6 +223,7 @@ const ReportSubmission = ({navigation}: any) => {
               placeholder="Plan"
               multiline={true}
               maxLength={300}
+              onChangeText={(e)=> setQuestions({...questions, plan:e})}
               style={[
                 styles.textArea,
                 {

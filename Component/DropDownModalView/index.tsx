@@ -147,6 +147,9 @@ const DropDownModalView = ({
                         fontSize: 14,
                         fontWeight: 'bold',
                         color: 'black',
+                        borderBottomWidth:1,
+                        paddingBottom:8,
+                        borderBottomColor:'#eee'
                       }}>
                       {e.option}
                     </Text>
