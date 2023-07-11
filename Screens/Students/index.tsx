@@ -44,7 +44,7 @@ const Students = ({ navigation }: any) => {
   }, []);
 
   const searchStudent = (e: any) => {
-    console.log(e, 'eee');
+  
     setSearchText(e);
     let filteredItems: any = students.filter(x =>
       x.studentID.toLowerCase().includes(e.toLowerCase()),
