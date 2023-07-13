@@ -64,10 +64,10 @@ function ClockIn({ navigation, route }: any) {
 
                     let { assets } = res
                     let startTimeProofImage = assets[0].fileName
-                    let startMinutes = new Date().getMinutes()
-                    let startSeconds = new Date().getSeconds()
+                    let startMinutes = new Date().getHours()
+                    let startSeconds = new Date().getMinutes()
 
-                    let data = {
+                    let data : any = {
                         id: item.id,
                         class_schedule_id: item?.class_schedule_id,
                         startMinutes: startMinutes,
@@ -95,10 +95,8 @@ function ClockIn({ navigation, route }: any) {
                         },
                     }).then((res) => {
                         setLoading(false)
-                        console.log('Response:', res.data);
-                        let startTime = new Date()
+                        data.data = res.data
                         navigation.navigate("ClassTimerCount", data)
-
                     }).catch((error) => {
                         setLoading(false)
                         console.log(error, "error")
