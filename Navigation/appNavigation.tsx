@@ -102,6 +102,7 @@ function BottomNavigation() {
         name="Job Ticket"
         component={JobTicket}
         options={{
+          unmountOnBlur:true,
           tabBarIcon: ({ focused, color }) => (
             <View>
               {focused == true ? (

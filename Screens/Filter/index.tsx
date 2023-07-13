@@ -247,7 +247,7 @@ const Filter = ({ navigation }: any) => {
   const applyFilter = async () => {
 
     let jobFilter = {
-      Cateory: selectedCategory,
+      Category: selectedCategory,
       subject: selectedSubject,
       mode: selectedMode,
       state: selectedState,

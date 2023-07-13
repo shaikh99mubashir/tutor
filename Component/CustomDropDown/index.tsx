@@ -16,15 +16,14 @@ const CustomDropDown = (props: any) => {
   let { ddTitle, categoryData, subject, headingStyle, categoryShow, dropdownPlace, dropdownContainerStyle, setSelectedSubject,selectedSubject } = props
 
 
-console.log(selectedSubject,"suvjext")
+
 
   const [selectedServicedata, setSelectedServicedata]: any = useState({});
   const [serviceDD, setServiceDD] = useState(false);
   const SelectedServices = (item: any) => {
 
-    console.log(item, "item")
-
     setSelectedSubject(item);
+    
     setServiceDD(!serviceDD);
   };
 
