@@ -46,6 +46,7 @@ function Home({navigation}: any) {
   ]);
   const [notificationLenght,setNotificationLength] = useState(0)
   const [tutorId, setTutorId] = useState<Number | null>(null);
+  const [classInProcess,setClassInProcess] = useState({})
 
   const [tutorData, setTutorData] = useState({
     cummulativeCommission: '',
@@ -99,9 +100,19 @@ const getNotificationLength = async () => {
     
 }
 
+const getClassInProcess = async () => {
+
+  let data : any = await AsyncStorage.getItem("classInProcess")
+  data = JSON.parse(data)
+
+  setClassInProcess(data)
+
+
+}
+
   useEffect(() => {
     getTutorId();
-
+    getClassInProcess()
   }, []);
 
 
@@ -242,6 +253,35 @@ useEffect(()=>{
             CUMMULATIVE COMMISSION
           </Text>
         </View>
+        {classInProcess && Object.keys(classInProcess).length>0 ? <TouchableOpacity
+          onPress={() => navigation.navigate('ClassTimerCount',classInProcess)}
+          style={[
+            styles.firstBox,
+            {
+              backgroundColor: Theme.lightGray,
+              justifyContent: 'space-between',
+              paddingHorizontal: 15,
+              flexDirection: 'row',
+              marginTop: 10,
+            },
+          ]}>
+          <Text style={[styles.text, {color: Theme.black, fontSize: 14}]}>
+            You have ongoing class
+          </Text>
+          <View
+            style={{
+              borderRadius: 100,
+              backgroundColor: "white",
+              width: 25,
+              height: 25,
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <Text style={[styles.text, {fontSize: 12, color: Theme.white}]}>
+                <ActivityIndicator color={"blue"} size="small" />
+            </Text>
+          </View>
+        </TouchableOpacity> :
         <TouchableOpacity
           onPress={() => navigation.navigate('Notifications')}
           style={[
@@ -270,7 +310,7 @@ useEffect(()=>{
               {notificationLenght}
             </Text>
           </View>
-        </TouchableOpacity>
+        </TouchableOpacity>}
 
         <View style={{marginTop: 20}}>
           <Text style={[styles.heading, {fontSize: 16}]}>Monthly Summary</Text>

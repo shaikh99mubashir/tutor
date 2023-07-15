@@ -7,6 +7,7 @@ import { launchCamera } from "react-native-image-picker"
 import Geolocation from "@react-native-community/geolocation"
 import axios from "axios"
 import { Base_Uri } from "../../constant/BaseUri"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 function ClockIn({ navigation, route }: any) {
 
@@ -96,7 +97,11 @@ function ClockIn({ navigation, route }: any) {
                     }).then((res) => {
                         setLoading(false)
                         data.data = res.data
-                        navigation.navigate("ClassTimerCount", data)
+
+                        let storageData : any = {...data}
+                        storageData = JSON.stringify(storageData)
+                        AsyncStorage.setItem("classInProcess",storageData)
+                        navigation.replace("ClassTimerCount", data)
                     }).catch((error) => {
                         setLoading(false)
                         console.log(error, "error")

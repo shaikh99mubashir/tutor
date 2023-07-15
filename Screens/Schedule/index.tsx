@@ -306,6 +306,19 @@ function Schedule({ navigation }: any) {
     setSelectedData(item);
   };
 
+  const routeToClockIn = async (item:any) => {
+
+
+    let data: any = await AsyncStorage.getItem("classInProcess")
+    data = JSON.parse(data)
+
+    if (Object.keys(data).length > 0) {
+      ToastAndroid.show("Cannot attend another class your class is already in process", ToastAndroid.SHORT)
+    } else {
+      navigation.navigate('ClockIn', item)
+    }
+  }
+
   console.log(selectedData);
 
   const renderScheduleData = ({ item, index }: any): any => {
@@ -379,7 +392,7 @@ function Schedule({ navigation }: any) {
               <Text style={{ textAlign: 'center', fontSize: 16 }}>Edit</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate('ClockIn', item)}
+              onPress={() => routeToClockIn(item)}
               style={{
                 backgroundColor: Theme.darkGray,
                 width: '48%',
@@ -399,7 +412,7 @@ function Schedule({ navigation }: any) {
               alignItems: 'center',
               marginTop: 10,
             }}>
-            
+
             <TouchableOpacity
               onPress={() => navigation.navigate('AttendedDetails', item)}
               style={{

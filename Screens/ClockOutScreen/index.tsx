@@ -156,7 +156,7 @@ function ClockOut({ navigation, route }: any) {
 
                     <View style={{ marginTop: 10, flexDirection: "row" }} >
                         <Text style={{ color: Theme.gray, textTransform: "uppercase" }} >Time:</Text>
-                        <Text style={{ color: Theme.black, fontWeight: "600", textTransform: "uppercase" }} > {data.startHour.toString().length == 1 ? `0${data.startHour}` : data.startHour}:{data.startMinutes.toString().length == 0 ? `0${data?.startMinutes}` : data.startMinutes}:00  -  {data.endHour.toString().length == 1 ? `0${data.endHour}` : data.endHour}:{data.endMinutes.toString().length == 1 ? `0${data.endMinutes}` : data.endMinutes}:00</Text>
+                        <Text style={{ color: Theme.black, fontWeight: "600", textTransform: "uppercase" }} > {data.startHour.toString().length == 1 ? `0${data.startHour}` : data.startHour}:{data.startMinutes.toString().length == 1 ? `0${data?.startMinutes}` : data.startMinutes}:00  -  {data.endHour.toString().length == 1 ? `0${data.endHour}` : data.endHour}:{data.endMinutes.toString().length == 1 ? `0${data.endMinutes}` : data.endMinutes}:00</Text>
 
                     </View>
 
