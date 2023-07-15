@@ -13,7 +13,6 @@ function ClockIn({ navigation, route }: any) {
 
     let item = route.params
 
-    console.log(item,"items")
 
     const [loading, setLoading] = useState(false)
 
@@ -99,7 +98,6 @@ function ClockIn({ navigation, route }: any) {
                     }).then((res) => {
                         setLoading(false)
                         data.data = res.data
-                        console.log(data,"data")
 
                         let storageData : any = {...data}
                         storageData = JSON.stringify(storageData)

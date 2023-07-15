@@ -39,7 +39,7 @@ function EditAttendedClass({ navigation, route }: any) {
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
-      console.log('Se     lected file:', res);
+      
       setFile(res[0]);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {

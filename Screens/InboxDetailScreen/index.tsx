@@ -25,7 +25,6 @@ function InboxDetail({navigation, route}: any) {
   //     Linking.openURL(`https://${url}`);
   // };
 
-  console.log(data, 'data');
 
   const getDetailedNews = () => {
     setLoading(true);

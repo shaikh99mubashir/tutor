@@ -75,14 +75,11 @@ function Schedule({ navigation }: any) {
     let loginData: LoginAuth = JSON.parse(login);
     let { tutorID } = loginData;
     axios
-      .get(`${Base_Uri}getClassSchedulesTime/${16}`)
+      .get(`${Base_Uri}getClassSchedulesTime/${tutorID}`)
       .then(({ data }) => {
 
-        console.log(data, "dataaaaa")
 
         let { classSchedulesTime } = data;
-
-        console.log(classSchedulesTime, "classScheduleTIe")
 
         classSchedulesTime =
           classSchedulesTime &&
@@ -318,8 +315,6 @@ function Schedule({ navigation }: any) {
       navigation.navigate('ClockIn', item)
     }
   }
-
-  console.log(selectedData);
 
   const renderScheduleData = ({ item, index }: any): any => {
     return (

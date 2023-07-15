@@ -40,7 +40,6 @@ function ClockOut({ navigation, route }: any) {
 
     }, [])
 
-    console.log(data, "data")
 
     const handleClockOutPress = async () => {
 
@@ -64,7 +63,6 @@ function ClockOut({ navigation, route }: any) {
             },
         }).then((res) => {
             setLoading(false)
-            console.log(res.data, "dataaaa")
             ToastAndroid.show("Class Clockout Successfull", ToastAndroid.SHORT)
             navigation.navigate("Home")
         }).catch((error) => {
@@ -100,14 +98,10 @@ function ClockOut({ navigation, route }: any) {
         let totalEndMinutes = Number(data.endHour * 60) + Number(data.endMinutes)
         let totalStartMinutes = Number(data.startHour * 60) + Number(data.startMinutes)
 
-        console.log(totalEndMinutes, "endMinutes")
-        console.log(totalStartMinutes, "startints")
 
         let total = totalEndMinutes - totalStartMinutes
 
         let myHours = Number(total / 60).toFixed(2)
-
-        console.log(myHours, "hours")
 
         let minutes: any = myHours.toString().split(".")[1]
 
@@ -117,10 +111,6 @@ function ClockOut({ navigation, route }: any) {
 
 
     }
-
-    console.log(totalHours)
-    console.log(totalMinutes)
-
 
     return (
         loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >

@@ -16,12 +16,12 @@ import DropDownPicker from 'react-native-dropdown-picker';
 const DropDownModalView = ({
   navigation,
   title,
+  selectedValue,
   option,
   placeHolder,
   modalHeading,
   subTitle,
 }: any) => {
-  console.log('option', option);
 
   const [serviceDD, setServiceDD] = useState(false);
   const [reportType, setReportType] = useState(null);
@@ -33,15 +33,23 @@ const DropDownModalView = ({
   };
 
   const setReportTypeChange = (value: any) => {
-    setReportType(value);
+    selectedValue(value)
+    setReportType(value.option);
     setModalVisible(false);
     setServiceDD(!serviceDD);
   };
+
+const getModalValue = () => {
+
+
+
+}
 
 
   return (
     <>
       {/* Report Type */}
+        
       <View style={{marginTop: 8}}>
         <Text style={{fontSize: 14, fontWeight: 'bold', color: 'black'}}>
           {title && title}
@@ -104,7 +112,7 @@ const DropDownModalView = ({
         </TouchableOpacity>
       </View>
 
-      <Modal visible={modalVisible} animationType="slide" transparent={true}>
+      <Modal onRequestClose={()=>setModalVisible(false)} visible={modalVisible} animationType="slide" transparent={true}>
         <View
           style={{
             flex: 1,
@@ -123,7 +131,8 @@ const DropDownModalView = ({
               height: '40%',
               width: '100%',
             }}>
-            <TouchableOpacity onPress={() => setModalVisible(false)}>
+              <ScrollView>
+            <TouchableOpacity onPress={() => getModalValue()}>
               <Text style={{textAlign: 'right'}}>X</Text>
             </TouchableOpacity>
             <Text
@@ -140,7 +149,7 @@ const DropDownModalView = ({
                 return (
                   <TouchableOpacity
                     key={i}
-                    onPress={() => setReportTypeChange(e.option)}
+                    onPress={() => setReportTypeChange(e)}
                     style={{marginVertical: 5}}>
                     <Text
                       style={{
@@ -156,6 +165,7 @@ const DropDownModalView = ({
                   </TouchableOpacity>
                 );
               })}
+          </ScrollView>
           </View>
         </View>
       </Modal>

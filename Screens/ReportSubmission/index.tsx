@@ -10,16 +10,108 @@ import {
   TextInput,
   Dimensions,
 } from 'react-native';
-import React, {useState} from 'react';
-import {Theme} from '../../constant/theme';
+import React, { useState,useEffect } from 'react';
+import { Theme } from '../../constant/theme';
 import Header from '../../Component/Header';
-import DropDownPicker from 'react-native-dropdown-picker';
-import DropDownModalView from '../../Component/DropDownModalView';
 
-const ReportSubmission = ({navigation}: any) => {
+import DropDownModalView from '../../Component/DropDownModalView';
+import Status from '../Status';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { Base_Uri } from '../../constant/BaseUri';
+
+const ReportSubmission = ({ navigation }: any) => {
   const currentDate = new Date();
-  const options: any = {day: 'numeric', month: 'long', year: 'numeric'};
+  const options: any = { day: 'numeric', month: 'long', year: 'numeric' };
   const formattedDate = currentDate.toLocaleDateString('en-US', options);
+
+  const [evaluation, setEvaluationReport] = useState<any>("")
+  const [student, setStudent] = useState<any>("")
+  const [subject, setSubject] = useState<any>("")
+  const [knowledgeAnswer, setKnowledgeAnswer] = useState<any>("")
+  const [understandingAnswer, setUnderstandingAnswer] = useState<any>("")
+  const [analysisAnswer, setAnalysisAnswer] = useState<any>("")
+  const [tutorId,setTutorId] = useState({})
+  const [studentData,setStudentData] = useState("")
+  const [subjectData,setSubjectData] = useState("")
+  
+  const getTutorId = async () => {
+    interface LoginAuth {
+      status: Number;
+      tutorID: Number;
+      token: string;
+    }
+    const data: any = await AsyncStorage.getItem('loginAuth');
+    let loginData: LoginAuth = JSON.parse(data);
+    let { tutorID } = loginData;
+    setTutorId(tutorID);
+  };
+
+
+
+
+  const getSubject = () => {
+    axios
+      .get(`${Base_Uri}getSubjects`)
+      .then(({ data }) => {
+        let { subjects } = data;
+        let mySubject =
+          subjects &&
+          subjects.length > 0 &&
+          subjects.map((e: any, i: Number) => {
+            if (e.name) {
+              return {
+                option: e.name,
+                id: e.id,
+              };
+            }
+          });
+        setSubjectData(mySubject);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+
+
+  const getStudents = async () => {    
+    axios
+      .get(`${Base_Uri}getTutorStudents/${tutorId}`)
+      .then(({ data }) => {
+        let { tutorStudents } = data;
+        let myStudents =
+          tutorStudents &&
+          tutorStudents.length > 0 &&
+          tutorStudents.map((e: any, i: Number) => {
+            if (e.studentName) {
+              return {
+                ...e,
+                option: e.studentName
+              };
+            }
+          });
+        setStudentData(myStudents);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    if(tutorId){
+    getSubject();
+    getStudents();
+  }
+  }, [tutorId]);
+
+
+
+
+useEffect(()=>{
+  getTutorId()
+},[])
+
 
   const [questions, setQuestions] = useState({
     reportType: '',
@@ -74,23 +166,53 @@ const ReportSubmission = ({navigation}: any) => {
     {
       option: 'Good - Able to recall basic facts with ease and little error.',
     },
-  ];
+  ]
+
+  const submitReport = () => {
+
+    console.log(currentDate.toLocaleDateString(),"currentData")
+    
+
+    let data  = {
+      tutorID : tutorId,
+      studentID : student.studentID,
+      subjectID : subject.id,
+      currentDate : currentDate.toLocaleDateString(),
+      reportType : evaluation.option,
+      knowledge : knowledgeAnswer.option,
+      understanding : understandingAnswer.option,
+      analysis : analysisAnswer.option,
+      additionalAssisment : questions.addationalAssessments,
+      plan : questions.plan 
+    }
+
+    console.log(data,"dataa")
+
+    axios.post(`${Base_Uri}api/tutorFirstReport`,data).then((res)=>{
+      console.log(res,"resss")
+    }).catch((error)=>{
+      console.log(error,"errrors")
+    })
+
+  }
+
 
   return (
-    <View style={{backgroundColor: Theme.white, height: '100%'}}>
+    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="Report Submission" backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{paddingHorizontal: 15, marginBottom: 100}}>
+        <View style={{ paddingHorizontal: 15, marginBottom: 100 }}>
           {/* Report Type */}
           <DropDownModalView
             title="Report Type"
             placeHolder="Evaluation Report"
+            selectedValue={setEvaluationReport}
             option={EvalutionOption}
             modalHeading="Select Report Type"
           />
           {/* First Class Date */}
-          <View style={{marginTop: 8}}>
-            <Text style={{fontSize: 14, fontWeight: 'bold', color: 'black'}}>
+          <View style={{ marginTop: 8 }}>
+            <Text style={{ fontSize: 14, fontWeight: 'bold', color: 'black' }}>
               First Class Date
             </Text>
             <View
@@ -121,20 +243,23 @@ const ReportSubmission = ({navigation}: any) => {
           {/* Student */}
           <DropDownModalView
             title="Student"
+            selectedValue={setStudent}
             placeHolder="Mk Test Student"
-            option={EvalutionOption}
+            option={studentData}
             modalHeading="Student"
           />
           {/* Subject */}
           <DropDownModalView
             title="Subject"
             placeHolder="Select Subject"
-            option={EvalutionOption}
+            selectedValue={setSubject}
+            option={subjectData}
             modalHeading="Subject"
           />
           {/* Knowledge */}
           <DropDownModalView
             title="1. Knowledge"
+            selectedValue={setKnowledgeAnswer}
             subTitle="What can you tell us about the student's knowledge of this Subject"
             placeHolder="Select Answer"
             option={knowledge}
@@ -143,6 +268,7 @@ const ReportSubmission = ({navigation}: any) => {
           {/* Understanding */}
           <DropDownModalView
             title="2. Understanding"
+            selectedValue={setUnderstandingAnswer}
             subTitle="What can you tell us about the student's Understanding of this Subject"
             placeHolder="Select Answer"
             option={understanding}
@@ -151,6 +277,7 @@ const ReportSubmission = ({navigation}: any) => {
           {/* Analysis */}
           <DropDownModalView
             title="3. Analysis"
+            selectedValue={setAnalysisAnswer}
             subTitle="What can you tell us about the student's ablity to apply analyse fact and theory of this Subject"
             placeHolder="Select Answer"
             option={Analysis}
@@ -187,13 +314,16 @@ const ReportSubmission = ({navigation}: any) => {
             <TextInput
               placeholder="Message"
               multiline={true}
+
               maxLength={300}
-              onChangeText={(e)=> setQuestions({...questions, addationalAssessments:e})}
+              onChangeText={(e) => setQuestions({ ...questions, addationalAssessments: e })}
               style={[
                 styles.textArea,
+                
                 {
                   width: Dimensions.get('window').width,
                   padding: 8,
+                  color:"black"
                 },
               ]}
               underlineColorAndroid="transparent"
@@ -223,12 +353,13 @@ const ReportSubmission = ({navigation}: any) => {
               placeholder="Plan"
               multiline={true}
               maxLength={300}
-              onChangeText={(e)=> setQuestions({...questions, plan:e})}
+              onChangeText={(e) => setQuestions({ ...questions, plan: e })}
               style={[
                 styles.textArea,
                 {
                   height: 80,
                   padding: 8,
+                  color:"black"
                 },
               ]}
               underlineColorAndroid="transparent"
@@ -255,7 +386,7 @@ const ReportSubmission = ({navigation}: any) => {
             width: '94%',
           }}>
           <TouchableOpacity
-            // onPress={}
+            onPress={()=>submitReport()}
             style={{
               alignItems: 'center',
               padding: 10,

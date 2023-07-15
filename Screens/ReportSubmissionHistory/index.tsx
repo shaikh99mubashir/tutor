@@ -47,7 +47,7 @@ const ReportSubmissionHistory = ({navigation}: any) => {
   const [foundName, setFoundName] = useState([]);
   const [searchText, setSearchText] = useState('');
   const searchStudent = (e: any) => {
-    console.log(e, 'eee');
+  
     setSearchText(e);
     let filteredItems: any = reportSubmission.filter(x =>
       x.code.toLowerCase().includes(e.toLowerCase()),

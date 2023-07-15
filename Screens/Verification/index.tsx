@@ -18,8 +18,6 @@ const Verification = ({ navigation, route }: any) => {
 
   let data = route.params
 
-  console.log(data, "data")
-
   const [user, setUser] = useState(false);
   const CELL_COUNT = 6;
   // const { confirmation, phoneNum } = route.params;

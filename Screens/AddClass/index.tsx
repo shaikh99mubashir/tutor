@@ -78,7 +78,6 @@ function AddClass({ navigation }: any) {
     },
   ]);
 
-  console.log(classes, "classed")
 
 
 
@@ -345,8 +344,6 @@ function AddClass({ navigation }: any) {
 
     let classesToAdd: any = [...classes]
 
-    console.log(classesToAdd, 'calssesToAddd')
-
     classesToAdd = classesToAdd && classesToAdd.length > 0 && classesToAdd.map((e: any, i: number) => {
 
       const year = e.date.getFullYear();
@@ -363,13 +360,9 @@ function AddClass({ navigation }: any) {
       }
     })
 
-    console.log(classesToAdd, 'toadd')
-
     let classesss = {
       classes: classesToAdd
     }
-
-    console.log(classesss, 'classssseeeesss')
 
 
 

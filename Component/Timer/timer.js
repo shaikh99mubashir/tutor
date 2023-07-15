@@ -12,7 +12,6 @@ function Timer({ show }) {
     const context = useContext(noteContext)
     let { hour, seconds, minutes } = context
 
-    console.log(context,"context")
 
 
 

@@ -11,7 +11,6 @@ const AttendedDetails = ({ navigation, route }: any) => {
   const clockinImage = `${Base_Uri}public/signInProof/${data?.startTimeProofImage}`
   const clockOutImage = `${Base_Uri}public/signOutProof/${data?.endTimeProofImage}`
 
-  console.log(clockinImage, "image")
 
   return (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>

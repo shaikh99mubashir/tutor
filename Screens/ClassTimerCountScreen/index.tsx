@@ -41,13 +41,11 @@ function ClassTimerCount({ navigation, route }: any) {
 
             launchCamera(options, (res: any) => {
 
-
                 if (res.didCancel) {
                     console.log('User cancelled image picker');
                 } else if (res.error) {
                     console.log('ImagePicker Error:', res.error);
                 } else {
-
                     let startHour = item.startMinutes
                     let startMinutes = item.startSeconds
 

@@ -11,7 +11,6 @@ import { Base_Uri } from "../../constant/BaseUri";
 function EditScheduleClass({ navigation, route }: any) {
 
     let data = route.params?.data
-    console.log(data,'dataaa')
 
 const editTutorScheduleClass = () => {
 
