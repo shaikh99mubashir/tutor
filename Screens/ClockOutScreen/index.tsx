@@ -64,15 +64,13 @@ function ClockOut({ navigation, route }: any) {
             },
         }).then((res) => {
             setLoading(false)
-            console.log(res.data, "data")
+            console.log(res.data, "dataaaa")
             ToastAndroid.show("Class Clockout Successfull", ToastAndroid.SHORT)
             navigation.navigate("Home")
         }).catch((error) => {
             setLoading(false)
             ToastAndroid.show("Class Clockout Failed", ToastAndroid.SHORT)
-            console.log(error, "error")
-
-
+            console.log(error, "errorrrrr")
         })
 
     }

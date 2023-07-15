@@ -312,7 +312,7 @@ function Schedule({ navigation }: any) {
     let data: any = await AsyncStorage.getItem("classInProcess")
     data = JSON.parse(data)
 
-    if (Object.keys(data).length > 0) {
+    if (data && Object.keys(data).length > 0) {
       ToastAndroid.show("Cannot attend another class your class is already in process", ToastAndroid.SHORT)
     } else {
       navigation.navigate('ClockIn', item)

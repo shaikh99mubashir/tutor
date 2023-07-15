@@ -13,6 +13,8 @@ function ClockIn({ navigation, route }: any) {
 
     let item = route.params
 
+    console.log(item,"items")
+
     const [loading, setLoading] = useState(false)
 
 
@@ -97,6 +99,7 @@ function ClockIn({ navigation, route }: any) {
                     }).then((res) => {
                         setLoading(false)
                         data.data = res.data
+                        console.log(data,"data")
 
                         let storageData : any = {...data}
                         storageData = JSON.stringify(storageData)
@@ -162,9 +165,9 @@ function ClockIn({ navigation, route }: any) {
 
                     <View style={{ flexDirection: "row" }} >
 
-                        <Text style={{ color: Theme.gray }} >{(item.startTime).toString()} - {(item.startTime).toString()} | </Text>
+                        <Text style={{ color: Theme.gray }} >{(item.startTime).toString()} - {(item.endTime).toString()} | </Text>
 
-                        <Text style={{ color: Theme.gray }} >{(item.date.slice(7)).toString()}</Text>
+                        <Text style={{ color: Theme.gray }} >{(item.date.slice(0,10)).toString()}</Text>
                     </View>
                     <TouchableOpacity onPress={() => handleClockInPress()} style={{ backgroundColor: Theme.darkGray, width: "100%", padding: 10, borderRadius: 10, marginTop: 10 }} >
                         <Text style={{ textAlign: "center", fontSize: 16 }} >

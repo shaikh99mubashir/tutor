@@ -20,7 +20,6 @@ function App() {
 const getClassInProcess = async () => {
 
    let data : any = await AsyncStorage.getItem("classInProcess")
-
    data = JSON.parse(data)
    setClassInProcess(data)
 
@@ -38,7 +37,7 @@ useEffect(()=>{
 
       <NoteState>
       <AppNavigation/>
-        {Object.keys(classInProcess).length>0 && <Timer/>}
+        {classInProcess && Object.keys(classInProcess).length>0 && <Timer show = "false" />}
       </NoteState>
     </View>
   );  
