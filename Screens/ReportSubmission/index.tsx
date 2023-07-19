@@ -32,7 +32,7 @@ const ReportSubmission = ({ navigation }: any) => {
   const [knowledgeAnswer, setKnowledgeAnswer] = useState<any>("")
   const [understandingAnswer, setUnderstandingAnswer] = useState<any>("")
   const [analysisAnswer, setAnalysisAnswer] = useState<any>("")
-  const [tutorId, setTutorId] = useState({})
+  const [tutorId, setTutorId] = useState<any>("")
   const [studentData, setStudentData] = useState("")
   const [subjectData, setSubjectData] = useState("")
   const [loading, setLoading] = useState(false)
@@ -177,7 +177,7 @@ const ReportSubmission = ({ navigation }: any) => {
   const submitReport = () => {
 
 
-    if (!tutorId && !student.studentID && !subject?.id && !evaluation?.option && !knowledgeAnswer?.option && !understandingAnswer?.option && !analysisAnswer?.option && !questions.addationalAssessments && !questions.plan) {
+    if (!tutorId || !student.studentID || !subject?.id || !evaluation?.option || !knowledgeAnswer?.option || !understandingAnswer?.option || !analysisAnswer?.option || !questions.addationalAssessments || !questions.plan) {
       ToastAndroid.show("Required Fields are missing", ToastAndroid.SHORT)
       return
     }
@@ -200,10 +200,6 @@ const ReportSubmission = ({ navigation }: any) => {
     formData.append("analysis", analysisAnswer.option)
     formData.append("additionalAssisment", questions.addationalAssessments)
     formData.append("plan", questions.plan)
-
-    console.log(formData, "formData")
-
-
 
     axios.post(`${Base_Uri}api/tutorFirstReport`, formData, {
       headers: {

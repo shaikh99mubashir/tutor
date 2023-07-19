@@ -30,7 +30,7 @@ import Header from '../../Component/Header';
     ]);
   
     const handleQuestionPress = (index: number) => {
-      console.log('index',index);
+      
       setFaqsData((prevData) =>
         prevData.map((faq, i) => ({
           ...faq,
