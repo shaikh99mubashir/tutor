@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useContext } from "react"
 import MapView, { Marker } from "react-native-maps"
 import { View, Text, TouchableOpacity, Image, PermissionsAndroid, ToastAndroid, ActivityIndicator } from "react-native"
 import { Theme } from "../../constant/theme"
@@ -7,12 +7,18 @@ import { launchCamera } from "react-native-image-picker"
 import Geolocation from "@react-native-community/geolocation"
 import axios from "axios"
 import { Base_Uri } from "../../constant/BaseUri"
+import noteContext from "../../context/noteContext"
 
 function ClockOut({ navigation, route }: any) {
 
     const [loading, setLoading] = useState(false)
+    const context = useContext(noteContext)
+
+    let { tutorID } = context
 
     const data = route?.params
+
+    console.log(data, "data")
 
 
     const [currentLocation, setCurrentLocation] = useState<any>({
@@ -62,9 +68,26 @@ function ClockOut({ navigation, route }: any) {
                 'Content-Type': 'multipart/form-data',
             },
         }).then((res) => {
-            setLoading(false)
-            ToastAndroid.show("Class Clockout Successfull", ToastAndroid.SHORT)
-            navigation.navigate("Home")
+
+            axios.get(`${Base_Uri}api/tutorFirstReportListing/${tutorID}`).then(({ data }) => {
+                let { tutorReportListing } = data
+                if (tutorReportListing && tutorReportListing.length > 0) {
+                    setLoading(false)
+                    ToastAndroid.show("Class Clockout Successfull", ToastAndroid.SHORT)
+                    navigation.navigate("Home")
+                } else {
+                    setLoading(false)
+                    ToastAndroid.show("Class Clockout Successfull", ToastAndroid.SHORT)
+                    navigation.navigate("BackToDashboard")
+                }
+            })
+
+
+
+
+
+
+
         }).catch((error) => {
             setLoading(false)
             ToastAndroid.show("Class Clockout Failed", ToastAndroid.SHORT)

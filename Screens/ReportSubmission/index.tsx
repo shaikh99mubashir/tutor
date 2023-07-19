@@ -4,13 +4,15 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  ToastAndroid,
   Image,
   Modal,
   Button,
   TextInput,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native';
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Theme } from '../../constant/theme';
 import Header from '../../Component/Header';
 
@@ -24,17 +26,18 @@ const ReportSubmission = ({ navigation }: any) => {
   const currentDate = new Date();
   const options: any = { day: 'numeric', month: 'long', year: 'numeric' };
   const formattedDate = currentDate.toLocaleDateString('en-US', options);
-
   const [evaluation, setEvaluationReport] = useState<any>("")
   const [student, setStudent] = useState<any>("")
   const [subject, setSubject] = useState<any>("")
   const [knowledgeAnswer, setKnowledgeAnswer] = useState<any>("")
   const [understandingAnswer, setUnderstandingAnswer] = useState<any>("")
   const [analysisAnswer, setAnalysisAnswer] = useState<any>("")
-  const [tutorId,setTutorId] = useState({})
-  const [studentData,setStudentData] = useState("")
-  const [subjectData,setSubjectData] = useState("")
-  
+  const [tutorId, setTutorId] = useState({})
+  const [studentData, setStudentData] = useState("")
+  const [subjectData, setSubjectData] = useState("")
+  const [loading, setLoading] = useState(false)
+
+
   const getTutorId = async () => {
     interface LoginAuth {
       status: Number;
@@ -52,13 +55,13 @@ const ReportSubmission = ({ navigation }: any) => {
 
   const getSubject = () => {
     axios
-      .get(`${Base_Uri}getSubjects`)
+      .get(`${Base_Uri}getTutorSubjects/${tutorId}`)
       .then(({ data }) => {
-        let { subjects } = data;
+        let { tutorSubjects } = data;
         let mySubject =
-          subjects &&
-          subjects.length > 0 &&
-          subjects.map((e: any, i: Number) => {
+          tutorSubjects &&
+          tutorSubjects.length > 0 &&
+          tutorSubjects.map((e: any, i: Number) => {
             if (e.name) {
               return {
                 option: e.name,
@@ -75,7 +78,8 @@ const ReportSubmission = ({ navigation }: any) => {
 
 
 
-  const getStudents = async () => {    
+  const getStudents = async () => {
+    setLoading(true)
     axios
       .get(`${Base_Uri}getTutorStudents/${tutorId}`)
       .then(({ data }) => {
@@ -92,25 +96,27 @@ const ReportSubmission = ({ navigation }: any) => {
             }
           });
         setStudentData(myStudents);
+        setLoading(false)
       })
       .catch(error => {
+        setLoading(false)
         console.log(error);
       });
   };
 
   useEffect(() => {
-    if(tutorId){
-    getSubject();
-    getStudents();
-  }
+    if (tutorId) {
+      getSubject();
+      getStudents();
+    }
   }, [tutorId]);
 
 
 
 
-useEffect(()=>{
-  getTutorId()
-},[])
+  useEffect(() => {
+    getTutorId()
+  }, [])
 
 
   const [questions, setQuestions] = useState({
@@ -170,35 +176,51 @@ useEffect(()=>{
 
   const submitReport = () => {
 
-    console.log(currentDate.toLocaleDateString(),"currentData")
-    
+    setLoading(true)
 
-    let data  = {
-      tutorID : tutorId,
-      studentID : student.studentID,
-      subjectID : subject.id,
-      currentDate : currentDate.toLocaleDateString(),
-      reportType : evaluation.option,
-      knowledge : knowledgeAnswer.option,
-      understanding : understandingAnswer.option,
-      analysis : analysisAnswer.option,
-      additionalAssisment : questions.addationalAssessments,
-      plan : questions.plan 
-    }
+    let date = new Date()
 
-    console.log(data,"dataa")
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 since month is zero-based
+    const day = date.getDate().toString().padStart(2, '0');
+    let formData = new FormData()
 
-    axios.post(`${Base_Uri}api/tutorFirstReport`,data).then((res)=>{
-      console.log(res,"resss")
-    }).catch((error)=>{
-      console.log(error,"errrors")
+    formData.append("tutorID", tutorId)
+    formData.append("studentID", student.studentID)
+    formData.append("subjectID", subject.id)
+    formData.append("currentDate", year + '/' + month + '/' + day)
+    formData.append("reportType", evaluation.option)
+    formData.append("knowledge", knowledgeAnswer.option)
+    formData.append("understanding", understandingAnswer.option)
+    formData.append("analysis", analysisAnswer.option)
+    formData.append("additionalAssisment", questions.addationalAssessments)
+    formData.append("plan", questions.plan)
+
+    console.log(formData, "formData")
+
+
+
+    axios.post(`${Base_Uri}api/tutorFirstReport`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }).then((res) => {
+      ToastAndroid.show("Report has been submitted successfully", ToastAndroid.SHORT)
+      setLoading(false)
+      navigation.navigate('BackToDashboard');
+    }).catch((error) => {
+      setLoading(false)
+      ToastAndroid.show("Report submission unSuccessfull", ToastAndroid.SHORT)
+      console.log(error, "errrors")
     })
 
   }
 
 
   return (
-    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+    loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+      <ActivityIndicator size={"large"} color={Theme.black} />
+    </View> : <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="Report Submission" backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <View style={{ paddingHorizontal: 15, marginBottom: 100 }}>
@@ -319,11 +341,11 @@ useEffect(()=>{
               onChangeText={(e) => setQuestions({ ...questions, addationalAssessments: e })}
               style={[
                 styles.textArea,
-                
+
                 {
                   width: Dimensions.get('window').width,
                   padding: 8,
-                  color:"black"
+                  color: "black"
                 },
               ]}
               underlineColorAndroid="transparent"
@@ -359,7 +381,7 @@ useEffect(()=>{
                 {
                   height: 80,
                   padding: 8,
-                  color:"black"
+                  color: "black"
                 },
               ]}
               underlineColorAndroid="transparent"
@@ -386,7 +408,7 @@ useEffect(()=>{
             width: '94%',
           }}>
           <TouchableOpacity
-            onPress={()=>submitReport()}
+            onPress={() => submitReport()}
             style={{
               alignItems: 'center',
               padding: 10,

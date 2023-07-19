@@ -7,6 +7,7 @@ import {
   Image,
   FlatList,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Theme } from '../../constant/theme';
@@ -17,11 +18,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Students = ({ navigation }: any) => {
   const [students, setstudents] = useState([]);
-
+  const [loading, setLoading] = useState(false)
   const [foundName, setFoundName] = useState([]);
   const [searchText, setSearchText] = useState('');
 
   const getStudentData = async () => {
+    setLoading(true)
     let data: any = await AsyncStorage.getItem('loginAuth');
     data = JSON.parse(data);
 
@@ -30,11 +32,13 @@ const Students = ({ navigation }: any) => {
     axios
       .get(`${Base_Uri}getTutorStudents/${tutorID}`)
       .then(({ data }) => {
+        setLoading(false)
         let { tutorStudents } = data;
 
         setstudents(tutorStudents);
       })
       .catch(error => {
+        setLoading(false)
         console.log(error);
       });
   };
@@ -44,9 +48,9 @@ const Students = ({ navigation }: any) => {
   }, []);
 
   const searchStudent = (e: any) => {
-  
+
     setSearchText(e);
-    let filteredItems: any = students.filter(x =>
+    let filteredItems: any = students.filter((x: any) =>
       x.studentID.toLowerCase().includes(e.toLowerCase()),
     );
     setFoundName(filteredItems);
@@ -55,7 +59,9 @@ const Students = ({ navigation }: any) => {
 
 
   return (
-    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+    loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+      <ActivityIndicator size="large" color={Theme.black} />
+    </View> : <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="Student" backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <View style={{ paddingHorizontal: 15 }}>

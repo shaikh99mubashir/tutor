@@ -7,12 +7,17 @@ import {
   Image,
   FlatList,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
-import React, {useState} from 'react';
-import {Theme} from '../../constant/theme';
+import React, { useEffect, useState } from 'react';
+import { Theme } from '../../constant/theme';
 import Header from '../../Component/Header';
+import { useGestureHandlerRef } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
+import { Base_Uri } from '../../constant/BaseUri';
 
-const ReportSubmissionHistory = ({navigation}: any) => {
+const ReportSubmissionHistory = ({ navigation }: any) => {
   const [reportSubmission, setreportSubmission] = useState([
     {
       id: 1,
@@ -43,24 +48,58 @@ const ReportSubmissionHistory = ({navigation}: any) => {
       date: '20 May 2023',
     },
   ]);
-
   const [foundName, setFoundName] = useState([]);
+  const [loading, setLoading] = useState(false)
+
+  const getReportSubmissionHistory = async () => {
+
+    setLoading(true)
+
+    let data: any = await AsyncStorage.getItem('loginAuth');
+
+    data = JSON.parse(data);
+
+    let { tutorID } = data;
+
+    axios.get(`${Base_Uri}api/tutorFirstReportListing/${tutorID}`).then(({ data }) => {
+      let { tutorReportListing } = data
+      setreportSubmission(tutorReportListing)
+      setLoading(false)
+    }).catch((error) => {
+      setLoading(false)
+      console.log("error")
+    })
+  }
+
+  useEffect(() => {
+
+    getReportSubmissionHistory()
+
+  }, [])
+
+
   const [searchText, setSearchText] = useState('');
   const searchStudent = (e: any) => {
-  
+
     setSearchText(e);
-    let filteredItems: any = reportSubmission.filter(x =>
-      x.code.toLowerCase().includes(e.toLowerCase()),
+    let filteredItems: any = reportSubmission.filter((x: any) => {
+      if (x?.studentID?.toLowerCase().includes(e?.toLowerCase())) {
+        return e
+      }
+    }
+
     );
     setFoundName(filteredItems);
   };
   return (
-    <View style={{backgroundColor: Theme.white, height: '100%'}}>
+    loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+      <ActivityIndicator size="large" color={Theme.black} />
+    </View> : <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="Student" backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{paddingHorizontal: 15}}>
+        <View style={{ paddingHorizontal: 15 }}>
           {/* Search */}
-          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <View
               style={{
                 width: '100%',
@@ -77,12 +116,12 @@ const ReportSubmissionHistory = ({navigation}: any) => {
                 placeholder="Search"
                 placeholderTextColor="black"
                 onChangeText={e => searchStudent(e)}
-                style={{width: '90%', padding: 8, color: 'black'}}
+                style={{ width: '90%', padding: 8, color: 'black' }}
               />
               <TouchableOpacity onPress={() => navigation}>
                 <Image
                   source={require('../../Assets/Images/search.png')}
-                  style={{width: 20, height: 20}}
+                  style={{ width: 20, height: 20 }}
                 />
               </TouchableOpacity>
             </View>
@@ -96,7 +135,7 @@ const ReportSubmissionHistory = ({navigation}: any) => {
                   : reportSubmission
               }
               nestedScrollEnabled
-              renderItem={({item, index}: any) => {
+              renderItem={({ item, index }: any) => {
                 return (
                   <View
                     key={index}
@@ -119,7 +158,7 @@ const ReportSubmissionHistory = ({navigation}: any) => {
                           fontSize: 15,
                           fontWeight: '600',
                         }}>
-                        {item.code}
+                        {item.studentID}
                       </Text>
                       <Text
                         style={{
@@ -128,7 +167,7 @@ const ReportSubmissionHistory = ({navigation}: any) => {
                           fontWeight: '600',
                           paddingVertical: 10,
                         }}>
-                        {item.name}
+                        {item.studentName}
                       </Text>
                       <Text
                         style={{
@@ -136,9 +175,9 @@ const ReportSubmissionHistory = ({navigation}: any) => {
                           fontSize: 15,
                           fontWeight: '600',
                         }}>
-                        Subimited on {item.date}
+                        Subimited on {item.created_at}
                       </Text>
-                      <View style={{flexDirection:'row', justifyContent:'space-between'}}>
+                      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text
                           style={{
                             color: Theme.gray,
@@ -146,11 +185,11 @@ const ReportSubmissionHistory = ({navigation}: any) => {
                             fontWeight: '600',
                             paddingTop: 10,
                           }}>
-                          Evalution Report
+                          {item?.tutorReportType}
                         </Text>
-                        <TouchableOpacity style={{alignItems:"center"}}>
-                        <Image source={require('../../Assets/Images/inbox.png')} style={{width:30,height:30}} resizeMode='contain'/>
-                        <Text style={{fontSize:10}}>Download</Text>
+                        <TouchableOpacity style={{ alignItems: "center" }}>
+                          <Image source={require('../../Assets/Images/inbox.png')} style={{ width: 30, height: 30 }} resizeMode='contain' />
+                          <Text style={{ fontSize: 10 }}>Download</Text>
                         </TouchableOpacity>
                       </View>
                     </View>
@@ -159,9 +198,9 @@ const ReportSubmissionHistory = ({navigation}: any) => {
               }}
             />
           ) : (
-            <View style={{marginTop: 35}}>
+            <View style={{ marginTop: 35 }}>
               <Text
-                style={{color: Theme.black, fontSize: 14, textAlign: 'center'}}>
+                style={{ color: Theme.black, fontSize: 14, textAlign: 'center' }}>
                 No Record Found...
               </Text>
             </View>

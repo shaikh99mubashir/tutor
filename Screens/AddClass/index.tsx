@@ -7,6 +7,7 @@ import {
   ScrollView,
   Platform,
   ToastAndroid,
+  ActivityIndicator,
 } from 'react-native';
 import { Theme } from '../../constant/theme';
 import CustomDropDown from '../../Component/CustomDropDown';
@@ -64,6 +65,7 @@ function AddClass({ navigation }: any) {
   const [value, setValue] = useState(new Date());
   const [selectedStudent, setSelectedStudent] = useState<any>("")
   const [selectedSubject, setSelectedSubject] = useState<any>("")
+  const [loading, setLoading] = useState(false)
 
 
 
@@ -79,18 +81,20 @@ function AddClass({ navigation }: any) {
   ]);
 
 
+  console.log(classes, "classes")
+
 
 
   const getSubject = () => {
     axios
-      .get(`${Base_Uri}getSubjects`)
+      .get(`${Base_Uri}getTutorSubjects/${tutorId}`)
       .then(({ data }) => {
-        let { subjects } = data;
+        let { tutorSubjects } = data;
 
         let mySubject =
-          subjects &&
-          subjects.length > 0 &&
-          subjects.map((e: any, i: Number) => {
+          tutorSubjects &&
+          tutorSubjects.length > 0 &&
+          tutorSubjects.map((e: any, i: Number) => {
             if (e.name) {
               return {
                 subject: e.name,
@@ -106,9 +110,8 @@ function AddClass({ navigation }: any) {
       });
   };
 
+  const getTutorID = async () => {
 
-
-  const getStudents = async () => {
     let data: any = await AsyncStorage.getItem('loginAuth');
 
     data = JSON.parse(data);
@@ -117,8 +120,14 @@ function AddClass({ navigation }: any) {
 
     setTutorId(tutorID)
 
+  }
+
+
+  const getStudents = async () => {
+
+
     axios
-      .get(`${Base_Uri}getTutorStudents/${tutorID}`)
+      .get(`${Base_Uri}getTutorStudents/${tutorId}`)
       .then(({ data }) => {
         let { tutorStudents } = data;
 
@@ -140,10 +149,17 @@ function AddClass({ navigation }: any) {
       });
   };
 
+
   useEffect(() => {
-    getSubject();
-    getStudents();
-  }, []);
+    getTutorID()
+  }, [])
+
+  useEffect(() => {
+    if (tutorId) {
+      getSubject();
+      getStudents();
+    }
+  }, [tutorId]);
 
   const deleteClass = (index: Number) => {
     let data: any =
@@ -159,7 +175,11 @@ function AddClass({ navigation }: any) {
 
 
   const onChange = (event: any, selectedDate: any) => {
+
     const currentDate = selectedDate;
+    let hours = currentDate.getHours()
+    let minutes = currentDate.getMinutes()
+    console.log(hours, "DATA")
     let data;
 
 
@@ -341,6 +361,7 @@ function AddClass({ navigation }: any) {
 
   const confirmClass = () => {
 
+    setLoading(true)
 
     let classesToAdd: any = [...classes]
 
@@ -350,12 +371,19 @@ function AddClass({ navigation }: any) {
       const month = (e.date.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 since month is zero-based
       const day = e.date.getDate().toString().padStart(2, '0');
 
+      let hours = e.startTime.getHours()
+      let minutes = e.startTime.getMinutes()
+      let seconds = e.startTime.getSeconds()
+
+      let endHour = e.endTime.getHours()
+      let endMinutes = e.endTime.getMinutes()
+      let endSeconds = e.endTime.getSeconds()
       return {
         tutorID: tutorId,
         studentID: selectedStudent?.studentID,
         subjectID: selectedSubject?.id,
-        startTime: e.startTime.toLocaleString().length > 21 ? e.startTime.toLocaleString().slice(11, 19) : e.startTime.toLocaleString().slice(11, 18),
-        endTime: e.endTime.toLocaleString().length > 21 ? e.endTime.toLocaleString().slice(11, 19) : e.endTime.toLocaleString().slice(11, 18),
+        startTime: hours + ":" + minutes + ":" + seconds,
+        endTime: endHour + ":" + endMinutes + ":" + endSeconds,
         date: year + '/' + month + '/' + day
       }
     })
@@ -364,18 +392,19 @@ function AddClass({ navigation }: any) {
       classes: classesToAdd
     }
 
-
-
     axios.post(`${Base_Uri}api/addMultipleClasses`, classesss).then((res) => {
+      setLoading(false)
       navigation.navigate('BackToDashboard');
       ToastAndroid.show(res?.data?.message, ToastAndroid.SHORT)
     }).catch((error) => {
-      console.log(error, "error")
-      ToastAndroid.show("Internal Server Error", ToastAndroid.SHORT)
+      setLoading(false)
+      ToastAndroid.show("Sorry classes added unsuccessfull", ToastAndroid.SHORT)
     })
   };
   return (
-    <View style={{ flex: 1, backgroundColor: Theme.white }}>
+    loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+      <ActivityIndicator size="large" color={Theme.black} />
+    </View> : <View style={{ flex: 1, backgroundColor: Theme.white }}>
       <View>
         <Header title={'Add Class'} backBtn navigation={navigation} />
       </View>

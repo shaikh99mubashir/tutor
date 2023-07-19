@@ -77,10 +77,7 @@ function Schedule({ navigation }: any) {
     axios
       .get(`${Base_Uri}getClassSchedulesTime/${tutorID}`)
       .then(({ data }) => {
-
-
         let { classSchedulesTime } = data;
-
         classSchedulesTime =
           classSchedulesTime &&
             classSchedulesTime.length > 0 ?
@@ -303,7 +300,7 @@ function Schedule({ navigation }: any) {
     setSelectedData(item);
   };
 
-  const routeToClockIn = async (item:any) => {
+  const routeToClockIn = async (item: any) => {
 
 
     let data: any = await AsyncStorage.getItem("classInProcess")

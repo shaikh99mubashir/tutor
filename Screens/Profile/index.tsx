@@ -7,17 +7,19 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Header from '../../Component/Header';
-import {Theme} from '../../constant/theme';
-import {PermissionsAndroid} from 'react-native';
-import {launchImageLibrary} from 'react-native-image-picker';
+import { Theme } from '../../constant/theme';
+import { PermissionsAndroid } from 'react-native';
+import { launchImageLibrary } from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {Base_Uri} from '../../constant/BaseUri';
+import { Base_Uri } from '../../constant/BaseUri';
 
-const Profile = ({navigation}: any) => {
+
+const Profile = ({ navigation }: any) => {
   interface ITutorDetails {
     full_name: string | undefined;
     email: string | undefined;
@@ -35,8 +37,12 @@ const Profile = ({navigation}: any) => {
     age: null,
     nric: '',
   });
+  const [loading, setLoading] = useState(false)
 
   const getTutorDetails = async () => {
+
+    setLoading(true)
+
     interface LoginAuth {
       status: Number;
       tutorID: Number;
@@ -44,12 +50,12 @@ const Profile = ({navigation}: any) => {
     }
     const data: any = await AsyncStorage.getItem('loginAuth');
     let loginData: LoginAuth = JSON.parse(data);
-    let {tutorID} = loginData;
+    let { tutorID } = loginData;
 
     axios
       .get(`${Base_Uri}getTutorDetailByID/${tutorID}`)
-      .then(({data}) => {
-        let {tutorDetailById} = data;
+      .then(({ data }) => {
+        let { tutorDetailById } = data;
 
         let tutorDetails = tutorDetailById[0];
 
@@ -62,9 +68,11 @@ const Profile = ({navigation}: any) => {
           nric: tutorDetails.nric,
         };
         setTutorDetail(details);
+        setLoading(false)
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        setLoading(false)
       });
   };
 
@@ -76,7 +84,6 @@ const Profile = ({navigation}: any) => {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.CAMERA,
     );
-    console.log(granted, 'granted');
 
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
       let options: any = {
@@ -93,19 +100,20 @@ const Profile = ({navigation}: any) => {
       } else {
         let imageUri = result.assets[0].uri;
 
-        console.log(result.assets[0].uri);
       }
     }
   };
   return (
-    <View style={{backgroundColor: Theme.white, height: '100%'}}>
+    loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+      <ActivityIndicator size="large" color={Theme.black} />
+    </View> : <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="Profile" navigation={navigation} backBtn />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{paddingHorizontal: 15, marginBottom: 100}}>
-          <View style={{paddingVertical: 15, alignItems: 'center'}}>
+        <View style={{ paddingHorizontal: 15, marginBottom: 100 }}>
+          <View style={{ paddingVertical: 15, alignItems: 'center' }}>
             <Image
               source={require('../../Assets/Images/avatar.png')}
-              style={{width: 80, height: 80}}
+              style={{ width: 80, height: 80 }}
               resizeMode="contain"
             />
             <TouchableOpacity
@@ -113,23 +121,23 @@ const Profile = ({navigation}: any) => {
               activeOpacity={0.8}>
               <Image
                 source={require('../../Assets/Images/plus.png')}
-                style={{width: 20, height: 20, top: -20, left: 25}}
+                style={{ width: 20, height: 20, top: -20, left: 25 }}
                 resizeMode="contain"
               />
             </TouchableOpacity>
-            <View style={{alignItems: 'center'}}>
+            <View style={{ alignItems: 'center' }}>
               <Text
-                style={{fontSize: 18, fontWeight: '600', color: Theme.black}}>
+                style={{ fontSize: 18, fontWeight: '600', color: Theme.black }}>
                 {tutorDetail?.full_name}
               </Text>
               <Text
-                style={{fontSize: 14, fontWeight: '300', color: Theme.gray}}>
+                style={{ fontSize: 14, fontWeight: '300', color: Theme.gray }}>
                 {tutorDetail?.email}
               </Text>
             </View>
           </View>
           {/* Full Name */}
-          <View style={{marginVertical: 15}}>
+          <View style={{ marginVertical: 15 }}>
             <Text
               style={{
                 color: Theme.black,
@@ -158,7 +166,7 @@ const Profile = ({navigation}: any) => {
             </View>
           </View>
           {/* Email */}
-          <View style={{marginBottom: 15}}>
+          <View style={{ marginBottom: 15 }}>
             <Text
               style={{
                 color: Theme.black,
@@ -187,7 +195,7 @@ const Profile = ({navigation}: any) => {
             </View>
           </View>
           {/* Displlay name */}
-          <View style={{marginBottom: 15}}>
+          <View style={{ marginBottom: 15 }}>
             <Text
               style={{
                 color: Theme.black,
@@ -216,7 +224,7 @@ const Profile = ({navigation}: any) => {
             </View>
           </View>
           {/* MObile number*/}
-          <View style={{marginBottom: 15}}>
+          <View style={{ marginBottom: 15 }}>
             <Text
               style={{
                 color: Theme.black,
@@ -245,7 +253,7 @@ const Profile = ({navigation}: any) => {
             </View>
           </View>
           {/* Gender*/}
-          <View style={{marginBottom: 15}}>
+          <View style={{ marginBottom: 15 }}>
             <Text
               style={{
                 color: Theme.black,
@@ -274,7 +282,7 @@ const Profile = ({navigation}: any) => {
             </View>
           </View>
           {/* Age*/}
-          <View style={{marginBottom: 15}}>
+          <View style={{ marginBottom: 15 }}>
             <Text
               style={{
                 color: Theme.black,
@@ -303,7 +311,7 @@ const Profile = ({navigation}: any) => {
             </View>
           </View>
           {/* Nric*/}
-          <View style={{marginBottom: 15}}>
+          <View style={{ marginBottom: 15 }}>
             <Text
               style={{
                 color: Theme.black,

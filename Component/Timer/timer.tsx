@@ -6,18 +6,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 
-function Timer({ show }) {
+function Timer({ show  }:any) {
 
     const [classInProcess, setClassInProcess] = useState("")
     const context = useContext(noteContext)
     let { hour, seconds, minutes } = context
 
-
-
-
     const updateData = async () => {
 
-        let data = await AsyncStorage.getItem("classInProcess")
+        let data : any = await AsyncStorage.getItem("classInProcess")
 
         data = JSON.parse(data)
 

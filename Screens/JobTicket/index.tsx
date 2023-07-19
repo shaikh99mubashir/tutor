@@ -15,7 +15,7 @@ import { Theme } from '../../constant/theme';
 import CustomTabView from '../../Component/CustomTabView';
 import { Base_Uri } from '../../constant/BaseUri';
 import axios from 'axios';
-import {useIsFocused} from "@react-navigation/native"
+import { useIsFocused } from "@react-navigation/native"
 import AsyncStorage, {
   useAsyncStorage,
 } from '@react-native-async-storage/async-storage';
@@ -99,7 +99,7 @@ function JobTicket({ navigation }: any) {
       ticket_status: 'Accepted',
     },
   ]);
-  const [closeData, setCloseData] = useState([
+  const [closeData, setCloseData] = useState<any>([
     // {
     //   id: 1,
     //   code: 'SS545455',
@@ -131,8 +131,6 @@ function JobTicket({ navigation }: any) {
 
       filter = JSON.parse(filter)
 
-      console.log(filter, "filter")
-
       let { Category, subject, mode, state, city } = filter
 
       let categoryID = Category.id
@@ -155,28 +153,28 @@ function JobTicket({ navigation }: any) {
       })
 
       return
-    }else{
+    } else {
 
-    axios
-      .get('https://sifututor.odits.co/new/ticketsAPI')
-      .then(async ({ data }) => {
-        let { tickets } = data;
+      axios
+        .get('https://sifututor.odits.co/new/ticketsAPI')
+        .then(async ({ data }) => {
+          let { tickets } = data;
 
 
 
-        setOpenData(
-          tickets.length > 0 &&
-          tickets.filter((e: any, i: number) => {
-            return e.status == 'pending'
-          }),
-        );
-        setLoading(false);
-      })
-      .catch(error => {
-        setLoading(false);
-        console.log(error);
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
-      });
+          setOpenData(
+            tickets.length > 0 &&
+            tickets.filter((e: any, i: number) => {
+              return e.status == 'pending'
+            }),
+          );
+          setLoading(false);
+        })
+        .catch(error => {
+          setLoading(false);
+          console.log(error);
+          ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        });
     }
   };
 
@@ -208,8 +206,6 @@ function JobTicket({ navigation }: any) {
     getAppliedData();
   }, [focus]);
 
-console.log(openData,"open")
-
   const checkSearchItems = () => {
     searchText && foundName.length == 0 && setIsSearchItems(true);
   };
@@ -225,8 +221,8 @@ console.log(openData,"open")
   };
   const searchApplied = (e: any) => {
     setSearchText(e);
-    let filteredItems: any = closeData.filter(x =>
-      x.subjectName.toLowerCase().includes(e.toLowerCase()),
+    let filteredItems: any = closeData.filter((x: any) =>
+      x?.subjectName?.toLowerCase().includes(e.toLowerCase()),
     );
     setFoundName(filteredItems);
   };
@@ -334,7 +330,6 @@ console.log(openData,"open")
     );
   };
   const renderCloseData = ({ item }: any) => {
-    console.log(item, 'item');
 
     return (
       <TouchableOpacity
@@ -465,7 +460,7 @@ console.log(openData,"open")
             keyExtractor={(items: any, index: number): any => index}
           />
         ) : (
-          <Text style={{ fontWeight: 'bold', fontSize: 16,color:Theme.black,textAlign:"center" }}>no data found</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 16, color: Theme.black, textAlign: "center" }}>no data found</Text>
         )}
       </View>
     );

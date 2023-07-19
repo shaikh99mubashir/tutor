@@ -15,7 +15,7 @@ function ClassTimerCount({ navigation, route }: any) {
 
     const context = useContext(noteContext)
 
-    const {hour,minutes,seconds,cleanTime} = context
+    const { hour, minutes, seconds, cleanTime } = context
 
 
     let startTime = route.params
@@ -67,7 +67,7 @@ function ClassTimerCount({ navigation, route }: any) {
 
                     let { assets } = res
 
-                    
+
                     let data = {
                         id: item.id,
                         class_schedule_id: item?.class_schedule_id,
