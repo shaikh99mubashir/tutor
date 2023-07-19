@@ -212,8 +212,6 @@ const Filter = ({ navigation }: any) => {
 
 
       let { cities } = data
-
-
       let myCities = cities && cities.length > 0 && cities.map((e: any, i: Number) => {
         if (e.name) {
           return {
@@ -252,6 +250,15 @@ const Filter = ({ navigation }: any) => {
       mode: selectedMode,
       state: selectedState,
       city: selectedCity
+    }
+
+
+    let values = Object.values(jobFilter)
+    let flag = values.some((e,i)=> !e)
+
+    if(flag){
+      ToastAndroid.show("Required Fields are missing",ToastAndroid.SHORT)
+      return
     }
 
     let myFilter = JSON.stringify(jobFilter)

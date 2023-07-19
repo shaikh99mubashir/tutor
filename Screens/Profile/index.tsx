@@ -42,7 +42,6 @@ const Profile = ({ navigation }: any) => {
   const getTutorDetails = async () => {
 
     setLoading(true)
-
     interface LoginAuth {
       status: Number;
       tutorID: Number;

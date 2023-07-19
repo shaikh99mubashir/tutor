@@ -176,8 +176,13 @@ const ReportSubmission = ({ navigation }: any) => {
 
   const submitReport = () => {
 
-    setLoading(true)
 
+    if (!tutorId && !student.studentID && !subject?.id && !evaluation?.option && !knowledgeAnswer?.option && !understandingAnswer?.option && !analysisAnswer?.option && !questions.addationalAssessments && !questions.plan) {
+      ToastAndroid.show("Required Fields are missing", ToastAndroid.SHORT)
+      return
+    }
+
+    setLoading(true)
     let date = new Date()
 
     const year = date.getFullYear();

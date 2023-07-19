@@ -367,6 +367,19 @@ function AddClass({ navigation }: any) {
 
     classesToAdd = classesToAdd && classesToAdd.length > 0 && classesToAdd.map((e: any, i: number) => {
 
+      if (e?.startTime == "-") {
+        return "false"
+      }
+      if (e?.endTime == "-") {
+        return "false"
+      }
+      if (!selectedStudent) {
+        return "false"
+      }
+      if (!selectedSubject) {
+        return "false"
+      }
+
       const year = e.date.getFullYear();
       const month = (e.date.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 since month is zero-based
       const day = e.date.getDate().toString().padStart(2, '0');
@@ -388,6 +401,14 @@ function AddClass({ navigation }: any) {
       }
     })
 
+
+    let flag = classesToAdd.some((e: any, i: number) => e == "false")
+
+    if (flag) {
+      ToastAndroid.show("Required Field are missing", ToastAndroid.SHORT)
+      setLoading(false)
+      return
+    }
     let classesss = {
       classes: classesToAdd
     }
