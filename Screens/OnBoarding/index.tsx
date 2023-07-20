@@ -121,7 +121,7 @@ const OnBoarding = ({ navigation }: any) => {
                             <TouchableOpacity
                                 style={styles.btn}
                                 onPress={() => handleDonePress()}>
-                                <Text style={{ fontWeight: 'bold', fontSize: 15 }}>
+                                <Text style={{ fontWeight: 'bold', fontSize: 15, color: "white" }}>
                                     Done
                                 </Text>
                             </TouchableOpacity>

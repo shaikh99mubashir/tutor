@@ -9,8 +9,6 @@ const Splash = ({ navigation }: any) => {
     setTimeout(async () => {
 
       let data = await AsyncStorage.getItem("login")
-
-
       let authData = await AsyncStorage.getItem("loginAuth")
 
       if (authData) {

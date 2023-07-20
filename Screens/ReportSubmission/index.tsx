@@ -12,7 +12,7 @@ import {
   Dimensions,
   ActivityIndicator,
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Theme } from '../../constant/theme';
 import Header from '../../Component/Header';
 
@@ -21,6 +21,7 @@ import Status from '../Status';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
+import StudentContext from '../../context/studentContext';
 
 const ReportSubmission = ({ navigation }: any) => {
   const currentDate = new Date();
@@ -38,6 +39,11 @@ const ReportSubmission = ({ navigation }: any) => {
   const [loading, setLoading] = useState(false)
 
 
+
+  const context = useContext(StudentContext)
+
+  const { students, subjects } = context
+
   const getTutorId = async () => {
     interface LoginAuth {
       status: Number;
@@ -50,70 +56,52 @@ const ReportSubmission = ({ navigation }: any) => {
     setTutorId(tutorID);
   };
 
-
-
-
   const getSubject = () => {
-    axios
-      .get(`${Base_Uri}getTutorSubjects/${tutorId}`)
-      .then(({ data }) => {
-        let { tutorSubjects } = data;
-        let mySubject =
-          tutorSubjects &&
-          tutorSubjects.length > 0 &&
-          tutorSubjects.map((e: any, i: Number) => {
-            if (e.name) {
-              return {
-                option: e.name,
-                id: e.id,
-              };
-            }
-          });
-        setSubjectData(mySubject);
-      })
-      .catch(error => {
-        console.log(error);
+
+    let mySubject =
+      subjects &&
+      subjects.length > 0 &&
+      subjects.map((e: any, i: Number) => {
+
+        console.log(e, "ee")
+
+        if (e.subject) {
+          return {
+            option: e.subject,
+            id: e.id,
+          };
+        }
       });
+
+    setSubjectData(mySubject);
+
   };
 
 
 
   const getStudents = async () => {
-    setLoading(true)
-    axios
-      .get(`${Base_Uri}getTutorStudents/${tutorId}`)
-      .then(({ data }) => {
-        let { tutorStudents } = data;
-        let myStudents =
-          tutorStudents &&
-          tutorStudents.length > 0 &&
-          tutorStudents.map((e: any, i: Number) => {
-            if (e.studentName) {
-              return {
-                ...e,
-                option: e.studentName
-              };
-            }
-          });
-        setStudentData(myStudents);
-        setLoading(false)
-      })
-      .catch(error => {
-        setLoading(false)
-        console.log(error);
+
+
+    let myStudents =
+      students &&
+      students.length > 0 &&
+      students.map((e: any, i: Number) => {
+        if (e?.studentName) {
+          return {
+            ...e,
+            option: e?.studentName
+          };
+        }
       });
+    setStudentData(myStudents);
   };
 
   useEffect(() => {
-    if (tutorId) {
+    if (subjects) {
       getSubject();
-      getStudents();
+      getStudents()
     }
-  }, [tutorId]);
-
-
-
-
+  }, [subjects]);
   useEffect(() => {
     getTutorId()
   }, [])

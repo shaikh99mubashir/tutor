@@ -16,6 +16,10 @@ import { useGestureHandlerRef } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
+import ReactNativeRenderHtml from 'react-native-render-html';
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import RNFetchBlob from 'rn-fetch-blob';
+import RNFS from 'react-native-fs';
 
 const ReportSubmissionHistory = ({ navigation }: any) => {
   const [reportSubmission, setreportSubmission] = useState([
@@ -91,6 +95,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
     );
     setFoundName(filteredItems);
   };
+
   return (
     loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
       <ActivityIndicator size="large" color={Theme.black} />
@@ -187,9 +192,9 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
                           }}>
                           {item?.tutorReportType}
                         </Text>
-                        <TouchableOpacity style={{ alignItems: "center" }}>
+                        <TouchableOpacity style={{ alignItems: "center"}} >
                           <Image source={require('../../Assets/Images/inbox.png')} style={{ width: 30, height: 30 }} resizeMode='contain' />
-                          <Text style={{ fontSize: 10 }}>Download</Text>
+                          <Text style={{ fontSize: 10,color:"black" }}>Download</Text>
                         </TouchableOpacity>
                       </View>
                     </View>

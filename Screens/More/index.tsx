@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import {View, Text, ScrollView, Image, TouchableOpacity, Modal, StyleSheet} from 'react-native';
+import { View, Text, ScrollView, Image, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import Header from '../../Component/Header';
-import {Theme} from '../../constant/theme';
+import { Theme } from '../../constant/theme';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function More({navigation}: any) {
+function More({ navigation }: any) {
   const [modalVisible, setModalVisible] = useState(false);
   const handleFilterPress = () => {
     setModalVisible(true);
@@ -15,21 +16,29 @@ function More({navigation}: any) {
   const [apply, setApply] = useState(false);
   const [cancel, setCancel] = useState(false);
 
-  const ApplyButton = () => {
+  const ApplyButton = async () => {
     handleCloseModal();
-    navigation.navigate("Login")
+    await AsyncStorage.removeItem("loginAuth")
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: 'Login',
+        },
+      ],
+    });
   };
   const CancelButton = () => {
     handleCloseModal();
   };
   return (
-    <View style={{backgroundColor: Theme.white, height: '100%'}}>
+    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="More" navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{paddingHorizontal: 15}}>
-            {/* Profile */}
+        <View style={{ paddingHorizontal: 15 }}>
+          {/* Profile */}
           <TouchableOpacity
-          onPress={()=> navigation.navigate('Profile')}
+            onPress={() => navigation.navigate('Profile')}
             activeOpacity={0.8}
             style={{
               paddingVertical: 15,
@@ -48,28 +57,28 @@ function More({navigation}: any) {
               }}>
               <Image
                 source={require('../../Assets/Images/avatar.png')}
-                style={{height: 60, width: 60}}
+                style={{ height: 60, width: 60 }}
               />
               <View>
                 <Text
-                  style={{fontSize: 18, fontWeight: '600', color: Theme.black}}>
+                  style={{ fontSize: 18, fontWeight: '600', color: Theme.black }}>
                   Muhammad
                 </Text>
                 <Text
-                  style={{fontSize: 14, fontWeight: '300', color: Theme.gray}}>
+                  style={{ fontSize: 14, fontWeight: '300', color: Theme.gray }}>
                   Muhammad@gmail.com
                 </Text>
               </View>
             </View>
             <Image
               source={require('../../Assets/Images/right.png')}
-              style={{width: 20, height: 20}}
+              style={{ width: 20, height: 20 }}
               resizeMode="contain"
             />
           </TouchableOpacity>
           {/* notification */}
           <TouchableOpacity
-          onPress={()=>navigation.navigate('Notifications')}
+            onPress={() => navigation.navigate('Notifications')}
             activeOpacity={0.8}
             style={{
               paddingVertical: 15,
@@ -95,23 +104,23 @@ function More({navigation}: any) {
                 }}>
                 <Image
                   source={require('../../Assets/Images/notification.png')}
-                  style={{height: 25, width: 25}}
+                  style={{ height: 25, width: 25 }}
                 />
               </View>
               <Text
-                style={{fontSize: 18, fontWeight: '600', color: Theme.black}}>
+                style={{ fontSize: 18, fontWeight: '600', color: Theme.black }}>
                 Notification
               </Text>
             </View>
             <Image
               source={require('../../Assets/Images/right.png')}
-              style={{width: 20, height: 20}}
+              style={{ width: 20, height: 20 }}
               resizeMode="contain"
             />
           </TouchableOpacity>
           {/* Students */}
           <TouchableOpacity
-          onPress={()=> navigation.navigate('Students')}
+            onPress={() => navigation.navigate('Students')}
             activeOpacity={0.8}
             style={{
               paddingVertical: 15,
@@ -136,23 +145,23 @@ function More({navigation}: any) {
                 }}>
                 <Image
                   source={require('../../Assets/Images/student2.png')}
-                  style={{height: 25, width: 25}}
+                  style={{ height: 25, width: 25 }}
                 />
               </View>
               <Text
-                style={{fontSize: 18, fontWeight: '600', color: Theme.black}}>
+                style={{ fontSize: 18, fontWeight: '600', color: Theme.black }}>
                 Students
               </Text>
             </View>
             <Image
               source={require('../../Assets/Images/right.png')}
-              style={{width: 20, height: 20}}
+              style={{ width: 20, height: 20 }}
               resizeMode="contain"
             />
           </TouchableOpacity>
           {/* Payment History */}
           <TouchableOpacity
-          onPress={()=> navigation.navigate('ReportSubmission')}
+            onPress={() => navigation.navigate('ReportSubmission')}
             activeOpacity={0.8}
             style={{
               paddingVertical: 15,
@@ -177,23 +186,23 @@ function More({navigation}: any) {
                 }}>
                 <Image
                   source={require('../../Assets/Images/payment.png')}
-                  style={{height: 25, width: 25}}
+                  style={{ height: 25, width: 25 }}
                 />
               </View>
               <Text
-                style={{fontSize: 18, fontWeight: '600', color: Theme.black}}>
+                style={{ fontSize: 18, fontWeight: '600', color: Theme.black }}>
                 Payment
               </Text>
             </View>
             <Image
               source={require('../../Assets/Images/right.png')}
-              style={{width: 20, height: 20}}
+              style={{ width: 20, height: 20 }}
               resizeMode="contain"
             />
           </TouchableOpacity>
           {/*Report Submission History */}
           <TouchableOpacity
-          onPress={()=> navigation.navigate('ReportSubmissionHistory')}
+            onPress={() => navigation.navigate('ReportSubmissionHistory')}
             activeOpacity={0.8}
             style={{
               paddingVertical: 15,
@@ -218,24 +227,24 @@ function More({navigation}: any) {
                 }}>
                 <Image
                   source={require('../../Assets/Images/report.png')}
-                  style={{height: 25, width: 25}}
+                  style={{ height: 25, width: 25 }}
                 />
               </View>
               <Text
-                style={{fontSize: 18, fontWeight: '600', color: Theme.black}}>
+                style={{ fontSize: 18, fontWeight: '600', color: Theme.black }}>
                 Report Submission History
               </Text>
             </View>
             <Image
               source={require('../../Assets/Images/right.png')}
-              style={{width: 20, height: 20}}
+              style={{ width: 20, height: 20 }}
               resizeMode="contain"
             />
           </TouchableOpacity>
           {/*Faq */}
           <TouchableOpacity
             activeOpacity={0.8}
-            onPress={()=> navigation.navigate('FAQs')}
+            onPress={() => navigation.navigate('FAQs')}
             style={{
               paddingVertical: 15,
               borderBottomWidth: 1,
@@ -259,23 +268,23 @@ function More({navigation}: any) {
                 }}>
                 <Image
                   source={require('../../Assets/Images/faq.png')}
-                  style={{height: 25, width: 25}}
+                  style={{ height: 25, width: 25 }}
                 />
               </View>
               <Text
-                style={{fontSize: 18, fontWeight: '600', color: Theme.black}}>
+                style={{ fontSize: 18, fontWeight: '600', color: Theme.black }}>
                 FAQs
               </Text>
             </View>
             <Image
               source={require('../../Assets/Images/right.png')}
-              style={{width: 20, height: 20}}
+              style={{ width: 20, height: 20 }}
               resizeMode="contain"
             />
           </TouchableOpacity>
           {/*Logout */}
           <TouchableOpacity
-          onPress={handleFilterPress}
+            onPress={handleFilterPress}
             activeOpacity={0.8}
             style={{
               paddingVertical: 15,
@@ -300,99 +309,99 @@ function More({navigation}: any) {
                 }}>
                 <Image
                   source={require('../../Assets/Images/logout.png')}
-                  style={{height: 25, width: 25}}
+                  style={{ height: 25, width: 25 }}
                 />
               </View>
               <Text
-                style={{fontSize: 18, fontWeight: '600', color: Theme.black}}>
+                style={{ fontSize: 18, fontWeight: '600', color: Theme.black }}>
                 Log Out
               </Text>
             </View>
             <Image
               source={require('../../Assets/Images/right.png')}
-              style={{width: 20, height: 20}}
+              style={{ width: 20, height: 20 }}
               resizeMode="contain"
             />
           </TouchableOpacity>
         </View>
       </ScrollView>
       <Modal visible={modalVisible} animationType="fade" transparent={true}>
-          <View
-            style={{
-              flex: 1,
-              justifyContent: 'center',
-              backgroundColor: 'rgba(0,0,0,0.5)',
-              
-            }}>
-            <View style={[styles.modalContainer, {padding: 30,marginHorizontal: 40,}]}>
-              <Text
-                style={{
-                  color: Theme.darkGray,
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                }}>
-                Are you sure you want to Quit ?
-              </Text>
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  gap: 10,
-                  marginTop: 20,
-                  marginBottom: 20,
-                }}>
-                <TouchableOpacity
-                  onPressIn={() => setCancel(true)}
-                  onPressOut={() => setCancel(false)}
-                  onPress={CancelButton}
-                  activeOpacity={0.8}
-                  style={{
-                    borderWidth: 1,
-                    paddingVertical: 5,
-                    borderRadius: 50,
-                    borderColor: Theme.lightGray,
-                    alignItems: 'center',
-                    width: 100,
-                    backgroundColor: cancel ? Theme.darkGray : 'white',
-                  }}>
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontFamily: 'Poppins-SemiBold',
-                      color: cancel ? 'white' : Theme.darkGray,
-                    }}>
-                    No
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPressIn={() => setApply(true)}
-                  onPressOut={() => setApply(false)}
-                  onPress={ApplyButton}
-                  activeOpacity={0.8}
-                  style={{
-                    borderWidth: 1,
-                    paddingVertical: 5,
-                    borderRadius: 50,
-                    borderColor: Theme.lightGray,
-                    alignItems: 'center',
-                    width: 100,
-                    backgroundColor: apply ? 'white' : Theme.darkGray,
-                  }}>
-                  <Text
-                    style={{
-                      color: apply ? Theme.darkGray : 'white',
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            backgroundColor: 'rgba(0,0,0,0.5)',
 
-                      fontSize: 16,
-                      fontFamily: 'Poppins-SemiBold',
-                    }}>
-                    Yes
-                  </Text>
-                </TouchableOpacity>
-              </View>
+          }}>
+          <View style={[styles.modalContainer, { padding: 30, marginHorizontal: 40, }]}>
+            <Text
+              style={{
+                color: Theme.darkGray,
+                fontSize: 16,
+                fontWeight: 'bold',
+              }}>
+              Are you sure you want to Quit ?
+            </Text>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                gap: 10,
+                marginTop: 20,
+                marginBottom: 20,
+              }}>
+              <TouchableOpacity
+                onPressIn={() => setCancel(true)}
+                onPressOut={() => setCancel(false)}
+                onPress={CancelButton}
+                activeOpacity={0.8}
+                style={{
+                  borderWidth: 1,
+                  paddingVertical: 5,
+                  borderRadius: 50,
+                  borderColor: Theme.lightGray,
+                  alignItems: 'center',
+                  width: 100,
+                  backgroundColor: cancel ? Theme.darkGray : 'white',
+                }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontFamily: 'Poppins-SemiBold',
+                    color: cancel ? 'white' : Theme.darkGray,
+                  }}>
+                  No
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPressIn={() => setApply(true)}
+                onPressOut={() => setApply(false)}
+                onPress={ApplyButton}
+                activeOpacity={0.8}
+                style={{
+                  borderWidth: 1,
+                  paddingVertical: 5,
+                  borderRadius: 50,
+                  borderColor: Theme.lightGray,
+                  alignItems: 'center',
+                  width: 100,
+                  backgroundColor: apply ? 'white' : Theme.darkGray,
+                }}>
+                <Text
+                  style={{
+                    color: apply ? Theme.darkGray : 'white',
+
+                    fontSize: 16,
+                    fontFamily: 'Poppins-SemiBold',
+                  }}>
+                  Yes
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
-        </Modal>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -406,8 +415,8 @@ const styles = StyleSheet.create({
     borderColor: Theme.gray,
     borderRadius: 10,
     paddingHorizontal: 10,
-    borderWidth:1,
-    
+    borderWidth: 1,
+
   },
   modalText: {
     color: 'black',

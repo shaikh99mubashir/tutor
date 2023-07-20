@@ -8,16 +8,16 @@ import {
 } from 'react-native';
 import React from 'react';
 import Header from '../../Component/Header';
-import {Theme} from '../../constant/theme';
+import { Theme } from '../../constant/theme';
 
-const StudentsDetails = ({navigation, route}: any) => {
+const StudentsDetails = ({ navigation, route }: any) => {
   const data = route.params;
 
   return (
-    <View style={{backgroundColor: Theme.white, height: '100%'}}>
+    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="Student Details" backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{paddingHorizontal: 15}}>
+        <View style={{ paddingHorizontal: 15 }}>
           <Text
             style={{
               paddingVertical: 10,
@@ -27,9 +27,9 @@ const StudentsDetails = ({navigation, route}: any) => {
             }}>
             Profile
           </Text>
-          <View style={{borderWidth: 1, borderRadius: 5, borderColor: '#eee'}}>
+          <View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#eee' }}>
             {/* Student Name */}
-            <View style={{paddingVertical: 10, paddingHorizontal: 10}}>
+            <View style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
               <Text
                 style={{
                   color: Theme.black,
@@ -45,11 +45,11 @@ const StudentsDetails = ({navigation, route}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                {data.name}
+                {data.studentName}
               </Text>
             </View>
             {/* Student Id */}
-            <View style={{paddingVertical: 10, paddingHorizontal: 10}}>
+            <View style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
               <Text
                 style={{
                   color: Theme.black,
@@ -65,11 +65,11 @@ const StudentsDetails = ({navigation, route}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                {data.code}
+                {data.studentID}
               </Text>
             </View>
             {/* Gender */}
-            <View style={{paddingVertical: 10, paddingHorizontal: 10}}>
+            <View style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
               <Text
                 style={{
                   color: Theme.black,
@@ -85,11 +85,11 @@ const StudentsDetails = ({navigation, route}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                {data.gender}
+                {data.gender ? data.gender : "not provided"}
               </Text>
             </View>
             {/* Age */}
-            <View style={{paddingVertical: 10, paddingHorizontal: 10}}>
+            <View style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
               <Text
                 style={{
                   color: Theme.black,
@@ -105,11 +105,11 @@ const StudentsDetails = ({navigation, route}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                {data.ade}
+                {data.age ? data.age : "not provided"}
               </Text>
             </View>
             {/* Registration Date */}
-            <View style={{paddingVertical: 10, paddingHorizontal: 10}}>
+            <View style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
               <Text
                 style={{
                   color: Theme.black,
@@ -125,7 +125,7 @@ const StudentsDetails = ({navigation, route}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                {data.date}
+                {data.registrationDate ? data.registrationDate : "not provided"}
               </Text>
             </View>
           </View>
@@ -139,9 +139,9 @@ const StudentsDetails = ({navigation, route}: any) => {
             }}>
             Contact Person
           </Text>
-          <View style={{borderWidth: 1, borderRadius: 5, borderColor: '#eee',marginBottom:100}}>
+          <View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#eee', marginBottom: 100 }}>
             {/*  Name */}
-            <View style={{paddingVertical: 10, paddingHorizontal: 10}}>
+            <View style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
               <Text
                 style={{
                   color: Theme.black,
@@ -157,11 +157,11 @@ const StudentsDetails = ({navigation, route}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                {data.name}
+                {data.studentName}
               </Text>
             </View>
             {/* Email */}
-            <View style={{paddingVertical: 10, paddingHorizontal: 10}}>
+            <View style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
               <Text
                 style={{
                   color: Theme.black,
@@ -177,11 +177,11 @@ const StudentsDetails = ({navigation, route}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                sdfds@sakdm.com
+                {data.email ? data.email : "not provided"}
               </Text>
             </View>
             {/* Contact */}
-            <View style={{paddingVertical: 10, paddingHorizontal: 10}}>
+            <View style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
               <Text
                 style={{
                   color: Theme.black,
@@ -197,11 +197,11 @@ const StudentsDetails = ({navigation, route}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                656116161
+                {data?.contactNo ? data.contactNo : "not provided"}
               </Text>
             </View>
             {/* Adress */}
-            <View style={{paddingVertical: 10, paddingHorizontal: 10}}>
+            <View style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
               <Text
                 style={{
                   color: Theme.black,
@@ -217,8 +217,7 @@ const StudentsDetails = ({navigation, route}: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                sdfkdsfsdflk sdkjfksd fk sdv ks vk svk sk f kf f gkf g fg fgg kf
-                gk
+                {data.studentAddress1 ?? data.studentAddress2}
               </Text>
             </View>
             {/* Images */}
@@ -237,7 +236,7 @@ const StudentsDetails = ({navigation, route}: any) => {
                 }}>
                 <Image
                   source={require('../../Assets/Images/call.png')}
-                  style={{width: 30, height: 30}}
+                  style={{ width: 30, height: 30 }}
                   resizeMode="contain"
                 />
               </View>
@@ -249,7 +248,7 @@ const StudentsDetails = ({navigation, route}: any) => {
                 }}>
                 <Image
                   source={require('../../Assets/Images/whatsapp.png')}
-                  style={{width: 30, height: 30}}
+                  style={{ width: 30, height: 30 }}
                   resizeMode="contain"
                 />
               </View>
@@ -261,7 +260,7 @@ const StudentsDetails = ({navigation, route}: any) => {
                 }}>
                 <Image
                   source={require('../../Assets/Images/direction.png')}
-                  style={{width: 30, height: 30}}
+                  style={{ width: 30, height: 30 }}
                   resizeMode="contain"
                 />
               </View>
@@ -269,8 +268,8 @@ const StudentsDetails = ({navigation, route}: any) => {
           </View>
         </View>
       </ScrollView>
-       {/* Submit Button */}
-       <View
+      {/* Submit Button */}
+      <View
         style={{
           backgroundColor: Theme.white,
           position: 'absolute',
@@ -286,7 +285,7 @@ const StudentsDetails = ({navigation, route}: any) => {
             width: '94%',
           }}>
           <TouchableOpacity
-            onPress={()=> navigation.navigate('Status')}
+            onPress={() => navigation.navigate('Status')}
             style={{
               alignItems: 'center',
               padding: 10,

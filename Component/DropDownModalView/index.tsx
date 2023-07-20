@@ -34,7 +34,7 @@ const DropDownModalView = ({
 
   const setReportTypeChange = (value: any) => {
     selectedValue(value)
-    setReportType(value.option);
+    setReportType(value?.option);
     setModalVisible(false);
     setServiceDD(!serviceDD);
   };

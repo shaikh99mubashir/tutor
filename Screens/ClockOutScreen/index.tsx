@@ -18,8 +18,6 @@ function ClockOut({ navigation, route }: any) {
 
     const data = route?.params
 
-    console.log(data, "data")
-
 
     const [currentLocation, setCurrentLocation] = useState<any>({
         latitude: null,

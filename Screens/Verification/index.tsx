@@ -89,7 +89,8 @@ const Verification = ({ navigation, route }: any) => {
   return (
     <View style={{
       backgroundColor: Theme.white,
-      height: '100%'
+      height: '100%',
+      
 
     }}>
       <Header
@@ -102,7 +103,7 @@ const Verification = ({ navigation, route }: any) => {
       <View style={{ marginVertical: 10, paddingHorizontal: 15 }}>
         <Text style={{ fontFamily: 'Poppins-Regular', color: Theme.gray, fontSize: 16, fontWeight: 'bold', textAlign: 'center' }}>Enter Verification Code</Text>
       </View>
-      <View style={{ paddingHorizontal: 15 }}>
+      <View style={{ paddingHorizontal: 15, }}>
         <CodeField
           ref={ref}
           {...props}
@@ -173,7 +174,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   cell: {
-    width: 50,
+    width: Dimensions.get("window").width/7.5,
     height: 60,
     color: Theme.black,
     padding: 10,

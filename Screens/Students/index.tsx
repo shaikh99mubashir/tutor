@@ -9,49 +9,69 @@ import {
   TextInput,
   ActivityIndicator,
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Theme } from '../../constant/theme';
 import Header from '../../Component/Header';
 import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import StudentContext from '../../context/studentContext';
 
 const Students = ({ navigation }: any) => {
+
+  const context = useContext(StudentContext)
+
+  let student = context.students
+
+
+
+
   const [students, setstudents] = useState([]);
   const [loading, setLoading] = useState(false)
   const [foundName, setFoundName] = useState([]);
   const [searchText, setSearchText] = useState('');
 
-  const getStudentData = async () => {
-    setLoading(true)
-    let data: any = await AsyncStorage.getItem('loginAuth');
-    data = JSON.parse(data);
 
-    let { tutorID } = data;
-
-    axios
-      .get(`${Base_Uri}getTutorStudents/${tutorID}`)
-      .then(({ data }) => {
-        setLoading(false)
-        let { tutorStudents } = data;
-
-        setstudents(tutorStudents);
-      })
-      .catch(error => {
-        setLoading(false)
-        console.log(error);
-      });
-  };
 
   useEffect(() => {
-    getStudentData();
-  }, []);
+
+    setstudents(student)
+
+  }, [])
+
+
+  // const getStudentData = async () => {
+  //   setLoading(true)
+  //   let data: any = await AsyncStorage.getItem('loginAuth');
+  //   data = JSON.parse(data);
+
+  //   let { tutorID } = data;
+
+  //   axios
+  //     .get(`${Base_Uri}getTutorStudents/${tutorID}`)
+  //     .then(({ data }) => {
+  //       setLoading(false)
+  //       let { tutorStudents } = data;
+
+  //       setstudents(tutorStudents);
+  //     })
+  //     .catch(error => {
+  //       setLoading(false)
+  //       console.log(error);
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getStudentData();
+  // }, []);
+
+  console.log(students, "studnets")
 
   const searchStudent = (e: any) => {
 
     setSearchText(e);
     let filteredItems: any = students.filter((x: any) =>
-      x.studentID.toLowerCase().includes(e.toLowerCase()),
+      x?.studentName?.toLowerCase()?.includes(e?.toLowerCase()),
     );
     setFoundName(filteredItems);
   };

@@ -9,7 +9,7 @@ import {
   Image,
   ActivityIndicator,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Header from '../../Component/Header';
 import { Theme } from '../../constant/theme';
 import { PermissionsAndroid } from 'react-native';
@@ -17,6 +17,7 @@ import { launchImageLibrary } from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
+import TutorDetailsContext from '../../context/tutorDetailsContext';
 
 
 const Profile = ({ navigation }: any) => {
@@ -29,55 +30,63 @@ const Profile = ({ navigation }: any) => {
     nric: string | undefined;
   }
 
-  const [tutorDetail, setTutorDetail] = useState<ITutorDetails>({
-    full_name: '',
-    email: '',
-    gender: '',
-    phoneNumber: '',
-    age: null,
-    nric: '',
-  });
+  // const [tutorDetail, setTutorDetail] = useState<ITutorDetails>({
+  //   full_name: '',
+  //   email: '',
+  //   gender: '',
+  //   phoneNumber: '',
+  //   age: null,
+  //   nric: '',
+  // });
   const [loading, setLoading] = useState(false)
 
-  const getTutorDetails = async () => {
+  const context = useContext(TutorDetailsContext)
 
-    setLoading(true)
-    interface LoginAuth {
-      status: Number;
-      tutorID: Number;
-      token: string;
-    }
-    const data: any = await AsyncStorage.getItem('loginAuth');
-    let loginData: LoginAuth = JSON.parse(data);
-    let { tutorID } = loginData;
+  let tutorDetail = context?.tutorDetails
 
-    axios
-      .get(`${Base_Uri}getTutorDetailByID/${tutorID}`)
-      .then(({ data }) => {
-        let { tutorDetailById } = data;
+  console.log(tutorDetail, "DETAIL")
 
-        let tutorDetails = tutorDetailById[0];
 
-        let details: ITutorDetails = {
-          full_name: tutorDetails?.full_name,
-          email: tutorDetails?.email,
-          gender: tutorDetails?.gender,
-          phoneNumber: tutorDetails.phoneNumber,
-          age: tutorDetails.age,
-          nric: tutorDetails.nric,
-        };
-        setTutorDetail(details);
-        setLoading(false)
-      })
-      .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
-        setLoading(false)
-      });
-  };
 
-  useEffect(() => {
-    getTutorDetails();
-  }, []);
+  // const getTutorDetails = async () => {
+
+  //   setLoading(true)
+  //   interface LoginAuth {
+  //     status: Number;
+  //     tutorID: Number;
+  //     token: string;
+  //   }
+  //   const data: any = await AsyncStorage.getItem('loginAuth');
+  //   let loginData: LoginAuth = JSON.parse(data);
+  //   let { tutorID } = loginData;
+
+  //   axios
+  //     .get(`${Base_Uri}getTutorDetailByID/${tutorID}`)
+  //     .then(({ data }) => {
+  //       let { tutorDetailById } = data;
+
+  //       let tutorDetails = tutorDetailById[0];
+
+  //       let details: ITutorDetails = {
+  //         full_name: tutorDetails?.full_name,
+  //         email: tutorDetails?.email,
+  //         gender: tutorDetails?.gender,
+  //         phoneNumber: tutorDetails.phoneNumber,
+  //         age: tutorDetails.age,
+  //         nric: tutorDetails.nric,
+  //       };
+  //       setTutorDetail(details);
+  //       setLoading(false)
+  //     })
+  //     .catch(error => {
+  //       ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+  //       setLoading(false)
+  //     });
+  // };
+
+  // useEffect(() => {
+  //   getTutorDetails();
+  // }, []);
 
   const uploadProfilePicture = async () => {
     const granted = await PermissionsAndroid.request(

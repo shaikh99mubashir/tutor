@@ -11,6 +11,9 @@ import NoteState from './context/noteState';
 import NoteContext from './context/noteContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import noteContext from './context/noteContext';
+import TutorDetailsState from './context/tutorDetailsState';
+import StudentState from './context/studentState';
+import FilterState from './context/filterState';
 
 
 function App() {
@@ -20,8 +23,14 @@ function App() {
     <View style={styles.container} >
 
       <NoteState>
-        <AppNavigation />
-        <Timer show="false" />
+        <TutorDetailsState>
+          <StudentState>
+            <FilterState>
+              <AppNavigation />
+              <Timer show="false" />
+            </FilterState>
+          </StudentState>
+        </TutorDetailsState>
       </NoteState>
     </View>
   );

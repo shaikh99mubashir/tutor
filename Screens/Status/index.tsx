@@ -1,38 +1,38 @@
-import {ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import Header from '../../Component/Header';
-import {Theme} from '../../constant/theme';
+import { Theme } from '../../constant/theme';
 
-const Status = ({navigation}: any) => {
-    const [editStatus, seteditStatus] = useState({
-        reason: '',
-      });
+const Status = ({ navigation }: any) => {
+  const [editStatus, seteditStatus] = useState({
+    reason: '',
+  });
   return (
-    <View style={{backgroundColor: Theme.white, height: '100%'}}>
+    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="Status" backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{paddingHorizontal: 15}}>
-        <View style={{paddingVertical: 10,}}>
-              <Text
-                style={{
-                  color: Theme.black,
-                  fontSize: 14,
-                  fontWeight: '700',
-                }}>
-                Student Name
-              </Text>
-              <Text
-                style={{
-                  color: Theme.gray,
-                  fontSize: 14,
-                  fontWeight: '600',
-                  marginTop: 5,
-                }}>
-                Testing
-              </Text>
-            </View>
-              {/* Comment */}
-          <View style={{marginBottom:100}}>
+        <View style={{ paddingHorizontal: 15 }}>
+          <View style={{ paddingVertical: 10, }}>
+            <Text
+              style={{
+                color: Theme.black,
+                fontSize: 14,
+                fontWeight: '700',
+              }}>
+              Student Name
+            </Text>
+            <Text
+              style={{
+                color: Theme.gray,
+                fontSize: 14,
+                fontWeight: '600',
+                marginTop: 5,
+              }}>
+              Testing
+            </Text>
+          </View>
+          {/* Comment */}
+          <View style={{ marginBottom: 100 }}>
             <Text
               style={{
                 color: Theme.black,
@@ -56,13 +56,14 @@ const Status = ({navigation}: any) => {
                 multiline={true}
                 maxLength={300}
                 onChangeText={e =>
-                  seteditStatus({...editStatus, reason: e})
+                  seteditStatus({ ...editStatus, reason: e })
                 }
                 style={[
                   styles.textArea,
                   {
                     backgroundColor: Theme.lightGray,
                     padding: 12,
+                    color: Theme.black
                   },
                 ]}
                 underlineColorAndroid="transparent"
@@ -115,16 +116,16 @@ const Status = ({navigation}: any) => {
 export default Status;
 
 const styles = StyleSheet.create({
-    textAreaContainer: {
-        // borderColor: COLORS.grey20,
-        // borderWidth: 1,
-        // padding: 5,
-        borderRadius: 10,
-      },
-      textArea: {
-        borderRadius: 10,
-        height: 150,
-        justifyContent: 'flex-start',
-        textAlignVertical: 'top',
-      },
+  textAreaContainer: {
+    // borderColor: COLORS.grey20,
+    // borderWidth: 1,
+    // padding: 5,
+    borderRadius: 10,
+  },
+  textArea: {
+    borderRadius: 10,
+    height: 150,
+    justifyContent: 'flex-start',
+    textAlignVertical: 'top',
+  },
 });

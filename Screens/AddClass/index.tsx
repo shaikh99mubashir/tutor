@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -16,6 +16,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Base_Uri } from '../../constant/BaseUri';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import StudentContext from '../../context/studentContext';
 
 function AddClass({ navigation }: any) {
   const [student, setStudent] = useState([
@@ -67,8 +68,9 @@ function AddClass({ navigation }: any) {
   const [selectedSubject, setSelectedSubject] = useState<any>("")
   const [loading, setLoading] = useState(false)
 
-
-
+  
+  const context = useContext(StudentContext)
+  const { students, subjects } = context
   const [classes, setClasses] = useState<any>([
     {
       tutorID: tutorId,
@@ -81,33 +83,29 @@ function AddClass({ navigation }: any) {
   ]);
 
 
-  console.log(classes, "classes")
-
-
-
   const getSubject = () => {
-    axios
-      .get(`${Base_Uri}getTutorSubjects/${tutorId}`)
-      .then(({ data }) => {
-        let { tutorSubjects } = data;
+    // axios
+    //   .get(`${Base_Uri}getTutorSubjects/${tutorId}`)
+    //   .then(({ data }) => {
+    //     let { tutorSubjects } = data;
 
-        let mySubject =
-          tutorSubjects &&
-          tutorSubjects.length > 0 &&
-          tutorSubjects.map((e: any, i: Number) => {
-            if (e.name) {
-              return {
-                subject: e.name,
-                id: e.id,
-              };
-            }
-          });
-
-        setSubject(mySubject);
-      })
-      .catch(error => {
-        console.log(error);
+    let mySubject =
+      subjects &&
+      subjects.length > 0 &&
+      subjects.map((e: any, i: Number) => {
+        if (e.subject) {
+          return {
+            subject: e.subject,
+            id: e.id,
+          };
+        }
       });
+
+    setSubject(mySubject);
+    // })
+    // .catch(error => {
+    //   console.log(error);
+    // });
   };
 
   const getTutorID = async () => {
@@ -126,27 +124,19 @@ function AddClass({ navigation }: any) {
   const getStudents = async () => {
 
 
-    axios
-      .get(`${Base_Uri}getTutorStudents/${tutorId}`)
-      .then(({ data }) => {
-        let { tutorStudents } = data;
-
-        let myStudents =
-          tutorStudents &&
-          tutorStudents.length > 0 &&
-          tutorStudents.map((e: any, i: Number) => {
-            if (e.studentName) {
-              return {
-                ...e,
-                subject: e.studentName
-              };
-            }
-          });
-        setStudent(myStudents);
-      })
-      .catch(error => {
-        console.log(error);
+    let myStudents =
+      students &&
+      students.length > 0 &&
+      students.map((e: any, i: Number) => {
+        if (e.studentName) {
+          return {
+            ...e,
+            subject: e.studentName
+          };
+        }
       });
+    setStudent(myStudents);
+
   };
 
 
@@ -179,11 +169,7 @@ function AddClass({ navigation }: any) {
     const currentDate = selectedDate;
     let hours = currentDate.getHours()
     let minutes = currentDate.getMinutes()
-    console.log(hours, "DATA")
     let data;
-
-
-
     if (mode == 'date') {
       data = classes.map((e: any, i: Number) => {
         if (i == indexClicked) {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -16,8 +16,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
 import { useIsFocused } from '@react-navigation/native';
+import TutorDetailsContext from '../../context/tutorDetailsContext';
+import StudentContext from '../../context/studentContext';
+import filterContext from '../../context/filterContext';
 
 function Home({ navigation }: any) {
+
+  const context = useContext(TutorDetailsContext)
+  const filter = useContext(filterContext)
+  const studentAndSubjectContext = useContext(StudentContext)
+  const {setCategory,setSubjects,setState,setCity} = filter
+
+
+  const { tutorDetails, updateTutorDetails } = context
+  const { students, subjects, updateStudent, updateSubject } = studentAndSubjectContext
 
   const focus = useIsFocused()
 
@@ -120,8 +132,154 @@ function Home({ navigation }: any) {
   }, [focus]);
 
 
+const getCategory = () => {
+  axios.get(`${Base_Uri}getCategories`).then(({ data }) => {
+
+
+    let { categories } = data
+
+    let myCategories = categories && categories.length > 0 && categories.map((e: any, i: Number) => {
+      if (e.category_name) {
+        return {
+          subject: e.category_name,
+          id: e.id
+        }
+      }
+    })
+    setCategory(myCategories)
+
+  }).catch((error) => {
+    console.log(error)
+  })
+}
+
+const getSubject = () => {
+
+  axios.get(`${Base_Uri}getSubjects`).then(({ data }) => {
+
+
+
+    let { subjects } = data
+
+    let mySubject = subjects && subjects.length > 0 && subjects.map((e: any, i: Number) => {
+      if (e.name) {
+        return {
+          subject: e.name,
+          id: e.id
+        }
+      }
+    })
+
+    setSubjects(mySubject)
+
+
+  }).catch((error) => {
+
+    console.log(error)
+
+  })
+}
+
+
+const getStates = () => {
+
+  axios.get(`${Base_Uri}getStates`).then(({ data }) => {
+
+
+
+    let { states } = data
+
+    let myStates = states && states.length > 0 && states.map((e: any, i: Number) => {
+      if (e.name) {
+        return {
+          subject: e.name,
+          id: e.id
+        }
+      }
+    })
+
+    setState(myStates)
+
+
+  }).catch((error) => {
+
+    console.log(error)
+
+  })
+
+
+}
+
+
+const getCities = () => {
+
+
+  axios.get(`${Base_Uri}getCities`).then(({ data }) => {
+
+
+
+    let { cities } = data
+    let myCities = cities && cities.length > 0 && cities.map((e: any, i: Number) => {
+      if (e.name) {
+        return {
+          subject: e.name,
+          id: e.id
+        }
+      }
+    })
+    setCity(myCities)
+
+  }).catch((error) => {
+
+    console.log(error)
+
+  })
+
+
+
+}
+
+
+  useEffect(()=>{
+    getCategory()
+    getSubject()
+    getStates()
+    getCities()
+  },[])
+
+
+
+  const getTutorDetails = async () => {
+
+    axios
+      .get(`${Base_Uri}getTutorDetailByID/${tutorId}`)
+      .then(({ data }) => {
+        let { tutorDetailById } = data;
+
+        let tutorDetails = tutorDetailById[0];
+
+        let details = {
+          full_name: tutorDetails?.full_name,
+          email: tutorDetails?.email,
+          gender: tutorDetails?.gender,
+          phoneNumber: tutorDetails.phoneNumber,
+          age: tutorDetails.age,
+          nric: tutorDetails.nric,
+        };
+
+        updateTutorDetails(details)
+
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+      });
+
+
+  }
   useEffect(() => {
     tutorId && getNotificationLength()
+    tutorId && getTutorDetails()
+    
   }, [tutorId])
 
   const getCummulativeCommission = () => {
@@ -177,11 +335,42 @@ function Home({ navigation }: any) {
       .then(({ data }) => {
         const { tutorStudents } = data;
         setTutorStudents(tutorStudents);
+        updateStudent(tutorStudents)
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
+
+  const getTutorSubjects = () => {
+
+    axios
+      .get(`${Base_Uri}getTutorSubjects/${tutorId}`)
+      .then(({ data }) => {
+        let { tutorSubjects } = data;
+
+        let mySubject =
+          tutorSubjects &&
+          tutorSubjects.length > 0 &&
+          tutorSubjects.map((e: any, i: Number) => {
+            if (e.name) {
+              return {
+                subject: e.name,
+                id: e.id,
+              };
+            }
+          });
+
+          console.log(mySubject,"mySubjects")
+
+        updateSubject(mySubject)
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+
+  }
 
   const getUpcomingClasses = () => {
     axios
@@ -230,6 +419,7 @@ function Home({ navigation }: any) {
   useEffect(() => {
     if (tutorId) {
       getTutorStudents();
+      getTutorSubjects()
     }
   }, [tutorData.cancelledHours]);
 
@@ -242,7 +432,7 @@ function Home({ navigation }: any) {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           <Text style={styles.text}>Hello,</Text>
-          <Text style={styles.heading}>Muhammad</Text>
+          <Text style={styles.heading}>{tutorDetails?.full_name}</Text>
         </View>
 
         <View style={styles.firstBox}>
@@ -360,7 +550,7 @@ function Home({ navigation }: any) {
             <View style={{ justifyContent: 'center', marginLeft: 10 }}>
               <Text style={[styles.text, { fontSize: 12 }]}>Active Student</Text>
               <Text style={[styles.text, { fontSize: 16, fontWeight: '700' }]}>
-                {tutorStudents.length}
+                {students?.length}
               </Text>
             </View>
           </View>
