@@ -214,7 +214,7 @@ function JobTicket({ navigation }: any) {
   const [searchText, setSearchText] = useState('');
   const searchOpen = (e: any) => {
     setSearchText(e);
-    let filteredItems: any = openData.filter((x:any) =>
+    let filteredItems: any = openData.filter((x: any) =>
       x?.subject_name.toLowerCase().includes(e.toLowerCase()),
     );
     setFoundName(filteredItems);
@@ -272,16 +272,16 @@ function JobTicket({ navigation }: any) {
             Details
           </Text>
           <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-            Student: {item.studentName}
+            Name: {item.studentName}
           </Text>
           <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-            Student City: {item.studentCity}
+            City: {item.studentCity}
           </Text>
           <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-            Student Address 1: {item.studentAddress1}
+            Address 1: {item.studentAddress1}
           </Text>
           <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-            Student Address 2: {item.studentAddress2}
+            Address 2: {item.studentAddress2}
           </Text>
         </View>
         <Text
@@ -375,20 +375,18 @@ function JobTicket({ navigation }: any) {
             Details
           </Text>
           <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-            Student: {item.studentName}
+            Name: {item.studentName}
           </Text>
           <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-            Student ID: {item.studentID}
+            ID: {item.studentID}
           </Text>
           <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-            Student City: {item.studentName}
+            City: {item.studentName}
           </Text>
           <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-            Student Address: {item.studentAddress}
+            Address: {item.studentAddress}
           </Text>
-          <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-            Student City: {item.studentCity}
-          </Text>
+
         </View>
         <Text
           style={{
@@ -397,7 +395,7 @@ function JobTicket({ navigation }: any) {
             fontWeight: '600',
             marginTop: 10,
           }}>
-          {item.classDay}
+          Day: {item.classDay}
         </Text>
         <Text
           style={{
@@ -405,7 +403,7 @@ function JobTicket({ navigation }: any) {
             fontSize: 14,
             fontWeight: '600',
           }}>
-          {item.classTime}
+          Time: {item.classTime}
         </Text>
         <Text
           style={{

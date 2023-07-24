@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState,useContext } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import Header from '../../Component/Header';
 import { Theme } from '../../constant/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import TutorDetailsContext from '../../context/tutorDetailsContext';
 
 function More({ navigation }: any) {
+
+  const context = useContext(TutorDetailsContext)
+
+  const {tutorDetails} = context
+
+
   const [modalVisible, setModalVisible] = useState(false);
   const handleFilterPress = () => {
     setModalVisible(true);
@@ -62,11 +69,11 @@ function More({ navigation }: any) {
               <View>
                 <Text
                   style={{ fontSize: 18, fontWeight: '600', color: Theme.black }}>
-                  Muhammad
+                  {tutorDetails?.full_name}
                 </Text>
                 <Text
                   style={{ fontSize: 14, fontWeight: '300', color: Theme.gray }}>
-                  Muhammad@gmail.com
+                  {tutorDetails?.email}
                 </Text>
               </View>
             </View>

@@ -75,7 +75,7 @@ function Schedule({ navigation }: any) {
     let loginData: LoginAuth = JSON.parse(login);
     let { tutorID } = loginData;
     axios
-      .get(`${Base_Uri}getClassSchedulesTime/${tutorID}`)
+      .get(`${Base_Uri}getClassSchedulesTime/${16}`)
       .then(({ data }) => {
         let { classSchedulesTime } = data;
         classSchedulesTime =

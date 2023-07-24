@@ -82,7 +82,7 @@ function ClassTimerCount({ navigation, route }: any) {
                     }
                     cleanTime()
                     AsyncStorage.removeItem("classInProcess")
-                    navigation.navigate("ClockOut", data)
+                    navigation.replace("ClockOut", data)
 
                 }
             })

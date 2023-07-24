@@ -8,6 +8,8 @@ import {
   FlatList,
   TextInput,
   ActivityIndicator,
+  Platform,
+  PermissionsAndroid
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Theme } from '../../constant/theme';
@@ -20,6 +22,7 @@ import ReactNativeRenderHtml from 'react-native-render-html';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import RNFetchBlob from 'rn-fetch-blob';
 import RNFS from 'react-native-fs';
+// import Blob from "blob"
 
 const ReportSubmissionHistory = ({ navigation }: any) => {
   const [reportSubmission, setreportSubmission] = useState([
@@ -95,6 +98,125 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
     );
     setFoundName(filteredItems);
   };
+
+
+  const generateAndDownalodPdf = async (item: any) => {
+
+    try {
+      const options = {
+        html: `<html><body>
+        <div>
+        <h1>Tutor Name</h1>
+        <h2>${item.tutorName}</h3>
+        </div>
+        <div>
+        <h1>Tutor ID</h1>
+        <h3>${item.tutorID}</h3>
+        </div>
+        <div>
+        <div>
+        <h1>Tutor Address</h1>
+        <h3>${item.tutorAddress1}</h3>
+        </div>
+        <div>
+        <h1>Student Name</h1>
+        <h3>${item.studentName}</h3>
+        </div>
+        <div>
+        <h1>Student ID</h1>
+        <h3>${item.studentID}</h3>
+        </div>
+        <div>
+        <div>
+        <h1>Student Address</h1>
+        <h3>${item.studentAddress1}</h3>
+        </div>
+        <div>
+        <h1>Subject Name</h1>
+        <h3>${item.subjectName}</h3>
+        </div>
+        <div>
+        <h1>Additional Assisment</h1>
+        <h3>${item.additionalAssisment}</h3>
+        </div>
+        <div>
+        <h1>Analysis</h1>
+        <h3>${item.analysis}</h3>
+        </div>
+        <div>
+        <h1>Knowledge</h1>
+        <h3>${item.knowledge}</h3>
+        </div>
+        <div>
+        <h1>Plan</h1>
+        <h3>${item.plan}</h3>
+        </div>
+        <div>
+        <h1>Understanding</h1>
+        <h3>${item.understanding}</h3>
+        </div>
+        </body></html>`,
+        fileName: `report${Math.random()}`,
+        directory: 'Downloads',
+        base64: true,
+      };
+
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+        );
+
+        console.log(granted, "granted")
+
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+          console.error('Permission denied for writing to external storage.');
+          return;
+        }
+      }
+
+
+      const pdfFile = await RNHTMLtoPDF.convert(options);
+      console.log(pdfFile, "file");
+
+      const { base64 } = pdfFile
+      const { filePath }: any = pdfFile
+
+
+
+      const pdfBlob = RNFetchBlob.base64.decode(base64);
+
+      const destPath =
+        Platform.OS === 'android'
+          ? `${RNFetchBlob.fs.dirs.DocumentDir}/`
+          : `${RNFetchBlob.fs.dirs.DocumentDir}/`;
+
+      await RNFetchBlob.fs.writeFile(destPath, pdfBlob, 'base64');
+      RNFetchBlob.android.actionViewIntent(destPath, 'application/pdf');
+
+      // if (Platform.OS === 'android') {
+      //   const config = {
+      //     fileCache: true,
+      //     addAndroidDownloads: {
+      //       useDownloadManager: true,
+      //       notification: true,
+      //       title: 'Download PDF',
+      //       description: 'Downloading PDF file...',
+      //       mime: 'application/pdf',
+      //       mediaScannable: true,
+      //       notificationOpenAfterDelete: true,
+      //     },
+      //   };
+      //   console.log(config, "config")
+      //   await RNFetchBlob.config(config).fetch('GET', destPath).catch((error) => {
+      //     console.log(error, "error")
+      //   });
+      // }
+
+    } catch (error) {
+      console.log(error, "error");
+    }
+  };
+
 
   return (
     loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
@@ -192,9 +314,9 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
                           }}>
                           {item?.tutorReportType}
                         </Text>
-                        <TouchableOpacity style={{ alignItems: "center"}} >
+                        <TouchableOpacity onPress={() => generateAndDownalodPdf(item)} style={{ alignItems: "center" }} >
                           <Image source={require('../../Assets/Images/inbox.png')} style={{ width: 30, height: 30 }} resizeMode='contain' />
-                          <Text style={{ fontSize: 10,color:"black" }}>Download</Text>
+                          <Text style={{ fontSize: 10, color: "black" }}>Download</Text>
                         </TouchableOpacity>
                       </View>
                     </View>

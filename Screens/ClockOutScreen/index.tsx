@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react"
 import MapView, { Marker } from "react-native-maps"
-import { View, Text, TouchableOpacity, Image, PermissionsAndroid, ToastAndroid, ActivityIndicator } from "react-native"
+import { View, Text, TouchableOpacity, Image, PermissionsAndroid, BackHandler,ToastAndroid, ActivityIndicator } from "react-native"
 import { Theme } from "../../constant/theme"
 import Header from "../../Component/Header"
 import { launchCamera } from "react-native-image-picker"
@@ -17,6 +17,7 @@ function ClockOut({ navigation, route }: any) {
     let { tutorID } = context
 
     const data = route?.params
+    const items = route?.params
 
 
     const [currentLocation, setCurrentLocation] = useState<any>({
@@ -44,6 +45,10 @@ function ClockOut({ navigation, route }: any) {
 
     }, [])
 
+BackHandler.addEventListener("hardwareBackPress",()=>{
+    return true
+})
+
 
     const handleClockOutPress = async () => {
 
@@ -69,6 +74,12 @@ function ClockOut({ navigation, route }: any) {
 
             axios.get(`${Base_Uri}api/tutorFirstReportListing/${tutorID}`).then(({ data }) => {
                 let { tutorReportListing } = data
+                setLoading(false)
+
+                console.log(tutorReportListing, "tutorReporrLiSTING")
+                console.log(items, "items")
+                console.log(data, "data")
+
                 if (tutorReportListing && tutorReportListing.length > 0) {
                     setLoading(false)
                     ToastAndroid.show("Class Clockout Successfull", ToastAndroid.SHORT)
