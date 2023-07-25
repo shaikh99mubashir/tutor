@@ -9,7 +9,8 @@ import {
   TextInput,
   ActivityIndicator,
   Platform,
-  PermissionsAndroid
+  PermissionsAndroid,
+  NativeModules
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Theme } from '../../constant/theme';
@@ -18,11 +19,9 @@ import { useGestureHandlerRef } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
-import ReactNativeRenderHtml from 'react-native-render-html';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
-import RNFetchBlob from 'rn-fetch-blob';
-import RNFS from 'react-native-fs';
-// import Blob from "blob"
+import Pdf from 'react-native-pdf';
+
 
 const ReportSubmissionHistory = ({ navigation }: any) => {
   const [reportSubmission, setreportSubmission] = useState([
@@ -57,6 +56,8 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
   ]);
   const [foundName, setFoundName] = useState([]);
   const [loading, setLoading] = useState(false)
+  const [pdfUri, setPdfUri] = React.useState('');
+
 
   const getReportSubmissionHistory = async () => {
 
@@ -100,8 +101,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
   };
 
 
-  const generateAndDownalodPdf = async (item: any) => {
-
+  const generateAndDownalodPdf = async (item: any): Promise<string | undefined> => {
     try {
       const options = {
         html: `<html><body>
@@ -158,62 +158,35 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
         </body></html>`,
         fileName: `report${Math.random()}`,
         directory: 'Downloads',
-        base64: true,
+        base64: false,
       };
-
       if (Platform.OS === 'android') {
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
         );
 
-        console.log(granted, "granted")
-
         if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
           console.error('Permission denied for writing to external storage.');
-          return;
+          return
         }
       }
 
-
       const pdfFile = await RNHTMLtoPDF.convert(options);
-      console.log(pdfFile, "file");
+      const { filePath }: any = pdfFile;
+      return filePath
+    } catch (error) {
+      console.log('Error generating and downloading the PDF:', error);
+      throw error
+    }
+  };
 
-      const { base64 } = pdfFile
-      const { filePath }: any = pdfFile
-
-
-
-      const pdfBlob = RNFetchBlob.base64.decode(base64);
-
-      const destPath =
-        Platform.OS === 'android'
-          ? `${RNFetchBlob.fs.dirs.DocumentDir}/`
-          : `${RNFetchBlob.fs.dirs.DocumentDir}/`;
-
-      await RNFetchBlob.fs.writeFile(destPath, pdfBlob, 'base64');
-      RNFetchBlob.android.actionViewIntent(destPath, 'application/pdf');
-
-      // if (Platform.OS === 'android') {
-      //   const config = {
-      //     fileCache: true,
-      //     addAndroidDownloads: {
-      //       useDownloadManager: true,
-      //       notification: true,
-      //       title: 'Download PDF',
-      //       description: 'Downloading PDF file...',
-      //       mime: 'application/pdf',
-      //       mediaScannable: true,
-      //       notificationOpenAfterDelete: true,
-      //     },
-      //   };
-      //   console.log(config, "config")
-      //   await RNFetchBlob.config(config).fetch('GET', destPath).catch((error) => {
-      //     console.log(error, "error")
-      //   });
-      // }
+  const handleGenerateAndDownloadPdf = async (item: any) => {
+    try {
+      const pdfUri: any = await generateAndDownalodPdf(item);
+      setPdfUri(pdfUri); // Set the local file URI of the downloaded PDF
 
     } catch (error) {
-      console.log(error, "error");
+      console.log('Error generating and downloading the PDF:', error);
     }
   };
 
@@ -221,120 +194,131 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
   return (
     loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
       <ActivityIndicator size="large" color={Theme.black} />
-    </View> : <View style={{ backgroundColor: Theme.white, height: '100%' }}>
-      <Header title="Student" backBtn navigation={navigation} />
-      <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{ paddingHorizontal: 15 }}>
-          {/* Search */}
-          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-            <View
-              style={{
-                width: '100%',
-                backgroundColor: Theme.lightGray,
-                borderRadius: 10,
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingVertical: 4,
-                paddingHorizontal: 10,
-                marginVertical: 15,
-              }}>
-              <TextInput
-                placeholder="Search"
-                placeholderTextColor="black"
-                onChangeText={e => searchStudent(e)}
-                style={{ width: '90%', padding: 8, color: 'black' }}
-              />
-              <TouchableOpacity onPress={() => navigation}>
-                <Image
-                  source={require('../../Assets/Images/search.png')}
-                  style={{ width: 20, height: 20 }}
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          {reportSubmission && reportSubmission.length > 0 ? (
-            <FlatList
-              data={
-                searchText && foundName.length > 0
-                  ? foundName
-                  : reportSubmission
-              }
-              nestedScrollEnabled
-              renderItem={({ item, index }: any) => {
-                return (
-                  <View
-                    key={index}
-                    style={{
-                      borderWidth: 1,
-                      paddingHorizontal: 15,
-                      marginTop: 10,
-                      paddingVertical: 15,
-                      borderRadius: 10,
-                      gap: 10,
-                      marginRight: 10,
-                      borderColor: '#eee',
-                      width: '100%',
-                    }}>
-                    {/* Avaiable Subject */}
-                    <View style={{}}>
-                      <Text
-                        style={{
-                          color: Theme.black,
-                          fontSize: 15,
-                          fontWeight: '600',
-                        }}>
-                        {item.studentID}
-                      </Text>
-                      <Text
-                        style={{
-                          color: Theme.gray,
-                          fontSize: 15,
-                          fontWeight: '600',
-                          paddingVertical: 10,
-                        }}>
-                        {item.studentName}
-                      </Text>
-                      <Text
-                        style={{
-                          color: Theme.black,
-                          fontSize: 15,
-                          fontWeight: '600',
-                        }}>
-                        Subimited on {item.created_at}
-                      </Text>
-                      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text
-                          style={{
-                            color: Theme.gray,
-                            fontSize: 15,
-                            fontWeight: '600',
-                            paddingTop: 10,
-                          }}>
-                          {item?.tutorReportType}
-                        </Text>
-                        <TouchableOpacity onPress={() => generateAndDownalodPdf(item)} style={{ alignItems: "center" }} >
-                          <Image source={require('../../Assets/Images/inbox.png')} style={{ width: 30, height: 30 }} resizeMode='contain' />
-                          <Text style={{ fontSize: 10, color: "black" }}>Download</Text>
-                        </TouchableOpacity>
-                      </View>
-                    </View>
-                  </View>
-                );
-              }}
-            />
-          ) : (
-            <View style={{ marginTop: 35 }}>
-              <Text
-                style={{ color: Theme.black, fontSize: 14, textAlign: 'center' }}>
-                No Record Found...
-              </Text>
-            </View>
-          )}
-        </View>
-      </ScrollView>
     </View>
+      :
+      pdfUri ? <View style={{ flex: 1 }} >
+        <Pdf source={{ uri: pdfUri }} style={{ flex: 1, backgroundColor: "gray", marginBottom: 5 }} />
+        <TouchableOpacity onPress={() => setPdfUri("")} style={{ width: "100%", alignSelf: "center", padding: 10, backgroundColor: "black" }} >
+          <Text style={{ fontSize: 16, textAlign: "center", color: "white" }} >
+            Go Back
+          </Text>
+        </TouchableOpacity>
+      </View>
+        :
+        <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+          <Header title="Student" backBtn navigation={navigation} />
+          <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
+            <View style={{ paddingHorizontal: 15 }}>
+              {/* Search */}
+              <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                <View
+                  style={{
+                    width: '100%',
+                    backgroundColor: Theme.lightGray,
+                    borderRadius: 10,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingVertical: 4,
+                    paddingHorizontal: 10,
+                    marginVertical: 15,
+                  }}>
+                  <TextInput
+                    placeholder="Search"
+                    placeholderTextColor="black"
+                    onChangeText={e => searchStudent(e)}
+                    style={{ width: '90%', padding: 8, color: 'black' }}
+                  />
+                  <TouchableOpacity onPress={() => navigation}>
+                    <Image
+                      source={require('../../Assets/Images/search.png')}
+                      style={{ width: 20, height: 20 }}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              {reportSubmission && reportSubmission.length > 0 ? (
+                <FlatList
+                  data={
+                    searchText && foundName.length > 0
+                      ? foundName
+                      : reportSubmission
+                  }
+                  nestedScrollEnabled
+                  renderItem={({ item, index }: any) => {
+                    return (
+                      <View
+                        key={index}
+                        style={{
+                          borderWidth: 1,
+                          paddingHorizontal: 15,
+                          marginTop: 10,
+                          paddingVertical: 15,
+                          borderRadius: 10,
+                          gap: 10,
+                          marginRight: 10,
+                          borderColor: '#eee',
+                          width: '100%',
+                        }}>
+                        {/* Avaiable Subject */}
+                        <View style={{}}>
+                          <Text
+                            style={{
+                              color: Theme.black,
+                              fontSize: 15,
+                              fontWeight: '600',
+                            }}>
+                            {item.studentID}
+                          </Text>
+                          <Text
+                            style={{
+                              color: Theme.gray,
+                              fontSize: 15,
+                              fontWeight: '600',
+                              paddingVertical: 10,
+                            }}>
+                            {item.studentName}
+                          </Text>
+                          <Text
+                            style={{
+                              color: Theme.black,
+                              fontSize: 15,
+                              fontWeight: '600',
+                            }}>
+                            Subimited on {item.created_at}
+                          </Text>
+                          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <Text
+                              style={{
+                                color: Theme.gray,
+                                fontSize: 15,
+                                fontWeight: '600',
+                                paddingTop: 10,
+                              }}>
+                              {item?.tutorReportType}
+                            </Text>
+                            <TouchableOpacity onPress={() => handleGenerateAndDownloadPdf(item)} style={{ alignItems: "center" }} >
+                              <Image source={require('../../Assets/Images/inbox.png')} style={{ width: 30, height: 30 }} resizeMode='contain' />
+                              <Text style={{ fontSize: 10, color: "black" }}>Download</Text>
+                            </TouchableOpacity>
+                          </View>
+                        </View>
+                      </View>
+                    );
+                  }}
+                />
+              ) : (
+                <View style={{ marginTop: 35 }}>
+                  <Text
+                    style={{ color: Theme.black, fontSize: 14, textAlign: 'center' }}>
+                    No Record Found...
+                  </Text>
+                </View>
+              )}
+            </View>
+          </ScrollView>
+        </View>
   );
 };
 
