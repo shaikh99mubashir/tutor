@@ -5,6 +5,9 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  Touchable,
+  Linking,
+  Platform,
 } from 'react-native';
 import React from 'react';
 import Header from '../../Component/Header';
@@ -12,6 +15,39 @@ import { Theme } from '../../constant/theme';
 
 const StudentsDetails = ({ navigation, route }: any) => {
   const data = route.params;
+
+
+  const makeCall = () => {
+
+    const url = `tel:${data.studentPhone}`;
+    Linking.openURL(url);
+  }
+
+  const makeWhatappCall = () => {
+
+    const url = Platform.OS === 'ios'
+      ? `whatsapp://send?phone=${data.studentWhatsapp}`
+      : `whatsapp://send?text=Hello&phone=${"+921234567890"}`;
+
+    Linking.openURL(url);
+  }
+
+  const GoToStudentDirection = () => {
+
+    let url = '';
+    // let latitude = 40.712776
+    // let longitude = -74.005974
+
+    if (Platform.OS === 'ios') {
+      url = `http://maps.apple.com/?ll=${data.studentLatitude},${data.studentLongitude}`;
+    } else {
+      url = `https://www.google.com/maps/search/?api=1&query=${data.studentLatitude},${data.studentLongitude}`;
+    }
+
+    Linking.openURL(url);
+
+
+  }
 
   return (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
@@ -85,7 +121,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                {data.gender ? data.gender : "not provided"}
+                {data.studentGender ? data.studentGender : "not provided"}
               </Text>
             </View>
             {/* Age */}
@@ -105,7 +141,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                {data.age ? data.age : "not provided"}
+                {data.studentAge ? data.studentAge : "not provided"}
               </Text>
             </View>
             {/* Registration Date */}
@@ -125,7 +161,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                {data.registrationDate ? data.registrationDate : "not provided"}
+                {data.studentRegisterDate ? data.studentRegisterDate : "not provided"}
               </Text>
             </View>
           </View>
@@ -177,7 +213,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                {data.email ? data.email : "not provided"}
+                {data.studentEmail ? data.studentEmail : "not provided"}
               </Text>
             </View>
             {/* Contact */}
@@ -197,7 +233,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                {data?.contactNo ? data.contactNo : "not provided"}
+                {data?.studentPhone ? data.studentPhone : "not provided"}
               </Text>
             </View>
             {/* Adress */}
@@ -228,7 +264,8 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 paddingVertical: 10,
                 paddingHorizontal: 10,
               }}>
-              <View
+              <TouchableOpacity
+                onPress={() => makeCall()}
                 style={{
                   backgroundColor: Theme.lightGray,
                   padding: 10,
@@ -239,8 +276,9 @@ const StudentsDetails = ({ navigation, route }: any) => {
                   style={{ width: 30, height: 30 }}
                   resizeMode="contain"
                 />
-              </View>
-              <View
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={makeWhatappCall}
                 style={{
                   backgroundColor: 'lightgreen',
                   padding: 10,
@@ -251,8 +289,10 @@ const StudentsDetails = ({ navigation, route }: any) => {
                   style={{ width: 30, height: 30 }}
                   resizeMode="contain"
                 />
-              </View>
-              <View
+              </TouchableOpacity>
+              <TouchableOpacity
+
+                onPress={GoToStudentDirection}
                 style={{
                   backgroundColor: 'pink',
                   padding: 10,
@@ -263,7 +303,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                   style={{ width: 30, height: 30 }}
                   resizeMode="contain"
                 />
-              </View>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -285,7 +325,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
             width: '94%',
           }}>
           <TouchableOpacity
-            onPress={() => navigation.navigate('Status')}
+            onPress={() => navigation.navigate('Status',data)}
             style={{
               alignItems: 'center',
               padding: 10,

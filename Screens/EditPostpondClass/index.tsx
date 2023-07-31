@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView,ToastAndroid } from "react-native"
+import { View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, ScrollView, ToastAndroid, ActivityIndicator } from "react-native"
 import { Theme } from "../../constant/theme";
 import CustomHeader from "../../Component/Header";
 import AntDesign from "react-native-vector-icons/EvilIcons"
@@ -11,21 +11,6 @@ function EditPostpondClass({ navigation, route }: any) {
 
     let data = route.params?.data
 
-    const editTutorPostPonedClass = () => {
-
-
-        axios.get(`${Base_Uri}attendedClassStatus/${data?.class_schedule_id}/postponed`).then(({data})=>{
-    
-            ToastAndroid.show(data?.SuccessMessage,ToastAndroid.SHORT)
-    
-        }).catch((error)=>{
-            ToastAndroid.show('Internal Server Error',ToastAndroid.SHORT)
-        })
-    
-    }
-    
-
-
     const [postponedReason, setPostponedReason] = useState<any>("")
     const [mode, setMode] = useState<any>('date');
     const [clickedStartTime, setClickedStartTime] = useState(false)
@@ -34,11 +19,57 @@ function EditPostpondClass({ navigation, route }: any) {
     const [value, setValue] = useState(new Date())
 
 
-    const [nextClass, setNextClass] = useState({
+    const initialData = {
         date: new Date(),
         startTime: "-",
         endTime: "-"
-    })
+    }
+
+
+    const [nextClass, setNextClass] = useState(initialData)
+
+
+    console.log(nextClass)
+
+    const [loading, setLoading] = useState(false)
+
+    const editTutorPostPonedClass = () => {
+
+        if (!postponedReason) {
+            ToastAndroid.show("Kindly enter postponed reason", ToastAndroid.SHORT)
+            return
+        }
+        if (!nextClass.date) {
+            ToastAndroid.show("Kindly enter next class Date", ToastAndroid.SHORT)
+            return
+        }
+        if (!nextClass.startTime || (nextClass.startTime == "-")) {
+            ToastAndroid.show("Kindly enter next class start time", ToastAndroid.SHORT)
+            return
+        }
+        if (!nextClass.endTime || (nextClass.endTime == "-")) {
+            ToastAndroid.show("Kindly enter next class end time", ToastAndroid.SHORT)
+            return
+        }
+
+
+        setLoading(true)
+        axios.get(`${Base_Uri}attendedClassStatus/${data?.class_schedule_id}/postponed`).then(({ data }) => {
+
+            setLoading(false)
+            setNextClass(initialData)
+            ToastAndroid.show(data?.SuccessMessage, ToastAndroid.SHORT)
+
+        }).catch((error) => {
+            setLoading(false)
+            ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT)
+        })
+
+    }
+
+
+
+
 
 
     const onChange = (event: any, selectedDate: any) => {
@@ -95,7 +126,9 @@ function EditPostpondClass({ navigation, route }: any) {
     }
 
     return (
-        <KeyboardAvoidingView style={{ flex: 1, backgroundColor: Theme.white }} behavior="padding">
+        loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+            <ActivityIndicator size="large" color={Theme.black} />
+        </View> : <KeyboardAvoidingView style={{ flex: 1, backgroundColor: Theme.white }} behavior="padding">
             <View>
                 <CustomHeader title="Edit Class" backBtn />
             </View>
@@ -179,7 +212,7 @@ function EditPostpondClass({ navigation, route }: any) {
                 </ScrollView>
             </View>
             <View style={{ width: "100%", alignItems: "center", marginBottom: 20 }} >
-                <TouchableOpacity onPress={()=>editTutorPostPonedClass()} style={{ backgroundColor: Theme.darkGray, padding: 15, borderRadius: 10, width: "95%" }} >
+                <TouchableOpacity onPress={() => editTutorPostPonedClass()} style={{ backgroundColor: Theme.darkGray, padding: 15, borderRadius: 10, width: "95%" }} >
                     <Text style={{ textAlign: "center", fontSize: 16, color: Theme.white }} >
                         Confirm Class
                     </Text>

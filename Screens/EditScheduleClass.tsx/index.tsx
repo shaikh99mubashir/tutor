@@ -1,9 +1,7 @@
-import React from "react";
-import { View, Text, TouchableOpacity, ToastAndroid } from "react-native"
+import React, { useState } from "react";
+import { View, Text, TouchableOpacity, ToastAndroid, ActivityIndicator } from "react-native"
 import { Theme } from "../../constant/theme";
-
 import CustomHeader from "../../Component/Header";
-
 import AntDesign from "react-native-vector-icons/EvilIcons"
 import axios from "axios";
 import { Base_Uri } from "../../constant/BaseUri";
@@ -11,24 +9,29 @@ import { Base_Uri } from "../../constant/BaseUri";
 function EditScheduleClass({ navigation, route }: any) {
 
     let data = route.params?.data
+    const [loading, setLoading] = useState(false)
 
-const editTutorScheduleClass = () => {
 
+    const editTutorScheduleClass = () => {
 
-    axios.get(`${Base_Uri}attendedClassStatus/${data?.class_schedule_id}/schedule`).then(({data})=>{
+        setLoading(true)
+        axios.get(`${Base_Uri}attendedClassStatus/${data?.class_schedule_id}/schedule`).then(({ data }) => {
 
-        ToastAndroid.show(data?.SuccessMessage,ToastAndroid.SHORT)
+            ToastAndroid.show(data?.SuccessMessage, ToastAndroid.SHORT)
+            setLoading(false)
+        }).catch((error) => {
+            setLoading(false)
+            ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT)
+        })
 
-    }).catch((error)=>{
-        ToastAndroid.show('Internal Server Error',ToastAndroid.SHORT)
-    })
-
-}
+    }
 
     return (
-        <View style={{ flex: 1, backgroundColor: Theme.white }} >
+        loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+            <ActivityIndicator size="large" color={Theme.black} />
+        </View> : <View style={{ flex: 1, backgroundColor: Theme.white }} >
             <View>
-            <CustomHeader title="Edit Class" backBtn />
+                <CustomHeader title="Edit Class" backBtn />
             </View>
 
             <View style={{ flex: 1, padding: 20 }} >
@@ -95,7 +98,7 @@ const editTutorScheduleClass = () => {
             </View>
 
             <View style={{ position: "absolute", width: "100%", bottom: 20, alignItems: "center" }} >
-                <TouchableOpacity onPress={()=>editTutorScheduleClass()} style={{ backgroundColor: Theme.darkGray, padding: 15, borderRadius: 10, width: "95%" }} >
+                <TouchableOpacity onPress={() => editTutorScheduleClass()} style={{ backgroundColor: Theme.darkGray, padding: 15, borderRadius: 10, width: "95%" }} >
                     <Text style={{ textAlign: "center", fontSize: 16, color: Theme.white }} >
                         Confirm Class
                     </Text>

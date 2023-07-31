@@ -75,7 +75,7 @@ function Schedule({ navigation }: any) {
     let loginData: LoginAuth = JSON.parse(login);
     let { tutorID } = loginData;
     axios
-      .get(`${Base_Uri}getClassSchedulesTime/${16}`)
+      .get(`${Base_Uri}getClassSchedulesTime/${tutorID}`)
       .then(({ data }) => {
         let { classSchedulesTime } = data;
         classSchedulesTime =
@@ -314,6 +314,9 @@ function Schedule({ navigation }: any) {
   }
 
   const renderScheduleData = ({ item, index }: any): any => {
+
+    console.log(item, "mYitems")
+
     return (
       <TouchableOpacity
         onPress={() => handleSelectPress(index)}

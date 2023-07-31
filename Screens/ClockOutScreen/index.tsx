@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react"
 import MapView, { Marker } from "react-native-maps"
-import { View, Text, TouchableOpacity, Image, PermissionsAndroid, BackHandler,ToastAndroid, ActivityIndicator } from "react-native"
+import { View, Text, TouchableOpacity, Image, PermissionsAndroid, BackHandler, ToastAndroid, ActivityIndicator } from "react-native"
 import { Theme } from "../../constant/theme"
 import Header from "../../Component/Header"
 import { launchCamera } from "react-native-image-picker"
@@ -8,6 +8,7 @@ import Geolocation from "@react-native-community/geolocation"
 import axios from "axios"
 import { Base_Uri } from "../../constant/BaseUri"
 import noteContext from "../../context/noteContext"
+import { useIsFocused } from "@react-navigation/native"
 
 function ClockOut({ navigation, route }: any) {
 
@@ -18,6 +19,13 @@ function ClockOut({ navigation, route }: any) {
 
     const data = route?.params
     const items = route?.params
+
+    console.log(items, "itemsss")
+
+    const focus = useIsFocused()
+
+
+    // console.log(items,"items")
 
 
     const [currentLocation, setCurrentLocation] = useState<any>({
@@ -45,9 +53,18 @@ function ClockOut({ navigation, route }: any) {
 
     }, [])
 
-BackHandler.addEventListener("hardwareBackPress",()=>{
-    return true
-})
+    // useEffect(() => {
+
+    //     const backHandler = BackHandler.addEventListener("hardwareBackPress", () => {
+    //         if (focus) {
+    //             return true
+    //         } else {
+    //             return false
+    //         }
+    //     })
+    //     return () => backHandler.remove();
+    // }, [])
+
 
 
     const handleClockOutPress = async () => {
@@ -72,29 +89,25 @@ BackHandler.addEventListener("hardwareBackPress",()=>{
             },
         }).then((res) => {
 
-            axios.get(`${Base_Uri}api/tutorFirstReportListing/${tutorID}`).then(({ data }) => {
-                let { tutorReportListing } = data
-                setLoading(false)
+            axios.get(`${Base_Uri}getClassAttendedTime/${tutorID}`).then(({ data }) => {
+                let { classAttendedTime } = data
 
-                console.log(tutorReportListing, "tutorReporrLiSTING")
-                console.log(items, "items")
-                console.log(data, "data")
+                let thisClass = classAttendedTime && classAttendedTime?.length > 0 && classAttendedTime.filter((e: any, i: number) => {
+                    return e.ticketID == items.ticketID && e.is_report_submitted !== "no"
+                })
 
-                if (tutorReportListing && tutorReportListing.length > 0) {
+                if (thisClass && thisClass.length > 0) {
+
+
+                    navigation.replace("Home")
                     setLoading(false)
-                    ToastAndroid.show("Class Clockout Successfull", ToastAndroid.SHORT)
-                    navigation.navigate("Home")
+
                 } else {
+                    navigation.replace("ReportSubmission")
                     setLoading(false)
-                    ToastAndroid.show("Class Clockout Successfull", ToastAndroid.SHORT)
-                    navigation.navigate("BackToDashboard")
                 }
+
             })
-
-
-
-
-
 
 
         }).catch((error) => {
@@ -110,7 +123,7 @@ BackHandler.addEventListener("hardwareBackPress",()=>{
     let totalMinutes;
 
 
-    if ((data.endHour - data.startHour).toString().includes("-")) {
+    if ((data.endHour - data.startHour)?.toString()?.includes("-")) {
         let endHour = 24 - data.startHour
 
         let totalEndMinutes = (endHour * 60) + data.endMinutes

@@ -1,14 +1,90 @@
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
 import Header from '../../Component/Header';
 import { Theme } from '../../constant/theme';
+import CustomDropDown from '../../Component/CustomDropDown';
+import axios from 'axios';
+import { Base_Uri } from '../../constant/BaseUri';
 
-const Status = ({ navigation }: any) => {
+const Status = ({ navigation, route }: any) => {
+
+
+  let data = route.params
+
+
+  const [status, setStatus] = useState([
+    {
+      subject: "active"
+    },
+    {
+      subject: "inActive"
+    }
+
+  ])
+
+  interface ISelected {
+    subject: string
+  }
+
+
+  const [selectedStatus, setSelectedStatus] = useState<any>("")
+
+  const [loading, setLoading] = useState(false)
+
+
   const [editStatus, seteditStatus] = useState({
     reason: '',
   });
+
+  const handleEditStatus = () => {
+
+    if (!selectedStatus) {
+      ToastAndroid.show("Kindly select Status", ToastAndroid.SHORT)
+      return
+    }
+    if (!editStatus.reason) {
+      ToastAndroid.show("Kindly Write Reason", ToastAndroid.SHORT)
+      return
+    }
+
+
+    setLoading(true)
+
+
+
+
+    let formData = new FormData()
+    formData.append("studentID", data.studentID)
+    formData.append("reasonStatus", editStatus.reason)
+    formData.append("status", selectedStatus?.subject)
+
+    console.log(formData, "formData")
+
+    axios.post(`${Base_Uri}api/editStatus`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }).then((res) => {
+
+      setLoading(false)
+      ToastAndroid.show(res?.data?.response, ToastAndroid.SHORT)
+      setSelectedStatus("")
+
+
+
+    }).catch((error) => {
+      setLoading(false)
+      console.log(error, "error")
+    })
+
+
+  }
+
+
   return (
-    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+    loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+      <ActivityIndicator size={"large"} color={Theme.black} />
+    </View> : <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="Status" backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <View style={{ paddingHorizontal: 15 }}>
@@ -28,9 +104,20 @@ const Status = ({ navigation }: any) => {
                 fontWeight: '600',
                 marginTop: 5,
               }}>
-              Testing
+              {data?.studentName}
             </Text>
           </View>
+
+
+          <CustomDropDown
+            setSelectedSubject={setSelectedStatus}
+            selectedSubject={selectedStatus}
+            ddTitle="Status" headingStyle={{ color: Theme.black, fontWeight: "700" }}
+            dropdownPlace={"Select Status"}
+            dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }}
+            subject={status} categoryShow={"subject"} />
+
+
           {/* Comment */}
           <View style={{ marginBottom: 100 }}>
             <Text
@@ -91,7 +178,7 @@ const Status = ({ navigation }: any) => {
             width: '94%',
           }}>
           <TouchableOpacity
-            // onPress={}
+            onPress={handleEditStatus}
             style={{
               alignItems: 'center',
               padding: 10,

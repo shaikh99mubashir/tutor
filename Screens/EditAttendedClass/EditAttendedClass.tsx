@@ -5,6 +5,8 @@ import {
   ToastAndroid,
   TouchableOpacity,
   TextInput,
+  ActivityIndicator,
+
   ScrollView,
   KeyboardAvoidingView,
 } from 'react-native';
@@ -14,20 +16,33 @@ import DocumentPicker from 'react-native-document-picker';
 import AntDesign from 'react-native-vector-icons/EvilIcons';
 import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
+import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 
 function EditAttendedClass({ navigation, route }: any) {
   let data = route.params?.data;
 
-  const [cancelledReason, setCancelledReason] = useState('');
+  const [loading, setLoading] = useState(false)
+
   const [file, setFile] = useState<any>({});
+
+
 
   const changeStatus = () => {
 
+    if (Object.keys(file).length == 0) {
+      ToastAndroid.show("Kindly attach file", ToastAndroid.SHORT)
+      return
+    }
+
+    setLoading(true)
     axios.get(`${Base_Uri}attendedClassStatus/${data?.class_schedule_id}/attended`).then(({ data }) => {
 
       ToastAndroid.show(data?.SuccessMessage, ToastAndroid.SHORT)
+      setLoading(false)
+      setFile({})
 
     }).catch((error) => {
+      setLoading(false)
       ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT)
     })
 
@@ -39,7 +54,7 @@ function EditAttendedClass({ navigation, route }: any) {
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
-      
+
       setFile(res[0]);
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
@@ -51,7 +66,9 @@ function EditAttendedClass({ navigation, route }: any) {
   };
 
   return (
-    <KeyboardAvoidingView
+    loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+      <ActivityIndicator size="large" color={Theme.black} />
+    </View> : <KeyboardAvoidingView
       behavior="height"
       style={{ flex: 1, backgroundColor: Theme.white }}>
       <View>

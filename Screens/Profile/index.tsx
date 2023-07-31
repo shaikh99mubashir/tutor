@@ -5,6 +5,7 @@ import {
   ToastAndroid,
   View,
   TextInput,
+  Platform,
   TouchableOpacity,
   Image,
   ActivityIndicator,
@@ -18,6 +19,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
+import RNHTMLtoPDF from "react-native-html-to-pdf"
+import Share from "react-native-share"
 
 
 const Profile = ({ navigation }: any) => {
@@ -43,8 +46,6 @@ const Profile = ({ navigation }: any) => {
   const context = useContext(TutorDetailsContext)
 
   let tutorDetail = context?.tutorDetails
-
-  console.log(tutorDetail, "DETAIL")
 
 
 
@@ -88,6 +89,63 @@ const Profile = ({ navigation }: any) => {
   //   getTutorDetails();
   // }, []);
 
+  const generateAndDownalodPdf = async (item: any): Promise<string | undefined> => {
+    try {
+      const options = {
+        html: `<html><body>
+        <div>
+        <h1>Tutor Name</h1>
+        <h2>${item.full_name}</h3>
+        </div>
+        <div>
+        <h1>Tutor Email</h1>
+        <h3>${item.email}</h3>
+        </div>
+        <div>
+        <div>
+        <h1>Tutor Age</h1>
+        <h3>${item.age}</h3>
+        </div>
+        <div>
+        <h1>Tutor Gender</h1>
+        <h3>${item.gender ?? "Not Provided"}</h3>
+        </div>
+        <div>
+        <h1>Tutor NRIC</h1>
+        <h3>${item.nric}</h3>
+        </div>
+        <div>
+        <div>
+        <h1>Tutor PhoneNumber</h1>
+        <h3>${item.phoneNumber}</h3>
+        </div>
+        
+        </body></html>`,
+        fileName: `tutor${Math.random()}`,
+        directory: 'Downloads',
+        base64: false,
+      };
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+        );
+
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+          console.error('Permission denied for writing to external storage.');
+          return
+        }
+      }
+
+      const pdfFile = await RNHTMLtoPDF.convert(options);
+      const { filePath }: any = pdfFile;
+      return filePath
+    } catch (error) {
+      console.log('Error generating and downloading the PDF:', error);
+      throw error
+    }
+  };
+
+
   const uploadProfilePicture = async () => {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -111,6 +169,28 @@ const Profile = ({ navigation }: any) => {
       }
     }
   };
+
+  const sendTutorDetails = async () => {
+
+
+    try {
+      const pdfUri: any = await generateAndDownalodPdf(tutorDetail);
+
+      await Share.open({
+        url: `file://${pdfUri}`,
+        type: 'application/pdf',
+      });
+
+    } catch (error) {
+      console.log('Error generating and downloading the PDF:', error);
+    }
+
+
+
+
+  }
+
+
   return (
     loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
       <ActivityIndicator size="large" color={Theme.black} />
@@ -366,7 +446,7 @@ const Profile = ({ navigation }: any) => {
             width: '94%',
           }}>
           <TouchableOpacity
-            // onPress={}
+            onPress={sendTutorDetails}
             style={{
               alignItems: 'center',
               padding: 10,

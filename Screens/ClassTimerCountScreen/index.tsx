@@ -21,6 +21,9 @@ function ClassTimerCount({ navigation, route }: any) {
     let startTime = route.params
     let item = route.params
 
+
+    console.log(item, "itemssss")
+
     const [endTime, setEndTime] = useState("2:00 Pm")
     const [loading, setLoading] = useState(false)
 
@@ -49,15 +52,6 @@ function ClassTimerCount({ navigation, route }: any) {
                     let startHour = item.startMinutes
                     let startMinutes = item.startSeconds
 
-
-                    // starthours = 23 
-                    // hour = 1
-                    //endHour 24 ? 0 : endHour
-
-                    //start minutes = 47
-                    //end minutes = 13
-                    //endMinutes = 60 ? 0 && endHour + 1 : endMinutes
-
                     let endHour = startHour + hour == 24 ? 0 : startHour + hour
                     let endMinutes = startMinutes + minutes
                     if (startMinutes + minutes == 60) {
@@ -78,7 +72,9 @@ function ClassTimerCount({ navigation, route }: any) {
                         hasIncentive: item?.hasIncentive ? item?.hasIncentive : 0,
                         uri: assets[0].uri,
                         type: assets[0].type,
-                        filename: assets[0].fileName
+                        filename: assets[0].fileName,
+                        ticketID: item?.item?.ticketID
+
                     }
                     cleanTime()
                     AsyncStorage.removeItem("classInProcess")

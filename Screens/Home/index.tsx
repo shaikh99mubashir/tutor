@@ -25,7 +25,7 @@ function Home({ navigation }: any) {
   const context = useContext(TutorDetailsContext)
   const filter = useContext(filterContext)
   const studentAndSubjectContext = useContext(StudentContext)
-  const {setCategory,setSubjects,setState,setCity} = filter
+  const { setCategory, setSubjects, setState, setCity } = filter
 
 
   const { tutorDetails, updateTutorDetails } = context
@@ -132,120 +132,120 @@ function Home({ navigation }: any) {
   }, [focus]);
 
 
-const getCategory = () => {
-  axios.get(`${Base_Uri}getCategories`).then(({ data }) => {
+  const getCategory = () => {
+    axios.get(`${Base_Uri}getCategories`).then(({ data }) => {
 
 
-    let { categories } = data
+      let { categories } = data
 
-    let myCategories = categories && categories.length > 0 && categories.map((e: any, i: Number) => {
-      if (e.category_name) {
-        return {
-          subject: e.category_name,
-          id: e.id
+      let myCategories = categories && categories.length > 0 && categories.map((e: any, i: Number) => {
+        if (e.category_name) {
+          return {
+            subject: e.category_name,
+            id: e.id
+          }
         }
-      }
+      })
+      setCategory(myCategories)
+
+    }).catch((error) => {
+      console.log(error)
     })
-    setCategory(myCategories)
+  }
 
-  }).catch((error) => {
-    console.log(error)
-  })
-}
+  const getSubject = () => {
 
-const getSubject = () => {
-
-  axios.get(`${Base_Uri}getSubjects`).then(({ data }) => {
+    axios.get(`${Base_Uri}getSubjects`).then(({ data }) => {
 
 
 
-    let { subjects } = data
+      let { subjects } = data
 
-    let mySubject = subjects && subjects.length > 0 && subjects.map((e: any, i: Number) => {
-      if (e.name) {
-        return {
-          subject: e.name,
-          id: e.id
+      let mySubject = subjects && subjects.length > 0 && subjects.map((e: any, i: Number) => {
+        if (e.name) {
+          return {
+            subject: e.name,
+            id: e.id
+          }
         }
-      }
+      })
+
+      setSubjects(mySubject)
+
+
+    }).catch((error) => {
+
+      console.log(error)
+
     })
-
-    setSubjects(mySubject)
-
-
-  }).catch((error) => {
-
-    console.log(error)
-
-  })
-}
+  }
 
 
-const getStates = () => {
+  const getStates = () => {
 
-  axios.get(`${Base_Uri}getStates`).then(({ data }) => {
+    axios.get(`${Base_Uri}getStates`).then(({ data }) => {
 
 
 
-    let { states } = data
+      let { states } = data
 
-    let myStates = states && states.length > 0 && states.map((e: any, i: Number) => {
-      if (e.name) {
-        return {
-          subject: e.name,
-          id: e.id
+      let myStates = states && states.length > 0 && states.map((e: any, i: Number) => {
+        if (e.name) {
+          return {
+            subject: e.name,
+            id: e.id
+          }
         }
-      }
+      })
+
+      setState(myStates)
+
+
+    }).catch((error) => {
+
+      console.log(error)
+
     })
 
-    setState(myStates)
+
+  }
 
 
-  }).catch((error) => {
-
-    console.log(error)
-
-  })
+  const getCities = () => {
 
 
-}
-
-
-const getCities = () => {
-
-
-  axios.get(`${Base_Uri}getCities`).then(({ data }) => {
+    axios.get(`${Base_Uri}getCities`).then(({ data }) => {
 
 
 
-    let { cities } = data
-    let myCities = cities && cities.length > 0 && cities.map((e: any, i: Number) => {
-      if (e.name) {
-        return {
-          subject: e.name,
-          id: e.id
+      let { cities } = data
+      let myCities = cities && cities.length > 0 && cities.map((e: any, i: Number) => {
+        if (e.name) {
+          return {
+            subject: e.name,
+            id: e.id
+          }
         }
-      }
+      })
+      setCity(myCities)
+
+    }).catch((error) => {
+
+      console.log(error)
+
     })
-    setCity(myCities)
-
-  }).catch((error) => {
-
-    console.log(error)
-
-  })
 
 
 
-}
+  }
 
 
-  useEffect(()=>{
+  useEffect(() => {
     getCategory()
     getSubject()
     getStates()
     getCities()
-  },[])
+  }, [])
 
 
 
@@ -279,7 +279,7 @@ const getCities = () => {
   useEffect(() => {
     tutorId && getNotificationLength()
     tutorId && getTutorDetails()
-    
+
   }, [tutorId])
 
   const getCummulativeCommission = () => {
@@ -361,7 +361,7 @@ const getCities = () => {
             }
           });
 
-          console.log(mySubject,"mySubjects")
+        console.log(mySubject, "mySubjects")
 
         updateSubject(mySubject)
       })

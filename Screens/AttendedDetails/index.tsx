@@ -64,7 +64,7 @@ const AttendedDetails = ({ navigation, route }: any) => {
             </Text>
             <Text
               style={{ color: Theme.black, fontSize: 15, fontWeight: 'bold' }}>
-              {data?.endT}
+              {data?.endTime}
             </Text>
           </View>
         </View>
