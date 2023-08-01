@@ -119,10 +119,7 @@ const ReportSubmission = ({ navigation }: any) => {
   });
   const EvalutionOption = [
     {
-      option: 'Hello World',
-    },
-    {
-      option: 'Hello World2',
+      option: 'Student Evaluation Report',
     },
   ];
   const Analysis = [
