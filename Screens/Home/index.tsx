@@ -265,6 +265,8 @@ function Home({ navigation }: any) {
           phoneNumber: tutorDetails.phoneNumber,
           age: tutorDetails.age,
           nric: tutorDetails.nric,
+          tutorImage: tutorDetails.tutorImage,
+          tutorId: tutorDetails?.id
         };
 
         updateTutorDetails(details)

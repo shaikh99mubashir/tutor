@@ -16,11 +16,12 @@ import { Theme } from '../../constant/theme';
 import { PermissionsAndroid } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
+import axios, { isAxiosError } from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import RNHTMLtoPDF from "react-native-html-to-pdf"
 import Share from "react-native-share"
+import { touch } from 'react-native-fs';
 
 
 const Profile = ({ navigation }: any) => {
@@ -42,10 +43,13 @@ const Profile = ({ navigation }: any) => {
   //   nric: '',
   // });
   const [loading, setLoading] = useState(false)
+  const [image, setImage] = useState("")
 
   const context = useContext(TutorDetailsContext)
 
   let tutorDetail = context?.tutorDetails
+
+  let { updateTutorDetails } = context
 
 
 
@@ -145,8 +149,12 @@ const Profile = ({ navigation }: any) => {
     }
   };
 
+  console.log(tutorDetail, "tutorDetail")
 
   const uploadProfilePicture = async () => {
+
+
+
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.CAMERA,
     );
@@ -164,8 +172,45 @@ const Profile = ({ navigation }: any) => {
       } else if (result.errorCode == 'others') {
         // setToastMsg(result.errorMessage);
       } else {
-        let imageUri = result.assets[0].uri;
 
+        setLoading(true)
+
+        let uri = result.assets[0].uri;
+        let type = result.assets[0].type
+        let name = result.assets[0].fileName
+
+        let formData = new FormData()
+        formData.append('tutorImage', {
+          uri: uri,
+          type: type,
+          name: name,
+        });
+        formData.append("tutorID", tutorDetail.tutorId)
+        formData.append("name", tutorDetail.full_name)
+        formData.append("email", tutorDetail.email)
+        formData.append('gender', tutorDetail.gender)
+        formData.append('nric', tutorDetail.nric)
+        formData.append('phone', tutorDetail.phoneNumber)
+        formData.append('age', tutorDetail.age)
+        axios.post(`${Base_Uri}api/editTutorProfile`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }).then(({ data }) => {
+          setLoading(false)
+          let { response } = data
+          let { tutorImage } = response
+
+          setImage(tutorImage)
+          tutorDetail.tutorImage = tutorImage
+          updateTutorDetails(tutorDetail)
+          ToastAndroid.show("Successfully Update Profile Picture", ToastAndroid.SHORT)
+
+        }).catch((error) => {
+          setLoading(false)
+          console.log(error)
+          ToastAndroid.show("Profile picture update unsuccessfull", ToastAndroid.SHORT)
+        })
       }
     }
   };
@@ -185,11 +230,11 @@ const Profile = ({ navigation }: any) => {
       console.log('Error generating and downloading the PDF:', error);
     }
 
-
-
-
   }
 
+  let imageUrl = image ? image : !tutorDetail.tutorImage ? "../../Assets/Images/plus.png" : tutorDetail.tutorImage.includes("https") ? tutorDetail.tutorImage : `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`
+
+  console.log(imageUrl, "image")
 
   return (
     loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
@@ -200,7 +245,7 @@ const Profile = ({ navigation }: any) => {
         <View style={{ paddingHorizontal: 15, marginBottom: 100 }}>
           <View style={{ paddingVertical: 15, alignItems: 'center' }}>
             <Image
-              source={require('../../Assets/Images/avatar.png')}
+              source={{ uri: imageUrl }}
               style={{ width: 80, height: 80 }}
               resizeMode="contain"
             />
