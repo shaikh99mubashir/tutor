@@ -29,49 +29,18 @@ const Filter = ({ navigation }: any) => {
 
 
   const [selectedCategory, setSelectedCategory] = useState('')
+  const [searchCategoryData, setSearchCategoryData] = useState([])
   const [selectedSubject, setSelectedSubject] = useState('')
+  const [searchSubjectData, setSearchSubjectData] = useState([])
   const [selectedMode, setSelectedMode] = useState('')
   const [selectedState, setSelectedState] = useState('')
+  const [searchStateData, setSearchStateData] = useState([])
   const [selectedCity, setSelectedCity] = useState('')
+  const [searchCityData, setSearchCityData] = useState([])
 
 
 
-  // const [categoryData, setCategory] = useState([
-  //   {
-  //     id: 1,
-  //     complain_name: 'asass',
-  //   },
-  //   {
-  //     id: 2,
-  //     complain_name: 'ass',
-  //   },
-  //   {
-  //     id: 3,
-  //     complain_name: 'asadshfss',
-  //   },
-  //   {
-  //     id: 3,
-  //     complain_name: 'asadshfdsss',
-  //   },
-  // ]);
-  // const [subject, setSubject] = useState([
-  //   {
-  //     id: 1,
-  //     subject: 'noD',
-  //   },
-  //   {
-  //     id: 2,
-  //     subject: 'physic',
-  //   },
-  //   {
-  //     id: 3,
-  //     subject: 'science',
-  //   },
-  //   {
-  //     id: 3,
-  //     subject: 'history',
-  //   },
-  // ])
+
   const [classMode, setClassMode] = useState([
     {
       id: 1,
@@ -83,173 +52,6 @@ const Filter = ({ navigation }: any) => {
     },
 
   ]);
-
-  // const [State, setState] = useState([
-  //   {
-  //     id: 1,
-  //     subject: 'sindh',
-  //   },
-  //   {
-  //     id: 2,
-  //     subject: 'punjab',
-  //   },
-  //   {
-  //     id: 3,
-  //     subject: 'Kpk',
-  //   },
-  //   {
-  //     id: 3,
-  //     subject: 'Baluchistan',
-  //   },
-  // ]);
-
-  // const [city, setCity] = useState([
-  //   {
-  //     id: 1,
-  //     subject: 'Karachi',
-  //   },
-  //   {
-  //     id: 2,
-  //     subject: 'Lahore',
-  //   },
-  //   {
-  //     id: 3,
-  //     subject: 'Peshawer',
-  //   },
-  //   {
-  //     id: 3,
-  //     subject: 'City',
-  //   },
-  // ]);
-
-
-
-  // const getCategories = () => {
-
-
-
-  //   axios.get(`${Base_Uri}getCategories`).then(({ data }) => {
-
-
-  //     let { categories } = data
-
-  //     let myCategories = categories && categories.length > 0 && categories.map((e: any, i: Number) => {
-  //       if (e.category_name) {
-  //         return {
-  //           subject: e.category_name,
-  //           id: e.id
-  //         }
-  //       }
-  //     })
-
-  //     setCategory(myCategories)
-
-
-
-  //   }).catch((error) => {
-
-  //     console.log(error)
-
-  //   })
-
-  // }
-
-
-  // const getSubject = () => {
-
-  //   axios.get(`${Base_Uri}getSubjects`).then(({ data }) => {
-
-
-
-  //     let { subjects } = data
-
-  //     let mySubject = subjects && subjects.length > 0 && subjects.map((e: any, i: Number) => {
-  //       if (e.name) {
-  //         return {
-  //           subject: e.name,
-  //           id: e.id
-  //         }
-  //       }
-  //     })
-
-  //     setSubject(mySubject)
-
-
-  //   }).catch((error) => {
-
-  //     console.log(error)
-
-  //   })
-  // }
-
-
-  // const getStates = () => {
-
-  //   axios.get(`${Base_Uri}getStates`).then(({ data }) => {
-
-
-
-  //     let { states } = data
-
-  //     let myStates = states && states.length > 0 && states.map((e: any, i: Number) => {
-  //       if (e.name) {
-  //         return {
-  //           subject: e.name,
-  //           id: e.id
-  //         }
-  //       }
-  //     })
-
-  //     setState(myStates)
-
-
-  //   }).catch((error) => {
-
-  //     console.log(error)
-
-  //   })
-
-
-  // }
-
-
-  // const getCities = () => {
-
-
-  //   axios.get(`${Base_Uri}getCities`).then(({ data }) => {
-
-
-
-  //     let { cities } = data
-  //     let myCities = cities && cities.length > 0 && cities.map((e: any, i: Number) => {
-  //       if (e.name) {
-  //         return {
-  //           subject: e.name,
-  //           id: e.id
-  //         }
-  //       }
-  //     })
-  //     setCity(myCities)
-
-  //   }).catch((error) => {
-
-  //     console.log(error)
-
-  //   })
-
-
-
-  // }
-
-  // useEffect(() => {
-
-  //   getCategories()
-  //   getSubject()
-  //   getStates()
-  //   getCities()
-
-  // }, [])
-
 
   const applyFilter = async () => {
 
@@ -285,6 +87,68 @@ const Filter = ({ navigation }: any) => {
 
   }
 
+  const handleSearchData = (text: string, type: string) => {
+
+    if (type == "category") {
+      let myData = category && category.length > 0 && category.filter((e: any, i: number) => {
+
+        if (e?.subject?.toLowerCase()?.includes(text?.toLowerCase())) {
+          return e
+        }
+      })
+      setSearchCategoryData(myData)
+    }
+    else if (type == "subject") {
+
+      let myData = subjects && subjects.length > 0 && subjects.filter((e: any, i: number) => {
+
+
+
+        if (e?.subject?.toLowerCase()?.includes(text?.toLowerCase())) {
+          return e
+        }
+      })
+
+      console.log(myData, "dataa")
+
+      setSearchSubjectData(myData)
+
+    }
+    else if (type == "state") {
+
+      let myData = state && state.length > 0 && state.filter((e: any, i: number) => {
+
+
+
+        if (e?.subject?.toLowerCase()?.includes(text?.toLowerCase())) {
+          return e
+        }
+      })
+
+      console.log(myData, "dataa")
+
+      setSearchStateData(myData)
+
+    }
+    else {
+
+      let myData = city && city.length > 0 && city.filter((e: any, i: number) => {
+
+
+
+        if (e?.subject?.toLowerCase()?.includes(text?.toLowerCase())) {
+          return e
+        }
+      })
+
+
+      setSearchCityData(myData)
+
+
+    }
+  }
+
+
   return (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="Filter" backBtn navigation={navigation} />
@@ -292,10 +156,21 @@ const Filter = ({ navigation }: any) => {
         <View style={{ paddingHorizontal: 15 }}>
           <CustomDropDown
             setSelectedSubject={setSelectedCategory}
+            search={"category"}
+            searchData={searchCategoryData}
+            searchFunc={handleSearchData}
             selectedSubject={selectedCategory}
-            ddTitle="Category" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select Category"} dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }} subject={category} categoryShow={"complain_name"} />
+            ddTitle="Category"
+            headingStyle={{ color: Theme.black, fontWeight: "700" }}
+            dropdownPlace={"Select Category"}
+            dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }}
+            subject={category}
+            categoryShow={"complain_name"} />
           <CustomDropDown
             setSelectedSubject={setSelectedSubject}
+            search={"subject"}
+            searchData={searchSubjectData}
+            searchFunc={handleSearchData}
             selectedSubject={selectedSubject}
             ddTitle="Subject" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select Subject"} dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }} subject={subjects} categoryShow={"subject"} />
           <CustomDropDown
@@ -303,9 +178,13 @@ const Filter = ({ navigation }: any) => {
             selectedSubject={selectedMode}
             ddTitle="Mode" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select Mode"} dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }} subject={classMode} categoryShow={"subject"} />
           <CustomDropDown setSelectedSubject={setSelectedState}
-            selectedSubject={selectedState} ddTitle="State" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select State"} dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }} subject={state} categoryShow={"subject"} />
+            selectedSubject={selectedState} search={"state"} searchData={searchStateData}
+            searchFunc={handleSearchData} ddTitle="State" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select State"} dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }} subject={state} categoryShow={"subject"} />
           <CustomDropDown ddTitle="City"
+            search={"city"} searchData={searchCityData}
+            searchFunc={handleSearchData}
             setSelectedSubject={setSelectedCity}
+
             selectedSubject={selectedCity}
             headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select City"} dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }} subject={city} categoryShow={"subject"} />
         </View>
@@ -318,8 +197,7 @@ const Filter = ({ navigation }: any) => {
             justifyContent: "center",
             gap: 10,
             marginTop: 20,
-            position: "absolute",
-            bottom: 40
+            marginBottom: 40
           }}>
           <TouchableOpacity
             style={{

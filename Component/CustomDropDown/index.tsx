@@ -13,7 +13,7 @@ import React, { useState, useEffect } from 'react';
 import { Theme } from '../../constant/theme';
 
 const CustomDropDown = (props: any) => {
-  let { ddTitle, categoryData, subject, headingStyle, categoryShow, dropdownPlace, dropdownContainerStyle, setSelectedSubject,selectedSubject } = props
+  let { ddTitle, categoryData, searchData, searchFunc, subject, search, headingStyle, categoryShow, dropdownPlace, dropdownContainerStyle, setSelectedSubject, selectedSubject } = props
 
 
 
@@ -23,9 +23,18 @@ const CustomDropDown = (props: any) => {
   const SelectedServices = (item: any) => {
 
     setSelectedSubject(item);
-    
+
     setServiceDD(!serviceDD);
   };
+
+  const filterSearchData = (text: string) => {
+
+    if (text.length > 0) {
+      searchFunc(text, search)
+    }
+
+
+  }
 
   return (
     <View>
@@ -169,37 +178,90 @@ const CustomDropDown = (props: any) => {
             top: -14,
           }}>
           <ScrollView style={{ maxHeight: 100 }} nestedScrollEnabled={true}>
+
             {serviceDD == true &&
-              Array.from(
-                new Set(subject && subject.map((item: any) => item.subject)),
-              ).map((e: any, i: number) => {
-                return (
-                  <TouchableOpacity
-                    onPress={() =>
-                      SelectedServices(
-                        subject.find(
-                          (item: any) => `${item.subject}` === e,
-                        ),
-                      )
-                    }
-                    key={i}
-                    style={{
-                      flexDirection: 'row',
-                      paddingHorizontal: 20,
-                      marginVertical: 5,
-                      gap: 10,
-                    }}>
-                    <Text
+              <View>
+                {search && <TextInput onChangeText={(e) => filterSearchData(e)} style={{
+                  paddingHorizontal: 10,
+                  marginVertical: 1,
+                  color: Theme.white,
+                  backgroundColor: "gray",
+                  borderBottomWidth: 1,
+                  gap: 10,
+                }}
+                  placeholder={"SEARCH"}
+                  placeholderTextColor={"white"}
+
+                />}
+                {searchData && searchData.length>0 ? Array.from(
+                  new Set(searchData && searchData.map((item: any) => item.subject)),
+                ).map((e: any, i: number) => {
+                  return (
+                    <TouchableOpacity
+                      onPress={() =>
+                        SelectedServices(
+                          subject.find(
+                            (item: any) => `${item.subject}` === e,
+                          ),
+                        )
+                      }
+                      key={i}
                       style={{
-                        color: Theme.gray,
-                        fontFamily: 'Poppins-SemiBold',
-                        fontSize: 16,
+                        flexDirection: 'row',
+                        paddingHorizontal: 20,
+                        marginVertical: 5,
+                        gap: 10,
                       }}>
-                      {e ?? selectedSubject}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
+                      <Text
+                        style={{
+                          color: Theme.gray,
+                          fontFamily: 'Poppins-SemiBold',
+                          fontSize: 16,
+                        }}>
+                        {e ?? selectedSubject}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })
+                :
+                Array.from(
+                  new Set(subject && subject.map((item: any) => item.subject)),
+                ).map((e: any, i: number) => {
+                  return (
+                    <TouchableOpacity
+                      onPress={() =>
+                        SelectedServices(
+                          subject.find(
+                            (item: any) => `${item.subject}` === e,
+                          ),
+                        )
+                      }
+                      key={i}
+                      style={{
+                        flexDirection: 'row',
+                        paddingHorizontal: 20,
+                        marginVertical: 5,
+                        gap: 10,
+                      }}>
+                      <Text
+                        style={{
+                          color: Theme.gray,
+                          fontFamily: 'Poppins-SemiBold',
+                          fontSize: 16,
+                        }}>
+                        {e ?? selectedSubject}
+                      </Text>
+                    </TouchableOpacity>
+                  );
+                })
+                
+                
+                }
+
+              </View>
+
+
+            }
           </ScrollView>
         </View>
       }

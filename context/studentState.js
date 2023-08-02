@@ -1,4 +1,4 @@
-import React,{useState} from "react"
+import React, { useState } from "react"
 import StudentContext from "./studentContext"
 import Students from "../Screens/Students"
 
@@ -6,27 +6,25 @@ import Students from "../Screens/Students"
 
 const StudentState = (prop) => {
 
-    const [students,setStudents] = useState("")
-    const [subjects,setSubjects] = useState("")
+    const [students, setStudents] = useState("")
+    const [subjects, setSubjects] = useState("")
 
 
     const updateStudent = (students) => {
 
-            setStudents(students)
+        setStudents(students)
 
     }
 
     const updateSubject = (subject) => {
-
-        console.log(subject,"newwww")
 
         setSubjects(subject)
     }
 
 
     return (
-        <StudentContext.Provider value={{students,updateStudent,subjects,updateSubject}} >
-                    {prop.children}
+        <StudentContext.Provider value={{ students, updateStudent, subjects, updateSubject }} >
+            {prop.children}
         </StudentContext.Provider>
     )
 

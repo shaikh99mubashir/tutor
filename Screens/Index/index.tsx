@@ -1,23 +1,24 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
   FlatList,
+  ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  RefreshControl,
   Image,
   ToastAndroid,
 } from 'react-native';
-import {Theme} from '../../constant/theme';
-import {ScrollView} from 'react-native-gesture-handler';
+import { Theme } from '../../constant/theme';
 import CustomHeader from '../../Component/Header';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import axios from 'axios';
-import {Base_Uri} from '../../constant/BaseUri';
+import { Base_Uri } from '../../constant/BaseUri';
 
-function Index({navigation}: any) {
+function Index({ navigation }: any) {
   const [inboxData, setInboxData] = useState([
     // {
     //   title:
@@ -321,7 +322,18 @@ function Index({navigation}: any) {
     // },
   ]);
 
-  const [loading,setLoading] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [refresh, setRefresh] = useState(false)
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+      setRefresh(!refresh)
+    }, 2000);
+  }, [refresh]);
+
 
   const getNews = () => {
 
@@ -329,9 +341,9 @@ function Index({navigation}: any) {
 
     axios
       .get(`${Base_Uri}api/news`)
-      .then(({data}) => {
+      .then(({ data }) => {
         setLoading(false)
-        let {news} = data;
+        let { news } = data;
         setInboxData(news);
       })
       .catch(error => {
@@ -342,9 +354,9 @@ function Index({navigation}: any) {
 
   useEffect(() => {
     getNews();
-  }, []);
+  }, [refresh]);
 
-  const renderInboxData = ({item, index}: any): any => {
+  const renderInboxData = ({ item, index }: any): any => {
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('InboxDetail', item)}
@@ -357,7 +369,7 @@ function Index({navigation}: any) {
           borderBottomColor: Theme.lightGray,
           width: '100%',
         }}>
-        <View style={{flexDirection: 'row', width: '70%'}}>
+        <View style={{ flexDirection: 'row', width: '70%' }}>
           <View
             style={{
               borderWidth: 1,
@@ -386,26 +398,26 @@ function Index({navigation}: any) {
             />
           </View>
 
-          <View style={{marginLeft: 10}}>
+          <View style={{ marginLeft: 10 }}>
             <Text
-              style={{fontSize: 18, fontWeight: '700', color: Theme.black}}
+              style={{ fontSize: 18, fontWeight: '700', color: Theme.black }}
               numberOfLines={1}>
               {item?.subject}
             </Text>
             <Text
-              style={{fontSize: 14, fontWeight: '500', color: Theme.black}}
+              style={{ fontSize: 14, fontWeight: '500', color: Theme.black }}
               numberOfLines={1}>
               {item.status}
             </Text>
             <Text
-              style={{fontSize: 14, fontWeight: '500', color: Theme.gray}}
+              style={{ fontSize: 14, fontWeight: '500', color: Theme.gray }}
               numberOfLines={1}>
               {item.created_at}
             </Text>
           </View>
         </View>
 
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <AntDesign name="right" color={Theme.gray} size={20} />
         </View>
       </TouchableOpacity>
@@ -413,17 +425,19 @@ function Index({navigation}: any) {
   };
 
   return (
-    loading ? <View style={{flex:1,justifyContent:"center",alignItems:"center"}} >
-         <ActivityIndicator size="large" color="black" />
-         </View>
-          :  
-          <View style={{flex: 1, backgroundColor: Theme.white}}>
-      <View>
-        <CustomHeader title="Inbox" />
-      </View>
-
-      <FlatList data={inboxData} renderItem={renderInboxData} />
+    loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+      <ActivityIndicator size="large" color="black" />
     </View>
+      :
+      <ScrollView refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      } style={{ flex: 1, backgroundColor: Theme.white }}>
+        <View>
+          <CustomHeader title="Inbox" />
+        </View>
+
+        <FlatList data={inboxData} renderItem={renderInboxData} />
+      </ScrollView>
   );
 }
 

@@ -10,12 +10,12 @@ import {
   ActivityIndicator,
   Platform,
   PermissionsAndroid,
+  RefreshControl,
   NativeModules
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { Theme } from '../../constant/theme';
 import Header from '../../Component/Header';
-import { useGestureHandlerRef } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
@@ -24,39 +24,20 @@ import Pdf from 'react-native-pdf';
 
 
 const ReportSubmissionHistory = ({ navigation }: any) => {
-  const [reportSubmission, setreportSubmission] = useState([
-    {
-      id: 1,
-      image: require('../../Assets/Images/woman.png'),
-      name: 'testing1',
-      code: 'sdf544',
-      title: 'Add Math (DEGREE) Online',
-      time: '12:00 PM to 7:00 PM',
-      gender: 'male',
-      ade: '51',
-      studentName: 'testing',
-      email: 'dsdds@sd.com',
-      address: 'dsfdssd sds',
-      contactno: 'as324324324',
-      date: '20 May 2023',
-    },
-    {
-      id: 2,
-      image: require('../../Assets/Images/woman.png'),
-      name: 'testing2',
-      code: 'sd52442',
-      gender: 'male',
-      ade: '51',
-      studentName: 'testing',
-      email: 'dsdds@sd.com',
-      address: 'dsfdssd sds',
-      contactno: 'as324324324',
-      date: '20 May 2023',
-    },
-  ]);
+  const [reportSubmission, setreportSubmission] = useState([]);
   const [foundName, setFoundName] = useState([]);
   const [loading, setLoading] = useState(false)
   const [pdfUri, setPdfUri] = React.useState('');
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [refresh, setRefresh] = useState(false)
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+      setRefresh(!refresh)
+    }, 2000);
+  }, [refresh]);
 
 
   const getReportSubmissionHistory = async () => {
@@ -83,7 +64,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
 
     getReportSubmissionHistory()
 
-  }, [])
+  }, [refresh])
 
 
   const [searchText, setSearchText] = useState('');
@@ -207,7 +188,11 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
         :
         <View style={{ backgroundColor: Theme.white, height: '100%' }}>
           <Header title="Student" backBtn navigation={navigation} />
-          <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
+          <ScrollView
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            showsVerticalScrollIndicator={false} nestedScrollEnabled>
             <View style={{ paddingHorizontal: 15 }}>
               {/* Search */}
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>

@@ -4,6 +4,7 @@ import {
   Text,
   TouchableOpacity,
   Platform,
+  RefreshControl,
   FlatList,
   Dimensions,
   Image,
@@ -34,26 +35,7 @@ function Schedule({ navigation }: any) {
   //   selected?: Boolean;
   // }[];
   const [loading, setLoading] = useState(false);
-  const [scheduleData, setScheduleData] = useState([
-    {
-      imageUrl: require('../../Assets/Images/student.png'),
-      name: 'Testing',
-      Subject: 'Add Maths (Degree) - ONLINE',
-      date: 'Monday,29 May 2023',
-      startTime: '12:00 Pm',
-      endTime: '2:00 Pm',
-      status: 'Scheduled',
-    },
-    {
-      imageUrl: require('../../Assets/Images/student.png'),
-      name: 'Testing',
-      Subject: 'Add Maths (Degree) - ONLINE',
-      date: 'Monday,29 May 2023',
-      startTime: '12:00 Pm',
-      endTime: '2:00 Pm',
-      status: 'Attended',
-    },
-  ]);
+  const [scheduleData, setScheduleData] = useState<any>([]);
 
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedData, setSelectedData] = useState({});
@@ -61,10 +43,21 @@ function Schedule({ navigation }: any) {
   const [mode, setMode] = useState<any>('date');
   const [confirm, setConfirm] = useState(false);
   const [show, setShow] = useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
+  const [refresh, setRefresh] = useState(false)
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+      setRefresh(!refresh)
+    }, 2000);
+  }, [refresh]);
+
+
 
   const getScheduledData = async () => {
     setLoading(true);
-
     interface LoginAuth {
       status: Number;
       tutorID: Number;
@@ -105,6 +98,7 @@ function Schedule({ navigation }: any) {
           setLoading(false);
 
           let dataToSend = [...classSchedulesTime, ...classAttendedTime]
+          console.log(dataToSend,"DATA")
           setScheduleData(dataToSend);
 
 
@@ -123,7 +117,7 @@ function Schedule({ navigation }: any) {
 
   useEffect(() => {
     getScheduledData();
-  }, []);
+  }, [refresh]);
 
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
@@ -431,7 +425,11 @@ function Schedule({ navigation }: any) {
   ) : (
     <View style={{ flex: 1 }}>
       <CustomHeader title="Schedule" plus navigation={navigation} />
-      <ScrollView nestedScrollEnabled={true}>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        nestedScrollEnabled={true}>
         <View style={{ padding: 20 }}>
           <TouchableOpacity
             onPress={() => setShow(true)}

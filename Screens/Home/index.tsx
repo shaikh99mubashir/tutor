@@ -10,6 +10,7 @@ import {
   ScrollView,
   ActivityIndicator,
   ToastAndroid,
+  RefreshControl,
 } from 'react-native';
 import { Theme } from '../../constant/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -26,8 +27,7 @@ function Home({ navigation }: any) {
   const filter = useContext(filterContext)
   const studentAndSubjectContext = useContext(StudentContext)
   const { setCategory, setSubjects, setState, setCity } = filter
-
-
+  const [refreshing, setRefreshing] = useState(false);
   const { tutorDetails, updateTutorDetails } = context
   const { students, subjects, updateStudent, updateSubject } = studentAndSubjectContext
 
@@ -72,6 +72,15 @@ function Home({ navigation }: any) {
     scheduledHours: '',
   });
   const [tutorStudents, setTutorStudents] = useState([]);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+      getTutorId()
+    }, 2000);
+  }, [refreshing]);
+
   const getTutorId = async () => {
     interface LoginAuth {
       status: Number;
@@ -86,6 +95,8 @@ function Home({ navigation }: any) {
 
 
   const getNotificationLength = async () => {
+
+    
 
     axios
       .get(`${Base_Uri}getTutorDetailByID/${tutorId}`)
@@ -129,7 +140,7 @@ function Home({ navigation }: any) {
   useEffect(() => {
     getTutorId();
     getClassInProcess()
-  }, [focus]);
+  }, [focus, refreshing]);
 
 
   const getCategory = () => {
@@ -245,7 +256,7 @@ function Home({ navigation }: any) {
     getSubject()
     getStates()
     getCities()
-  }, [])
+  }, [refreshing])
 
 
 
@@ -282,7 +293,7 @@ function Home({ navigation }: any) {
     tutorId && getNotificationLength()
     tutorId && getTutorDetails()
 
-  }, [tutorId])
+  }, [tutorId, refreshing])
 
   const getCummulativeCommission = () => {
     axios
@@ -363,7 +374,7 @@ function Home({ navigation }: any) {
             }
           });
 
-        console.log(mySubject, "mySubjects")
+        
 
         updateSubject(mySubject)
       })
@@ -390,24 +401,24 @@ function Home({ navigation }: any) {
     if (tutorId) {
       getCummulativeCommission();
     }
-  }, [tutorId]);
+  }, [tutorId, refreshing]);
 
   useEffect(() => {
     if (tutorId) {
       getUpcomingClasses();
     }
-  }, [tutorId]);
+  }, [tutorId, refreshing]);
 
   useEffect(() => {
     if (tutorId && tutorData.cummulativeCommission) {
       getAttendedHours();
     }
-  }, [tutorData.cummulativeCommission]);
+  }, [tutorData.cummulativeCommission, refreshing]);
   useEffect(() => {
     if (tutorId && tutorData.cummulativeCommission && tutorData.attendedHours) {
       getScheduledHours();
     }
-  }, [tutorData.attendedHours]);
+  }, [tutorData.attendedHours, refreshing]);
   useEffect(() => {
     if (
       tutorId &&
@@ -417,20 +428,26 @@ function Home({ navigation }: any) {
     ) {
       getCancelledHours();
     }
-  }, [tutorData.scheduledHours]);
+  }, [tutorData.scheduledHours, refreshing]);
   useEffect(() => {
     if (tutorId) {
       getTutorStudents();
       getTutorSubjects()
     }
-  }, [tutorData.cancelledHours]);
+  }, [tutorData.cancelledHours, refreshing]);
+
 
   return !tutorData.cancelledHours ? (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View
+      style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator size={'large'} color={Theme.black} />
     </View>
   ) : (
-    <View style={styles.container}>
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           <Text style={styles.text}>Hello,</Text>
@@ -677,7 +694,7 @@ function Home({ navigation }: any) {
           </View>
         )}
       </ScrollView>
-    </View>
+    </ScrollView>
   );
 }
 

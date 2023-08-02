@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   ScrollView,
   TextInput,
+  RefreshControl,
   Image,
 } from 'react-native';
 import Header from '../../Component/Header';
@@ -26,6 +27,7 @@ function JobTicket({ navigation }: any) {
 
   const [isSearchItems, setIsSearchItems] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [refresh, setRefresh] = useState(false)
 
   const [currentTab, setCurrentTab]: any = useState([
     {
@@ -122,6 +124,21 @@ function JobTicket({ navigation }: any) {
 
   const [appliedData, setAppliedData] = useState([]);
 
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+
+    if (!refreshing) {
+      setRefreshing(true);
+      setTimeout(() => {
+        setRefreshing(false);
+        setRefresh(refresh ? false : true)
+
+      }, 2000);
+    }
+  }, [refresh]);
+
+
   const getTicketsData = async () => {
     setLoading(true);
 
@@ -201,10 +218,12 @@ function JobTicket({ navigation }: any) {
   };
 
 
+
+
   useEffect(() => {
     getTicketsData();
     getAppliedData();
-  }, [focus]);
+  }, [focus, refresh]);
 
   const checkSearchItems = () => {
     searchText && foundName.length == 0 && setIsSearchItems(true);
@@ -215,14 +234,15 @@ function JobTicket({ navigation }: any) {
   const searchOpen = (e: any) => {
     setSearchText(e);
     let filteredItems: any = openData.filter((x: any) =>
-      x?.subject_name.toLowerCase().includes(e.toLowerCase()),
+      x?.subject_name.toLowerCase().includes(e.toLowerCase()) || x?.studentName?.toLowerCase().includes(e?.toLowerCase()) || x?.mode?.toLowerCase().includes(e?.toLowerCase()),
+
     );
     setFoundName(filteredItems);
   };
   const searchApplied = (e: any) => {
     setSearchText(e);
     let filteredItems: any = closeData.filter((x: any) =>
-      x?.subjectName?.toLowerCase().includes(e.toLowerCase()),
+      x?.subjectName?.toLowerCase().includes(e.toLowerCase()) || x?.studentName?.toLowerCase().includes(e?.toLowerCase()) || x?.mode?.toLowerCase().includes(e?.toLowerCase()),
     );
     setFoundName(filteredItems);
   };
@@ -278,10 +298,10 @@ function JobTicket({ navigation }: any) {
             City: {item.studentCity}
           </Text>
           <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-            Address 1: {item.studentAddress1}
+            Address 1: {item.studentAddress1 ?? "not provided"}
           </Text>
           <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-            Address 2: {item.studentAddress2}
+            Address 2: {item.studentAddress2 ?? "not provided"}
           </Text>
         </View>
         <Text
@@ -301,6 +321,15 @@ function JobTicket({ navigation }: any) {
             marginTop: 10,
           }}>
           Time: {item.time}
+        </Text>
+        <Text
+          style={{
+            color: Theme.gray,
+            fontSize: 14,
+            fontWeight: '600',
+            marginTop: 10,
+          }}>
+          Mode: {item.mode}
         </Text>
         {/* <Text
           style={{
@@ -464,7 +493,12 @@ function JobTicket({ navigation }: any) {
     );
   }, [openData, searchText, foundName]);
 
+console.log(appliedData,"applied")
+
   const secondRoute = useCallback(() => {
+
+      console.log("hello world")
+
     return (
       <View style={{ marginVertical: 20, marginBottom: 10 }}>
         {/* Search */}
@@ -495,7 +529,7 @@ function JobTicket({ navigation }: any) {
             </TouchableOpacity>
           </View>
         </View>
-        {closeData.length > 0 ? (
+        {appliedData && appliedData.length > 0 ? (
           <FlatList
             data={searchText && foundName.length > 0 ? foundName : closeData}
             renderItem={renderCloseData}
@@ -503,11 +537,13 @@ function JobTicket({ navigation }: any) {
             keyExtractor={(items: any, index: number): any => index}
           />
         ) : (
-          <Text style={{ fontWeight: 'bold', fontSize: 16 }}>no data found</Text>
+          <View style={{justifyContent:"center",alignItems:"center"}} >
+          <Text style={{ fontWeight: 'bold', fontSize: 16,color:Theme.black,textAlign:"center" }}>no data found</Text>
+          </View>
         )}
       </View>
     );
-  }, [closeData, searchText, foundName]);
+  }, [appliedData, searchText, foundName]);
   return loading ? (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator size={'large'} color={'black'} />
@@ -515,7 +551,11 @@ function JobTicket({ navigation }: any) {
   ) : (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="Job Ticket" filter navigation={navigation} />
-      <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <View style={{ paddingHorizontal: 15, marginTop: 20 }}>
           <CustomTabView
             currentTab={currentTab}
