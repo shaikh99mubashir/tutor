@@ -40,6 +40,7 @@ const OpenDetails = ({ route, navigation }: any) => {
 
     axios.get(`${Base_Uri}offerSendByTutor/${subjectId}/${tutor_id}/${ticket_id}`).then(({ data }) => {
 
+      console.log(data.result,"result")
 
       if (data?.result?.status == "Applied") {
         setLoading(false)
@@ -55,13 +56,8 @@ const OpenDetails = ({ route, navigation }: any) => {
       setLoading(false)
       ToastAndroid.show("Internal Server Error", ToastAndroid.SHORT)
     })
-
-
-
-
-
   };
-
+  
   return (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title={data.code} backBtn navigation={navigation} />

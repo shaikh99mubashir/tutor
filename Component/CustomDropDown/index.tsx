@@ -61,7 +61,7 @@ const CustomDropDown = (props: any) => {
             flexDirection: 'row',
             justifyContent: 'space-between',
             paddingVertical: 10,
-            paddingHorizontal: 15,
+            paddingHorizontal: 10,
             borderWidth: 1,
             borderTopLeftRadius: 5,
             borderTopRightRadius: 5,
@@ -149,7 +149,7 @@ const CustomDropDown = (props: any) => {
                     key={i}
                     style={{
                       flexDirection: 'row',
-                      paddingHorizontal: 20,
+                      paddingHorizontal: 10,
                       marginVertical: 5,
                       gap: 10,
                     }}>
@@ -175,22 +175,23 @@ const CustomDropDown = (props: any) => {
             borderWidth: !serviceDD ? 0 : 1,
             borderTopWidth: !serviceDD ? 0 : 1,
             borderColor: Theme.gray,
-            top: -14,
+            top:-10,
           }}>
-          <ScrollView style={{ maxHeight: 100 }} nestedScrollEnabled={true}>
+          <ScrollView style={{ maxHeight: 150 }} nestedScrollEnabled={true}>
 
             {serviceDD == true &&
               <View>
                 {search && <TextInput onChangeText={(e) => filterSearchData(e)} style={{
                   paddingHorizontal: 10,
-                  marginVertical: 1,
+                  marginVertical: 0,
                   color: Theme.white,
-                  backgroundColor: "gray",
+                  backgroundColor: "white",
                   borderBottomWidth: 1,
-                  gap: 10,
+                  gap: 0,
+                  height:38,
                 }}
                   placeholder={"SEARCH"}
-                  placeholderTextColor={"white"}
+                  placeholderTextColor={"black"}
 
                 />}
                 {searchData && searchData.length>0 ? Array.from(
@@ -239,7 +240,7 @@ const CustomDropDown = (props: any) => {
                       key={i}
                       style={{
                         flexDirection: 'row',
-                        paddingHorizontal: 20,
+                        paddingHorizontal: 10,
                         marginVertical: 5,
                         gap: 10,
                       }}>

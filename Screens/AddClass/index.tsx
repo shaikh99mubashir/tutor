@@ -416,7 +416,7 @@ function AddClass({ navigation }: any) {
         <Header title={'Add Class'} backBtn navigation={navigation} />
       </View>
       <View style={{ padding: 20, flex: 1 }}>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           <View>
             <CustomDropDown
               ddTitle={'Student'}

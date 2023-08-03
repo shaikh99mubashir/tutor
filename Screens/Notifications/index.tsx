@@ -9,14 +9,16 @@ import {
   RefreshControl,
   ToastAndroid,
   ActivityIndicator,
+  Dimensions
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Header from '../../Component/Header';
 import { Theme } from '../../constant/theme';
 import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+const height = Dimensions.get('screen').height;
 const Notifications = ({ navigation }: any) => {
   const [notification, setNotification] = useState<any>([]);
   const [loading, setLoading] = useState(false);
@@ -126,22 +128,6 @@ const Notifications = ({ navigation }: any) => {
                           }}>
                           {item.notificationType}
                         </Text>
-                        {/* <Text
-                          style={{
-                            color: Theme.darkGray,
-                            fontSize: 14,
-                            fontWeight: 'bold',
-                            marginTop: 0,
-                            backgroundColor: 'lightyellow',
-                            padding: 3,
-                            width: '25%',
-                            height: 30,
-                            textAlign: 'center',
-                            borderRadius: 10,
-                            opacity: 0.6,
-                          }}>
-                          Pending
-                        </Text> */}
                       </View>
                       <Text
                         style={{
@@ -181,8 +167,9 @@ const Notifications = ({ navigation }: any) => {
               gap: 5,
               justifyContent: 'center',
               alignItems: 'center',
+              height: height / 1.5,
             }}>
-            {/* <AntDesign name="copy1" size={20} color={Theme.gray} /> */}
+            <AntDesign name="copy1" size={20} color={Theme.gray} />
             <Text style={{ color: Theme.gray }}>There are no Notifications</Text>
           </View>
         )}

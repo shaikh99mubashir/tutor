@@ -40,6 +40,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
           paddingHorizontal:15,
           borderBottomColor:'grey',
           borderBottomWidth:1,
+          height:50,
           ...containerStyle
         }}>
         <>
@@ -50,7 +51,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
                 alignItems: 'flex-start',
                 justifyContent: 'flex-start',
               }}>
-              <TouchableOpacity style={{}} onPress={() => navigation.goBack()}>
+              <TouchableOpacity style={{backgroundColor:'white', padding:10,borderRadius:50}} onPress={() => navigation.goBack()}>
                 <Image source={require('../../Assets/Images/back.png')} style={{width:12, height:12}} resizeMode='contain'/>
               </TouchableOpacity>
             </View>
