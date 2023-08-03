@@ -208,7 +208,7 @@ function JobTicket({ navigation }: any) {
       .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
       .then(({ data }) => {
         let { getTutorOffers } = data;
-        setCloseData(getTutorOffers);
+        setAppliedData(getTutorOffers);
         setLoading(false);
       })
       .catch(error => {
@@ -240,10 +240,14 @@ function JobTicket({ navigation }: any) {
     setFoundName(filteredItems);
   };
   const searchApplied = (e: any) => {
+
     setSearchText(e);
     let filteredItems: any = closeData.filter((x: any) =>
       x?.subjectName?.toLowerCase().includes(e.toLowerCase()) || x?.studentName?.toLowerCase().includes(e?.toLowerCase()) || x?.mode?.toLowerCase().includes(e?.toLowerCase()),
     );
+
+
+
     setFoundName(filteredItems);
   };
 
@@ -410,7 +414,7 @@ function JobTicket({ navigation }: any) {
             ID: {item.studentID}
           </Text>
           <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-            City: {item.studentName}
+            City: {item.studentCity}
           </Text>
           <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
             Address: {item.studentAddress}
@@ -493,11 +497,11 @@ function JobTicket({ navigation }: any) {
     );
   }, [openData, searchText, foundName]);
 
-console.log(appliedData,"applied")
+  console.log(appliedData, "applied")
 
   const secondRoute = useCallback(() => {
 
-      console.log("hello world")
+    console.log("hello world")
 
     return (
       <View style={{ marginVertical: 20, marginBottom: 10 }}>
@@ -531,14 +535,14 @@ console.log(appliedData,"applied")
         </View>
         {appliedData && appliedData.length > 0 ? (
           <FlatList
-            data={searchText && foundName.length > 0 ? foundName : closeData}
+            data={searchText && foundName.length > 0 ? foundName : appliedData}
             renderItem={renderCloseData}
             nestedScrollEnabled={true}
             keyExtractor={(items: any, index: number): any => index}
           />
         ) : (
-          <View style={{justifyContent:"center",alignItems:"center"}} >
-          <Text style={{ fontWeight: 'bold', fontSize: 16,color:Theme.black,textAlign:"center" }}>no data found</Text>
+          <View style={{ justifyContent: "center", alignItems: "center" }} >
+            <Text style={{ fontWeight: 'bold', fontSize: 16, color: Theme.black, textAlign: "center" }}>no data found</Text>
           </View>
         )}
       </View>
