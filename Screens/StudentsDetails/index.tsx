@@ -265,6 +265,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 paddingHorizontal: 10,
               }}>
               <TouchableOpacity
+              activeOpacity={0.8}
                 onPress={() => makeCall()}
                 style={{
                   backgroundColor: Theme.lightGray,
@@ -278,6 +279,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 />
               </TouchableOpacity>
               <TouchableOpacity
+              activeOpacity={0.8}
                 onPress={makeWhatappCall}
                 style={{
                   backgroundColor: 'lightgreen',
@@ -291,7 +293,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 />
               </TouchableOpacity>
               <TouchableOpacity
-
+                activeOpacity={0.8}
                 onPress={GoToStudentDirection}
                 style={{
                   backgroundColor: 'pink',

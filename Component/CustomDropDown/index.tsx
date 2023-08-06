@@ -184,7 +184,7 @@ const CustomDropDown = (props: any) => {
                 {search && <TextInput onChangeText={(e) => filterSearchData(e)} style={{
                   paddingHorizontal: 10,
                   marginVertical: 0,
-                  color: Theme.white,
+                  color: 'black',
                   backgroundColor: "white",
                   borderBottomWidth: 1,
                   gap: 0,
@@ -209,7 +209,7 @@ const CustomDropDown = (props: any) => {
                       key={i}
                       style={{
                         flexDirection: 'row',
-                        paddingHorizontal: 20,
+                        paddingHorizontal: 10,
                         marginVertical: 5,
                         gap: 10,
                       }}>
