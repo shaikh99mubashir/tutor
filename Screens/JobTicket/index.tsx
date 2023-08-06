@@ -180,10 +180,11 @@ function JobTicket({ navigation }: any) {
         .then(async ({ data }) => {
           let { tickets } = data;
           setOpenData(
-            tickets.length > 0 &&
-            tickets.filter((e: any, i: number) => {
-              return e.status == 'pending'
-            }),
+            // tickets.length > 0 &&
+            // tickets.filter((e: any, i: number) => {
+            //   return e.status == 'pending'
+            // }),
+            tickets
           );
           setLoading(false);
         })
@@ -252,6 +253,9 @@ function JobTicket({ navigation }: any) {
   };
 
   const renderOpenData: any = ({ item }: any) => {
+
+    console.log(item, "openData")
+
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('OpenDetails', item)}
@@ -315,7 +319,7 @@ function JobTicket({ navigation }: any) {
             fontWeight: '600',
             marginTop: 10,
           }}>
-          Day: {item.day}
+          Day: {item.classDay}
         </Text>
         <Text
           style={{
@@ -324,7 +328,7 @@ function JobTicket({ navigation }: any) {
             fontWeight: '600',
             marginTop: 10,
           }}>
-          Time: {item.time}
+          Time: {item.classTime}
         </Text>
         <Text
           style={{
@@ -363,6 +367,8 @@ function JobTicket({ navigation }: any) {
     );
   };
   const renderCloseData = ({ item }: any) => {
+
+    console.log(item, "item")
 
     return (
       <TouchableOpacity
