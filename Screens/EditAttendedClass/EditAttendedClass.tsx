@@ -25,6 +25,7 @@ function EditAttendedClass({ navigation, route }: any) {
 
   const [file, setFile] = useState<any>({});
 
+  // console.log(data.id, "dataa")
 
 
   const changeStatus = () => {
@@ -34,8 +35,9 @@ function EditAttendedClass({ navigation, route }: any) {
       return
     }
 
+
     setLoading(true)
-    axios.get(`${Base_Uri}attendedClassStatus/${data?.class_schedule_id}/attended`).then(({ data }) => {
+    axios.get(`${Base_Uri}attendedClassStatus/${data?.id}/attended`).then(({ data }) => {
 
       ToastAndroid.show(data?.SuccessMessage, ToastAndroid.SHORT)
       setLoading(false)
@@ -43,6 +45,7 @@ function EditAttendedClass({ navigation, route }: any) {
 
     }).catch((error) => {
       setLoading(false)
+      console.log(error, "error")
       ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT)
     })
 

@@ -3,6 +3,7 @@ import React from 'react';
 import { Theme } from '../../constant/theme';
 import Header from '../../Component/Header';
 import { Base_Uri } from '../../constant/BaseUri';
+import ClockIn from '../ClockInScreen/ClockIn';
 
 const AttendedDetails = ({ navigation, route }: any) => {
 
@@ -11,6 +12,8 @@ const AttendedDetails = ({ navigation, route }: any) => {
   const clockinImage = `${Base_Uri}public/signInProof/${data?.startTimeProofImage}`
   const clockOutImage = `${Base_Uri}public/signOutProof/${data?.endTimeProofImage}`
 
+  
+  console.log(clockinImage,"image")
 
   return (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>

@@ -157,6 +157,7 @@ const Filter = ({ navigation }: any) => {
           <CustomDropDown
             setSelectedSubject={setSelectedCategory}
             search={"category"}
+            dataShow = {5}
             searchData={searchCategoryData}
             searchFunc={handleSearchData}
             selectedSubject={selectedCategory}

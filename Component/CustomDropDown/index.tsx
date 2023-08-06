@@ -13,7 +13,7 @@ import React, { useState, useEffect } from 'react';
 import { Theme } from '../../constant/theme';
 
 const CustomDropDown = (props: any) => {
-  let { ddTitle, categoryData, searchData, searchFunc, subject, search, headingStyle, categoryShow, dropdownPlace, dropdownContainerStyle, setSelectedSubject, selectedSubject } = props
+  let { ddTitle, categoryData, dataShow, searchData, searchFunc, subject, search, headingStyle, categoryShow, dropdownPlace, dropdownContainerStyle, setSelectedSubject, selectedSubject } = props
 
 
 
@@ -175,7 +175,7 @@ const CustomDropDown = (props: any) => {
             borderWidth: !serviceDD ? 0 : 1,
             borderTopWidth: !serviceDD ? 0 : 1,
             borderColor: Theme.gray,
-            top:-10,
+            top: -10,
           }}>
           <ScrollView style={{ maxHeight: 150 }} nestedScrollEnabled={true}>
 
@@ -188,15 +188,16 @@ const CustomDropDown = (props: any) => {
                   backgroundColor: "white",
                   borderBottomWidth: 1,
                   gap: 0,
-                  height:38,
+                  height: 38,
                 }}
                   placeholder={"SEARCH"}
                   placeholderTextColor={"black"}
 
                 />}
-                {searchData && searchData.length>0 ? Array.from(
+                {searchData && searchData.length > 0 ? Array.from(
                   new Set(searchData && searchData.map((item: any) => item.subject)),
                 ).map((e: any, i: number) => {
+
                   return (
                     <TouchableOpacity
                       onPress={() =>
@@ -223,40 +224,43 @@ const CustomDropDown = (props: any) => {
                       </Text>
                     </TouchableOpacity>
                   );
-                })
-                :
-                Array.from(
-                  new Set(subject && subject.map((item: any) => item.subject)),
-                ).map((e: any, i: number) => {
-                  return (
-                    <TouchableOpacity
-                      onPress={() =>
-                        SelectedServices(
-                          subject.find(
-                            (item: any) => `${item.subject}` === e,
-                          ),
-                        )
-                      }
-                      key={i}
-                      style={{
-                        flexDirection: 'row',
-                        paddingHorizontal: 10,
-                        marginVertical: 5,
-                        gap: 10,
-                      }}>
-                      <Text
-                        style={{
-                          color: Theme.gray,
-                          fontFamily: 'Poppins-SemiBold',
-                          fontSize: 16,
-                        }}>
-                        {e ?? selectedSubject}
-                      </Text>
-                    </TouchableOpacity>
-                  );
-                })
-                
-                
+
+                }).filter(Boolean)
+                  :
+                  Array.from(
+                    new Set(subject && subject.map((item: any) => item.subject)),
+                  ).map((e: any, i: number) => {
+                    if (i < 5) {
+                      return (
+                        <TouchableOpacity
+                          onPress={() =>
+                            SelectedServices(
+                              subject.find(
+                                (item: any) => `${item.subject}` === e,
+                              ),
+                            )
+                          }
+                          key={i}
+                          style={{
+                            flexDirection: 'row',
+                            paddingHorizontal: 10,
+                            marginVertical: 5,
+                            gap: 10,
+                          }}>
+                          <Text
+                            style={{
+                              color: Theme.gray,
+                              fontFamily: 'Poppins-SemiBold',
+                              fontSize: 16,
+                            }}>
+                            {e ?? selectedSubject}
+                          </Text>
+                        </TouchableOpacity>
+                      );
+                    }
+                  }).filter(Boolean)
+
+
                 }
 
               </View>

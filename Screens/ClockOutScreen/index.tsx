@@ -8,7 +8,7 @@ import Geolocation from "@react-native-community/geolocation"
 import axios from "axios"
 import { Base_Uri } from "../../constant/BaseUri"
 import noteContext from "../../context/noteContext"
-import { useIsFocused } from "@react-navigation/native"
+import { CommonActions, useIsFocused } from "@react-navigation/native"
 
 function ClockOut({ navigation, route }: any) {
 
@@ -47,6 +47,8 @@ function ClockOut({ navigation, route }: any) {
     }
 
 
+    console.log(data, "dataaa")
+
     useEffect(() => {
 
         getCurrentLocation()
@@ -66,13 +68,14 @@ function ClockOut({ navigation, route }: any) {
     // }, [])
 
 
+    console.log(items, "items")
 
     const handleClockOutPress = async () => {
 
         setLoading(true)
         let formData = new FormData()
 
-        formData.append("id", data.id)
+        formData.append("id", data.classAttendedID)
         formData.append("class_schedule_id", data.class_schedule_id)
         formData.append("endMinutes", data.endHour)
         formData.append("endSeconds", data.endMinutes)
@@ -89,21 +92,28 @@ function ClockOut({ navigation, route }: any) {
             },
         }).then((res) => {
 
-            axios.get(`${Base_Uri}getClassAttendedTime/${tutorID}`).then(({ data }) => {
-                let { classAttendedTime } = data
+            axios.get(`${Base_Uri}api/tutorFirstReportListing/${tutorID}`).then(({ data }) => {
+                let { tutorReportListing } = data
 
-                let thisClass = classAttendedTime && classAttendedTime?.length > 0 && classAttendedTime.filter((e: any, i: number) => {
-                    return e.ticketID == items.ticketID && e.is_report_submitted !== "no"
+                let thisClass = tutorReportListing && tutorReportListing?.length > 0 && tutorReportListing.filter((e: any, i: number) => {
+                    return items.class_schedule_id == e.scheduleID
                 })
+
+                console.log(thisClass, "thisClass")
 
                 if (thisClass && thisClass.length > 0) {
 
 
-                    navigation.replace("Home")
+                    navigation.dispatch(
+                        CommonActions.reset({
+                            index: 0,
+                            routes: [{ name: 'Main' }],
+                        })
+                    );
                     setLoading(false)
 
                 } else {
-                    navigation.replace("ReportSubmission")
+                    navigation.replace("ReportSubmission", items)
                     setLoading(false)
                 }
 

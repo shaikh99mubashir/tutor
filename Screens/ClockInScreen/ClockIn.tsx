@@ -101,6 +101,8 @@ function ClockIn({ navigation, route }: any) {
 
                         data.item = item
 
+                        console.log(data,"dataaa")
+
                         let storageData : any = {...data}
                         storageData = JSON.stringify(storageData)
                         AsyncStorage.setItem("classInProcess",storageData)

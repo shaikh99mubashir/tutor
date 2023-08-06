@@ -185,16 +185,9 @@ function Schedule({ navigation }: any) {
 
                 let convertDate = getDate.toDate()
 
-                console.log(convertDate.getDate(), "convert")
-
-                console.log(typeof getDate, "dateeee")
-
-
-
                 let scheduleDate = convertDate.getDate()
                 let scheduleMonth = convertDate.getMonth()
                 let scheduleYear = convertDate.getFullYear()
-
 
                 if (Date == scheduleDate && month == scheduleMonth && year == scheduleYear) {
                   return {
@@ -397,7 +390,6 @@ function Schedule({ navigation }: any) {
 
   const routeToClockIn = async (item: any) => {
 
-
     let data: any = await AsyncStorage.getItem("classInProcess")
     data = JSON.parse(data)
 
@@ -407,11 +399,7 @@ function Schedule({ navigation }: any) {
       navigation.navigate('ClockIn', item)
     }
   }
-
-
-
   const renderScheduleData = ({ item, index }: any): any => {
-
 
     return (
       <TouchableOpacity

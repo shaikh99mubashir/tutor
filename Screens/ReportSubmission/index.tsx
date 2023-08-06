@@ -23,7 +23,10 @@ import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
 import StudentContext from '../../context/studentContext';
 
-const ReportSubmission = ({ navigation }: any) => {
+const ReportSubmission = ({ navigation, route }: any) => {
+
+  let data = route.params
+
   const currentDate = new Date();
   const options: any = { day: 'numeric', month: 'long', year: 'numeric' };
   const formattedDate = currentDate.toLocaleDateString('en-US', options);
@@ -63,7 +66,6 @@ const ReportSubmission = ({ navigation }: any) => {
       subjects.length > 0 &&
       subjects.map((e: any, i: Number) => {
 
-        console.log(e, "ee")
 
         if (e.subject) {
           return {
@@ -119,7 +121,13 @@ const ReportSubmission = ({ navigation }: any) => {
   });
   const EvalutionOption = [
     {
-      option: 'Student Evaluation Report',
+      option: 'Excellent',
+    },
+    {
+      option: 'Good',
+    },
+    {
+      option: 'Poor',
     },
 
   ];
@@ -160,6 +168,14 @@ const ReportSubmission = ({ navigation }: any) => {
     },
   ]
 
+  // console.log(data.classAttendedTime[0].class_schedule_id, "data")
+
+  console.log(subject, "dataaaaaaa")
+  console.log(student.studentID)
+  console.log(tutorId, "tutor")
+  console.log(evaluation, "eval")
+
+
   const submitReport = () => {
 
 
@@ -176,7 +192,11 @@ const ReportSubmission = ({ navigation }: any) => {
     const day = date.getDate().toString().padStart(2, '0');
     let formData = new FormData()
 
+
+
+
     formData.append("tutorID", tutorId)
+    formData.append("scheduleID", data.class_schedule_id)
     formData.append("studentID", student.studentID)
     formData.append("subjectID", subject.id)
     formData.append("currentDate", year + '/' + month + '/' + day)
@@ -186,6 +206,9 @@ const ReportSubmission = ({ navigation }: any) => {
     formData.append("analysis", analysisAnswer.option)
     formData.append("additionalAssisment", questions.addationalAssessments)
     formData.append("plan", questions.plan)
+
+
+    console.log(formData, "formDataa")
 
     axios.post(`${Base_Uri}api/tutorFirstReport`, formData, {
       headers: {
