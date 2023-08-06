@@ -68,7 +68,7 @@ function AddClass({ navigation }: any) {
   const [selectedSubject, setSelectedSubject] = useState<any>("")
   const [loading, setLoading] = useState(false)
 
-  
+
   const context = useContext(StudentContext)
   const { students, subjects } = context
   const [classes, setClasses] = useState<any>([
@@ -401,7 +401,7 @@ function AddClass({ navigation }: any) {
 
     axios.post(`${Base_Uri}api/addMultipleClasses`, classesss).then((res) => {
       setLoading(false)
-      navigation.navigate('BackToDashboard');
+      navigation.navigate('Schedule', "update");
       ToastAndroid.show(res?.data?.message, ToastAndroid.SHORT)
     }).catch((error) => {
       setLoading(false)

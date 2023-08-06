@@ -23,6 +23,7 @@ import axios from 'axios';
 import { ToastAndroid } from 'react-native';
 import { useIsFocused, useRoute } from '@react-navigation/native';
 import upcomingClassContext from '../../context/upcomingClassContext';
+import moment from 'moment';
 // import { ScrollView } from "react-native-gesture-handler"
 
 function Schedule({ navigation }: any) {
@@ -81,6 +82,9 @@ function Schedule({ navigation }: any) {
   }, [focus])
 
 
+
+
+
   const getScheduledData = async () => {
     setLoading(true);
     interface LoginAuth {
@@ -92,7 +96,9 @@ function Schedule({ navigation }: any) {
     let loginData: LoginAuth = JSON.parse(login);
     let { tutorID } = loginData;
 
-    if (data && Object.keys(data).length > 0) {
+
+
+    if (upcomingClass && Object.keys(upcomingClass).length > 0) {
 
       axios
         .get(`${Base_Uri}getClassSchedulesTime/${tutorID}`).then((res) => {
@@ -120,34 +126,87 @@ function Schedule({ navigation }: any) {
       .get(`${Base_Uri}getClassSchedulesTime/${tutorID}`)
       .then(({ data }) => {
         let { classSchedulesTime } = data;
+
+        let Date = selectedDate.getDate()
+        let month = selectedDate.getMonth()
+        let year = selectedDate.getFullYear()
+
+
+
+
         classSchedulesTime =
           classSchedulesTime &&
             classSchedulesTime.length > 0 ?
             classSchedulesTime.map((e: any, i: number) => {
-              return {
-                ...e,
-                imageUrl: require('../../Assets/Images/student.png'),
-              };
-            }) : []
+
+              let getDate: any = moment(e.date)
+
+              let convertDate = getDate.toDate()
+
+              console.log(convertDate.getDate(), "convert")
+
+              console.log(typeof getDate, "dateeee")
+
+
+
+              let scheduleDate = convertDate.getDate()
+              let scheduleMonth = convertDate.getMonth()
+              let scheduleYear = convertDate.getFullYear()
+
+
+
+
+              // console.log(scheduleDate, "dateee")
+
+              if (Date == scheduleDate && month == scheduleMonth && year == scheduleYear) {
+                return {
+                  ...e,
+                  imageUrl: require('../../Assets/Images/student.png'),
+                };
+              } else {
+                return false
+              }
+            }).filter(Boolean) : []
 
         axios.get(`${Base_Uri}getClassAttendedTime/${tutorID}`).then(({ data }) => {
 
           let { classAttendedTime } = data
 
+          let Date = selectedDate.getDate()
+          let month = selectedDate.getMonth()
+          let year = selectedDate.getFullYear()
+
           classAttendedTime =
             classAttendedTime &&
               classAttendedTime.length > 0 ?
               classAttendedTime.map((e: any, i: number) => {
-                return {
-                  ...e,
-                  imageUrl: require('../../Assets/Images/student.png'),
-                };
-              }) : [];
 
+                let getDate: any = moment(e.date)
+
+                let convertDate = getDate.toDate()
+
+                console.log(convertDate.getDate(), "convert")
+
+                console.log(typeof getDate, "dateeee")
+
+
+
+                let scheduleDate = convertDate.getDate()
+                let scheduleMonth = convertDate.getMonth()
+                let scheduleYear = convertDate.getFullYear()
+
+
+                if (Date == scheduleDate && month == scheduleMonth && year == scheduleYear) {
+                  return {
+                    ...e,
+                    imageUrl: require('../../Assets/Images/student.png'),
+                  };
+                } else {
+                  return false
+                }
+              }).filter(Boolean) : [];
           setLoading(false);
-
           let dataToSend = [...classSchedulesTime, ...classAttendedTime]
-
           setScheduleData(dataToSend);
         })
       })
@@ -157,12 +216,9 @@ function Schedule({ navigation }: any) {
       });
   };
 
-
-
-
   useEffect(() => {
     getScheduledData();
-  }, [refresh, data]);
+  }, [refresh, data, focus, selectedDate]);
 
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
@@ -351,6 +407,8 @@ function Schedule({ navigation }: any) {
       navigation.navigate('ClockIn', item)
     }
   }
+
+
 
   const renderScheduleData = ({ item, index }: any): any => {
 
