@@ -36,6 +36,7 @@ import ClassTimerCount from '../Screens/ClassTimerCountScreen';
 import ClockOut from '../Screens/ClockOutScreen';
 import ReportSubmission from '../Screens/ReportSubmission';
 import AttendedDetails from '../Screens/AttendedDetails';
+import PaymentHistory from '../Screens/PaymentHistory';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -431,6 +432,11 @@ function AppNavigation() {
           options={{ headerShown: false }}
           name="AttendedDetails"
           component={AttendedDetails}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="PaymentHistory"
+          component={PaymentHistory}
         />
 
 
