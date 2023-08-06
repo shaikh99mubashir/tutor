@@ -458,7 +458,7 @@ function Home({ navigation }: any) {
   //   }
   // }, [cancelledHours, refreshing]);
 
-  const routeToScheduleScreen = (item) => {
+  const routeToScheduleScreen = (item:any) => {
 
     setUpcomingClass(item)
 
