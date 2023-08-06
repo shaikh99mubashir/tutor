@@ -51,7 +51,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
                 alignItems: 'flex-start',
                 justifyContent: 'flex-start',
               }}>
-              <TouchableOpacity style={{backgroundColor:'white', padding:10,borderRadius:50}} onPress={() => navigation.goBack()}>
+              <TouchableOpacity style={{backgroundColor: 'rgba(52, 52, 52, 0.0)', padding:10,borderRadius:50}} onPress={() => navigation.goBack()}>
                 <Image source={require('../../Assets/Images/back.png')} style={{width:12, height:12}} resizeMode='contain'/>
               </TouchableOpacity>
             </View>
