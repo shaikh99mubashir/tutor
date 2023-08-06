@@ -20,6 +20,8 @@ import { useIsFocused } from '@react-navigation/native';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import StudentContext from '../../context/studentContext';
 import filterContext from '../../context/filterContext';
+import UpcomingClassState from '../../context/upcomingClassState';
+import upcomingClassContext from '../../context/upcomingClassContext';
 
 function Home({ navigation }: any) {
 
@@ -28,6 +30,10 @@ function Home({ navigation }: any) {
   const studentAndSubjectContext = useContext(StudentContext)
   const { setCategory, setSubjects, setState, setCity } = filter
   const [refreshing, setRefreshing] = useState(false);
+  const upcomingClassCont = useContext(upcomingClassContext)
+
+  let { upcomingClass, setUpcomingClass } = upcomingClassCont
+
   const { tutorDetails, updateTutorDetails } = context
   const { students, subjects, updateStudent, updateSubject } = studentAndSubjectContext
 
@@ -43,22 +49,22 @@ function Home({ navigation }: any) {
   });
 
   const [upCommingClasses, setUpCommingClasses] = useState([
-    {
-      id: 1,
-      image: require('../../Assets/Images/woman.png'),
-      name: 'testing1',
-      title: 'Add Math (DEGREE) Online',
-      time: '12:00 PM to 7:00 PM',
-      date: '20 May 2023',
-    },
-    {
-      id: 2,
-      image: require('../../Assets/Images/woman.png'),
-      name: 'testing2',
-      title: 'Add History (DEGREE) Online',
-      time: '12:00 PM to 7:00 PM',
-      date: '20 May 2023',
-    },
+    // {
+    //   id: 1,
+    //   image: require('../../Assets/Images/woman.png'),
+    //   name: 'testing1',
+    //   title: 'Add Math (DEGREE) Online',
+    //   time: '12:00 PM to 7:00 PM',
+    //   date: '20 May 2023',
+    // },
+    // {
+    //   id: 2,
+    //   image: require('../../Assets/Images/woman.png'),
+    //   name: 'testing2',
+    //   title: 'Add History (DEGREE) Online',
+    //   time: '12:00 PM to 7:00 PM',
+    //   date: '20 May 2023',
+    // },
   ]);
   const [notificationLenght, setNotificationLength] = useState(0)
   const [tutorId, setTutorId] = useState<Number | null>(null);
@@ -71,6 +77,14 @@ function Home({ navigation }: any) {
     cancelledHours: '',
     scheduledHours: '',
   });
+
+  const [cummulativeCommission, setCumulativeCommission] = useState("")
+  const [attendedHours, setAttendedHours] = useState("")
+  const [activeHours, setActiveHours] = useState("")
+  const [cancelledHours, setCancelledHours] = useState("")
+  const [schedulesHours, setScheduledHours] = useState("")
+
+
   const [tutorStudents, setTutorStudents] = useState([]);
 
   const onRefresh = React.useCallback(() => {
@@ -96,7 +110,7 @@ function Home({ navigation }: any) {
 
   const getNotificationLength = async () => {
 
-    
+
 
     axios
       .get(`${Base_Uri}getTutorDetailByID/${tutorId}`)
@@ -299,10 +313,9 @@ function Home({ navigation }: any) {
     axios
       .get(`${Base_Uri}getCommulativeCommission/${tutorId}`)
       .then(({ data }) => {
-        setTutorData({
-          ...tutorData,
-          cummulativeCommission: data.commulativeCommission,
-        });
+
+        setCumulativeCommission(data.commulativeCommission)
+
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
@@ -313,7 +326,9 @@ function Home({ navigation }: any) {
     axios
       .get(`${Base_Uri}getAttendedHours/${tutorId}`)
       .then(({ data }) => {
-        setTutorData({ ...tutorData, attendedHours: data.attendedHours });
+        // setTutorData({ ...tutorData, attendedHours: data.attendedHours });
+        setAttendedHours(data.attendedHours)
+
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
@@ -324,7 +339,8 @@ function Home({ navigation }: any) {
     axios
       .get(`${Base_Uri}getScheduledHours/${tutorId}`)
       .then(({ data }) => {
-        setTutorData({ ...tutorData, scheduledHours: data.scheduledHours });
+        setScheduledHours(data.scheduledHours)
+        // setTutorData({ ...tutorData, scheduledHours: data.scheduledHours });
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
@@ -335,7 +351,9 @@ function Home({ navigation }: any) {
     axios
       .get(`${Base_Uri}getCancelledHours/${tutorId}`)
       .then(({ data }) => {
-        setTutorData({ ...tutorData, cancelledHours: data.cancelledHours });
+
+        setCancelledHours(data.cancelledHours)
+        // setTutorData({ ...tutorData, cancelledHours: data.cancelledHours });
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
@@ -374,7 +392,7 @@ function Home({ navigation }: any) {
             }
           });
 
-        
+
 
         updateSubject(mySubject)
       })
@@ -410,34 +428,46 @@ function Home({ navigation }: any) {
   }, [tutorId, refreshing]);
 
   useEffect(() => {
-    if (tutorId && tutorData.cummulativeCommission) {
+    if (tutorId && cummulativeCommission) {
       getAttendedHours();
-    }
-  }, [tutorData.cummulativeCommission, refreshing]);
-  useEffect(() => {
-    if (tutorId && tutorData.cummulativeCommission && tutorData.attendedHours) {
-      getScheduledHours();
-    }
-  }, [tutorData.attendedHours, refreshing]);
-  useEffect(() => {
-    if (
-      tutorId &&
-      tutorData.cummulativeCommission &&
-      tutorData.attendedHours &&
-      tutorData.scheduledHours
-    ) {
-      getCancelledHours();
-    }
-  }, [tutorData.scheduledHours, refreshing]);
-  useEffect(() => {
-    if (tutorId) {
-      getTutorStudents();
+      getScheduledHours()
+      getTutorStudents()
       getTutorSubjects()
+      getCancelledHours()
     }
-  }, [tutorData.cancelledHours, refreshing]);
+  }, [cummulativeCommission, refreshing]);
+  // useEffect(() => {
+  //   if (tutorId && tutorData.cummulativeCommission && tutorData.attendedHours) {
+  //     getScheduledHours();
+  //   }
+  // }, [attendedHours, refreshing]);
+  // useEffect(() => {
+  //   if (
+  //     tutorId &&
+  //     tutorData.cummulativeCommission &&
+  //     tutorData.attendedHours &&
+  //     tutorData.scheduledHours
+  //   ) {
+  //     getCancelledHours();
+  //   }
+  // }, [schedulesHours, refreshing]);
+  // useEffect(() => {
+  //   if (tutorId) {
+  //     getTutorStudents();
+  //     getTutorSubjects()
+  //   }
+  // }, [cancelledHours, refreshing]);
+
+  const routeToScheduleScreen = (item) => {
+
+    setUpcomingClass(item)
+
+    navigation.navigate("Schedule")
 
 
-  return !tutorData.cancelledHours ? (
+  }
+
+  return !cancelledHours ? (
     <View
       style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator size={'large'} color={Theme.black} />
@@ -460,7 +490,7 @@ function Home({ navigation }: any) {
           </Text>
           <Text
             style={[styles.heading, { color: Theme.white, fontWeight: '400' }]}>
-            RM {tutorData?.cummulativeCommission}
+            RM {cummulativeCommission}
           </Text>
           <Text style={[styles.text, { color: Theme.white, fontSize: 14 }]}>
             CUMMULATIVE COMMISSION
@@ -544,7 +574,7 @@ function Home({ navigation }: any) {
             <View style={{ justifyContent: 'center', marginLeft: 10 }}>
               <Text style={[styles.text, { fontSize: 13 }]}>Attended hours</Text>
               <Text style={[styles.text, { fontSize: 16, fontWeight: '700' }]}>
-                {tutorData?.attendedHours}
+                {attendedHours}
               </Text>
             </View>
           </View>
@@ -591,7 +621,7 @@ function Home({ navigation }: any) {
             <View style={{ justifyContent: 'center', marginLeft: 10 }}>
               <Text style={[styles.text, { fontSize: 12 }]}>Schedule hours</Text>
               <Text style={[styles.text, { fontSize: 16, fontWeight: '700' }]}>
-                {tutorData?.scheduledHours}
+                {schedulesHours}
               </Text>
             </View>
           </View>
@@ -616,7 +646,7 @@ function Home({ navigation }: any) {
             <View style={{ justifyContent: 'center', marginLeft: 10 }}>
               <Text style={[styles.text, { fontSize: 12 }]}>Cancelled hours</Text>
               <Text style={[styles.text, { fontSize: 16, fontWeight: '700' }]}>
-                {tutorData?.cancelledHours}
+                {cancelledHours}
               </Text>
             </View>
           </View>
@@ -633,7 +663,7 @@ function Home({ navigation }: any) {
             showsHorizontalScrollIndicator={false}
             renderItem={({ item, index }: any) => {
               return (
-                <View
+                <TouchableOpacity
                   style={{
                     borderWidth: 1,
                     paddingHorizontal: 15,
@@ -645,7 +675,9 @@ function Home({ navigation }: any) {
                     gap: 10,
                     marginRight: 10,
                     borderColor: '#eee',
-                  }}>
+                  }}
+                  onPress={() => routeToScheduleScreen(item)}
+                >
                   <View
                     style={{
                       display: 'flex',
@@ -681,7 +713,7 @@ function Home({ navigation }: any) {
                       {item?.date?.slice(0, 11)}
                     </Text>
                   </View>
-                </View>
+                </TouchableOpacity>
               );
             }}
           />

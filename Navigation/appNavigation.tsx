@@ -40,7 +40,8 @@ import AttendedDetails from '../Screens/AttendedDetails';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function BottomNavigation() {
+function BottomNavigation({ route }: any) {
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -102,7 +103,7 @@ function BottomNavigation() {
         name="Job Ticket"
         component={JobTicket}
         options={{
-          unmountOnBlur:true,
+          unmountOnBlur: true,
           tabBarIcon: ({ focused, color }) => (
             <View>
               {focused == true ? (
@@ -150,6 +151,7 @@ function BottomNavigation() {
         name="Schedule"
         component={Schedule}
         options={{
+
           tabBarIcon: ({ focused, color }) => (
             <View>
               {focused == true ? (

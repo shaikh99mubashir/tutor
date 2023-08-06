@@ -57,6 +57,7 @@ const Verification = ({ navigation, route }: any) => {
         navigation.replace("Main", data)
       }
     }).catch((error) => {
+
       ToastAndroid.show("Internal Server Error", ToastAndroid.SHORT)
       setLoading(false)
     })
@@ -90,7 +91,7 @@ const Verification = ({ navigation, route }: any) => {
     <View style={{
       backgroundColor: Theme.white,
       height: '100%',
-      
+
 
     }}>
       <Header
@@ -174,7 +175,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   cell: {
-    width: Dimensions.get("window").width/7.5,
+    width: Dimensions.get("window").width / 7.5,
     height: 60,
     color: Theme.black,
     padding: 10,

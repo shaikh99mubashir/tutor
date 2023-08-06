@@ -14,6 +14,7 @@ import noteContext from './context/noteContext';
 import TutorDetailsState from './context/tutorDetailsState';
 import StudentState from './context/studentState';
 import FilterState from './context/filterState';
+import UpcomingClassState from './context/upcomingClassState';
 
 
 function App() {
@@ -23,14 +24,16 @@ function App() {
     <View style={styles.container} >
 
       <NoteState>
-        <TutorDetailsState>
-          <StudentState>
-            <FilterState>
-              <AppNavigation />
-              <Timer show="false" />
-            </FilterState>
-          </StudentState>
-        </TutorDetailsState>
+        <UpcomingClassState>
+          <TutorDetailsState>
+            <StudentState>
+              <FilterState>
+                <AppNavigation />
+                <Timer show="false" />
+              </FilterState>
+            </StudentState>
+          </TutorDetailsState>
+        </UpcomingClassState>
       </NoteState>
     </View>
   );

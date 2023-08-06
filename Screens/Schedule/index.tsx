@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -21,6 +21,8 @@ import { Base_Uri } from '../../constant/BaseUri';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { ToastAndroid } from 'react-native';
+import { useIsFocused, useRoute } from '@react-navigation/native';
+import upcomingClassContext from '../../context/upcomingClassContext';
 // import { ScrollView } from "react-native-gesture-handler"
 
 function Schedule({ navigation }: any) {
@@ -34,6 +36,20 @@ function Schedule({ navigation }: any) {
   //   status: String;
   //   selected?: Boolean;
   // }[];
+
+
+  let upComingCont = useContext(upcomingClassContext)
+  const { upcomingClass, setUpcomingClass } = upComingCont
+
+  console.log(upComingCont, "UP")
+
+  let data = upcomingClass
+
+  console.log(data, "data")
+
+
+  let focus = useIsFocused()
+
   const [loading, setLoading] = useState(false);
   const [scheduleData, setScheduleData] = useState<any>([]);
 
@@ -55,6 +71,15 @@ function Schedule({ navigation }: any) {
   }, [refresh]);
 
 
+  useEffect(() => {
+
+    if (!focus) {
+
+      setUpcomingClass("")
+    }
+
+  }, [focus])
+
 
   const getScheduledData = async () => {
     setLoading(true);
@@ -63,10 +88,34 @@ function Schedule({ navigation }: any) {
       tutorID: Number;
       token: string;
     }
-
     const login: any = await AsyncStorage.getItem('loginAuth');
     let loginData: LoginAuth = JSON.parse(login);
     let { tutorID } = loginData;
+
+    if (data && Object.keys(data).length > 0) {
+
+      axios
+        .get(`${Base_Uri}getClassSchedulesTime/${tutorID}`).then((res) => {
+          let scheduledClasses = res.data
+
+          let { classSchedulesTime } = scheduledClasses
+          let checkRouteClass = classSchedulesTime && classSchedulesTime.length > 0 && classSchedulesTime.filter((e: any, i: number) => {
+            return e?.id == data?.id
+          })
+          checkRouteClass = checkRouteClass && checkRouteClass.length > 0 && checkRouteClass.map((e: any, i: number) => {
+            return {
+              ...e,
+              imageUrl: require('../../Assets/Images/student.png'),
+            }
+          })
+          setScheduleData(checkRouteClass && checkRouteClass.length > 0 ? checkRouteClass : [])
+          setLoading(false)
+        }).catch((error) => {
+          setLoading(false);
+          ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        })
+      return
+    }
     axios
       .get(`${Base_Uri}getClassSchedulesTime/${tutorID}`)
       .then(({ data }) => {
@@ -98,13 +147,9 @@ function Schedule({ navigation }: any) {
           setLoading(false);
 
           let dataToSend = [...classSchedulesTime, ...classAttendedTime]
-          console.log(dataToSend,"DATA")
+
           setScheduleData(dataToSend);
-
-
         })
-
-
       })
       .catch(error => {
         setLoading(false);
@@ -117,7 +162,7 @@ function Schedule({ navigation }: any) {
 
   useEffect(() => {
     getScheduledData();
-  }, [refresh]);
+  }, [refresh, data]);
 
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
@@ -309,7 +354,6 @@ function Schedule({ navigation }: any) {
 
   const renderScheduleData = ({ item, index }: any): any => {
 
-    console.log(item, "mYitems")
 
     return (
       <TouchableOpacity
@@ -361,7 +405,7 @@ function Schedule({ navigation }: any) {
           <Text style={{ color: Theme.gray, marginTop: 10 }}>{item.status}</Text>
           {item.status == 'Attended' ? <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('AttendedDetails')}><Text style={{ color: Theme.gray, marginTop: 10 }}>View Details</Text></TouchableOpacity> : ''}
         </View>
-        {item.selected && item.status == "schedule" && (
+        {item.selected && item?.status?.toLowerCase() == "scheduled" && (
           <View
             style={{
               flexDirection: 'row',

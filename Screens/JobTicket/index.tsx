@@ -172,13 +172,13 @@ function JobTicket({ navigation }: any) {
       return
     } else {
 
+      let tutorData: any = await AsyncStorage.getItem('loginAuth');
+      tutorData = JSON.parse(tutorData);
+      let tutor_id = tutorData?.tutorID;
       axios
-        .get('https://sifututor.odits.co/new/ticketsAPI')
+        .get(`${Base_Uri}ticketsAPI/${tutor_id}`)
         .then(async ({ data }) => {
           let { tickets } = data;
-
-
-
           setOpenData(
             tickets.length > 0 &&
             tickets.filter((e: any, i: number) => {
