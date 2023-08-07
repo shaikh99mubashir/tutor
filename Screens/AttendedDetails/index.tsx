@@ -16,15 +16,6 @@ const AttendedDetails = ({ navigation, route }: any) => {
   }, [])
 
 
-
-
-<<<<<<< HEAD
-=======
-  
-  console.log(clockinImage,"image")
-  console.log(clockOutImage,"image")
->>>>>>> 633dae6f6e631a1fea716138291c7d312332dc89
-
   return (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="Attended Detail" navigation={navigation} backBtn />
