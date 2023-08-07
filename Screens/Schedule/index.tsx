@@ -408,7 +408,7 @@ function Schedule({ navigation }: any) {
           borderWidth: 1,
           borderColor: item.selected ? Theme.darkGray : Theme.lightGray,
           padding: 20,
-          backgroundColor: Theme.lightGray,
+          // backgroundColor: Theme.lightGray,
           marginTop: 20,
           borderRadius: 10,
         }}>
@@ -424,9 +424,9 @@ function Schedule({ navigation }: any) {
               justifyContent: 'center',
               backgroundColor: Theme.darkGray,
             }}>
-            <Image source={item.imageUrl} style={{ width: 55, height: 55 }} />
+            <Image source={item.imageUrl} style={{ width: 45, height: 45 }} />
           </View>
-          <Text style={{ fontSize: 14, color: Theme.gray, marginLeft: 10 }}>
+          <Text style={{ fontSize: 18, color: Theme.gray, marginLeft: 10 }}>
             {item?.studentName}
           </Text>
         </View>
@@ -468,7 +468,7 @@ function Schedule({ navigation }: any) {
                 padding: 10,
                 borderRadius: 10,
               }}>
-              <Text style={{ textAlign: 'center', fontSize: 16 }}>Edit</Text>
+              <Text style={{ textAlign: 'center', fontSize: 16,color:'white' }}>Edit</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => routeToClockIn(item)}
@@ -478,7 +478,7 @@ function Schedule({ navigation }: any) {
                 padding: 10,
                 borderRadius: 10,
               }}>
-              <Text style={{ textAlign: 'center', fontSize: 16 }}>Attend</Text>
+              <Text style={{ textAlign: 'center', fontSize: 16,color:'white' }}>Attend</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -500,7 +500,7 @@ function Schedule({ navigation }: any) {
                 padding: 10,
                 borderRadius: 10,
               }}>
-              <Text style={{ textAlign: 'center', fontSize: 16 }}>View</Text>
+              <Text style={{ textAlign: 'center', fontSize: 16,color:'white' }}>View</Text>
             </TouchableOpacity>
           </View>
         )}

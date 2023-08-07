@@ -7,6 +7,7 @@ import {
   ScrollView,
   ToastAndroid,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 import CustomHeader from '../../Component/Header';
 import {Theme} from '../../constant/theme';
@@ -25,10 +26,8 @@ function InboxDetail({navigation, route}: any) {
   //     Linking.openURL(`https://${url}`);
   // };
 
-
   const getDetailedNews = () => {
     setLoading(true);
-
     axios
       .get(`${Base_Uri}api/detailedNews/${data?.id}`)
       .then(({data}) => {
@@ -46,6 +45,8 @@ function InboxDetail({navigation, route}: any) {
   useEffect(() => {
     getDetailedNews();
   }, []);
+
+  console.log('data', data);
 
   return loading ? (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -76,7 +77,7 @@ function InboxDetail({navigation, route}: any) {
           {newsData.preheader}
         </Text>
 
-        <View style={{flexDirection: 'row', marginTop: 20}}>
+        <View style={{flexDirection: 'row', marginTop: 10}}>
           <Text style={{fontSize: 16, color: Theme.black, fontWeight: '500'}}>
             {newsData?.created_at?.slice(0, 10)}
           </Text>
@@ -98,6 +99,17 @@ function InboxDetail({navigation, route}: any) {
           }}>
           {newsData.content}
         </Text>
+
+        <Image
+          source={{uri: data?.headerimage}}
+          style={{
+            width: '95%',
+            height: 200,
+            borderRadius: 10,
+            marginVertical: 5,
+          }}
+          resizeMode="contain"
+        />
 
         {/* <View style={{marginTop: 20, flexDirection: 'row'}}>
           <View
