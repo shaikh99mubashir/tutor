@@ -233,28 +233,50 @@ function JobTicket({ navigation }: any) {
   const [foundName, setFoundName] = useState([]);
   const [searchText, setSearchText] = useState('');
   const searchOpen = (e: any) => {
+
+    if (e == "") {
+      setFoundName([])
+      setSearchText(e)
+      return
+    }
+
     setSearchText(e);
     let filteredItems: any = openData.filter((x: any) =>
-      x?.subject_name.toLowerCase().includes(e.toLowerCase()) || x?.studentName?.toLowerCase().includes(e?.toLowerCase()) || x?.mode?.toLowerCase().includes(e?.toLowerCase()),
+      x?.subject_name.toLowerCase().includes(e.toLowerCase())
+      || x?.studentName?.toLowerCase().includes(e?.toLowerCase())
+      || x?.mode?.toLowerCase().includes(e?.toLowerCase())
+      || x?.classDay?.toLowerCase().includes(e?.toLowerCase())
+      || x?.uid.toString().toLowerCase().includes(e?.toLowerCase()),
+
 
     );
     setFoundName(filteredItems);
   };
   const searchApplied = (e: any) => {
 
+    if (e == "") {
+      setFoundName([])
+      setSearchText(e)
+      return
+    }
+
     setSearchText(e);
-    let filteredItems: any = closeData.filter((x: any) =>
-      x?.subjectName?.toLowerCase().includes(e.toLowerCase()) || x?.studentName?.toLowerCase().includes(e?.toLowerCase()) || x?.mode?.toLowerCase().includes(e?.toLowerCase()),
+    let filteredItems: any = appliedData.filter((x: any) => {
+
+      return (x?.subjectName?.toLowerCase().includes(e.toLowerCase()) || x?.studentName?.toLowerCase().includes(e?.toLowerCase())
+        || x?.mode?.toLowerCase().includes(e?.toLowerCase())
+        || x?.classDay?.toLowerCase().includes(e?.toLowerCase())
+        || x?.jtuid.toString().toLowerCase().includes(e?.toLowerCase())
+      )
+    }
+
     );
-
-
 
     setFoundName(filteredItems);
   };
 
   const renderOpenData: any = ({ item }: any) => {
 
-    console.log(item, "openData")
 
     return (
       <TouchableOpacity
