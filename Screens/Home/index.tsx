@@ -527,6 +527,7 @@ function Home({ navigation }: any) {
           </View>
         </TouchableOpacity> :
           <TouchableOpacity
+          activeOpacity={0.8}
             onPress={() => navigation.navigate('Notifications')}
             style={[
               styles.firstBox,
@@ -665,6 +666,7 @@ function Home({ navigation }: any) {
             renderItem={({ item, index }: any) => {
               return (
                 <TouchableOpacity
+                activeOpacity={0.8}
                   style={{
                     borderWidth: 1,
                     paddingHorizontal: 15,

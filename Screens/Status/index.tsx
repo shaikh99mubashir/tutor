@@ -42,7 +42,6 @@ const Status = ({ navigation, route }: any) => {
   });
 
   const handleEditStatus = () => {
-
     if (!selectedStatus) {
       ToastAndroid.show("Kindly select Status", ToastAndroid.SHORT)
       return
@@ -51,13 +50,7 @@ const Status = ({ navigation, route }: any) => {
       ToastAndroid.show("Kindly Write Reason", ToastAndroid.SHORT)
       return
     }
-
-
     setLoading(true)
-
-
-
-
     let formData = new FormData()
     formData.append("studentID", data.studentID)
     formData.append("reasonStatus", editStatus.reason)
@@ -75,6 +68,7 @@ const Status = ({ navigation, route }: any) => {
 
       setLoading(false)
       ToastAndroid.show(res?.data?.response, ToastAndroid.SHORT)
+<<<<<<< HEAD
 
 
       let updateData = students && students.length > 0 && students.map((e: any, i: number) => {
@@ -98,12 +92,14 @@ const Status = ({ navigation, route }: any) => {
       navigation.navigate("StudentsDetails", data)
 
 
+=======
+      setSelectedStatus("")
+      navigation.navigate('Students')
+>>>>>>> 633dae6f6e631a1fea716138291c7d312332dc89
     }).catch((error) => {
       setLoading(false)
       console.log(error, "error")
     })
-
-
   }
 
 

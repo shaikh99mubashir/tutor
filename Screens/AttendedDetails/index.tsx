@@ -18,6 +18,12 @@ const AttendedDetails = ({ navigation, route }: any) => {
 
 
 
+<<<<<<< HEAD
+=======
+  
+  console.log(clockinImage,"image")
+  console.log(clockOutImage,"image")
+>>>>>>> 633dae6f6e631a1fea716138291c7d312332dc89
 
   return (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
@@ -45,7 +51,7 @@ const AttendedDetails = ({ navigation, route }: any) => {
           </Text>
         </View>
         {/* Start Time End Time */}
-        <View style={{ flexDirection: 'row', gap: 10 }}>
+        <View style={{ flexDirection: 'column', gap: 10 }}>
           <View style={{ flexDirection: 'row', gap: 5, marginTop: 10 }}>
             <Text
               style={{ color: Theme.gray, fontSize: 15, fontWeight: 'bold' }}>
@@ -56,15 +62,15 @@ const AttendedDetails = ({ navigation, route }: any) => {
               {data?.startTime}
             </Text>
           </View>
-          <Text
+          {/* <Text
             style={{
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: 25,
             }}>
             |
-          </Text>
-          <View style={{ flexDirection: 'row', gap: 5, marginTop: 10 }}>
+          </Text> */}
+          <View style={{ flexDirection: 'row', gap: 5, marginTop: 0 }}>
             <Text
               style={{ color: Theme.gray, fontSize: 15, fontWeight: 'bold' }}>
               End Time :

@@ -355,7 +355,8 @@ function Index({ navigation }: any) {
   useEffect(() => {
     getNews();
   }, [refresh]);
-
+  console.log('inboxData',inboxData);
+  
   const renderInboxData = ({ item, index }: any): any => {
     return (
       <TouchableOpacity
