@@ -68,7 +68,6 @@ const Status = ({ navigation, route }: any) => {
 
       setLoading(false)
       ToastAndroid.show(res?.data?.response, ToastAndroid.SHORT)
-<<<<<<< HEAD
 
 
       let updateData = students && students.length > 0 && students.map((e: any, i: number) => {
@@ -92,10 +91,6 @@ const Status = ({ navigation, route }: any) => {
       navigation.navigate("StudentsDetails", data)
 
 
-=======
-      setSelectedStatus("")
-      navigation.navigate('Students')
->>>>>>> 633dae6f6e631a1fea716138291c7d312332dc89
     }).catch((error) => {
       setLoading(false)
       console.log(error, "error")
