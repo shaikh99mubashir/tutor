@@ -12,26 +12,59 @@ import {
   Dimensions,
   ActivityIndicator,
 } from 'react-native';
-import React, { useState, useEffect, useContext } from 'react';
-import { Theme } from '../../constant/theme';
+import React, {useState, useEffect, useContext} from 'react';
+import {Theme} from '../../constant/theme';
 import Header from '../../Component/Header';
 import DropDownModalView from '../../Component/DropDownModalView';
 import Status from '../Status';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { Base_Uri } from '../../constant/BaseUri';
+import {Base_Uri} from '../../constant/BaseUri';
 import StudentContext from '../../context/studentContext';
 import DateTimePicker from "@react-native-community/datetimepicker"
 import moment from 'moment';
 
+<<<<<<< HEAD
 
 const ReportSubmission = ({ navigation, route }: any) => {
 
   let data = route.params
+=======
+const ReportSubmission = ({navigation, route}: any) => {
+  let data = route.params;
+>>>>>>> f5a9b6c1b81c414b6cbb9e7984864809370bb6a5
 
 
   const [value, setValue] = useState(new Date)
   const currentDate = new Date();
+<<<<<<< HEAD
+  const options: any = {day: 'numeric', month: 'long', year: 'numeric'};
+  const formattedDate = currentDate.toLocaleDateString('en-US', options);
+  const [evaluation, setEvaluationReport] = useState<any>('');
+  const [student, setStudent] = useState<any>('');
+  const [subject, setSubject] = useState<any>('');
+  const [knowledgeAnswer, setKnowledgeAnswer] = useState<any>('');
+  const [understandingAnswer, setUnderstandingAnswer] = useState<any>('');
+  const [analysisAnswer, setAnalysisAnswer] = useState<any>('');
+  const [tutorId, setTutorId] = useState<any>('');
+  const [studentData, setStudentData] = useState('');
+  const [subjectData, setSubjectData] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [selectedMonth, setSelectedMonth] = useState<any>('');
+  const [perQ1, setPerQ1] = useState('');
+  const [perQ2, setPerQ2] = useState('');
+  const [perQ3, setPerQ3] = useState('');
+  const [perQ4, setPerQ4] = useState('');
+  const [attQ1, setattQ1] = useState('');
+  const [attQ2, setattQ2] = useState('');
+  const [attQ3, setattQ3] = useState('');
+  const [attQ4, setattQ4] = useState('');
+  const [rulQ1, setRulQ1] = useState('');
+  const [rulQ2, setRulQ2] = useState('');
+  const [rulQ3, setRulQ3] = useState('');
+  const [rulQ4, setRulQ4] = useState('');
+  const context = useContext(StudentContext);
+=======
   const options: any = { day: 'numeric', month: 'long', year: 'numeric' };
   const formattedDate = value.toLocaleDateString('en-US', options);
   const [evaluation, setEvaluationReport] = useState<any>("")
@@ -45,6 +78,7 @@ const ReportSubmission = ({ navigation, route }: any) => {
   const [subjectData, setSubjectData] = useState([])
   const [loading, setLoading] = useState(false)
   const [show, setShow] = useState(false)
+<<<<<<< HEAD
   const [selectedMonth, setSelectedMonth] = useState<any>('');
   const [perQ1, setPerQ1] = useState<any>("");
   const [perQ2, setPerQ2] = useState<any>('');
@@ -116,12 +150,11 @@ const ReportSubmission = ({ navigation, route }: any) => {
       option: 'Average',
     },
   ];
+=======
+>>>>>>> 2609f7622b71d6b70ddc034fa65aa783f9bbc4d2
+>>>>>>> f5a9b6c1b81c414b6cbb9e7984864809370bb6a5
 
-
-
-  const context = useContext(StudentContext)
-
-  const { students, subjects } = context
+  const {students, subjects} = context;
 
   const getTutorId = async () => {
     interface LoginAuth {
@@ -131,18 +164,15 @@ const ReportSubmission = ({ navigation, route }: any) => {
     }
     const data: any = await AsyncStorage.getItem('loginAuth');
     let loginData: LoginAuth = JSON.parse(data);
-    let { tutorID } = loginData;
+    let {tutorID} = loginData;
     setTutorId(tutorID);
   };
 
   const getSubject = () => {
-
     let mySubject =
       subjects &&
       subjects.length > 0 &&
       subjects.map((e: any, i: Number) => {
-
-
         if (e.subject) {
           return {
             option: e.subject,
@@ -152,14 +182,9 @@ const ReportSubmission = ({ navigation, route }: any) => {
       });
 
     setSubjectData(mySubject);
-
   };
 
-
-
   const getStudents = async () => {
-
-
     let myStudents =
       students &&
       students.length > 0 &&
@@ -167,7 +192,7 @@ const ReportSubmission = ({ navigation, route }: any) => {
         if (e?.studentName) {
           return {
             ...e,
-            option: e?.studentName
+            option: e?.studentName,
           };
         }
       });
@@ -177,13 +202,12 @@ const ReportSubmission = ({ navigation, route }: any) => {
   useEffect(() => {
     if (subjects) {
       getSubject();
-      getStudents()
+      getStudents();
     }
   }, [subjects]);
   useEffect(() => {
-    getTutorId()
-  }, [])
-
+    getTutorId();
+  }, []);
 
   const [questions, setQuestions] = useState({
     reportType: '',
@@ -197,6 +221,13 @@ const ReportSubmission = ({ navigation, route }: any) => {
   });
   const EvalutionOption = [
     {
+<<<<<<< HEAD
+      option: 'Progress Report',
+    },
+    {
+      option: 'Evaluation Report',
+    },
+=======
       option: 'Student Evaluation Report',
     },
     {
@@ -204,6 +235,7 @@ const ReportSubmission = ({ navigation, route }: any) => {
     },
 
 
+>>>>>>> 2609f7622b71d6b70ddc034fa65aa783f9bbc4d2
   ];
   const Analysis = [
     {
@@ -229,6 +261,20 @@ const ReportSubmission = ({ navigation, route }: any) => {
         'Good - Able to explain/demonstrate facts concisely with little error',
     },
   ];
+  const performanceOption = [
+    {
+      option: 'Excellent',
+    },
+    {
+      option: 'Good',
+    },
+    {
+      option: 'Satisfactory',
+    },
+    {
+      option: 'Average',
+    },
+  ];
   const knowledge = [
     {
       option:
@@ -240,10 +286,73 @@ const ReportSubmission = ({ navigation, route }: any) => {
     {
       option: 'Good - Able to recall basic facts with ease and little error.',
     },
-  ]
+  ];
+  const months = [
+    {
+      option: 'January',
+    },
+    {
+      option: 'February',
+    },
+    {
+      option: 'March',
+    },
+    {
+      option: 'April',
+    },
+    {
+      option: 'May',
+    },
+    {
+      option: 'June',
+    },
+    {
+      option: 'July',
+    },
+    {
+      option: 'August',
+    },
+    {
+      option: 'September',
+    },
+    {
+      option: 'October',
+    },
+    {
+      option: 'November',
+    },
+    {
+      option: 'December',
+    },
+  ];
 
   // console.log(data.classAttendedTime[0].class_schedule_id, "data")
 
+<<<<<<< HEAD
+  console.log(subject, 'dataaaaaaa');
+  console.log(student.studentID);
+  console.log(tutorId, 'tutor');
+  console.log(evaluation, 'eval');
+
+  const submitReport = () => {
+    if (
+      !tutorId ||
+      !student.studentID ||
+      !subject?.id ||
+      !evaluation?.option ||
+      !knowledgeAnswer?.option ||
+      !understandingAnswer?.option ||
+      !analysisAnswer?.option ||
+      !questions.addationalAssessments ||
+      !questions.plan
+    ) {
+      ToastAndroid.show('Required Fields are missing', ToastAndroid.SHORT);
+      return;
+    }
+
+    setLoading(true);
+    let date = new Date();
+=======
 
 
 
@@ -371,9 +480,70 @@ const ReportSubmission = ({ navigation, route }: any) => {
     }
     setLoading(true)
     let date = value
+<<<<<<< HEAD
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 since month is zero-based
     const day = date.getDate().toString().padStart(2, '0');
+=======
+>>>>>>> 2609f7622b71d6b70ddc034fa65aa783f9bbc4d2
+
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 since month is zero-based
+    const day = date.getDate().toString().padStart(2, '0');
+<<<<<<< HEAD
+    let formData = new FormData();
+
+    formData.append('tutorID', tutorId);
+    formData.append('scheduleID', data.class_schedule_id);
+    formData.append('studentID', student.studentID);
+    formData.append('subjectID', subject.id);
+    formData.append('currentDate', year + '/' + month + '/' + day);
+    formData.append('reportType', evaluation.option);
+    formData.append('knowledge', knowledgeAnswer.option);
+    formData.append('understanding', understandingAnswer.option);
+    formData.append('analysis', analysisAnswer.option);
+    formData.append('additionalAssisment', questions.addationalAssessments);
+    formData.append('plan', questions.plan);
+
+    console.log(formData, 'formDataa');
+
+    axios
+      .post(`${Base_Uri}api/tutorFirstReport`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then(res => {
+        ToastAndroid.show(
+          'Report has been submitted successfully',
+          ToastAndroid.SHORT,
+        );
+        setLoading(false);
+        navigation.navigate('BackToDashboard');
+      })
+      .catch(error => {
+        setLoading(false);
+        ToastAndroid.show(
+          'Report submission unSuccessfull',
+          ToastAndroid.SHORT,
+        );
+        console.log(error, 'errrors');
+      });
+  };
+  console.log('evaluation Progress Report', evaluation.option);
+  console.log('setSelectedMonth', selectedMonth);
+
+  return loading ? (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <ActivityIndicator size={'large'} color={Theme.black} />
+    </View>
+  ) : (
+    <View style={{backgroundColor: Theme.white, height: '100%'}}>
+=======
+
+    console.log(date, day, month)
+
+>>>>>>> f5a9b6c1b81c414b6cbb9e7984864809370bb6a5
     let formData = new FormData()
 
     formData.append("tutorID", tutorId)
@@ -418,18 +588,64 @@ const ReportSubmission = ({ navigation, route }: any) => {
     loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
       <ActivityIndicator size={"large"} color={Theme.black} />
     </View> : <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+>>>>>>> 2609f7622b71d6b70ddc034fa65aa783f9bbc4d2
       <Header title="Report Submission" backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{ paddingHorizontal: 15, marginBottom: 100 }}>
+        <View style={{paddingHorizontal: 15, marginBottom: 100}}>
           {/* Report Type */}
           <DropDownModalView
             title="Report Type"
-            placeHolder="Evaluation Report"
+            placeHolder="Select Report Type"
             selectedValue={setEvaluationReport}
             value={evaluation.option}
             option={EvalutionOption}
             modalHeading="Select Report Type"
           />
+<<<<<<< HEAD
+          {/* First Class Date && Month */}
+          {evaluation.option == 'Progress Report' ? (
+            <View style={{marginTop: 8}}>
+              <DropDownModalView
+                title="Month"
+                placeHolder="Select Report Type"
+                selectedValue={setSelectedMonth}
+                option={months}
+                modalHeading="Select Month"
+              />
+            </View>
+          ) : (
+            <View style={{marginTop: 8}}>
+              <Text style={{fontSize: 12, fontWeight: 'bold', color: 'black'}}>
+                First Class Date
+              </Text>
+              <View
+                style={{
+                  marginTop: 5,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingVertical: 10,
+                  paddingHorizontal: 15,
+                  borderWidth: 1,
+                  borderTopLeftRadius: 5,
+                  borderTopRightRadius: 5,
+                  borderBottomLeftRadius: 5,
+                  borderBottomRightRadius: 5,
+                  borderColor: Theme.gray,
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: Theme.gray,
+                    fontFamily: 'Poppins-SemiBold',
+                    fontSize: 14,
+                  }}>
+                  {formattedDate}
+                </Text>
+              </View>
+            </View>
+          )}
+
+=======
           {/* First Class Date */}
           {evaluation.option == "Progress Report" ?
             <View style={{ marginTop: 8 }}>
@@ -447,6 +663,7 @@ const ReportSubmission = ({ navigation, route }: any) => {
               <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black' }}>
                 First Class Date
               </Text>
+<<<<<<< HEAD
               <TouchableOpacity
                 onPress={() => setShow(true)}
                 style={{
@@ -473,12 +690,22 @@ const ReportSubmission = ({ navigation, route }: any) => {
                 </Text>
               </TouchableOpacity>
             </View>}
+=======
+            </TouchableOpacity>
+          </View>
+>>>>>>> 2609f7622b71d6b70ddc034fa65aa783f9bbc4d2
+>>>>>>> f5a9b6c1b81c414b6cbb9e7984864809370bb6a5
           {/* Student */}
+
           <DropDownModalView
             title="Student"
             selectedValue={setStudent}
+<<<<<<< HEAD
+            placeHolder="Select Student"
+=======
             placeHolder="Select Student.."
             value={student && Object.keys(student).length > 0 ? student.option : ""}
+>>>>>>> 2609f7622b71d6b70ddc034fa65aa783f9bbc4d2
             option={studentData}
             modalHeading="Student"
           />
@@ -491,6 +718,7 @@ const ReportSubmission = ({ navigation, route }: any) => {
             option={subjectData}
             modalHeading="Subject"
           />
+
           {/* Knowledge */}
           {evaluation.option == 'Progress Report' ? (
             <>
@@ -534,7 +762,11 @@ const ReportSubmission = ({ navigation, route }: any) => {
               modalHeading="Knowledge"
             />
           )}
+<<<<<<< HEAD
           {/* Understanding */}
+=======
+          {/* Understanding && Attitude  */}
+>>>>>>> f5a9b6c1b81c414b6cbb9e7984864809370bb6a5
           {evaluation.option == 'Progress Report' ? (
             <>
               <DropDownModalView
@@ -636,7 +868,11 @@ const ReportSubmission = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.gray,
                   fontFamily: 'Poppins-SemiBold',
+<<<<<<< HEAD
                   fontSize: 12,
+=======
+                  fontSize: 14,
+>>>>>>> f5a9b6c1b81c414b6cbb9e7984864809370bb6a5
                 }}>
                 Did you (tutor) hold or carried out any form of eximination/test/quiz for student within this 3 months?
               </Text>
@@ -654,7 +890,11 @@ const ReportSubmission = ({ navigation, route }: any) => {
                   placeholder="Enter answer"
                   multiline={true}
                   maxLength={300}
+<<<<<<< HEAD
                   onChangeText={e => setObservation({ ...observation, obv1: e })}
+=======
+                  onChangeText={e => setQuestions({...questions, plan: e})}
+>>>>>>> f5a9b6c1b81c414b6cbb9e7984864809370bb6a5
                   style={[
                     styles.textArea,
                     {
@@ -671,7 +911,11 @@ const ReportSubmission = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.gray,
                   fontFamily: 'Poppins-SemiBold',
+<<<<<<< HEAD
                   fontSize: 12,
+=======
+                  fontSize: 14,
+>>>>>>> f5a9b6c1b81c414b6cbb9e7984864809370bb6a5
                   marginTop: 8,
                 }}>
                 How do you rate student's performance based on this test?
@@ -690,7 +934,11 @@ const ReportSubmission = ({ navigation, route }: any) => {
                   placeholder="Enter answer"
                   multiline={true}
                   maxLength={300}
+<<<<<<< HEAD
                   onChangeText={e => setObservation({ ...observation, obv2: e })}
+=======
+                  onChangeText={e => setQuestions({...questions, plan: e})}
+>>>>>>> f5a9b6c1b81c414b6cbb9e7984864809370bb6a5
                   style={[
                     styles.textArea,
                     {
@@ -707,7 +955,11 @@ const ReportSubmission = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.gray,
                   fontFamily: 'Poppins-SemiBold',
+<<<<<<< HEAD
                   fontSize: 12,
+=======
+                  fontSize: 14,
+>>>>>>> f5a9b6c1b81c414b6cbb9e7984864809370bb6a5
                   marginTop: 8,
                 }}>
                 which topic(s) has the students showed some significant improvement?
@@ -726,7 +978,11 @@ const ReportSubmission = ({ navigation, route }: any) => {
                   placeholder="Enter answer"
                   multiline={true}
                   maxLength={300}
+<<<<<<< HEAD
                   onChangeText={e => setObservation({ ...observation, obv3: e })}
+=======
+                  onChangeText={e => setQuestions({...questions, plan: e})}
+>>>>>>> f5a9b6c1b81c414b6cbb9e7984864809370bb6a5
                   style={[
                     styles.textArea,
                     {
@@ -743,7 +999,11 @@ const ReportSubmission = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.gray,
                   fontFamily: 'Poppins-SemiBold',
+<<<<<<< HEAD
                   fontSize: 12,
+=======
+                  fontSize: 14,
+>>>>>>> f5a9b6c1b81c414b6cbb9e7984864809370bb6a5
                   marginTop: 8,
                 }}>
                 Can you determine and name the topic(s) that the student should improve and focus on?
@@ -762,7 +1022,11 @@ const ReportSubmission = ({ navigation, route }: any) => {
                   placeholder="Enter answer"
                   multiline={true}
                   maxLength={300}
+<<<<<<< HEAD
                   onChangeText={e => setObservation({ ...observation, obv4: e })}
+=======
+                  onChangeText={e => setQuestions({...questions, plan: e})}
+>>>>>>> f5a9b6c1b81c414b6cbb9e7984864809370bb6a5
                   style={[
                     styles.textArea,
                     {
@@ -791,7 +1055,11 @@ const ReportSubmission = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.gray,
                   fontFamily: 'Poppins-SemiBold',
+<<<<<<< HEAD
                   fontSize: 12,
+=======
+                  fontSize: 14,
+>>>>>>> f5a9b6c1b81c414b6cbb9e7984864809370bb6a5
                 }}>
                 What is the current score for the subject?
               </Text>
@@ -810,7 +1078,11 @@ const ReportSubmission = ({ navigation, route }: any) => {
                   multiline={true}
                   maxLength={300}
                   onChangeText={e =>
+<<<<<<< HEAD
                     setQuestions({ ...questions, addationalAssessments: e })
+=======
+                    setQuestions({...questions, addationalAssessments: e})
+>>>>>>> f5a9b6c1b81c414b6cbb9e7984864809370bb6a5
                   }
                   style={[
                     styles.textArea,
@@ -829,7 +1101,11 @@ const ReportSubmission = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.gray,
                   fontFamily: 'Poppins-SemiBold',
+<<<<<<< HEAD
                   fontSize: 12,
+=======
+                  fontSize: 14,
+>>>>>>> f5a9b6c1b81c414b6cbb9e7984864809370bb6a5
                   marginTop: 8,
                 }}>
                 Elaborate your Plan to Help Student?
@@ -848,7 +1124,11 @@ const ReportSubmission = ({ navigation, route }: any) => {
                   placeholder="Plan"
                   multiline={true}
                   maxLength={300}
+<<<<<<< HEAD
                   onChangeText={e => setQuestions({ ...questions, plan: e })}
+=======
+                  onChangeText={e => setQuestions({...questions, plan: e})}
+>>>>>>> f5a9b6c1b81c414b6cbb9e7984864809370bb6a5
                   style={[
                     styles.textArea,
                     {
