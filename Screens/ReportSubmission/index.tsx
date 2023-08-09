@@ -22,11 +22,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {Base_Uri} from '../../constant/BaseUri';
 import StudentContext from '../../context/studentContext';
+import DateTimePicker from "@react-native-community/datetimepicker"
+import moment from 'moment';
 
 const ReportSubmission = ({navigation, route}: any) => {
   let data = route.params;
 
+
+  const [value, setValue] = useState(new Date)
   const currentDate = new Date();
+<<<<<<< HEAD
   const options: any = {day: 'numeric', month: 'long', year: 'numeric'};
   const formattedDate = currentDate.toLocaleDateString('en-US', options);
   const [evaluation, setEvaluationReport] = useState<any>('');
@@ -53,6 +58,21 @@ const ReportSubmission = ({navigation, route}: any) => {
   const [rulQ3, setRulQ3] = useState('');
   const [rulQ4, setRulQ4] = useState('');
   const context = useContext(StudentContext);
+=======
+  const options: any = { day: 'numeric', month: 'long', year: 'numeric' };
+  const formattedDate = value.toLocaleDateString('en-US', options);
+  const [evaluation, setEvaluationReport] = useState<any>("")
+  const [student, setStudent] = useState<any>("")
+  const [subject, setSubject] = useState<any>("")
+  const [knowledgeAnswer, setKnowledgeAnswer] = useState<any>("")
+  const [understandingAnswer, setUnderstandingAnswer] = useState<any>("")
+  const [analysisAnswer, setAnalysisAnswer] = useState<any>("")
+  const [tutorId, setTutorId] = useState<any>("")
+  const [studentData, setStudentData] = useState([])
+  const [subjectData, setSubjectData] = useState([])
+  const [loading, setLoading] = useState(false)
+  const [show, setShow] = useState(false)
+>>>>>>> 2609f7622b71d6b70ddc034fa65aa783f9bbc4d2
 
   const {students, subjects} = context;
 
@@ -121,11 +141,21 @@ const ReportSubmission = ({navigation, route}: any) => {
   });
   const EvalutionOption = [
     {
+<<<<<<< HEAD
       option: 'Progress Report',
     },
     {
       option: 'Evaluation Report',
     },
+=======
+      option: 'Student Evaluation Report',
+    },
+    {
+      option: 'Student Progress Report',
+    },
+
+
+>>>>>>> 2609f7622b71d6b70ddc034fa65aa783f9bbc4d2
   ];
   const Analysis = [
     {
@@ -218,6 +248,7 @@ const ReportSubmission = ({navigation, route}: any) => {
 
   // console.log(data.classAttendedTime[0].class_schedule_id, "data")
 
+<<<<<<< HEAD
   console.log(subject, 'dataaaaaaa');
   console.log(student.studentID);
   console.log(tutorId, 'tutor');
@@ -241,10 +272,80 @@ const ReportSubmission = ({navigation, route}: any) => {
 
     setLoading(true);
     let date = new Date();
+=======
+
+
+
+  useEffect(() => {
+
+    if (data?.notificationType == "Submit Evaluation Report") {
+      setEvaluationReport(
+        { option: data.notificationType }
+      )
+      let student = studentData && studentData.length > 0 && studentData.filter((e: any, i: any) => {
+
+        return e.option == data.studentName
+      })
+
+      let subject = subjectData && subjectData.length > 0 && subjectData.filter((e: any, i: number) => {
+        return e.option == data.subjectName
+      })
+
+      student && student.length > 0 && setStudent(student[0])
+      subject && subject.length > 0 && setSubject(subject[0])
+    } else if (data?.notificationType == "Submit Progress Report") {
+
+      setEvaluationReport(
+        { option: data.notificationType }
+      )
+      let student = studentData && studentData.length > 0 && studentData.filter((e: any, i: any) => {
+
+        return e.option == data.studentName
+      })
+
+      let subject = subjectData && subjectData.length > 0 && subjectData.filter((e: any, i: number) => {
+        return e.option == data.subjectName
+      })
+
+      student && student.length > 0 && setStudent(student[0])
+      subject && subject.length > 0 && setSubject(subject[0])
+
+    } else {
+
+      setEvaluationReport(
+        { option: "Submit Evaluation Report" }
+      )
+
+      let student = studentData && studentData.length > 0 && studentData.filter((e: any, i: any) => {
+        return e.option == data.studentName
+      })
+      let subject = subjectData && subjectData.length > 0 && subjectData.filter((e: any, i: number) => {
+        return e.option == data.subjectName
+      })
+
+      student && student.length > 0 && setStudent(student[0])
+      subject && subject.length > 0 && setSubject(subject[0])
+    }
+
+
+  }, [navigation, subjectData, studentData])
+
+
+  const submitReport = () => {
+
+    if (!tutorId || !student.studentID || !subject?.id || !evaluation?.option || !knowledgeAnswer?.option || !understandingAnswer?.option || !analysisAnswer?.option) {
+      ToastAndroid.show("Required Fields are missing", ToastAndroid.SHORT)
+      return
+    }
+
+    setLoading(true)
+    let date = value
+>>>>>>> 2609f7622b71d6b70ddc034fa65aa783f9bbc4d2
 
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 since month is zero-based
     const day = date.getDate().toString().padStart(2, '0');
+<<<<<<< HEAD
     let formData = new FormData();
 
     formData.append('tutorID', tutorId);
@@ -293,6 +394,55 @@ const ReportSubmission = ({navigation, route}: any) => {
     </View>
   ) : (
     <View style={{backgroundColor: Theme.white, height: '100%'}}>
+=======
+
+    console.log(date, day, month)
+
+    let formData = new FormData()
+
+    formData.append("tutorID", tutorId)
+    formData.append("scheduleID", data.class_schedule_id)
+    formData.append("studentID", student.studentID)
+    formData.append("subjectID", subject.id)
+    formData.append("currentDate", year + '/' + month + '/' + day)
+    formData.append("reportType", evaluation.option)
+    formData.append("knowledge", knowledgeAnswer.option)
+    formData.append("understanding", understandingAnswer.option)
+    formData.append("analysis", analysisAnswer.option)
+    formData.append("additionalAssisment", questions.addationalAssessments)
+    formData.append("plan", questions.plan)
+
+    axios.post(`${Base_Uri}api/tutorFirstReport`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }).then((res) => {
+      ToastAndroid.show("Report has been submitted successfully", ToastAndroid.SHORT)
+      setLoading(false)
+      navigation.navigate('BackToDashboard');
+    }).catch((error) => {
+      setLoading(false)
+      ToastAndroid.show("Report submission unSuccessfull", ToastAndroid.SHORT)
+      console.log(error, "errrors")
+    })
+
+  }
+
+
+
+  const onChange = (event: any, selectedDate: any) => {
+    const currentDate = selectedDate;
+    setValue(currentDate)
+    setShow(false)
+
+  };
+
+
+  return (
+    loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+      <ActivityIndicator size={"large"} color={Theme.black} />
+    </View> : <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+>>>>>>> 2609f7622b71d6b70ddc034fa65aa783f9bbc4d2
       <Header title="Report Submission" backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <View style={{paddingHorizontal: 15, marginBottom: 100}}>
@@ -301,9 +451,11 @@ const ReportSubmission = ({navigation, route}: any) => {
             title="Report Type"
             placeHolder="Select Report Type"
             selectedValue={setEvaluationReport}
+            value={evaluation.option}
             option={EvalutionOption}
             modalHeading="Select Report Type"
           />
+<<<<<<< HEAD
           {/* First Class Date && Month */}
           {evaluation.option == 'Progress Report' ? (
             <View style={{marginTop: 8}}>
@@ -347,12 +499,50 @@ const ReportSubmission = ({navigation, route}: any) => {
             </View>
           )}
 
+=======
+          {/* First Class Date */}
+          <View style={{ marginTop: 8 }}>
+            <Text style={{ fontSize: 14, fontWeight: 'bold', color: 'black' }}>
+              First Class Date
+            </Text>
+            <TouchableOpacity
+              onPress={() => setShow(true)}
+              style={{
+                marginTop: 5,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                paddingVertical: 10,
+                paddingHorizontal: 15,
+                borderWidth: 1,
+                borderTopLeftRadius: 5,
+                borderTopRightRadius: 5,
+                borderBottomLeftRadius: 5,
+                borderBottomRightRadius: 5,
+                borderColor: Theme.gray,
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  color: Theme.gray,
+                  fontFamily: 'Poppins-SemiBold',
+                  fontSize: 16,
+                }}>
+                {formattedDate}
+              </Text>
+            </TouchableOpacity>
+          </View>
+>>>>>>> 2609f7622b71d6b70ddc034fa65aa783f9bbc4d2
           {/* Student */}
 
           <DropDownModalView
             title="Student"
             selectedValue={setStudent}
+<<<<<<< HEAD
             placeHolder="Select Student"
+=======
+            placeHolder="Select Student.."
+            value={student && Object.keys(student).length > 0 ? student.option : ""}
+>>>>>>> 2609f7622b71d6b70ddc034fa65aa783f9bbc4d2
             option={studentData}
             modalHeading="Student"
           />
@@ -361,6 +551,7 @@ const ReportSubmission = ({navigation, route}: any) => {
             title="Subject"
             placeHolder="Select Subject"
             selectedValue={setSubject}
+            value={subject && Object.keys(subject).length > 0 ? subject.option : ""}
             option={subjectData}
             modalHeading="Subject"
           />
@@ -774,6 +965,15 @@ const ReportSubmission = ({navigation, route}: any) => {
             </Text>
           </TouchableOpacity>
         </View>
+        {show && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={value}
+            mode={"date"}
+            is24Hour={false}
+            onChange={onChange}
+          />
+        )}
       </View>
     </View>
   );

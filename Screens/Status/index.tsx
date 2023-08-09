@@ -1,15 +1,20 @@
 import { ActivityIndicator, ScrollView, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Header from '../../Component/Header';
 import { Theme } from '../../constant/theme';
 import CustomDropDown from '../../Component/CustomDropDown';
 import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
+import StudentContext from '../../context/studentContext';
 
 const Status = ({ navigation, route }: any) => {
 
 
   let data = route.params
+
+  const context = useContext(StudentContext)
+
+  let { students, updateStudent } = context
 
 
   const [status, setStatus] = useState([
@@ -59,10 +64,33 @@ const Status = ({ navigation, route }: any) => {
       },
     }).then((res) => {
 
+
+
       setLoading(false)
       ToastAndroid.show(res?.data?.response, ToastAndroid.SHORT)
+
+
+      let updateData = students && students.length > 0 && students.map((e: any, i: number) => {
+
+        if (e.studentID == data.studentID) {
+          return {
+            ...e,
+            studentStatus: selectedStatus.subject
+          }
+        } else {
+          return e
+        }
+
+      })
+
+      console.log(updateData, "updated")
+
+      updateStudent(updateData)
+      data.studentStatus = selectedStatus.subject
       setSelectedStatus("")
-      navigation.navigate('Students')
+      navigation.navigate("StudentsDetails", data)
+
+
     }).catch((error) => {
       setLoading(false)
       console.log(error, "error")

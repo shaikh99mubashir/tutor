@@ -405,6 +405,7 @@ function AddClass({ navigation }: any) {
       ToastAndroid.show(res?.data?.message, ToastAndroid.SHORT)
     }).catch((error) => {
       setLoading(false)
+      console.log(error,"error")
       ToastAndroid.show("Sorry classes added unsuccessfull", ToastAndroid.SHORT)
     })
   };

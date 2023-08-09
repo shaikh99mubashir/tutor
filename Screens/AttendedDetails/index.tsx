@@ -1,20 +1,24 @@
 import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Theme } from '../../constant/theme';
 import Header from '../../Component/Header';
 import { Base_Uri } from '../../constant/BaseUri';
 import ClockIn from '../ClockInScreen/ClockIn';
-
+import {useIsFocused} from "@react-navigation/native"
 const AttendedDetails = ({ navigation, route }: any) => {
 
-  let data = route?.params
+  let item = route?.params
 
-  const clockinImage = `${Base_Uri}public/signInProof/${data?.startTimeProofImage}`
-  const clockOutImage = `${Base_Uri}public/signOutProof/${data?.endTimeProofImage}`
+  const [data, setData] = useState(item)
 
-  
-  console.log(clockinImage,"image")
-  console.log(clockOutImage,"image")
+  const focus = useIsFocused()
+
+  console.log(data,"dataa")
+
+  useEffect(() => {
+    setData(item)
+  }, [focus])
+
 
   return (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
@@ -83,8 +87,8 @@ const AttendedDetails = ({ navigation, route }: any) => {
           Clock In
         </Text>
         <Image
-          source={{ uri: clockinImage }}
-          style={{ width: '100%', height: '30%', borderWidth: 1, borderColor: "pink" }}
+          source={{ uri: data.startTimeProofImage }}
+          style={{ width: '100%', height: '30%'}}
           resizeMode="contain"
         />
         {/* Clock Out Image */}
@@ -98,7 +102,7 @@ const AttendedDetails = ({ navigation, route }: any) => {
           Clock Out
         </Text>
         <Image
-          source={{ uri: clockOutImage }}
+          source={{ uri: data.endTimeProofImage }}
           style={{ width: '100%', height: '30%' }}
           resizeMode="contain"
         />

@@ -58,7 +58,7 @@ const Verification = ({ navigation, route }: any) => {
       }
     }).catch((error) => {
 
-      ToastAndroid.show("Internal Server Error", ToastAndroid.SHORT)
+      ToastAndroid.show("Invalid Code", ToastAndroid.SHORT)
       setLoading(false)
     })
   }

@@ -4,18 +4,29 @@ import {
   View,
   Image,
   TouchableOpacity,
+
   ScrollView,
   Touchable,
   Linking,
   Platform,
 } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../../Component/Header';
 import { Theme } from '../../constant/theme';
-
+import { useIsFocused } from "@react-navigation/native"
 const StudentsDetails = ({ navigation, route }: any) => {
   const data = route.params;
 
+  const [refresh, setRefresh] = useState(false)
+
+  const focus = useIsFocused()
+
+
+  React.useEffect(() => {
+
+    setRefresh(!refresh)
+
+  }, [focus])
 
   const makeCall = () => {
 
@@ -144,6 +155,25 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 {data.studentAge ? data.studentAge : "not provided"}
               </Text>
             </View>
+            <View style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
+              <Text
+                style={{
+                  color: Theme.black,
+                  fontSize: 14,
+                  fontWeight: '700',
+                }}>
+                Status
+              </Text>
+              <Text
+                style={{
+                  color: Theme.gray,
+                  fontSize: 14,
+                  fontWeight: '600',
+                  marginTop: 5,
+                }}>
+                {data.studentStatus ? data.studentStatus : "Newly Active"}
+              </Text>
+            </View>
             {/* Registration Date */}
             <View style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
               <Text
@@ -265,7 +295,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 paddingHorizontal: 10,
               }}>
               <TouchableOpacity
-              activeOpacity={0.8}
+                activeOpacity={0.8}
                 onPress={() => makeCall()}
                 style={{
                   backgroundColor: Theme.lightGray,
@@ -279,7 +309,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 />
               </TouchableOpacity>
               <TouchableOpacity
-              activeOpacity={0.8}
+                activeOpacity={0.8}
                 onPress={makeWhatappCall}
                 style={{
                   backgroundColor: 'lightgreen',
@@ -327,7 +357,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
             width: '94%',
           }}>
           <TouchableOpacity
-            onPress={() => navigation.navigate('Status',data)}
+            onPress={() => navigation.navigate('Status', data)}
             style={{
               alignItems: 'center',
               padding: 10,

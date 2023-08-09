@@ -49,9 +49,8 @@ const Notifications = ({ navigation }: any) => {
       .then(({ data }) => {
         let { tutorDetailById } = data;
         let tutorUid = tutorDetailById[0]?.uid;
-
         axios
-          .get(`${Base_Uri}api/notifications`)
+          .get(`${Base_Uri}api/notifications/${tutorID}`)
           .then(async ({ data }) => {
             let { notifications } = data;
             let tutorNotification =
@@ -78,6 +77,16 @@ const Notifications = ({ navigation }: any) => {
     getNotificationMessage();
   }, [refresh]);
 
+  const navigateToOtherScreen = (item:any) => {
+
+    console.log(item,"items")
+
+      if(item.notificationType == "Submit Evaluation Report" || item.notificationType == "Submit Progress Report"){
+        navigation.replace("ReportSubmission",item)
+      }
+
+  }
+
   return loading ? (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator size="large" color="black" />
@@ -92,11 +101,13 @@ const Notifications = ({ navigation }: any) => {
         showsVerticalScrollIndicator={false} nestedScrollEnabled>
         {notification && notification.length > 0 ? (
           <FlatList
+            
             data={notification}
             nestedScrollEnabled={true}
             renderItem={({ item, index }: any) => {
               return (
                 <TouchableOpacity
+                onPress={()=>navigateToOtherScreen(item)}
                   activeOpacity={0.8}
                   key={index}
                   style={{ paddingHorizontal: 15 }}>

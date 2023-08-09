@@ -19,17 +19,21 @@ function EditPostpondClass({ navigation, route }: any) {
     const [value, setValue] = useState(new Date())
 
 
-    const initialData = {
+    console.log(data, "data")
+
+    const initialData: any = {
         date: new Date(),
         startTime: "-",
-        endTime: "-"
+        endTime: "-",
+        tutorID: data.tutorID,
+        studentID: data?.studentID,
+        subjectID: data?.subjectID,
     }
 
 
     const [nextClass, setNextClass] = useState(initialData)
 
 
-    console.log(nextClass)
 
     const [loading, setLoading] = useState(false)
 
@@ -54,16 +58,62 @@ function EditPostpondClass({ navigation, route }: any) {
 
 
         setLoading(true)
-        axios.get(`${Base_Uri}attendedClassStatus/${data?.class_schedule_id}/postponed`).then(({ data }) => {
 
-            setLoading(false)
-            setNextClass(initialData)
-            ToastAndroid.show(data?.SuccessMessage, ToastAndroid.SHORT)
+        const year = nextClass.date.getFullYear();
+        const month = (nextClass.date.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 since month is zero-based
+        const day = nextClass.date.getDate().toString().padStart(2, '0');
+
+
+        let hours = nextClass?.startTime.getHours()
+        let minutes = nextClass?.startTime.getMinutes()
+        let seconds = nextClass?.startTime.getSeconds()
+
+        let endHour = nextClass.endTime.getHours()
+        let endMinutes = nextClass.endTime.getMinutes()
+        let endSeconds = nextClass.endTime.getSeconds()
+
+
+
+
+        let dataToSend = {
+            tutorID: nextClass.tutorID,
+            studentID: nextClass?.studentID,
+            subjectID: nextClass?.subjectID,
+            startTime: hours + ":" + minutes + ":" + seconds,
+            endTime: endHour + ":" + endMinutes + ":" + endSeconds,
+            date: year + '/' + month + '/' + day
+        }
+
+
+
+        let classesss = {
+            classes: [dataToSend]
+        }
+
+        console.log(classesss, "classses")
+
+        axios.post(`${Base_Uri}api/addMultipleClasses`, classesss).then((res) => {
+
+            axios.get(`${Base_Uri}attendedClassStatus/${data?.id}/postponed`).then(({ data }) => {
+
+                setLoading(false)
+                setNextClass(initialData)
+                ToastAndroid.show(data?.SuccessMessage, ToastAndroid.SHORT)
+
+            }).catch((error) => {
+                setLoading(false)
+                ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT)
+            })
+
 
         }).catch((error) => {
             setLoading(false)
-            ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT)
+            console.log(error, "error")
+            ToastAndroid.show("Sorry classes added unsuccessfull", ToastAndroid.SHORT)
         })
+
+
+
 
     }
 
@@ -130,7 +180,7 @@ function EditPostpondClass({ navigation, route }: any) {
             <ActivityIndicator size="large" color={Theme.black} />
         </View> : <KeyboardAvoidingView style={{ flex: 1, backgroundColor: Theme.white }} behavior="padding">
             <View>
-                <CustomHeader title="Edit Class" backBtn />
+                <CustomHeader title="Edit Class" backBtn navigation={navigation} />
             </View>
 
             <View style={{ flex: 1, padding: 20, paddingVertical: 10 }}>

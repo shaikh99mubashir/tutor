@@ -99,15 +99,16 @@ function ClockOut({ navigation, route }: any) {
                     return items.class_schedule_id == e.scheduleID
                 })
 
-                console.log(thisClass, "thisClass")
+
 
                 if (thisClass && thisClass.length > 0) {
+
 
 
                     navigation.dispatch(
                         CommonActions.reset({
                             index: 0,
-                            routes: [{ name: 'Main' }],
+                            routes: [{ name: 'BackToDashboard' }],
                         })
                     );
                     setLoading(false)

@@ -11,6 +11,9 @@ import { Base_Uri } from "../../constant/BaseUri";
 function EditCancelledClass({ navigation, route }: any) {
 
     let data = route.params?.data
+
+    console.log(data, "dataaa")
+
     const [cancelledReason, setCancelledReason] = useState("")
     const [loading, setLoading] = useState(false)
 
@@ -22,7 +25,7 @@ function EditCancelledClass({ navigation, route }: any) {
             return
         }
         setLoading(true)
-        axios.get(`${Base_Uri}attendedClassStatus/${data?.class_schedule_id}/cancelled`).then(({ data }) => {
+        axios.get(`${Base_Uri}attendedClassStatus/${data?.id}/cancelled`).then(({ data }) => {
 
             setLoading(false)
             ToastAndroid.show(data?.SuccessMessage, ToastAndroid.SHORT)
@@ -40,7 +43,7 @@ function EditCancelledClass({ navigation, route }: any) {
             <ActivityIndicator size="large" color={Theme.black} />
         </View> : <KeyboardAvoidingView behavior="height" style={{ flex: 1, backgroundColor: Theme.white }} >
             <View>
-                <CustomHeader title="Edit Class" backBtn />
+                <CustomHeader title="Edit Class" backBtn navigation={navigation} />
             </View>
             <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}  >
                 <View style={{ flex: 1, padding: 20 }} >

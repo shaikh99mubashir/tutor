@@ -401,6 +401,24 @@ function Schedule({ navigation }: any) {
   }
   const renderScheduleData = ({ item, index }: any): any => {
 
+    let nowDate: Date = new Date()
+    let date = nowDate.getDate()
+    let month = nowDate.getMonth()
+    let year = nowDate.getFullYear()
+
+    let getDate: any = moment(item?.date)
+    let classDate = getDate.toDate()
+
+    let schdeuledDate = classDate.getDate()
+    let scheduledMonth = classDate.getMonth()
+    let scheduledYear = classDate.getFullYear()
+
+    let flag = date == schdeuledDate && month == scheduledMonth && year == scheduledYear
+
+    console.log(flag, "flag")
+
+
+
     return (
       <TouchableOpacity
         onPress={() => handleSelectPress(index)}
@@ -455,7 +473,7 @@ function Schedule({ navigation }: any) {
           <View
             style={{
               flexDirection: 'row',
-              justifyContent: 'space-between',
+              justifyContent: !flag ? "center" : 'space-between',
               width: '100%',
               alignItems: 'center',
               marginTop: 10,
@@ -468,9 +486,9 @@ function Schedule({ navigation }: any) {
                 padding: 10,
                 borderRadius: 10,
               }}>
-              <Text style={{ textAlign: 'center', fontSize: 16,color:'white' }}>Edit</Text>
+              <Text style={{ textAlign: 'center', fontSize: 16, color: 'white' }}>Edit</Text>
             </TouchableOpacity>
-            <TouchableOpacity
+            {flag && <TouchableOpacity
               onPress={() => routeToClockIn(item)}
               style={{
                 backgroundColor: Theme.darkGray,
@@ -478,8 +496,8 @@ function Schedule({ navigation }: any) {
                 padding: 10,
                 borderRadius: 10,
               }}>
-              <Text style={{ textAlign: 'center', fontSize: 16,color:'white' }}>Attend</Text>
-            </TouchableOpacity>
+              <Text style={{ textAlign: 'center', fontSize: 16, color: 'white' }}>Attend</Text>
+            </TouchableOpacity>}
           </View>
         )}
         {item.selected && item.status == "attended" && (
@@ -500,7 +518,7 @@ function Schedule({ navigation }: any) {
                 padding: 10,
                 borderRadius: 10,
               }}>
-              <Text style={{ textAlign: 'center', fontSize: 16,color:'white' }}>View</Text>
+              <Text style={{ textAlign: 'center', fontSize: 16, color: 'white' }}>View</Text>
             </TouchableOpacity>
           </View>
         )}

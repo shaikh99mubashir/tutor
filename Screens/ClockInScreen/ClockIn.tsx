@@ -52,9 +52,16 @@ function ClockIn({ navigation, route }: any) {
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
 
 
-            let options: any = {
-                mediaType: "photo"
-            }
+            const options: any = {
+                title: 'Select Picture',
+                storageOptions: {
+                    skipBackup: true,
+                    path: 'images',
+                },
+                maxWidth: 500,
+                maxHeight: 500,
+                quality: 0.5,
+            };
 
             launchCamera(options, (res: any) => {
 
@@ -65,17 +72,16 @@ function ClockIn({ navigation, route }: any) {
                 } else {
 
                     let { assets } = res
-                    let startTimeProofImage = assets[0].fileName
+
                     let startMinutes = new Date().getHours()
                     let startSeconds = new Date().getMinutes()
 
-                    let data : any = {
+                    let data: any = {
                         id: item.id,
                         class_schedule_id: item?.class_schedule_id,
                         startMinutes: startMinutes,
                         startSeconds: startSeconds,
-                        hasIncentive: item?.hasIncentive ? item?.hasIncentive : 0,
-                        startTimeProofImage: startTimeProofImage
+                        hasIncentive: item?.hasIncentive ? item?.hasIncentive : 0
                     }
 
                     let formData = new FormData()
@@ -98,14 +104,11 @@ function ClockIn({ navigation, route }: any) {
                     }).then((res) => {
                         setLoading(false)
                         data.data = res.data
-
                         data.item = item
 
-                        console.log(data,"dataaa")
-
-                        let storageData : any = {...data}
+                        let storageData: any = { ...data }
                         storageData = JSON.stringify(storageData)
-                        AsyncStorage.setItem("classInProcess",storageData)
+                        AsyncStorage.setItem("classInProcess", storageData)
                         navigation.replace("ClassTimerCount", data)
                     }).catch((error) => {
                         setLoading(false)
@@ -169,7 +172,7 @@ function ClockIn({ navigation, route }: any) {
 
                         <Text style={{ color: Theme.gray }} >{(item.startTime).toString()} - {(item.endTime).toString()} | </Text>
 
-                        <Text style={{ color: Theme.gray }} >{(item.date.slice(0,10)).toString()}</Text>
+                        <Text style={{ color: Theme.gray }} >{(item.date.slice(0, 10)).toString()}</Text>
                     </View>
                     <TouchableOpacity onPress={() => handleClockInPress()} style={{ backgroundColor: Theme.darkGray, width: "100%", padding: 10, borderRadius: 10, marginTop: 10 }} >
                         <Text style={{ textAlign: "center", fontSize: 16, color:'white' }} >

@@ -119,15 +119,16 @@ function Home({ navigation }: any) {
         let tutorUid = tutorDetailById[0]?.uid;
 
         axios
-          .get(`${Base_Uri}api/notifications`)
+          .get(`${Base_Uri}api/notifications/${tutorId}`)
           .then(async ({ data }) => {
+
             let { notifications } = data;
             let tutorNotification =
               notifications.length > 0 &&
               notifications.filter((e: any, i: number) => {
                 return e.tutorID == tutorUid;
               });
-            setNotificationLength(tutorNotification.length);
+            setNotificationLength(tutorNotification.length > 0 ? tutorNotification.length : 0);
           })
           .catch(error => {
 
@@ -356,6 +357,7 @@ function Home({ navigation }: any) {
         // setTutorData({ ...tutorData, cancelledHours: data.cancelledHours });
       })
       .catch(error => {
+        // console.log(error,"errror")
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
@@ -527,7 +529,7 @@ function Home({ navigation }: any) {
           </View>
         </TouchableOpacity> :
           <TouchableOpacity
-          activeOpacity={0.8}
+            activeOpacity={0.8}
             onPress={() => navigation.navigate('Notifications')}
             style={[
               styles.firstBox,
@@ -666,7 +668,7 @@ function Home({ navigation }: any) {
             renderItem={({ item, index }: any) => {
               return (
                 <TouchableOpacity
-                activeOpacity={0.8}
+                  activeOpacity={0.8}
                   style={{
                     borderWidth: 1,
                     paddingHorizontal: 15,
