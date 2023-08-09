@@ -415,10 +415,6 @@ function Schedule({ navigation }: any) {
 
     let flag = date == schdeuledDate && month == scheduledMonth && year == scheduledYear
 
-    console.log(flag, "flag")
-
-
-
     return (
       <TouchableOpacity
         onPress={() => handleSelectPress(index)}

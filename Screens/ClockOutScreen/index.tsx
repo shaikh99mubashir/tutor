@@ -20,8 +20,7 @@ function ClockOut({ navigation, route }: any) {
     const data = route?.params
     const items = route?.params
 
-    console.log(items, "itemsss")
-
+    
     const focus = useIsFocused()
 
 
@@ -68,12 +67,13 @@ function ClockOut({ navigation, route }: any) {
     // }, [])
 
 
-    console.log(items, "items")
 
     const handleClockOutPress = async () => {
 
         setLoading(true)
         let formData = new FormData()
+
+        console.log(data, "data")
 
         formData.append("id", data.classAttendedID)
         formData.append("class_schedule_id", data.class_schedule_id)
@@ -136,14 +136,10 @@ function ClockOut({ navigation, route }: any) {
 
     if ((data.endHour - data.startHour)?.toString()?.includes("-")) {
         let endHour = 24 - data.startHour
-
         let totalEndMinutes = (endHour * 60) + data.endMinutes
         let totalStartMinutes = (data.startHour * 60) + data.startMinutes
-
         let total = totalEndMinutes + totalStartMinutes
-
         let myHours = total / 60
-
         let minutes = myHours.toString().split(".")[1]
         let totalHours = myHours.toString().split(".")[0]
         let totalMinutes = (Number(minutes) / 100) * 60
@@ -163,6 +159,8 @@ function ClockOut({ navigation, route }: any) {
 
         totalHours = myHours.toString().split(".")[0]
         totalMinutes = Math.round(((Number(minutes) / 100) * 60))
+
+
 
 
 
@@ -209,7 +207,7 @@ function ClockOut({ navigation, route }: any) {
                         <Text style={{ color: Theme.black, fontWeight: "600" }} > {totalHours} hours {totalMinutes} minutes</Text>
                     </View>
                     <TouchableOpacity onPress={() => handleClockOutPress()} style={{ backgroundColor: Theme.darkGray, width: "100%", padding: 10, borderRadius: 10, marginTop: 10 }} >
-                        <Text style={{ textAlign: "center", fontSize: 16,color:'white' }} >
+                        <Text style={{ textAlign: "center", fontSize: 16, color: 'white' }} >
                             Clock Out
                         </Text>
                     </TouchableOpacity>

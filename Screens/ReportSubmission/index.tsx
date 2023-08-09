@@ -350,7 +350,7 @@ const ReportSubmission = ({ navigation, route }: any) => {
       }).then((res) => {
         setLoading(false)
         ToastAndroid.show(res?.data?.successMessage, ToastAndroid.SHORT)
-        navigation.navigate('BackToDashboard',data);
+        navigation.navigate('BackToDashboard', data);
       }).catch((error) => {
         setLoading(false)
         ToastAndroid.show("Failed To Submit Report", ToastAndroid.SHORT)

@@ -55,7 +55,7 @@ const NoteState = (prop) => {
 
 
     return (
-        <NoteContext.Provider value={{ hour, seconds, minutes, update, cleanTime, tutorID }} >
+        <NoteContext.Provider value={{ hour, seconds, minutes, update, cleanTime, tutorID,setSeconds,setMinutes,setHour }} >
 
             {prop.children} 
 

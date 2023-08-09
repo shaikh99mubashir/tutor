@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from "react"
-import { View, Text, Image, ActivityIndicator, TouchableOpacity, PermissionsAndroid, ToastAndroid } from "react-native"
+import React, { useContext, useEffect, useRef, useState } from "react"
+import { View, Text, Image, ActivityIndicator, TouchableOpacity, PermissionsAndroid, ToastAndroid, AppState } from "react-native"
 import { Theme } from "../../constant/theme"
 import Header from "../../Component/Header"
 import { launchCamera } from "react-native-image-picker"
@@ -8,21 +8,114 @@ import axios from "axios"
 import Timer from "../../Component/Timer/timer"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import noteContext from "../../context/noteContext"
-
+import { useIsFocused } from "@react-navigation/native"
+import moment from "moment"
 
 
 function ClassTimerCount({ navigation, route }: any) {
 
     const context = useContext(noteContext)
+    const appState = useRef(AppState.currentState);
+    const [appStateVisible, setAppStateVisible] = useState(appState.current);
 
-    const { hour, minutes, seconds, cleanTime } = context
+    const focus = useIsFocused()
+
+    const { hour, minutes, seconds, cleanTime, update, setSeconds, setMinutes, setHour } = context
+
+
+
+    const setClockInTime = async () => {
+
+
+        let myData: any = await AsyncStorage.getItem("timer")
+        let date = JSON.parse(myData)
+        if (date) {
+
+            let convertDate = moment(date)
+            let convertGetTime = convertDate.toDate().getTime()
+            let nowDate = new Date().getTime()
+            let diff = nowDate - convertGetTime
+            let totalHourDiff = diff / 1000 / 60 / 60
+            if (totalHourDiff.toString().includes(".")) {
+                let splitHours = totalHourDiff.toString().split(".")
+                let hours = Number(splitHours[0])
+                let remainingHours = splitHours[1]
+                let minutesDiff = Number(`0.${remainingHours}`) * 60
+                if (minutesDiff.toString().includes(".")) {
+                    let minutesSplit = minutesDiff.toString().split(".")
+
+                    let minutes = Number(minutesSplit[0])
+                    let remainingMinutes = minutesSplit[1]
+                    let secondsDiff = Number(`0.${remainingMinutes}`) * 60
+                    let seconds = Number(Math.ceil(secondsDiff))
+
+                    setHour(Number(hours))
+                    setMinutes(Number(minutes))
+                    setSeconds(Number(seconds))
+                } else {
+                    setHour(Number(hours))
+                    setMinutes(Number(minutesDiff))
+                }
+            } else {
+                setHour(Number(totalHourDiff))
+            }
+
+        } else {
+
+            let time = new Date()
+            let stringTime = JSON.stringify(time)
+            AsyncStorage.setItem("timer", stringTime)
+        }
+
+    }
+
+    // const handleAppStateChange = (newAppState) => {
+    //     if (newAppState === 'active') {
+
+    //         setClockInTime()
+    //         // App is coming back from the background
+    //         // Place your code here that you want to run
+    //     }
+    // };
+
+
+    useEffect(() => {
+
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            if (
+                appState.current.match(/inactive|background/) &&
+                nextAppState === 'active'
+            ) {
+
+                setClockInTime()
+            } else {
+                setClockInTime()
+            }
+
+            appState.current = nextAppState;
+            setAppStateVisible(appState.current);
+            console.log('AppState', appState.current);
+        });
+
+
+        // setClockInTime()
+
+        return () => subscription.remove()
+
+
+
+        // AppState.addEventListener('change', handleAppStateChange);
+
+
+
+
+
+    }, [focus])
 
 
     let startTime = route.params
     let item = route.params
 
-
-    console.log(item, "itemssss")
 
     const [endTime, setEndTime] = useState("2:00 Pm")
     const [loading, setLoading] = useState(false)
@@ -87,6 +180,7 @@ function ClassTimerCount({ navigation, route }: any) {
                     }
                     cleanTime()
                     AsyncStorage.removeItem("classInProcess")
+                    AsyncStorage.removeItem("timer")
                     navigation.replace("ClockOut", data)
 
                 }
@@ -121,7 +215,7 @@ function ClassTimerCount({ navigation, route }: any) {
 
             <View style={{ width: "100%", alignItems: "center", position: "absolute", bottom: 60 }} >
                 <Text style={{ textAlign: "center", fontSize: 18, color: Theme.black, width: "50%" }} >Click on the timer to clock out</Text>
-                <Text style={{ textAlign: "center", fontSize: 18, color: "red", width: "80%", marginTop: 20 }} >Don't turn off your mobile screen while taking the class</Text>
+
             </View>
         </View>
     )
