@@ -130,7 +130,7 @@ function EditPostpondClass({ navigation, route }: any) {
             <ActivityIndicator size="large" color={Theme.black} />
         </View> : <KeyboardAvoidingView style={{ flex: 1, backgroundColor: Theme.white }} behavior="padding">
             <View>
-                <CustomHeader title="Edit Class" backBtn />
+                <CustomHeader title="Edit Class" backBtn navigation={navigation} />
             </View>
 
             <View style={{ flex: 1, padding: 20, paddingVertical: 10 }}>

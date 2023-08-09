@@ -11,6 +11,9 @@ import { Base_Uri } from "../../constant/BaseUri";
 function EditCancelledClass({ navigation, route }: any) {
 
     let data = route.params?.data
+
+    console.log(data, "dataaa")
+
     const [cancelledReason, setCancelledReason] = useState("")
     const [loading, setLoading] = useState(false)
 

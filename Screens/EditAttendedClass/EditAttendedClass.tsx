@@ -35,10 +35,8 @@ function EditAttendedClass({ navigation, route }: any) {
       return
     }
 
-
     setLoading(true)
     axios.get(`${Base_Uri}attendedClassStatus/${data?.id}/attended`).then(({ data }) => {
-
       ToastAndroid.show(data?.SuccessMessage, ToastAndroid.SHORT)
       setLoading(false)
       setFile({})
@@ -75,7 +73,7 @@ function EditAttendedClass({ navigation, route }: any) {
       behavior="height"
       style={{ flex: 1, backgroundColor: Theme.white }}>
       <View>
-        <CustomHeader title="Edit Class" backBtn />
+        <CustomHeader title="Edit Class" backBtn navigation={navigation} />
       </View>
       <ScrollView
         nestedScrollEnabled={true}

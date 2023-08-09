@@ -192,9 +192,6 @@ const ReportSubmission = ({ navigation, route }: any) => {
     const day = date.getDate().toString().padStart(2, '0');
     let formData = new FormData()
 
-
-
-
     formData.append("tutorID", tutorId)
     formData.append("scheduleID", data.class_schedule_id)
     formData.append("studentID", student.studentID)
@@ -206,9 +203,6 @@ const ReportSubmission = ({ navigation, route }: any) => {
     formData.append("analysis", analysisAnswer.option)
     formData.append("additionalAssisment", questions.addationalAssessments)
     formData.append("plan", questions.plan)
-
-
-    console.log(formData, "formDataa")
 
     axios.post(`${Base_Uri}api/tutorFirstReport`, formData, {
       headers: {

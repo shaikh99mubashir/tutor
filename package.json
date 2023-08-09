@@ -30,6 +30,7 @@
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.10.1",
     "react-native-html-to-pdf": "^0.12.0",
+    "react-native-idle-timer": "^2.2.1",
     "react-native-image-picker": "^5.4.0",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-maps": "^1.7.1",

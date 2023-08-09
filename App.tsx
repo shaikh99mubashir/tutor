@@ -15,9 +15,22 @@ import TutorDetailsState from './context/tutorDetailsState';
 import StudentState from './context/studentState';
 import FilterState from './context/filterState';
 import UpcomingClassState from './context/upcomingClassState';
+import IdleTimerManager from 'react-native-idle-timer';
+
+
+
 
 
 function App() {
+
+
+  useEffect(() => {
+
+    IdleTimerManager.setIdleTimerDisabled(true);
+
+    return () => IdleTimerManager.setIdleTimerDisabled(false);
+
+  }, [])
 
 
   return (

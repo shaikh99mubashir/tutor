@@ -19,7 +19,7 @@ function BackToDashboard () {
                 Good Job for completing your class. See you next class!!
             </Text>
 
-                <TouchableOpacity onPress={()=>navigation.navigate("Home")} style={{width:"90%",backgroundColor:Theme.white,padding:12,borderRadius:8}} >
+                <TouchableOpacity onPress={()=>navigation.replace("Main")} style={{width:"90%",backgroundColor:Theme.white,padding:12,borderRadius:8}} >
 
             <Text style={{fontSize:16,color:Theme.darkGray,textAlign:"center",fontWeight:"700"}} >
                 Back To Dashboard

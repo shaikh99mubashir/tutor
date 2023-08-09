@@ -114,8 +114,8 @@ function ClassTimerCount({ navigation, route }: any) {
 
             <View style={{ width: "100%", alignItems: "center", position: "absolute", bottom: 60 }} >
                 <Text style={{ textAlign: "center", fontSize: 18, color: Theme.black, width: "50%" }} >Click on the timer to clock out</Text>
+                <Text style={{ textAlign: "center", fontSize: 18, color: "red", width: "80%",marginTop:20 }} >Don't turn off your mobile screen while taking the class</Text>
             </View>
-
         </View>
     )
 }

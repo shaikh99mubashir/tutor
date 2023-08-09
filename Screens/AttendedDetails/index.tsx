@@ -4,16 +4,20 @@ import { Theme } from '../../constant/theme';
 import Header from '../../Component/Header';
 import { Base_Uri } from '../../constant/BaseUri';
 import ClockIn from '../ClockInScreen/ClockIn';
-
+import {useIsFocused} from "@react-navigation/native"
 const AttendedDetails = ({ navigation, route }: any) => {
 
   let item = route?.params
 
   const [data, setData] = useState(item)
 
+  const focus = useIsFocused()
+
+  console.log(data,"dataa")
+
   useEffect(() => {
     setData(item)
-  }, [])
+  }, [focus])
 
 
   return (
@@ -84,7 +88,7 @@ const AttendedDetails = ({ navigation, route }: any) => {
         </Text>
         <Image
           source={{ uri: data.startTimeProofImage }}
-          style={{ width: '100%', height: '30%', borderWidth: 1, borderColor: "pink" }}
+          style={{ width: '100%', height: '30%'}}
           resizeMode="contain"
         />
         {/* Clock Out Image */}

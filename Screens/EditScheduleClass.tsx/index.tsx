@@ -15,7 +15,7 @@ function EditScheduleClass({ navigation, route }: any) {
     const editTutorScheduleClass = () => {
 
         setLoading(true)
-        axios.get(`${Base_Uri}attendedClassStatus/${data?.class_schedule_id}/schedule`).then(({ data }) => {
+        axios.get(`${Base_Uri}attendedClassStatus/${data?.id}/schedule`).then(({ data }) => {
 
             ToastAndroid.show(data?.SuccessMessage, ToastAndroid.SHORT)
             setLoading(false)
@@ -31,7 +31,7 @@ function EditScheduleClass({ navigation, route }: any) {
             <ActivityIndicator size="large" color={Theme.black} />
         </View> : <View style={{ flex: 1, backgroundColor: Theme.white }} >
             <View>
-                <CustomHeader title="Edit Class" backBtn />
+                <CustomHeader title="Edit Class" backBtn navigation={navigation} />
             </View>
 
             <View style={{ flex: 1, padding: 20 }} >
