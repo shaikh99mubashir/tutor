@@ -40,8 +40,6 @@ const OpenDetails = ({ route, navigation }: any) => {
 
     axios.get(`${Base_Uri}offerSendByTutor/${subjectId}/${tutor_id}/${ticket_id}`).then(({ data }) => {
 
-
-
       if (data?.result?.status == "Applied") {
         setLoading(false)
         ToastAndroid.show("You have successfully applied for this ticket", ToastAndroid.SHORT)

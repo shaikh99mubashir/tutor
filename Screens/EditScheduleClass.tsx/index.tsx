@@ -16,7 +16,6 @@ function EditScheduleClass({ navigation, route }: any) {
 
         setLoading(true)
         axios.get(`${Base_Uri}attendedClassStatus/${data?.id}/schedule`).then(({ data }) => {
-
             ToastAndroid.show(data?.SuccessMessage, ToastAndroid.SHORT)
             setLoading(false)
         }).catch((error) => {
@@ -33,7 +32,6 @@ function EditScheduleClass({ navigation, route }: any) {
             <View>
                 <CustomHeader title="Edit Class" backBtn navigation={navigation} />
             </View>
-
             <View style={{ flex: 1, padding: 20 }} >
                 <Text style={{ color: Theme.black, fontSize: 18, fontWeight: "600" }} >
                     Student

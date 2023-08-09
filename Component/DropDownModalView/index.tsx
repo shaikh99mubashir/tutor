@@ -18,6 +18,7 @@ const DropDownModalView = ({
   title,
   selectedValue,
   option,
+  value,
   placeHolder,
   modalHeading,
   subTitle,
@@ -93,7 +94,7 @@ const getModalValue = () => {
                 fontFamily: 'Poppins-SemiBold',
                 fontSize: 16,
               }}>
-              {reportType ? reportType : placeHolder && placeHolder}
+              {value ? value : reportType ? reportType : placeHolder && placeHolder}
             </Text>
 
             {serviceDD ? (

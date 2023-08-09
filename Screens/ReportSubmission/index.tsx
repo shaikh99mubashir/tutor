@@ -22,14 +22,18 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
 import StudentContext from '../../context/studentContext';
+import DateTimePicker from "@react-native-community/datetimepicker"
+import moment from 'moment';
 
 const ReportSubmission = ({ navigation, route }: any) => {
 
   let data = route.params
 
+
+  const [value, setValue] = useState(new Date)
   const currentDate = new Date();
   const options: any = { day: 'numeric', month: 'long', year: 'numeric' };
-  const formattedDate = currentDate.toLocaleDateString('en-US', options);
+  const formattedDate = value.toLocaleDateString('en-US', options);
   const [evaluation, setEvaluationReport] = useState<any>("")
   const [student, setStudent] = useState<any>("")
   const [subject, setSubject] = useState<any>("")
@@ -37,9 +41,10 @@ const ReportSubmission = ({ navigation, route }: any) => {
   const [understandingAnswer, setUnderstandingAnswer] = useState<any>("")
   const [analysisAnswer, setAnalysisAnswer] = useState<any>("")
   const [tutorId, setTutorId] = useState<any>("")
-  const [studentData, setStudentData] = useState("")
-  const [subjectData, setSubjectData] = useState("")
+  const [studentData, setStudentData] = useState([])
+  const [subjectData, setSubjectData] = useState([])
   const [loading, setLoading] = useState(false)
+  const [show, setShow] = useState(false)
 
 
 
@@ -121,14 +126,12 @@ const ReportSubmission = ({ navigation, route }: any) => {
   });
   const EvalutionOption = [
     {
-      option: 'Excellent',
+      option: 'Student Evaluation Report',
     },
     {
-      option: 'Good',
+      option: 'Student Progress Report',
     },
-    {
-      option: 'Poor',
-    },
+
 
   ];
   const Analysis = [
@@ -170,26 +173,80 @@ const ReportSubmission = ({ navigation, route }: any) => {
 
   // console.log(data.classAttendedTime[0].class_schedule_id, "data")
 
-  console.log(subject, "dataaaaaaa")
-  console.log(student.studentID)
-  console.log(tutorId, "tutor")
-  console.log(evaluation, "eval")
+
+
+
+  useEffect(() => {
+
+    if (data?.notificationType == "Submit Evaluation Report") {
+      setEvaluationReport(
+        { option: data.notificationType }
+      )
+      let student = studentData && studentData.length > 0 && studentData.filter((e: any, i: any) => {
+
+        return e.option == data.studentName
+      })
+
+      let subject = subjectData && subjectData.length > 0 && subjectData.filter((e: any, i: number) => {
+        return e.option == data.subjectName
+      })
+
+      student && student.length > 0 && setStudent(student[0])
+      subject && subject.length > 0 && setSubject(subject[0])
+    } else if (data?.notificationType == "Submit Progress Report") {
+
+      setEvaluationReport(
+        { option: data.notificationType }
+      )
+      let student = studentData && studentData.length > 0 && studentData.filter((e: any, i: any) => {
+
+        return e.option == data.studentName
+      })
+
+      let subject = subjectData && subjectData.length > 0 && subjectData.filter((e: any, i: number) => {
+        return e.option == data.subjectName
+      })
+
+      student && student.length > 0 && setStudent(student[0])
+      subject && subject.length > 0 && setSubject(subject[0])
+
+    } else {
+
+      setEvaluationReport(
+        { option: "Submit Evaluation Report" }
+      )
+
+      let student = studentData && studentData.length > 0 && studentData.filter((e: any, i: any) => {
+        return e.option == data.studentName
+      })
+      let subject = subjectData && subjectData.length > 0 && subjectData.filter((e: any, i: number) => {
+        return e.option == data.subjectName
+      })
+
+      student && student.length > 0 && setStudent(student[0])
+      subject && subject.length > 0 && setSubject(subject[0])
+    }
+
+
+  }, [navigation, subjectData, studentData])
 
 
   const submitReport = () => {
 
-
-    if (!tutorId || !student.studentID || !subject?.id || !evaluation?.option || !knowledgeAnswer?.option || !understandingAnswer?.option || !analysisAnswer?.option || !questions.addationalAssessments || !questions.plan) {
+    if (!tutorId || !student.studentID || !subject?.id || !evaluation?.option || !knowledgeAnswer?.option || !understandingAnswer?.option || !analysisAnswer?.option) {
       ToastAndroid.show("Required Fields are missing", ToastAndroid.SHORT)
       return
     }
 
     setLoading(true)
-    let date = new Date()
+    let date = value
 
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 since month is zero-based
     const day = date.getDate().toString().padStart(2, '0');
+
+    console.log(date, day, month)
+
     let formData = new FormData()
 
     formData.append("tutorID", tutorId)
@@ -221,6 +278,15 @@ const ReportSubmission = ({ navigation, route }: any) => {
   }
 
 
+
+  const onChange = (event: any, selectedDate: any) => {
+    const currentDate = selectedDate;
+    setValue(currentDate)
+    setShow(false)
+
+  };
+
+
   return (
     loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
       <ActivityIndicator size={"large"} color={Theme.black} />
@@ -233,6 +299,7 @@ const ReportSubmission = ({ navigation, route }: any) => {
             title="Report Type"
             placeHolder="Evaluation Report"
             selectedValue={setEvaluationReport}
+            value={evaluation.option}
             option={EvalutionOption}
             modalHeading="Select Report Type"
           />
@@ -241,7 +308,8 @@ const ReportSubmission = ({ navigation, route }: any) => {
             <Text style={{ fontSize: 14, fontWeight: 'bold', color: 'black' }}>
               First Class Date
             </Text>
-            <View
+            <TouchableOpacity
+              onPress={() => setShow(true)}
               style={{
                 marginTop: 5,
                 flexDirection: 'row',
@@ -264,13 +332,14 @@ const ReportSubmission = ({ navigation, route }: any) => {
                 }}>
                 {formattedDate}
               </Text>
-            </View>
+            </TouchableOpacity>
           </View>
           {/* Student */}
           <DropDownModalView
             title="Student"
             selectedValue={setStudent}
-            placeHolder="Mk Test Student"
+            placeHolder="Select Student.."
+            value={student && Object.keys(student).length > 0 ? student.option : ""}
             option={studentData}
             modalHeading="Student"
           />
@@ -279,6 +348,7 @@ const ReportSubmission = ({ navigation, route }: any) => {
             title="Subject"
             placeHolder="Select Subject"
             selectedValue={setSubject}
+            value={subject && Object.keys(subject).length > 0 ? subject.option : ""}
             option={subjectData}
             modalHeading="Subject"
           />
@@ -429,6 +499,15 @@ const ReportSubmission = ({ navigation, route }: any) => {
             </Text>
           </TouchableOpacity>
         </View>
+        {show && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={value}
+            mode={"date"}
+            is24Hour={false}
+            onChange={onChange}
+          />
+        )}
       </View>
     </View>
   );

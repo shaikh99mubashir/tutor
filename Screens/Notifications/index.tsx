@@ -81,7 +81,7 @@ const Notifications = ({ navigation }: any) => {
 
     console.log(item,"items")
 
-      if(item.notificationType == "Submit Evaluation Report"){
+      if(item.notificationType == "Submit Evaluation Report" || item.notificationType == "Submit Progress Report"){
         navigation.replace("ReportSubmission",item)
       }
 
