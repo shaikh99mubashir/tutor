@@ -68,7 +68,7 @@ function More({ navigation }: any) {
               />
               <View>
                 <Text
-                  style={{ fontSize: 18, fontWeight: '600', color: Theme.black }}>
+                  style={{ fontSize: 16, fontWeight: '600', color: Theme.black }}>
                   {tutorDetails?.full_name}
                 </Text>
                 <Text
@@ -111,11 +111,11 @@ function More({ navigation }: any) {
                 }}>
                 <Image
                   source={require('../../Assets/Images/notification.png')}
-                  style={{ height: 25, width: 25 }}
+                  style={{ height: 15, width: 15 }}
                 />
               </View>
               <Text
-                style={{ fontSize: 18, fontWeight: '600', color: Theme.black }}>
+                style={{ fontSize: 16, fontWeight: '600', color: Theme.black }}>
                 Notification
               </Text>
             </View>
@@ -152,11 +152,11 @@ function More({ navigation }: any) {
                 }}>
                 <Image
                   source={require('../../Assets/Images/student2.png')}
-                  style={{ height: 25, width: 25 }}
+                  style={{ height: 15, width: 15 }}
                 />
               </View>
               <Text
-                style={{ fontSize: 18, fontWeight: '600', color: Theme.black }}>
+                style={{ fontSize: 16, fontWeight: '600', color: Theme.black }}>
                 Students
               </Text>
             </View>
@@ -193,11 +193,11 @@ function More({ navigation }: any) {
                 }}>
                 <Image
                   source={require('../../Assets/Images/payment.png')}
-                  style={{ height: 25, width: 25 }}
+                  style={{ height: 15, width: 15 }}
                 />
               </View>
               <Text
-                style={{ fontSize: 18, fontWeight: '600', color: Theme.black }}>
+                style={{ fontSize: 16, fontWeight: '600', color: Theme.black }}>
                 Payment
               </Text>
             </View>
@@ -234,11 +234,11 @@ function More({ navigation }: any) {
                 }}>
                 <Image
                   source={require('../../Assets/Images/report.png')}
-                  style={{ height: 25, width: 25 }}
+                  style={{ height: 15, width: 15 }}
                 />
               </View>
               <Text
-                style={{ fontSize: 18, fontWeight: '600', color: Theme.black }}>
+                style={{ fontSize: 16, fontWeight: '600', color: Theme.black }}>
                 Report Submission History
               </Text>
             </View>
@@ -275,11 +275,11 @@ function More({ navigation }: any) {
                 }}>
                 <Image
                   source={require('../../Assets/Images/faq.png')}
-                  style={{ height: 25, width: 25 }}
+                  style={{ height: 15, width: 15 }}
                 />
               </View>
               <Text
-                style={{ fontSize: 18, fontWeight: '600', color: Theme.black }}>
+                style={{ fontSize: 16, fontWeight: '600', color: Theme.black }}>
                 FAQs
               </Text>
             </View>
@@ -289,6 +289,47 @@ function More({ navigation }: any) {
               resizeMode="contain"
             />
           </TouchableOpacity>
+          {/* Report Submission */}
+          {/* <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => navigation.navigate('ReportSubmission')}
+            style={{
+              paddingVertical: 15,
+              borderBottomWidth: 1,
+              borderBottomColor: '#eee',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <View
+              style={{
+                width: '90%',
+                flexDirection: 'row',
+                gap: 15,
+                alignItems: 'center',
+              }}>
+              <View
+                style={{
+                  backgroundColor: 'gray',
+                  padding: 10,
+                  borderRadius: 10,
+                }}>
+                <Image
+                  source={require('../../Assets/Images/faq.png')}
+                  style={{ height: 15, width: 15 }}
+                />
+              </View>
+              <Text
+                style={{ fontSize: 16, fontWeight: '600', color: Theme.black }}>
+                ReportSubmission
+              </Text>
+            </View>
+            <Image
+              source={require('../../Assets/Images/right.png')}
+              style={{ width: 20, height: 20 }}
+              resizeMode="contain"
+            />
+          </TouchableOpacity> */}
           {/*Logout */}
           <TouchableOpacity
             onPress={handleFilterPress}
@@ -316,11 +357,11 @@ function More({ navigation }: any) {
                 }}>
                 <Image
                   source={require('../../Assets/Images/logout.png')}
-                  style={{ height: 25, width: 25 }}
+                  style={{ height: 15, width: 15 }}
                 />
               </View>
               <Text
-                style={{ fontSize: 18, fontWeight: '600', color: Theme.black }}>
+                style={{ fontSize: 16, fontWeight: '600', color: Theme.black }}>
                 Log Out
               </Text>
             </View>
@@ -344,7 +385,7 @@ function More({ navigation }: any) {
             <Text
               style={{
                 color: Theme.darkGray,
-                fontSize: 16,
+                fontSize: 14,
                 fontWeight: 'bold',
               }}>
               Are you sure you want to Quit ?
@@ -374,7 +415,7 @@ function More({ navigation }: any) {
                 }}>
                 <Text
                   style={{
-                    fontSize: 16,
+                    fontSize: 14,
                     fontFamily: 'Poppins-SemiBold',
                     color: cancel ? 'white' : Theme.darkGray,
                   }}>
@@ -399,7 +440,7 @@ function More({ navigation }: any) {
                   style={{
                     color: apply ? Theme.darkGray : 'white',
 
-                    fontSize: 16,
+                    fontSize: 14,
                     fontFamily: 'Poppins-SemiBold',
                   }}>
                   Yes
@@ -427,7 +468,7 @@ const styles = StyleSheet.create({
   },
   modalText: {
     color: 'black',
-    fontSize: 14,
+    fontSize: 12,
     fontFamily: 'Poppins-Regular',
   },
   closeButton: {

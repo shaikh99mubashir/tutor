@@ -42,7 +42,7 @@ const DropDownModalView = ({
 
 const getModalValue = () => {
 
-
+  setModalVisible(false);
 
 }
 
@@ -52,15 +52,17 @@ const getModalValue = () => {
       {/* Report Type */}
         
       <View style={{marginTop: 8}}>
-        <Text style={{fontSize: 14, fontWeight: 'bold', color: 'black'}}>
-          {title && title}
+        {title &&
+        <Text style={{fontSize: 12, fontWeight: 'bold', color: 'black'}}>
+          {title}
         </Text>
+        }
         {subTitle && (
           <Text
             style={{
               color: Theme.gray,
               fontFamily: 'Poppins-SemiBold',
-              fontSize: 16,
+              fontSize: 12,
             }}>
             {subTitle}
           </Text>
@@ -92,7 +94,7 @@ const getModalValue = () => {
               style={{
                 color: Theme.gray,
                 fontFamily: 'Poppins-SemiBold',
-                fontSize: 16,
+                fontSize: 12,
               }}>
               {value ? value : reportType ? reportType : placeHolder && placeHolder}
             </Text>
@@ -132,13 +134,13 @@ const getModalValue = () => {
               height: '40%',
               width: '100%',
             }}>
-              <ScrollView>
+              <ScrollView showsVerticalScrollIndicator={false}>
             <TouchableOpacity onPress={() => getModalValue()}>
-              <Text style={{textAlign: 'right'}}>X</Text>
+              <Text style={{textAlign: 'right',color:'black',fontSize:16,padding:10,backgroundColor:"white"}}>X</Text>
             </TouchableOpacity>
             <Text
               style={{
-                fontSize: 14,
+                fontSize: 12,
                 fontWeight: 'bold',
                 color: 'black',
                 marginBottom: 15,
@@ -154,7 +156,7 @@ const getModalValue = () => {
                     style={{marginVertical: 5}}>
                     <Text
                       style={{
-                        fontSize: 14,
+                        fontSize: 12,
                         fontWeight: 'bold',
                         color: 'black',
                         borderBottomWidth:1,

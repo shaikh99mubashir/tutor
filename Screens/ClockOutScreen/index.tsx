@@ -209,7 +209,7 @@ function ClockOut({ navigation, route }: any) {
                         <Text style={{ color: Theme.black, fontWeight: "600" }} > {totalHours} hours {totalMinutes} minutes</Text>
                     </View>
                     <TouchableOpacity onPress={() => handleClockOutPress()} style={{ backgroundColor: Theme.darkGray, width: "100%", padding: 10, borderRadius: 10, marginTop: 10 }} >
-                        <Text style={{ textAlign: "center", fontSize: 16 }} >
+                        <Text style={{ textAlign: "center", fontSize: 16,color:'white' }} >
                             Clock Out
                         </Text>
                     </TouchableOpacity>
