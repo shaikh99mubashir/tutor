@@ -25,6 +25,7 @@ import Pdf from 'react-native-pdf';
 
 const ReportSubmissionHistory = ({ navigation }: any) => {
   const [reportSubmission, setreportSubmission] = useState([]);
+  const [progressReport, setProgressReport] = useState([])
   const [foundName, setFoundName] = useState([]);
   const [loading, setLoading] = useState(false)
   const [pdfUri, setPdfUri] = React.useState('');
@@ -60,9 +61,39 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
     })
   }
 
+  const getProgressReportHistory = async () => {
+
+    setLoading(true)
+
+    let data: any = await AsyncStorage.getItem('loginAuth');
+
+    data = JSON.parse(data);
+
+    let { tutorID } = data;
+
+    axios.get(`${Base_Uri}api/progressReportListing`).then(({ data }) => {
+      let { progressReportListing } = data
+
+      let tutorReport = progressReportListing && progressReportListing.length > 0 && progressReportListing.filter((e: any, i: number) => {
+        return e.tutorID == tutorID
+      })
+
+      console.log(tutorReport, "reoirt")
+      setProgressReport(tutorReport && tutorReport.length > 0 ? tutorReport : [])
+      setLoading(false)
+    }).catch((error) => {
+      setLoading(false)
+      console.log("error")
+    })
+  }
+
+  console.log(progressReport, "progressReport")
+
+
   useEffect(() => {
 
     getReportSubmissionHistory()
+    getProgressReportHistory()
 
   }, [refresh])
 

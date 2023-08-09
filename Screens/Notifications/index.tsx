@@ -77,13 +77,11 @@ const Notifications = ({ navigation }: any) => {
     getNotificationMessage();
   }, [refresh]);
 
-  const navigateToOtherScreen = (item:any) => {
+  const navigateToOtherScreen = (item: any) => {
 
-    console.log(item,"items")
-
-      if(item.notificationType == "Submit Evaluation Report" || item.notificationType == "Submit Progress Report"){
-        navigation.replace("ReportSubmission",item)
-      }
+    if (item.notificationType == "Submit Evaluation Report" || item.notificationType == "Submit Progress Report") {
+      navigation.navigate("ReportSubmission", item)
+    }
 
   }
 
@@ -101,13 +99,13 @@ const Notifications = ({ navigation }: any) => {
         showsVerticalScrollIndicator={false} nestedScrollEnabled>
         {notification && notification.length > 0 ? (
           <FlatList
-            
+
             data={notification}
             nestedScrollEnabled={true}
             renderItem={({ item, index }: any) => {
               return (
                 <TouchableOpacity
-                onPress={()=>navigateToOtherScreen(item)}
+                  onPress={() => navigateToOtherScreen(item)}
                   activeOpacity={0.8}
                   key={index}
                   style={{ paddingHorizontal: 15 }}>
