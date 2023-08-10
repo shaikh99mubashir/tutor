@@ -114,6 +114,9 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
 
 
   const generateAndDownalodPdf = async (item: any): Promise<string | undefined> => {
+
+    console.log(item,"items")
+
     try {
       const options = {
         html: `<html><body>

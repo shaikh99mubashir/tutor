@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, ImageBackground } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, ImageBackground, Dimensions } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Theme } from '../../constant/theme';
 import Header from '../../Component/Header';
@@ -11,6 +11,9 @@ const AttendedDetails = ({ navigation, route }: any) => {
 
   const [data, setData] = useState(item)
 
+
+  console.log(data, "dataaa")
+
   const [loading1, setLoading1] = useState(false)
   const [loading2, setLoading2] = useState(false)
 
@@ -19,6 +22,15 @@ const AttendedDetails = ({ navigation, route }: any) => {
   useEffect(() => {
     setData(item)
   }, [focus])
+
+  const handleLoadComplete = () => {
+
+    console.log("helllo")
+
+    setLoading1(false)
+    setLoading2(false)
+
+  }
 
 
   return (
@@ -87,15 +99,16 @@ const AttendedDetails = ({ navigation, route }: any) => {
           }}>
           Clock In
         </Text>
-        {loading1 ? <View style={{ width: '100%', height: '30%' }}  >
+        {loading1 ? <View style={{ width: "100%", height: '30%' }}  >
           <ActivityIndicator color={"black"} size={'large'} />
         </View>
           :
           <Image
             source={{ uri: data.startTimeProofImage }}
-            style={{ width: '100%', height: '30%' }}
-            resizeMode="contain"
-            onLoadEnd={() => setLoading1(false)}
+            style={{ width: "100%", height: '30%' }}
+            resizeMode="cover"
+            onLoad={() => handleLoadComplete()}
+            // onLoadEnd={() => setLoading1(false)}
             onError={(error) => {
               console.log(error, "erorrr")
               // Handle image loading error here
@@ -119,9 +132,7 @@ const AttendedDetails = ({ navigation, route }: any) => {
           <Image
             source={{ uri: data.endTimeProofImage }}
             style={{ width: '100%', height: '30%' }}
-            onLoadEnd={() => setLoading2(false)}
-            resizeMode="contain"
-
+            resizeMode="cover"
             onError={(error) => {
               setLoading2(false);
             }}

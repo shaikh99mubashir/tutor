@@ -25,15 +25,14 @@ function EditAttendedClass({ navigation, route }: any) {
 
   const [file, setFile] = useState<any>({});
 
-  // console.log(data.id, "dataa")
 
 
   const changeStatus = () => {
 
-    if (Object.keys(file).length == 0) {
-      ToastAndroid.show("Kindly attach file", ToastAndroid.SHORT)
-      return
-    }
+    // if (Object.keys(file).length == 0) {
+    //   ToastAndroid.show("Kindly attach file", ToastAndroid.SHORT)
+    //   return
+    // }
 
     setLoading(true)
     axios.get(`${Base_Uri}attendedClassStatus/${data?.id}/attended`).then(({ data }) => {

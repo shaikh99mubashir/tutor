@@ -11,6 +11,8 @@ function EditScheduleClass({ navigation, route }: any) {
 
     let data = route.params?.data
 
+
+
     const [postponedReason, setPostponedReason] = useState<any>("")
     const [mode, setMode] = useState<any>('date');
     const [clickedStartTime, setClickedStartTime] = useState(false)
@@ -19,7 +21,6 @@ function EditScheduleClass({ navigation, route }: any) {
     const [value, setValue] = useState(new Date())
 
 
-    console.log(data, "data")
 
     const initialData: any = {
         date: new Date(),
@@ -60,7 +61,6 @@ function EditScheduleClass({ navigation, route }: any) {
         const month = (nextClass.date.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 since month is zero-based
         const day = nextClass.date.getDate().toString().padStart(2, '0');
 
-
         let hours = nextClass?.startTime.getHours()
         let minutes = nextClass?.startTime.getMinutes()
         let seconds = nextClass?.startTime.getSeconds()
@@ -68,7 +68,6 @@ function EditScheduleClass({ navigation, route }: any) {
         let endHour = nextClass.endTime.getHours()
         let endMinutes = nextClass.endTime.getMinutes()
         let endSeconds = nextClass.endTime.getSeconds()
-
 
 
 
@@ -83,24 +82,19 @@ function EditScheduleClass({ navigation, route }: any) {
 
 
 
+
+
         let classesss = {
             classes: [dataToSend]
         }
 
-        console.log(classesss, "classses")
 
         axios.post(`${Base_Uri}api/addMultipleClasses`, classesss).then((res) => {
 
-            axios.get(`${Base_Uri}attendedClassStatus/${data?.id}/postponed`).then(({ data }) => {
+            setLoading(false)
+            setNextClass(initialData)
+            ToastAndroid.show("Class has been successfully scheduled", ToastAndroid.SHORT)
 
-                setLoading(false)
-                setNextClass(initialData)
-                ToastAndroid.show(data?.SuccessMessage, ToastAndroid.SHORT)
-
-            }).catch((error) => {
-                setLoading(false)
-                ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT)
-            })
 
 
         }).catch((error) => {
@@ -222,7 +216,7 @@ function EditScheduleClass({ navigation, route }: any) {
                             testID="dateTimePicker"
                             value={value}
                             mode={mode}
-                            is24Hour={false}
+                            is24Hour={true}
                             onChange={onChange}
                         />
                     )}

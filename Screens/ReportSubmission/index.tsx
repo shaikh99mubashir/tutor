@@ -814,7 +814,6 @@ const ReportSubmission = ({ navigation, route }: any) => {
                   }
                   style={[
                     styles.textArea,
-
                     {
                       width: Dimensions.get('window').width,
                       padding: 8,

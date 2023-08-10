@@ -70,11 +70,11 @@ const Students = ({ navigation }: any) => {
   const searchStudent = (e: any) => {
 
     setSearchText(e);
-    let filteredItems: any = students.filter((x: any) =>{
-      console.log(x,"xxxx")
-      return(
-      x?.studentName?.toLowerCase()?.includes(e?.toLowerCase()) ||
-      x?.studentID?.toString().toLowerCase().includes(e?.toLowerCase())
+    let filteredItems: any = students.filter((x: any) => {
+      console.log(x, "xxxx")
+      return (
+        x?.studentName?.toLowerCase()?.includes(e?.toLowerCase()) ||
+        x?.studentID?.toString().toLowerCase().includes(e?.toLowerCase())
       )
     });
     setFoundName(filteredItems);

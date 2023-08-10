@@ -381,10 +381,23 @@ function Schedule({ navigation }: any) {
 
   const routeToClockIn = async (item: any) => {
 
-    if (item.remainingHours > 1) {
-      ToastAndroid.show(`There is ${item.remainingHours} hour remaining in class`, ToastAndroid.SHORT)
+    const currentTime: any = new Date();
+
+    const startTimeStr = item.startTime
+    const startTimeParts = startTimeStr.split(":");
+    const startTime: any = new Date();
+    startTime.setHours(parseInt(startTimeParts[0], 10));
+    startTime.setMinutes(parseInt(startTimeParts[1], 10));
+    startTime.setSeconds(parseInt(startTimeParts[2], 10));
+
+    const timeDifferenceMs = startTime - currentTime;
+    const hours = Math.floor((timeDifferenceMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+    if (hours > 1) {
+      ToastAndroid.show(`There is ${hours} hours remaining in class`, ToastAndroid.SHORT)
       return
     }
+
     let data: any = await AsyncStorage.getItem("classInProcess")
     data = JSON.parse(data)
 
@@ -395,8 +408,6 @@ function Schedule({ navigation }: any) {
     }
   }
   const renderScheduleData = ({ item, index }: any): any => {
-
-
 
 
     let nowDate: Date = new Date()
@@ -412,6 +423,8 @@ function Schedule({ navigation }: any) {
     let scheduledYear = classDate.getFullYear()
 
     let flag = date == schdeuledDate && month == scheduledMonth && year == scheduledYear
+
+
 
     return (
       <TouchableOpacity

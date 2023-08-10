@@ -39,112 +39,71 @@ const Notifications = ({ navigation }: any) => {
       tutorID: Number;
       token: string;
     }
+
     const data: any = await AsyncStorage.getItem('loginAuth');
     let loginData: LoginAuth = JSON.parse(data);
     let { tutorID } = loginData;
 
     setLoading(true);
-
-    let notificationData = []
-
     axios
-      .get(`${Base_Uri}getTutorDetailByID/${tutorID}`)
-      .then(({ data }) => {
-        let { tutorDetailById } = data;
-        let tutorUid = tutorDetailById[0]?.uid;
-        axios
-          .get(`${Base_Uri}api/notifications/${tutorID}`)
-          .then(async ({ data }) => {
-            let { notifications } = data;
-            let tutorNotification =
-              notifications.length > 0 &&
-              notifications.filter((e: any, i: number) => {
-                return e.tutorID == tutorUid && e.status == "new";
-              });
-            setLoading(false);
-            setNotification(tutorNotification);
-          })
-          .catch(error => {
-            setLoading(false);
-            ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+      .get(`${Base_Uri}api/notifications/${tutorID}`)
+      .then(async ({ data }) => {
+        let { notifications } = data;
+        let tutorNotification =
+          notifications.length > 0 &&
+          notifications.filter((e: any, i: number) => {
+            return e.status == "new";
           });
+        setLoading(false);
+        setNotification(tutorNotification);
       })
       .catch(error => {
         setLoading(false);
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
-
-
-  const getScheduleDataMessage = async () => {
-    interface LoginAuth {
-      status: Number;
-      tutorID: Number;
-      token: string;
-    }
-    const data: any = await AsyncStorage.getItem('loginAuth');
-    let loginData: LoginAuth = JSON.parse(data);
-    let { tutorID } = loginData;
-    setLoading(true);
-    let notificationData = []
-
-    axios
-      .get(`${Base_Uri}getTutorDetailByID/${tutorID}`)
-      .then(({ data }) => {
-        let { tutorDetailById } = data;
-        let tutorUid = tutorDetailById[0]?.uid;
-        axios
-          .get(`${Base_Uri}api/classScheduleNotifications/${tutorID}`)
-          .then(async ({ data }) => {
-            let { notifications } = data;
-            let tutorNotification =
-              notifications.length > 0 &&
-              notifications.filter((e: any, i: number) => {
-                return e.tutorID == tutorUid && e.status == "new";
-              });
-
-            setLoading(false);
-            setScheduleNotification(tutorNotification);
-          })
-          .catch(error => {
-            setLoading(false);
-            ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
-          });
-      })
-      .catch(error => {
-        setLoading(false);
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
-      });
-  };
-
 
 
   useEffect(() => {
     getNotificationMessage();
-    getScheduleDataMessage()
   }, [refresh]);
 
   const navigateToOtherScreen = (item: any) => {
 
-
-
     if (item.notificationType == "Submit Evaluation Report" || item.notificationType == "Submit Progress Report") {
       navigation.navigate("ReportSubmission", item)
+      axios.get(`${Base_Uri}api/updateNotificationStatus/${item.notificationID}/old`).then((res) => {
+
+        console.log(res, "res")
+
+      }).catch((error) => {
+
+        ToastAndroid.show("Nework Error", ToastAndroid.SHORT)
+      })
+
+    } else {
+
+      item.status = "scheduled"
+      navigation.navigate("EditScheduleClass", { data: item, schedule: "Scheduled" })
+
+
+      axios.get(`${Base_Uri}api/updateNotificationStatus/${item.notificationID}/old`).then((res) => {
+
+        console.log(res, "res")
+
+      }).catch((error) => {
+
+        ToastAndroid.show("Nework Error", ToastAndroid.SHORT)
+      })
+
+
+
     }
-    axios.get(`${Base_Uri}api/updateNotificationStatus/${item.notificationID}/old`).then((res) => {
-
-      console.log(res, "res")
-
-    }).catch((error) => {
-
-      ToastAndroid.show("Nework Error", ToastAndroid.SHORT)
-    })
 
   }
 
 
 
-  let dataToRender = [...notification, ...schduleNotification]
 
   return loading ? (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -158,10 +117,10 @@ const Notifications = ({ navigation }: any) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        {dataToRender && dataToRender.length > 0 ? (
+        {notification && notification.length > 0 ? (
           <FlatList
 
-            data={dataToRender}
+            data={notification}
             nestedScrollEnabled={true}
             renderItem={({ item, index }: any) => {
 
