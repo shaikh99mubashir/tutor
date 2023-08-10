@@ -14,7 +14,7 @@ import { Theme } from '../../constant/theme';
 import CustomHeader from '../../Component/Header';
 import DocumentPicker from 'react-native-document-picker';
 import AntDesign from 'react-native-vector-icons/EvilIcons';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 
@@ -43,8 +43,9 @@ function EditAttendedClass({ navigation, route }: any) {
 
     }).catch((error) => {
       setLoading(false)
-      console.log(error, "error")
-      ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT)
+
+      ToastAndroid.show("You have not attended this class yet", ToastAndroid.SHORT)
+
     })
 
   };

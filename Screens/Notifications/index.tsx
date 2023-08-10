@@ -21,6 +21,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const height = Dimensions.get('screen').height;
 const Notifications = ({ navigation }: any) => {
   const [notification, setNotification] = useState<any>([]);
+  const [schduleNotification, setScheduleNotification] = useState<any>([])
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
   const [refresh, setRefresh] = useState(false)
@@ -44,6 +45,8 @@ const Notifications = ({ navigation }: any) => {
 
     setLoading(true);
 
+    let notificationData = []
+
     axios
       .get(`${Base_Uri}getTutorDetailByID/${tutorID}`)
       .then(({ data }) => {
@@ -58,7 +61,6 @@ const Notifications = ({ navigation }: any) => {
               notifications.filter((e: any, i: number) => {
                 return e.tutorID == tutorUid && e.status == "new";
               });
-
             setLoading(false);
             setNotification(tutorNotification);
           })
@@ -73,30 +75,76 @@ const Notifications = ({ navigation }: any) => {
       });
   };
 
+
+  const getScheduleDataMessage = async () => {
+    interface LoginAuth {
+      status: Number;
+      tutorID: Number;
+      token: string;
+    }
+    const data: any = await AsyncStorage.getItem('loginAuth');
+    let loginData: LoginAuth = JSON.parse(data);
+    let { tutorID } = loginData;
+    setLoading(true);
+    let notificationData = []
+
+    axios
+      .get(`${Base_Uri}getTutorDetailByID/${tutorID}`)
+      .then(({ data }) => {
+        let { tutorDetailById } = data;
+        let tutorUid = tutorDetailById[0]?.uid;
+        axios
+          .get(`${Base_Uri}api/classScheduleNotifications/${tutorID}`)
+          .then(async ({ data }) => {
+            let { notifications } = data;
+            let tutorNotification =
+              notifications.length > 0 &&
+              notifications.filter((e: any, i: number) => {
+                return e.tutorID == tutorUid && e.status == "new";
+              });
+
+            setLoading(false);
+            setScheduleNotification(tutorNotification);
+          })
+          .catch(error => {
+            setLoading(false);
+            ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+          });
+      })
+      .catch(error => {
+        setLoading(false);
+        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+      });
+  };
+
+
+
   useEffect(() => {
     getNotificationMessage();
+    getScheduleDataMessage()
   }, [refresh]);
 
   const navigateToOtherScreen = (item: any) => {
 
 
-    console.log("item", item)
 
     if (item.notificationType == "Submit Evaluation Report" || item.notificationType == "Submit Progress Report") {
       navigation.navigate("ReportSubmission", item)
     }
     axios.get(`${Base_Uri}api/updateNotificationStatus/${item.notificationID}/old`).then((res) => {
 
-      console.log(res,"res")
+      console.log(res, "res")
 
     }).catch((error) => {
+
       ToastAndroid.show("Nework Error", ToastAndroid.SHORT)
     })
 
-
-
-
   }
+
+
+
+  let dataToRender = [...notification, ...schduleNotification]
 
   return loading ? (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -110,12 +158,13 @@ const Notifications = ({ navigation }: any) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        {notification && notification.length > 0 ? (
+        {dataToRender && dataToRender.length > 0 ? (
           <FlatList
 
-            data={notification}
+            data={dataToRender}
             nestedScrollEnabled={true}
             renderItem={({ item, index }: any) => {
+
               return (
                 <TouchableOpacity
                   onPress={() => navigateToOtherScreen(item)}

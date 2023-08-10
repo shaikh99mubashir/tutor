@@ -17,12 +17,15 @@ function ClassTimerCount({ navigation, route }: any) {
     const context = useContext(noteContext)
     const appState = useRef(AppState.currentState);
     const [appStateVisible, setAppStateVisible] = useState(appState.current);
+    const [backTime, setBackTime] = useState(false)
 
     const focus = useIsFocused()
 
-    const { hour, minutes, seconds, cleanTime, update, setSeconds, setMinutes, setHour } = context
+    const { hour, minutes, seconds, cleanTime, update, setTime, time, setFirstTimeIn } = context
 
 
+
+    const [appClosed, setAppClosed] = useState(false)
 
     const setClockInTime = async () => {
 
@@ -49,15 +52,25 @@ function ClassTimerCount({ navigation, route }: any) {
                     let secondsDiff = Number(`0.${remainingMinutes}`) * 60
                     let seconds = Number(Math.ceil(secondsDiff))
 
-                    setHour(Number(hours))
-                    setMinutes(Number(minutes))
-                    setSeconds(Number(seconds))
+
+                    setTime({
+                        ...time,
+                        seconds: seconds,
+                        minutes: minutes,
+                        hour: hours
+                    })
                 } else {
-                    setHour(Number(hours))
-                    setMinutes(Number(minutesDiff))
+                    setTime({
+                        ...time,
+                        minutes: minutesDiff,
+                        hour: hours
+                    })
                 }
             } else {
-                setHour(Number(totalHourDiff))
+                setTime({
+                    ...time,
+                    hour: totalHourDiff
+                })
             }
 
         } else {
@@ -69,49 +82,83 @@ function ClassTimerCount({ navigation, route }: any) {
 
     }
 
-    // const handleAppStateChange = (newAppState) => {
-    //     if (newAppState === 'active') {
 
-    //         setClockInTime()
-    //         // App is coming back from the background
-    //         // Place your code here that you want to run
-    //     }
-    // };
+    const handleAppStateChange = async (newAppState: any) => {
+        if (newAppState === 'active') {
+            setBackTime(true)
+            setFirstTimeIn(true)
+            console.log(newAppState, "APPsTATE")
+            let myData: any = await AsyncStorage.getItem("timer")
+            let date = JSON.parse(myData)
+            if (date) {
+
+                let convertDate = moment(date)
+                let convertGetTime = convertDate.toDate().getTime()
+                let nowDate = new Date().getTime()
+                let diff = nowDate - convertGetTime
+                let totalHourDiff = diff / 1000 / 60 / 60
+                if (totalHourDiff.toString().includes(".")) {
+                    let splitHours = totalHourDiff.toString().split(".")
+                    let hours = Number(splitHours[0])
+                    let remainingHours = splitHours[1]
+                    let minutesDiff = Number(`0.${remainingHours}`) * 60
+                    if (minutesDiff.toString().includes(".")) {
+                        let minutesSplit = minutesDiff.toString().split(".")
+
+                        let myMinutes = Number(minutesSplit[0])
+                        let remainingMinutes = minutesSplit[1]
+                        let secondsDiff = Number(`0.${remainingMinutes}`) * 60
+                        let Myseconds = Number(Math.ceil(secondsDiff))
+
+                        console.log(seconds, "seconds")
+                        console.log(minutes, "minutes")
+                        console.log(hour, "hours")
+
+                        setTime({
+                            ...time,
+                            seconds: Myseconds,
+                            minutes: myMinutes,
+                            hour: hours
+                        })
+                    } else {
+                        setTime({
+                            ...time,
+                            minutes: minutesDiff,
+                            hour: hours
+                        })
+                    }
+                } else {
+                    setTime({
+                        ...time,
+                        hour: totalHourDiff
+                    })
+                }
+
+                setBackTime(false)
+
+            } else {
+
+                let time = new Date()
+                let stringTime = JSON.stringify(time)
+                AsyncStorage.setItem("timer", stringTime)
+            }
+            // App is coming back from the background
+            // Place your code here that you want to run
+        }
+    };
 
 
     useEffect(() => {
-
-        const subscription = AppState.addEventListener('change', nextAppState => {
-            if (
-                appState.current.match(/inactive|background/) &&
-                nextAppState === 'active'
-            ) {
-
-                setClockInTime()
-            } else {
-                setClockInTime()
-            }
-
-            appState.current = nextAppState;
-            setAppStateVisible(appState.current);
-            console.log('AppState', appState.current);
-        });
-
-
-        // setClockInTime()
-
-        return () => subscription.remove()
+        // ...
 
 
 
-        // AppState.addEventListener('change', handleAppStateChange);
+        setClockInTime()
+        const subscription = AppState.addEventListener('change', handleAppStateChange);
 
+        return () => subscription.remove();
 
-
-
-
-    }, [focus])
-
+    }, [focus]);
 
     let startTime = route.params
     let item = route.params
@@ -209,7 +256,7 @@ function ClassTimerCount({ navigation, route }: any) {
 
                 <View style={{ alignItems: "center", position: "relative", top: -130 }} >
                     <Text style={{ textAlign: "center", fontSize: 14, color: Theme.lightGray }} >Timer</Text>
-                    <Timer show={"true"} />
+                    {!backTime && <Timer show={"true"} />}
                 </View>
             </TouchableOpacity>
 

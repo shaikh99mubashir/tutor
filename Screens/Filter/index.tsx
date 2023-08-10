@@ -72,6 +72,8 @@ const Filter = ({ navigation }: any) => {
       return
     }
 
+    console.log(jobFilter,"fillter`")
+
     let myFilter = JSON.stringify(jobFilter)
     await AsyncStorage.setItem('filter', myFilter)
     ToastAndroid.show('your data has been successfully filtered', ToastAndroid.SHORT)
@@ -108,8 +110,6 @@ const Filter = ({ navigation }: any) => {
           return e
         }
       })
-
-      console.log(myData, "dataa")
 
       setSearchSubjectData(myData)
 

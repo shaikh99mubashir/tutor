@@ -182,34 +182,9 @@ function EditScheduleClass({ navigation, route }: any) {
 
             <View style={{ flex: 1, padding: 20, paddingVertical: 10 }}>
                 <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}  >
-                    <View style={{ backgroundColor: Theme.lightGray, padding: 20, borderRadius: 10, marginTop: 10 }}>
-                        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: "500" }}>Date</Text>
 
-                            <Text style={{ color: Theme.black, fontSize: 14, fontWeight: "500" }}>{data?.date.toString()}</Text>
-                        </View>
-                        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 10 }}>
-                            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: "500" }}>Start Time</Text>
-
-                            <Text style={{ color: Theme.black, fontSize: 14, fontWeight: "500" }}>{data?.startTime.toString()}</Text>
-                        </View>
-                        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 10 }}>
-                            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: "500" }}>End Time</Text>
-
-                            <Text style={{ color: Theme.black, fontSize: 14, fontWeight: "500" }}>{data?.endTime.toString()}</Text>
-                        </View>
-                    </View>
-                    <Text style={{ color: Theme.black, fontSize: 16, fontWeight: "600", marginTop: 20 }}>Status</Text>
-                    <View style={{ backgroundColor: Theme.lightGray, padding: 20, borderRadius: 10, marginTop: 10 }}>
-                        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-                            <Text style={{ color: Theme.black, fontSize: 16, fontWeight: "500" }}>
-                                {route?.params?.schedule ? "Scheduled" : route?.params?.postpond ? "Postponed" : ""}
-                            </Text>
-                            <AntDesign name="chevron-down" color={Theme.black} size={30} />
-                        </View>
-                    </View>
                     <View>
-                        <Text style={{ color: Theme.black, fontSize: 16, fontWeight: "600", marginTop: 10 }} >Next Class</Text>
+                        <Text style={{ color: Theme.black, fontSize: 16, fontWeight: "600", marginTop: 10 }} >Schedule Class</Text>
                         <View style={{ backgroundColor: Theme.lightGray, padding: 20, borderRadius: 10, marginTop: 10 }}>
                             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                                 <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: "500" }}>Date</Text>
@@ -231,6 +206,17 @@ function EditScheduleClass({ navigation, route }: any) {
                             </View>
                         </View>
                     </View>
+
+                    <Text style={{ color: Theme.black, fontSize: 16, fontWeight: "600", marginTop: 20 }}>Status</Text>
+                    <View style={{ backgroundColor: Theme.lightGray, padding: 20, borderRadius: 10, marginTop: 10 }}>
+                        <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+                            <Text style={{ color: Theme.black, fontSize: 16, fontWeight: "500" }}>
+                                {route?.params?.schedule ? "Scheduled" : route?.params?.postpond ? "Postponed" : ""}
+                            </Text>
+                            <AntDesign name="chevron-down" color={Theme.black} size={30} />
+                        </View>
+                    </View>
+
                     {show && (
                         <DateTimePicker
                             testID="dateTimePicker"

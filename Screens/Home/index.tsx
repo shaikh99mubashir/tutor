@@ -110,8 +110,6 @@ function Home({ navigation }: any) {
 
   const getNotificationLength = async () => {
 
-
-
     axios
       .get(`${Base_Uri}getTutorDetailByID/${tutorId}`)
       .then(({ data }) => {
@@ -120,15 +118,45 @@ function Home({ navigation }: any) {
 
         axios
           .get(`${Base_Uri}api/notifications/${tutorId}`)
-          .then(async ({ data }) => {
+          .then(({ data }) => {
+            0
+
+            let length = 0
 
             let { notifications } = data;
             let tutorNotification =
               notifications.length > 0 &&
               notifications.filter((e: any, i: number) => {
-                return e.tutorID == tutorUid && e.status == "new"; 
+                return e.tutorID == tutorUid && e.status == "new";
               });
-            setNotificationLength(tutorNotification.length > 0 ? tutorNotification.length : 0);
+            // setNotificationLength(tutorNotification.length > 0 ? tutorNotification.length : 0);
+            length = length + tutorNotification.length > 0 ? tutorNotification.length : 0
+
+            axios
+              .get(`${Base_Uri}api/classScheduleNotifications/${tutorId}`)
+              .then(({ data }) => {
+
+
+                let { notifications } = data;
+                let tutorNotification =
+                  notifications.length > 0 &&
+                  notifications.filter((e: any, i: number) => {
+                    return e.tutorID == tutorUid && e.status == "new";
+                  });
+                // setNotificationLength(tutorNotification.length > 0 ? tutorNotification.length : 0);
+                length = length + tutorNotification.length > 0 ? tutorNotification.length : 0
+
+                setNotificationLength(length)
+
+              })
+              .catch(error => {
+
+                ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+              });
+
+
+
+
           })
           .catch(error => {
 

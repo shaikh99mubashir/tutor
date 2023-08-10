@@ -42,11 +42,9 @@ function Schedule({ navigation }: any) {
   let upComingCont = useContext(upcomingClassContext)
   const { upcomingClass, setUpcomingClass } = upComingCont
 
-  console.log(upComingCont, "UP")
 
   let data = upcomingClass
 
-  console.log(data, "data")
 
 
   let focus = useIsFocused()
@@ -143,12 +141,6 @@ function Schedule({ navigation }: any) {
 
               let convertDate = getDate.toDate()
 
-              console.log(convertDate.getDate(), "convert")
-
-              console.log(typeof getDate, "dateeee")
-
-
-
               let scheduleDate = convertDate.getDate()
               let scheduleMonth = convertDate.getMonth()
               let scheduleYear = convertDate.getFullYear()
@@ -156,7 +148,6 @@ function Schedule({ navigation }: any) {
 
 
 
-              // console.log(scheduleDate, "dateee")
 
               if (Date == scheduleDate && month == scheduleMonth && year == scheduleYear) {
                 return {
@@ -390,6 +381,10 @@ function Schedule({ navigation }: any) {
 
   const routeToClockIn = async (item: any) => {
 
+    if (item.remainingHours > 1) {
+      ToastAndroid.show(`There is ${item.remainingHours} hour remaining in class`, ToastAndroid.SHORT)
+      return
+    }
     let data: any = await AsyncStorage.getItem("classInProcess")
     data = JSON.parse(data)
 
@@ -400,6 +395,9 @@ function Schedule({ navigation }: any) {
     }
   }
   const renderScheduleData = ({ item, index }: any): any => {
+
+
+
 
     let nowDate: Date = new Date()
     let date = nowDate.getDate()

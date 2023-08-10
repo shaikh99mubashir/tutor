@@ -36,18 +36,18 @@ function App() {
   return (
     <View style={styles.container} >
 
-      <NoteState>
-        <UpcomingClassState>
-          <TutorDetailsState>
-            <StudentState>
-              <FilterState>
+      <UpcomingClassState>
+              <NoteState>
+        <TutorDetailsState>
+          <StudentState>
+            <FilterState>
                 <AppNavigation />
-                <Timer show="false" />
-              </FilterState>
-            </StudentState>
-          </TutorDetailsState>
-        </UpcomingClassState>
-      </NoteState>
+                {/* <Timer show="false" /> */}
+            </FilterState>
+          </StudentState>
+        </TutorDetailsState>
+              </NoteState>
+      </UpcomingClassState>
     </View>
   );
 }

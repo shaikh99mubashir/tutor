@@ -156,24 +156,32 @@ function JobTicket({ navigation }: any) {
 
       let categoryID = Category.id
       let subjectID = subject.id
-      let myMode = mode.id
+      let myMode = mode.subject
+      let myState = state.id
+      let myCity = city.id
 
-      console.log(categoryID, "idddd")
-
+      console.log(myState, myCity, "cityyy")
 
 
       axios
         .get(`${Base_Uri}ticketsAPI/${tutorDetails?.tutorId}`)
         .then(({ data }) => {
-          
-          console.log(data,"dataaa")
-      
+
           let { tickets } = data;
           setOpenData(
             tickets.length > 0 &&
             tickets.filter((e: any, i: number) => {
 
-              console.log(e, "eeee")
+              console.log(e, "eee")
+
+              console.log(e.mode, myMode)
+              console.log(e.subject_id, "subk")
+              console.log(subjectID, "subject")
+              return e?.mode?.toString()?.toLowerCase() == myMode?.toString()?.toLowerCase()
+                && e.subject_id == subjectID
+                && e.categoryID == categoryID
+                && e?.cityID == myCity
+                && e.stateID == myState
 
             }),
 

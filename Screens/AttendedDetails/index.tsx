@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator, ImageBackground } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Theme } from '../../constant/theme';
 import Header from '../../Component/Header';
@@ -11,13 +11,10 @@ const AttendedDetails = ({ navigation, route }: any) => {
 
   const [data, setData] = useState(item)
 
-  const [loading1, setLoading1] = useState(true)
-  const [loading2, setLoading2] = useState(true)
+  const [loading1, setLoading1] = useState(false)
+  const [loading2, setLoading2] = useState(false)
 
   const focus = useIsFocused()
-
-
-  console.log(data, "dataaa")
 
   useEffect(() => {
     setData(item)
@@ -98,8 +95,9 @@ const AttendedDetails = ({ navigation, route }: any) => {
             source={{ uri: data.startTimeProofImage }}
             style={{ width: '100%', height: '30%' }}
             resizeMode="contain"
-            onLoad={() => setLoading1(false)}
-            onError={() => {
+            onLoadEnd={() => setLoading1(false)}
+            onError={(error) => {
+              console.log(error, "erorrr")
               // Handle image loading error here
               setLoading1(false);
             }}
@@ -121,10 +119,10 @@ const AttendedDetails = ({ navigation, route }: any) => {
           <Image
             source={{ uri: data.endTimeProofImage }}
             style={{ width: '100%', height: '30%' }}
+            onLoadEnd={() => setLoading2(false)}
             resizeMode="contain"
-            onLoad={() => setLoading2(false)}
-            onError={() => {
-              // Handle image loading error here
+
+            onError={(error) => {
               setLoading2(false);
             }}
           />}
