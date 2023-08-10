@@ -376,16 +376,16 @@ function Index({ navigation }: any) {
               borderWidth: 1,
               borderColor: Theme.lightGray,
               borderRadius: 100,
-              width: 60,
-              height: 60,
+              width: 40,
+              height: 40,
               alignItems: 'center',
               justifyContent: 'center',
             }}>
             <View
               style={{
                 position: 'absolute',
-                height: 15,
-                width: 15,
+                height: 8,
+                width: 8,
                 backgroundColor: Theme.lightGray,
                 borderRadius: 100,
                 left: 2,
@@ -401,17 +401,17 @@ function Index({ navigation }: any) {
 
           <View style={{ marginLeft: 10 }}>
             <Text
-              style={{ fontSize: 18, fontWeight: '700', color: Theme.black }}
+              style={{ fontSize: 14, fontWeight: '700', color: Theme.black }}
               numberOfLines={1}>
               {item?.subject}
             </Text>
             <Text
-              style={{ fontSize: 14, fontWeight: '500', color: Theme.black }}
+              style={{ fontSize: 12, fontWeight: '500', color: Theme.black }}
               numberOfLines={1}>
               {item.status}
             </Text>
             <Text
-              style={{ fontSize: 14, fontWeight: '500', color: Theme.gray }}
+              style={{ fontSize: 10, fontWeight: '500', color: Theme.gray }}
               numberOfLines={1}>
               {item.created_at}
             </Text>
@@ -419,7 +419,7 @@ function Index({ navigation }: any) {
         </View>
 
         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-          <AntDesign name="right" color={Theme.gray} size={20} />
+          <AntDesign name="right" color={Theme.gray} size={15} />
         </View>
       </TouchableOpacity>
     );

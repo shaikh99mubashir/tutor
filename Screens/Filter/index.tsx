@@ -164,7 +164,8 @@ const Filter = ({ navigation }: any) => {
             ddTitle="Category"
             headingStyle={{ color: Theme.black, fontWeight: "700" }}
             dropdownPlace={"Select Category"}
-            dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }}
+            dropdownContainerStyle={{ paddingVertical: 15,
+             }}
             subject={category}
             categoryShow={"complain_name"} />
           <CustomDropDown
@@ -173,21 +174,22 @@ const Filter = ({ navigation }: any) => {
             searchData={searchSubjectData}
             searchFunc={handleSearchData}
             selectedSubject={selectedSubject}
-            ddTitle="Subject" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select Subject"} dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }} subject={subjects} categoryShow={"subject"} />
+            ddTitle="Subject" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select Subject"}
+             dropdownContainerStyle={{ paddingVertical: 15,  }} subject={subjects} categoryShow={"subject"} />
           <CustomDropDown
             setSelectedSubject={setSelectedMode}
             selectedSubject={selectedMode}
-            ddTitle="Mode" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select Mode"} dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }} subject={classMode} categoryShow={"subject"} />
+            ddTitle="Mode" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select Mode"} dropdownContainerStyle={{ paddingVertical: 15,  }} subject={classMode} categoryShow={"subject"} />
           <CustomDropDown setSelectedSubject={setSelectedState}
             selectedSubject={selectedState} search={"state"} searchData={searchStateData}
-            searchFunc={handleSearchData} ddTitle="State" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select State"} dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }} subject={state} categoryShow={"subject"} />
+            searchFunc={handleSearchData} ddTitle="State" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select State"} dropdownContainerStyle={{ paddingVertical: 15,  }} subject={state} categoryShow={"subject"} />
           <CustomDropDown ddTitle="City"
             search={"city"} searchData={searchCityData}
             searchFunc={handleSearchData}
             setSelectedSubject={setSelectedCity}
 
             selectedSubject={selectedCity}
-            headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select City"} dropdownContainerStyle={{ paddingVertical: 15, backgroundColor: Theme.lightGray }} subject={city} categoryShow={"subject"} />
+            headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select City"} dropdownContainerStyle={{ paddingVertical: 15,  }} subject={city} categoryShow={"subject"} />
         </View>
       </ScrollView>
       <View style={{ width: "100%", alignItems: "center" }} >
@@ -210,7 +212,7 @@ const Filter = ({ navigation }: any) => {
             }}
             onPress={() => applyFilter()}
           >
-            <Text style={{ color: 'white', fontWeight: '700', fontSize: 15 }}>
+            <Text style={{ color: 'white', fontWeight: '700', fontSize: 12 }}>
               Apply
             </Text>
           </TouchableOpacity>
@@ -224,7 +226,7 @@ const Filter = ({ navigation }: any) => {
             }}
             onPress={() => resetFilter()}
           >
-            <Text style={{ color: 'white', fontWeight: '700', fontSize: 15 }}>
+            <Text style={{ color: 'white', fontWeight: '700', fontSize: 12 }}>
               Reset
             </Text>
           </TouchableOpacity>

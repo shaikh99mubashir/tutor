@@ -44,8 +44,8 @@ const CustomDropDown = (props: any) => {
             style={{
               fontFamily: 'Poppins-Regular',
               color: Theme.gray,
-              fontSize: 16,
-              fontWeight: 'bold',
+              fontSize: 14,
+              // fontWeight: 'bold',
               marginVertical: 5,
               marginHorizontal: 5,
               ...headingStyle
@@ -84,7 +84,7 @@ const CustomDropDown = (props: any) => {
                 style={{
                   color: Theme.gray,
                   fontFamily: 'Poppins-SemiBold',
-                  fontSize: 16,
+                  fontSize: 14,
                 }}>
                 {selectedServicedata.complain_name &&
                   selectedServicedata.complain_name > 10
@@ -108,7 +108,7 @@ const CustomDropDown = (props: any) => {
                 style={{
                   color: Theme.gray,
                   fontFamily: 'Poppins-SemiBold',
-                  fontSize: 16,
+                  fontSize: 14,
                 }}>
                 {selectedSubject ? selectedSubject.subject : dropdownPlace ?? ddTitle}
               </Text>
@@ -157,7 +157,7 @@ const CustomDropDown = (props: any) => {
                       style={{
                         color: Theme.gray,
                         fontFamily: 'Poppins-SemiBold',
-                        fontSize: 16,
+                        fontSize: 14,
                       }}>
                       {e}
                     </Text>
@@ -218,7 +218,7 @@ const CustomDropDown = (props: any) => {
                         style={{
                           color: Theme.gray,
                           fontFamily: 'Poppins-SemiBold',
-                          fontSize: 16,
+                          fontSize: 14,
                         }}>
                         {e ?? selectedSubject}
                       </Text>
@@ -251,7 +251,7 @@ const CustomDropDown = (props: any) => {
                             style={{
                               color: Theme.gray,
                               fontFamily: 'Poppins-SemiBold',
-                              fontSize: 16,
+                              fontSize: 14,
                             }}>
                             {e ?? selectedSubject}
                           </Text>

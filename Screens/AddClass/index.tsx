@@ -234,8 +234,8 @@ function AddClass({ navigation }: any) {
           <Text
             style={{
               color: Theme.black,
-              fontSize: 18,
-              fontWeight: '600',
+              fontSize: 14,
+              fontWeight: '700',
               marginTop: 20,
             }}>
             Class {index + 1}
@@ -244,8 +244,8 @@ function AddClass({ navigation }: any) {
             <Text
               style={{
                 color: Theme.red,
-                fontSize: 18,
-                fontWeight: '600',
+                fontSize: 14,
+                fontWeight: '700',
                 marginTop: 20,
                 marginRight: 5,
               }}>
@@ -255,10 +255,12 @@ function AddClass({ navigation }: any) {
         </View>
         <View
           style={{
-            backgroundColor: Theme.lightGray,
-            padding: 20,
+            // backgroundColor: Theme.lightGray,
+            padding: 10,
             borderRadius: 10,
             marginTop: 10,
+            borderWidth:1,
+            borderColor:Theme.gray
           }}>
           <View
             style={{
@@ -266,12 +268,12 @@ function AddClass({ navigation }: any) {
               justifyContent: 'space-between',
               alignItems: 'center',
             }}>
-            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '500' }}>
+            <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '500' }}>
               Date
             </Text>
             <TouchableOpacity onPress={() => setClassDate('date', index)}>
               <Text
-                style={{ color: Theme.black, fontSize: 14, fontWeight: '500' }}>
+                style={{ color: Theme.black, fontSize: 12, fontWeight: '500' }}>
                 {item.date.toString().slice(0, 15)}
               </Text>
             </TouchableOpacity>
@@ -284,7 +286,7 @@ function AddClass({ navigation }: any) {
               marginTop: 10,
               width: '100%',
             }}>
-            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '500' }}>
+            <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '500' }}>
               Start Time
             </Text>
 
@@ -292,7 +294,7 @@ function AddClass({ navigation }: any) {
               onPress={() => setClassDate('time', index, true)}
               style={{ minWidth: 50, alignItems: 'flex-end' }}>
               <Text
-                style={{ color: Theme.black, fontSize: 14, fontWeight: '500' }}>
+                style={{ color: Theme.black, fontSize: 12, fontWeight: '500' }}>
                 {item?.startTime !== '-'
                   ? item?.startTime.toLocaleString().slice(10)
                   : '-'}
@@ -306,7 +308,7 @@ function AddClass({ navigation }: any) {
               alignItems: 'center',
               marginTop: 10,
             }}>
-            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '500' }}>
+            <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '500' }}>
               End Time
             </Text>
 
@@ -314,7 +316,7 @@ function AddClass({ navigation }: any) {
               onPress={() => setClassDate('time', index)}
               style={{ minWidth: 50, alignItems: 'flex-end' }}>
               <Text
-                style={{ color: Theme.black, fontSize: 14, fontWeight: '500' }}>
+                style={{ color: Theme.black, fontSize: 12, fontWeight: '500' }}>
                 {item?.endTime !== '-'
                   ? item?.endTime.toLocaleString().slice(10)
                   : '-'}
@@ -424,17 +426,16 @@ function AddClass({ navigation }: any) {
               setSelectedSubject={setSelectedStudent}
               selectedSubject={selectedStudent}
               dropdownContainerStyle={{
-                backgroundColor: Theme.lightGray,
+                // backgroundColor: Theme.lightGray,
                 paddingVertical: 17,
-                borderColor: '',
-                borderWidth: 0,
-                borderBottomWidth: 0,
+                borderColor: Theme.gray,
+                borderWidth: 1,
               }}
               dropdownPlace={'Select Student'}
               subject={student}
               headingStyle={{
                 color: Theme.black,
-                fontSize: 18,
+                fontSize: 14,
                 fontWeight: '700',
               }}
             />
@@ -443,17 +444,17 @@ function AddClass({ navigation }: any) {
               selectedSubject={selectedSubject}
               setSelectedSubject={setSelectedSubject}
               dropdownContainerStyle={{
-                backgroundColor: Theme.lightGray,
+                // backgroundColor: Theme.lightGray,
                 paddingVertical: 17,
-                borderColor: '',
-                borderWidth: 0,
-                borderBottomWidth: 0,
+                borderColor: Theme.gray,
+                borderWidth: 1,
+                // borderBottomWidth: 0,
               }}
               dropdownPlace={'Select Subject '}
               subject={subject}
               headingStyle={{
                 color: Theme.black,
-                fontSize: 18,
+                fontSize: 14,
                 fontWeight: '700',
               }}
             />
@@ -477,7 +478,7 @@ function AddClass({ navigation }: any) {
                 width: '100%',
               }}>
               <Text
-                style={{ textAlign: 'center', fontSize: 16, color: Theme.white }}>
+                style={{ textAlign: 'center', fontSize: 14, color: Theme.white }}>
                 {classes.length > 0 ? 'Add More Classes' : 'Add Classes'}
               </Text>
             </TouchableOpacity>
@@ -510,7 +511,7 @@ function AddClass({ navigation }: any) {
             borderRadius: 10,
             width: '95%',
           }}>
-          <Text style={{ textAlign: 'center', fontSize: 16, color: Theme.white }}>
+          <Text style={{ textAlign: 'center', fontSize: 14, color: Theme.white }}>
             Confirm Class
           </Text>
         </TouchableOpacity>

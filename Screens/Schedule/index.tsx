@@ -298,7 +298,7 @@ function Schedule({ navigation }: any) {
                   styles.textStyle,
                   {
                     marginTop: 20,
-                    fontSize: 18,
+                    fontSize: 16,
                     textAlign: 'left',
                     fontWeight: '600',
                   },
@@ -443,15 +443,15 @@ function Schedule({ navigation }: any) {
               borderWidth: 1,
               borderColor: Theme.lightGray,
               borderRadius: 100,
-              width: 70,
-              height: 70,
+              width: 50,
+              height: 50,
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: Theme.darkGray,
             }}>
-            <Image source={item.imageUrl} style={{ width: 45, height: 45 }} />
+            <Image source={item.imageUrl} style={{ width: 35, height: 35 }} />
           </View>
-          <Text style={{ fontSize: 18, color: Theme.gray, marginLeft: 10 }}>
+          <Text style={{ fontSize: 16, color: Theme.gray, marginLeft: 10 }}>
             {item?.studentName}
           </Text>
         </View>
@@ -459,7 +459,7 @@ function Schedule({ navigation }: any) {
         <View style={{ marginTop: 10, flexDirection: 'row' }}>
           <Text
             style={{
-              fontSize: 16,
+              fontSize: 14,
               color: Theme.black,
               fontWeight: '600',
               textTransform: 'uppercase',
@@ -493,7 +493,7 @@ function Schedule({ navigation }: any) {
                 padding: 10,
                 borderRadius: 10,
               }}>
-              <Text style={{ textAlign: 'center', fontSize: 16, color: 'white' }}>Edit</Text>
+              <Text style={{ textAlign: 'center', fontSize: 14, color: 'white' }}>Edit</Text>
             </TouchableOpacity>
             {flag && <TouchableOpacity
               onPress={() => routeToClockIn(item)}
@@ -503,7 +503,7 @@ function Schedule({ navigation }: any) {
                 padding: 10,
                 borderRadius: 10,
               }}>
-              <Text style={{ textAlign: 'center', fontSize: 16, color: 'white' }}>Attend</Text>
+              <Text style={{ textAlign: 'center', fontSize: 14, color: 'white' }}>Attend</Text>
             </TouchableOpacity>}
           </View>
         )}
@@ -525,7 +525,7 @@ function Schedule({ navigation }: any) {
                 padding: 10,
                 borderRadius: 10,
               }}>
-              <Text style={{ textAlign: 'center', fontSize: 16, color: 'white' }}>View</Text>
+              <Text style={{ textAlign: 'center', fontSize: 14, color: 'white' }}>View</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -553,7 +553,7 @@ function Schedule({ navigation }: any) {
               justifyContent: 'flex-start',
               alignItems: 'center',
             }}>
-            <Text style={{ fontSize: 18, color: Theme.black, fontWeight: '700' }}>
+            <Text style={{ fontSize: 16, color: Theme.black, fontWeight: '700' }}>
               {selectedDate.toString().slice(4, 15)}
             </Text>
             <AntDesign name="chevron-down" color={Theme.black} size={30} />
@@ -576,7 +576,7 @@ function Schedule({ navigation }: any) {
                 alignItems: 'center',
               }}>
               <Text
-                style={{ fontSize: 16, fontWeight: 'bold', color: Theme.black }}>
+                style={{ fontSize: 14, fontWeight: 'bold', color: Theme.black }}>
                 No Schedule Data...
               </Text>
             </View>

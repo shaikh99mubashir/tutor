@@ -478,18 +478,18 @@ function Home({ navigation }: any) {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           <Text style={styles.text}>Hello,</Text>
-          <Text style={styles.heading}>{tutorDetails?.full_name}</Text>
+          <Text style={[styles.heading,{fontSize:16}]}>{tutorDetails?.full_name}</Text>
         </View>
 
         <View style={styles.firstBox}>
-          <Text style={[styles.text, { color: Theme.white, fontSize: 14 }]}>
+          <Text style={[styles.text, { color: Theme.white, fontSize: 11 }]}>
             {currentDate}
           </Text>
           <Text
             style={[styles.heading, { color: Theme.white, fontWeight: '400' }]}>
             RM {cummulativeCommission}
           </Text>
-          <Text style={[styles.text, { color: Theme.white, fontSize: 14 }]}>
+          <Text style={[styles.text, { color: Theme.white, fontSize: 11 }]}>
             CUMMULATIVE COMMISSION
           </Text>
         </View>
@@ -505,7 +505,7 @@ function Home({ navigation }: any) {
               marginTop: 10,
             },
           ]}>
-          <Text style={[styles.text, { color: Theme.black, fontSize: 14 }]}>
+          <Text style={[styles.text, { color: Theme.black, fontSize: 12 }]}>
             You have ongoing class
           </Text>
           <View
@@ -517,7 +517,7 @@ function Home({ navigation }: any) {
               alignItems: 'center',
               justifyContent: 'center',
             }}>
-            <Text style={[styles.text, { fontSize: 12, color: Theme.white }]}>
+            <Text style={[styles.text, { fontSize: 10, color: Theme.white }]}>
               <ActivityIndicator color={"blue"} size="small" />
             </Text>
           </View>
@@ -535,7 +535,7 @@ function Home({ navigation }: any) {
                 marginTop: 10,
               },
             ]}>
-            <Text style={[styles.text, { color: Theme.black, fontSize: 14 }]}>
+            <Text style={[styles.text, { color: Theme.black, fontSize: 12 }]}>
               Notifications
             </Text>
             <View
@@ -547,15 +547,15 @@ function Home({ navigation }: any) {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <Text style={[styles.text, { fontSize: 12, color: Theme.white }]}>
+              <Text style={[styles.text, { fontSize: 10, color: Theme.white }]}>
                 {notificationLenght}
               </Text>
             </View>
           </TouchableOpacity>}
 
         <View style={{ marginTop: 20 }}>
-          <Text style={[styles.heading, { fontSize: 16 }]}>Monthly Summary</Text>
-          <Text style={[styles.text, { fontSize: 14, color: Theme.gray }]}>
+          <Text style={[styles.heading, { fontSize: 14 }]}>Monthly Summary</Text>
+          <Text style={[styles.text, { fontSize: 12, color: Theme.gray }]}>
             {currentMonth}
           </Text>
         </View>
@@ -566,12 +566,12 @@ function Home({ navigation }: any) {
               style={{ backgroundColor: 'pink', padding: 5, borderRadius: 10 }}>
               <Image
                 source={require('../../Assets/Images/timer-or-chronometer-tool.png')}
-                style={{ width: 30, height: 30 }}
+                style={{ width: 20, height: 20 }}
               />
             </View>
             <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-              <Text style={[styles.text, { fontSize: 13 }]}>Attended hours</Text>
-              <Text style={[styles.text, { fontSize: 16, fontWeight: '700' }]}>
+              <Text style={[styles.text, { fontSize: 9 }]}>Attended hours</Text>
+              <Text style={[styles.text, { fontSize: 12, fontWeight: '700' }]}>
                 {attendedHours}
               </Text>
             </View>
@@ -591,12 +591,12 @@ function Home({ navigation }: any) {
               }}>
               <Image
                 source={require('../../Assets/Images/student.png')}
-                style={{ width: 30, height: 30 }}
+                style={{ width: 20, height: 20 }}
               />
             </View>
             <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-              <Text style={[styles.text, { fontSize: 12 }]}>Active Student</Text>
-              <Text style={[styles.text, { fontSize: 16, fontWeight: '700' }]}>
+              <Text style={[styles.text, { fontSize: 10 }]}>Active Student</Text>
+              <Text style={[styles.text, { fontSize: 14, fontWeight: '700' }]}>
                 {students?.length}
               </Text>
             </View>
@@ -613,12 +613,12 @@ function Home({ navigation }: any) {
               }}>
               <Image
                 source={require('../../Assets/Images/scheduled.png')}
-                style={{ width: 25, height: 25 }}
+                style={{ width: 20, height: 20 }}
               />
             </View>
             <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-              <Text style={[styles.text, { fontSize: 12 }]}>Schedule hours</Text>
-              <Text style={[styles.text, { fontSize: 16, fontWeight: '700' }]}>
+              <Text style={[styles.text, { fontSize: 10 }]}>Schedule hours</Text>
+              <Text style={[styles.text, { fontSize: 12, fontWeight: '700' }]}>
                 {schedulesHours}
               </Text>
             </View>
@@ -638,19 +638,19 @@ function Home({ navigation }: any) {
               }}>
               <Image
                 source={require('../../Assets/Images/clock.png')}
-                style={{ width: 26, height: 26 }}
+                style={{ width: 20, height: 20 }}
               />
             </View>
             <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-              <Text style={[styles.text, { fontSize: 12 }]}>Cancelled hours</Text>
-              <Text style={[styles.text, { fontSize: 16, fontWeight: '700' }]}>
+              <Text style={[styles.text, { fontSize: 10 }]}>Cancelled hours</Text>
+              <Text style={[styles.text, { fontSize: 12, fontWeight: '700' }]}>
                 {cancelledHours}
               </Text>
             </View>
           </View>
         </View>
 
-        <Text style={[styles.text, { marginTop: 25, fontWeight: '500' }]}>
+        <Text style={[styles.text, { marginTop: 20, fontWeight: '500' }]}>
           Upcoming Classes
         </Text>
         {upCommingClasses && upCommingClasses.length > 0 ? (
@@ -687,19 +687,19 @@ function Home({ navigation }: any) {
                     <Image
                       source={require('../../Assets/Images/woman.png')}
                       style={{
-                        width: 45,
-                        height: 45,
+                        width: 35,
+                        height: 35,
                         borderRadius: 50,
                       }}
                     />
-                    <Text style={{ color: Theme.black, fontSize: 14 }}>
+                    <Text style={{ color: Theme.black, fontSize: 15 }}>
                       {item?.studentName}
                     </Text>
                   </View>
                   <Text
                     style={{
                       color: Theme.black,
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: '600',
                     }}>
                     {item?.subject_name}
@@ -708,7 +708,7 @@ function Home({ navigation }: any) {
                     <Text style={{ color: Theme.gray, fontSize: 12 }}>
                       {item?.startTime} to {item?.endTime}{' '}
                     </Text>
-                    <Text style={{ color: Theme.gray, fontSize: 12 }}>
+                    <Text style={{ color: Theme.gray, fontSize: 12,marginTop:10 }}>
                       {item?.date?.slice(0, 11)}
                     </Text>
                   </View>
@@ -719,7 +719,7 @@ function Home({ navigation }: any) {
         ) : (
           <View style={{ marginTop: 35 }}>
             <Text
-              style={{ color: Theme.black, fontSize: 14, textAlign: 'center' }}>
+              style={{ color: Theme.black, fontSize: 12, textAlign: 'center' }}>
               No UpComming Classes...
             </Text>
           </View>
@@ -739,11 +739,11 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Theme.black,
-    fontSize: 16,
+    fontSize: 14,
   },
   heading: {
     color: Theme.black,
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: '600',
   },
   firstBox: {

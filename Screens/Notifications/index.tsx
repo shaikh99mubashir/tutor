@@ -151,7 +151,7 @@ const Notifications = ({ navigation }: any) => {
                         <Text
                           style={{
                             color: Theme.gray,
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: '600',
                             marginTop: 5,
                             width: '75%',
@@ -162,7 +162,7 @@ const Notifications = ({ navigation }: any) => {
                       <Text
                         style={{
                           color: Theme.black,
-                          fontSize: 16,
+                          fontSize: 14,
                           fontWeight: '600',
                           marginTop: 10,
                         }}>

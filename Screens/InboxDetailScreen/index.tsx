@@ -64,12 +64,12 @@ function InboxDetail({navigation, route}: any) {
       </View>
 
       <ScrollView style={{height: '100%', padding: 20}}>
-        <Text style={{fontSize: 20, color: Theme.black, fontWeight: '500'}}>
+        <Text style={{fontSize: 16, color: Theme.black, fontWeight: '500'}}>
           {newsData.subject}
         </Text>
         <Text
           style={{
-            fontSize: 16,
+            fontSize: 12,
             color: Theme.black,
             fontWeight: '400',
             marginTop: 5,
@@ -78,21 +78,21 @@ function InboxDetail({navigation, route}: any) {
         </Text>
 
         <View style={{flexDirection: 'row', marginTop: 10}}>
-          <Text style={{fontSize: 16, color: Theme.black, fontWeight: '500'}}>
+          <Text style={{fontSize: 12, color: Theme.black, fontWeight: '500'}}>
             {newsData?.created_at?.slice(0, 10)}
           </Text>
-          <Text style={{fontSize: 16, color: Theme.black, fontWeight: '500'}}>
+          <Text style={{fontSize: 12, color: Theme.black, fontWeight: '500'}}>
             {' '}
             -{' '}
           </Text>
-          <Text style={{fontSize: 16, color: Theme.black, fontWeight: '500'}}>
+          <Text style={{fontSize: 12, color: Theme.black, fontWeight: '500'}}>
             {newsData?.created_at?.slice(11, 19)}
           </Text>
         </View>
 
         <Text
           style={{
-            fontSize: 16,
+            fontSize: 12,
             color: Theme.black,
             fontWeight: '700',
             marginTop: 15,

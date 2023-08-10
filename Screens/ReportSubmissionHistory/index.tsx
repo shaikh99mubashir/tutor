@@ -119,57 +119,112 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
 
     try {
       const options = {
-        html: `<html><body>
+        html: `        <html>
+        <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+          }
+          h1 {
+            color: #333;
+            text-align: center;
+          }
+          p {
+            font-size: 16px;
+            line-height: 1.5;
+          }
+        </style>
+      </head>
+        <body>
         <div>
-        <h1>Tutor Name</h1>
-        <h2>${item.tutorName}</h3>
+        <div>
+       
+        <div style="display: flex; justify-content: space-between;">
+          <div style="display: flex; flex-direction: column; width: 45%">
+            <img src="./logo.png" alt="logo" style="width: 70px" />
+            <p style="color: blue";margin-top: 20px;>Sifu Edu & Learning Sdn Bhd (1270698-W)</p>
+            <p style="margin-top: 5px;">1-1F, Jalan Setia Perdana BE U13/BE Setia Alam, Shah Alam, 40170,
+              Selangor Tel: 603-5888 4827</p>
+          </div>
+          <div style="display: flex; flex-direction: column; width: 50%">
+            <span
+              style="font-size: 25px; background-color: orangered;
+               color: white; padding: 8px; white-space: pre; font-weight: 700;margin-top: 20px;"
+              >${item.tutorReportType}</span>
+          </div>
         </div>
-        <div>
-        <h1>Tutor ID</h1>
-        <h3>${item.tutorID}</h3>
+        
+        <div style="display: flex; align-items: center;gap: 10px;">
+        <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Student</h3>
+        <h3 style='white-space: pre;'>${item.studentName}</h3>
+      </div>
+        <div style="display: flex; flex-direction: row;gap:10px;">
+          <div style="display: flex; align-items: center;gap:5px;">
+            <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Tutor</h3>
+            <h3 style='white-space: pre;'>${item.tutorName}</h3>
+          </div>
+          <div style="display: flex; align-items: center;gap:5px;">
+            <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Subject</h3>
+            <h3 style='white-space: pre;'>${item.subjectName}</h3>
+          </div>
+          <div style="display: flex; align-items: center;gap:5px;">
+            <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Month</h3>
+            <h3 style='white-space: pre;'>${item.month}</h3>
+          </div>
         </div>
-        <div>
-        <div>
-        <h1>Tutor Address</h1>
-        <h3>${item.tutorAddress1}</h3>
-        </div>
-        <div>
-        <h1>Student Name</h1>
-        <h3>${item.studentName}</h3>
-        </div>
-        <div>
-        <h1>Student ID</h1>
-        <h3>${item.studentID}</h3>
-        </div>
-        <div>
-        <div>
-        <h1>Student Address</h1>
-        <h3>${item.studentAddress1}</h3>
-        </div>
-        <div>
-        <h1>Subject Name</h1>
-        <h3>${item.subjectName}</h3>
-        </div>
-        <div>
-        <h1>Additional Assisment</h1>
-        <h3>${item.additionalAssisment}</h3>
-        </div>
-        <div>
-        <h1>Analysis</h1>
-        <h3>${item.analysis}</h3>
-        </div>
-        <div>
-        <h1>Knowledge</h1>
-        <h3>${item.knowledge}</h3>
-        </div>
-        <div>
-        <h1>Plan</h1>
-        <h3>${item.plan}</h3>
-        </div>
-        <div>
-        <h1>Understanding</h1>
-        <h3>${item.understanding}</h3>
-        </div>
+      </div>
+
+      <div>
+      <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">A. KNOWLEDGE</p>
+      <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
+      <p style="color: rgb(0, 0, 95); margin: 0px;">1. What can you tell us about the student’s knowledge of this subject?</p>
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+          <div style="border-radius: 50%; height: 13px; width: 13px; background-color: rgb(0, 0, 95);"></div>
+          <p style="margin: 0px;background-color: orange;padding: 5px;">${
+            item.knowledge
+          }</p>
+      </div>
+  </div>
+  </div>
+  <div style="margin-top: 30px;">
+      <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">B. UNDERSTANDING</p>
+      <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
+      <p style="color: rgb(0, 0, 95); margin: 0px;">1. What can you tell about the student’s understanding of this subject?</p>
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+          <div style="border-radius: 50%; height: 13px; width: 13px; background-color: rgb(0, 0, 95);"></div>
+          <p style="margin: 0px;background-color: orange;padding: 5px;">${
+            item.understanding
+          }</p>
+      </div>
+  </div>
+  <div style="margin-top: 30px;">
+      <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">C. ANALYSIS</p>
+      <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
+      <p style="color: rgb(0, 0, 95); margin: 0px;">1. What can you tell about the student’s understanding of this subject?</p>
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+          <div style="border-radius: 50%; height: 13px; width: 13px; background-color: rgb(0, 0, 95);"></div>
+          <p style="margin: 0px;background-color: orange;padding: 5px;">${
+            item.analysis
+          }</p>
+      </div>
+  </div>
+  <div style="margin-top: 30px;">
+  <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">D. ADDITIONAL ASSESMENT</p>
+  <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
+  <p style="color: rgb(0, 0, 95); margin: 0px;">1. What is the current score for the subject?</p>
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+      <p style="margin: 0px;">${item.additionalAssisment}</p>
+  </div>
+  </div>
+  <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
+  <p style="color: rgb(0, 0, 95); margin: 0px;">2. Elaborate your plan to help the student?</p>
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+      <p style="margin: 0px;">${item.plan}</p>
+  </div>
+  </div>
+</div>
+  </div>
+        
         </body></html>`,
         fileName: `report${Math.random()}`,
         directory: 'Downloads',
@@ -221,7 +276,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
       </View>
         :
         <View style={{ backgroundColor: Theme.white, height: '100%' }}>
-          <Header title="Student" backBtn navigation={navigation} />
+          <Header title="Student Reports" backBtn navigation={navigation} />
           <ScrollView
             refreshControl={
               <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -285,7 +340,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
                           <Text
                             style={{
                               color: Theme.black,
-                              fontSize: 15,
+                              fontSize: 12,
                               fontWeight: '600',
                             }}>
                             {item.studentID}
@@ -293,7 +348,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
                           <Text
                             style={{
                               color: Theme.gray,
-                              fontSize: 15,
+                              fontSize: 12,
                               fontWeight: '600',
                               paddingVertical: 10,
                             }}>
@@ -302,7 +357,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
                           <Text
                             style={{
                               color: Theme.black,
-                              fontSize: 15,
+                              fontSize: 12,
                               fontWeight: '600',
                             }}>
                             Subimited on {item.created_at}
@@ -311,14 +366,14 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
                             <Text
                               style={{
                                 color: Theme.gray,
-                                fontSize: 15,
+                                fontSize: 12,
                                 fontWeight: '600',
                                 paddingTop: 10,
                               }}>
                               {item?.tutorReportType}
                             </Text>
                             <TouchableOpacity onPress={() => handleGenerateAndDownloadPdf(item)} style={{ alignItems: "center" }} >
-                              <Image source={require('../../Assets/Images/inbox.png')} style={{ width: 30, height: 30 }} resizeMode='contain' />
+                              <Image source={require('../../Assets/Images/inbox.png')} style={{ width: 25, height: 25 }} resizeMode='contain' />
                               <Text style={{ fontSize: 10, color: "black" }}>Download</Text>
                             </TouchableOpacity>
                           </View>
@@ -330,7 +385,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
               ) : (
                 <View style={{ marginTop: 35 }}>
                   <Text
-                    style={{ color: Theme.black, fontSize: 14, textAlign: 'center' }}>
+                    style={{ color: Theme.black, fontSize: 12, textAlign: 'center' }}>
                     No Record Found...
                   </Text>
                 </View>
