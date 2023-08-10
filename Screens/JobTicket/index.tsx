@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -20,6 +20,7 @@ import { useIsFocused } from "@react-navigation/native"
 import AsyncStorage, {
   useAsyncStorage,
 } from '@react-native-async-storage/async-storage';
+import TutorDetailsContext from '../../context/tutorDetailsContext';
 
 function JobTicket({ navigation }: any) {
 
@@ -28,6 +29,9 @@ function JobTicket({ navigation }: any) {
   const [isSearchItems, setIsSearchItems] = useState(false);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false)
+  const tutor = useContext(TutorDetailsContext)
+
+  let { tutorDetails } = tutor
 
   const [currentTab, setCurrentTab]: any = useState([
     {
@@ -154,20 +158,48 @@ function JobTicket({ navigation }: any) {
       let subjectID = subject.id
       let myMode = mode.id
 
-      axios.get(`${Base_Uri}api/searchJobTickets/${categoryID}/${subjectID}/${myMode}`).then(({ data }) => {
+      console.log(categoryID, "idddd")
 
-        let { JobTicketsResult } = data
 
-        setOpenData(JobTicketsResult);
-        setLoading(false);
 
-      }).catch((error) => {
+      axios
+        .get(`${Base_Uri}ticketsAPI/${tutorDetails?.tutorId}`)
+        .then(({ data }) => {
+          
+          console.log(data,"dataaa")
+      
+          let { tickets } = data;
+          setOpenData(
+            tickets.length > 0 &&
+            tickets.filter((e: any, i: number) => {
 
-        setLoading(false);
-        console.log(error);
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+              console.log(e, "eeee")
 
-      })
+            }),
+
+          );
+          setLoading(false);
+        })
+        .catch(error => {
+          setLoading(false);
+          console.log(error);
+          ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        });
+
+      // axios.get(`${Base_Uri}api/searchJobTickets/${categoryID}/${subjectID}/${myMode}`).then(({ data }) => {
+
+      //   let { JobTicketsResult } = data
+
+      //   setOpenData(JobTicketsResult);
+      //   setLoading(false);
+
+      // }).catch((error) => {
+
+      //   setLoading(false);
+      //   console.log(error);
+      //   ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+
+      // })
 
       return
     } else {
@@ -525,11 +557,8 @@ function JobTicket({ navigation }: any) {
     );
   }, [openData, searchText, foundName]);
 
-  console.log(appliedData, "applied")
 
   const secondRoute = useCallback(() => {
-
-    console.log("hello world")
 
     return (
       <View style={{ marginVertical: 20, marginBottom: 10 }}>

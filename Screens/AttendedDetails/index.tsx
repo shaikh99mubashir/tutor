@@ -1,19 +1,23 @@
-import { StyleSheet, Text, View, Image, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, ActivityIndicator } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Theme } from '../../constant/theme';
 import Header from '../../Component/Header';
 import { Base_Uri } from '../../constant/BaseUri';
 import ClockIn from '../ClockInScreen/ClockIn';
-import {useIsFocused} from "@react-navigation/native"
+import { useIsFocused } from "@react-navigation/native"
 const AttendedDetails = ({ navigation, route }: any) => {
 
   let item = route?.params
 
   const [data, setData] = useState(item)
 
+  const [loading1, setLoading1] = useState(true)
+  const [loading2, setLoading2] = useState(true)
+
   const focus = useIsFocused()
 
-  console.log(data,"dataa")
+
+  console.log(data, "dataaa")
 
   useEffect(() => {
     setData(item)
@@ -86,11 +90,20 @@ const AttendedDetails = ({ navigation, route }: any) => {
           }}>
           Clock In
         </Text>
-        <Image
-          source={{ uri: data.startTimeProofImage }}
-          style={{ width: '100%', height: '30%'}}
-          resizeMode="contain"
-        />
+        {loading1 ? <View style={{ width: '100%', height: '30%' }}  >
+          <ActivityIndicator color={"black"} size={'large'} />
+        </View>
+          :
+          <Image
+            source={{ uri: data.startTimeProofImage }}
+            style={{ width: '100%', height: '30%' }}
+            resizeMode="contain"
+            onLoad={() => setLoading1(false)}
+            onError={() => {
+              // Handle image loading error here
+              setLoading1(false);
+            }}
+          />}
         {/* Clock Out Image */}
         <Text
           style={{
@@ -101,11 +114,20 @@ const AttendedDetails = ({ navigation, route }: any) => {
           }}>
           Clock Out
         </Text>
-        <Image
-          source={{ uri: data.endTimeProofImage }}
-          style={{ width: '100%', height: '30%' }}
-          resizeMode="contain"
-        />
+        {loading2 ? <View style={{ width: '100%', height: '30%' }}  >
+          <ActivityIndicator color={"black"} size={'large'} />
+        </View>
+          :
+          <Image
+            source={{ uri: data.endTimeProofImage }}
+            style={{ width: '100%', height: '30%' }}
+            resizeMode="contain"
+            onLoad={() => setLoading2(false)}
+            onError={() => {
+              // Handle image loading error here
+              setLoading2(false);
+            }}
+          />}
       </View>
       {/* </ScrollView> */}
     </View>

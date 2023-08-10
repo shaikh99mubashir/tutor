@@ -56,7 +56,7 @@ const Notifications = ({ navigation }: any) => {
             let tutorNotification =
               notifications.length > 0 &&
               notifications.filter((e: any, i: number) => {
-                return e.tutorID == tutorUid;
+                return e.tutorID == tutorUid && e.status == "new";
               });
 
             setLoading(false);
@@ -79,9 +79,22 @@ const Notifications = ({ navigation }: any) => {
 
   const navigateToOtherScreen = (item: any) => {
 
+
+    console.log("item", item)
+
     if (item.notificationType == "Submit Evaluation Report" || item.notificationType == "Submit Progress Report") {
       navigation.navigate("ReportSubmission", item)
     }
+    axios.get(`${Base_Uri}api/updateNotificationStatus/${item.notificationID}/old`).then((res) => {
+
+      console.log(res,"res")
+
+    }).catch((error) => {
+      ToastAndroid.show("Nework Error", ToastAndroid.SHORT)
+    })
+
+
+
 
   }
 

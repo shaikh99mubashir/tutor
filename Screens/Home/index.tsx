@@ -126,7 +126,7 @@ function Home({ navigation }: any) {
             let tutorNotification =
               notifications.length > 0 &&
               notifications.filter((e: any, i: number) => {
-                return e.tutorID == tutorUid;
+                return e.tutorID == tutorUid && e.status == "new"; 
               });
             setNotificationLength(tutorNotification.length > 0 ? tutorNotification.length : 0);
           })
