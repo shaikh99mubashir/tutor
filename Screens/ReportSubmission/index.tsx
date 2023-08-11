@@ -197,7 +197,7 @@ const ReportSubmission = ({ navigation, route }: any) => {
   });
   const EvalutionOption = [
     {
-      option: 'Student Evaluation Report',
+      option: 'Evaluation Report',
     },
     {
       option: 'Progress Report',
