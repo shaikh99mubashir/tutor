@@ -19,6 +19,7 @@ import IdleTimerManager from 'react-native-idle-timer';
 import PaymentState from './context/paymentState';
 import NotificationState from './context/notificationState';
 import ScheduleState from './context/ScheduleState';
+import ReportSubmissionState from './context/reportSubmissionState';
 
 
 
@@ -41,21 +42,23 @@ function App() {
 
       <UpcomingClassState>
         <NoteState>
-          <ScheduleState>
-            <NotificationState>
-              <PaymentState>
-                <TutorDetailsState>
-                  <StudentState>
-                    <FilterState>
-                      <AppNavigation />
-                      {/* <Timer show="false" /> */}
-                    </FilterState>
+          <ReportSubmissionState>
+            <ScheduleState>
+              <NotificationState>
+                <PaymentState>
+                  <TutorDetailsState>
+                    <StudentState>
+                      <FilterState>
+                        <AppNavigation />
+                        {/* <Timer show="false" /> */}
+                      </FilterState>
 
-                  </StudentState>
-                </TutorDetailsState>
-              </PaymentState>
-            </NotificationState>
-          </ScheduleState>
+                    </StudentState>
+                  </TutorDetailsState>
+                </PaymentState>
+              </NotificationState>
+            </ScheduleState>
+          </ReportSubmissionState>
         </NoteState>
       </UpcomingClassState>
     </View>

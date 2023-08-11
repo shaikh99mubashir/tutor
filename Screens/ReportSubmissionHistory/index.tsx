@@ -13,18 +13,24 @@ import {
   RefreshControl,
   NativeModules,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {Theme} from '../../constant/theme';
+import React, { useEffect, useState, useContext } from 'react';
+import { Theme } from '../../constant/theme';
 import Header from '../../Component/Header';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {Base_Uri} from '../../constant/BaseUri';
+import { Base_Uri } from '../../constant/BaseUri';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import Pdf from 'react-native-pdf';
+import reportSubmissionContext from '../../context/reportSubmissionContext';
 
-const ReportSubmissionHistory = ({navigation}: any) => {
-  const [reportSubmission, setreportSubmission] = useState([]);
-  const [progressReport, setProgressReport] = useState([]);
+const ReportSubmissionHistory = ({ navigation }: any) => {
+  // const [reportSubmission, setreportSubmission] = useState([]);
+  // const [progressReport, setProgressReport] = useState([]);
+
+  let context = useContext(reportSubmissionContext)
+
+  let { reportSubmission, setreportSubmission, progressReport, setProgressReport } = context
+
   const [foundName, setFoundName] = useState([]);
   const [loading, setLoading] = useState(false);
   const [pdfUri, setPdfUri] = React.useState('');
@@ -40,58 +46,62 @@ const ReportSubmissionHistory = ({navigation}: any) => {
   }, [refresh]);
 
   const getReportSubmissionHistory = async () => {
-    setLoading(true);
+    if (refresh) {
+      setLoading(true);
 
-    let data: any = await AsyncStorage.getItem('loginAuth');
+      let data: any = await AsyncStorage.getItem('loginAuth');
 
-    data = JSON.parse(data);
+      data = JSON.parse(data);
 
-    let {tutorID} = data;
+      let { tutorID } = data;
 
-    axios
-      .get(`${Base_Uri}api/tutorFirstReportListing/${tutorID}`)
-      .then(({data}) => {
-        let {tutorReportListing} = data;
-        setreportSubmission(tutorReportListing);
-        setLoading(false);
-      })
-      .catch(error => {
-        setLoading(false);
-        console.log('error');
-      });
+      axios
+        .get(`${Base_Uri}api/tutorFirstReportListing/${tutorID}`)
+        .then(({ data }) => {
+          let { tutorReportListing } = data;
+          setreportSubmission(tutorReportListing);
+          setLoading(false);
+        })
+        .catch(error => {
+          setLoading(false);
+          console.log('error');
+        });
+    }
   };
 
   const getProgressReportHistory = async () => {
-    setLoading(true);
+    if (refresh) {
+      setLoading(true);
 
-    let data: any = await AsyncStorage.getItem('loginAuth');
+      let data: any = await AsyncStorage.getItem('loginAuth');
 
-    data = JSON.parse(data);
+      data = JSON.parse(data);
 
-    let {tutorID} = data;
+      let { tutorID } = data;
 
-    axios
-      .get(`${Base_Uri}api/progressReportListing`)
-      .then(({data}) => {
-        let {progressReportListing} = data;
+      axios
+        .get(`${Base_Uri}api/progressReportListing`)
+        .then(({ data }) => {
+          let { progressReportListing } = data;
 
-        let tutorReport =
-          progressReportListing &&
-          progressReportListing.length > 0 &&
-          progressReportListing.filter((e: any, i: number) => {
-            return e.tutorID == tutorID;
-          });
+          let tutorReport =
+            progressReportListing &&
+            progressReportListing.length > 0 &&
+            progressReportListing.filter((e: any, i: number) => {
+              return e.tutorID == tutorID;
+            });
 
-        // console.log(tutorReport, "reoirt")
-        setProgressReport(
-          tutorReport && tutorReport.length > 0 ? tutorReport : [],
-        );
-        setLoading(false);
-      })
-      .catch(error => {
-        setLoading(false);
-        console.log('error');
-      });
+          // console.log(tutorReport, "reoirt")
+          setProgressReport(
+            tutorReport && tutorReport.length > 0 ? tutorReport : [],
+          );
+          setLoading(false);
+        })
+        .catch(error => {
+          setLoading(false);
+          console.log('error');
+        });
+    }
   };
 
   useEffect(() => {
@@ -179,61 +189,52 @@ const ReportSubmissionHistory = ({navigation}: any) => {
       <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
       <p style="color: rgb(0, 0, 95); margin: 0px;">1. What can you tell us about the student’s knowledge of this subject?</p>
       <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-        <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.knowledge ===
-          'Poor - Able to recall basic facts after giving hints about the subject matter.'
+        <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.knowledge ===
+            'Poor - Able to recall basic facts after giving hints about the subject matter.'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-        <p style="margin: 0px;background-color: ${
-          item.knowledge ===
-          'Poor - Able to recall basic facts after giving hints about the subject matter.'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+        <p style="margin: 0px;background-color: ${item.knowledge ===
+            'Poor - Able to recall basic facts after giving hints about the subject matter.'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.knowledge ===
-          'Poor - Able to recall basic facts after giving hints about the subject matter.'
+          }; padding: 5px;">${item.knowledge ===
+            'Poor - Able to recall basic facts after giving hints about the subject matter.'
             ? 'Poor - Able to recall basic facts after giving hints about the subject matter.'
             : 'Poor - Able to recall basic facts after giving hints about the subject matter.'
-        }</p>
+          }</p>
       </div>
       <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-        <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.knowledge ===
-          'Average - Able to recall some basic facts independently.'
+        <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.knowledge ===
+            'Average - Able to recall some basic facts independently.'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-        <p style="margin: 0px;background-color: ${
-          item.knowledge ===
-          'Average - Able to recall some basic facts independently.'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+        <p style="margin: 0px;background-color: ${item.knowledge ===
+            'Average - Able to recall some basic facts independently.'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.knowledge ===
-          'Average - Able to recall some basic facts independently.'
+          }; padding: 5px;">${item.knowledge ===
+            'Average - Able to recall some basic facts independently.'
             ? 'Average - Able to recall some basic facts independently.'
             : 'Average - Able to recall some basic facts independently.'
-        }</p>
+          }</p>
       </div>
       <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-        <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.knowledge ===
-          'Good - Able to recall basic facts with ease and little error.'
+        <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.knowledge ===
+            'Good - Able to recall basic facts with ease and little error.'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-        <p style="margin: 0px;background-color: ${
-          item.knowledge ===
-          'Good - Able to recall basic facts with ease and little error.'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+        <p style="margin: 0px;background-color: ${item.knowledge ===
+            'Good - Able to recall basic facts with ease and little error.'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.knowledge ===
-          'Good - Able to recall basic facts with ease and little error.'
+          }; padding: 5px;">${item.knowledge ===
+            'Good - Able to recall basic facts with ease and little error.'
             ? 'Good - Able to recall basic facts with ease and little error.'
             : 'Good - Able to recall basic facts with ease and little error.'
-        }</p>
+          }</p>
       </div>
       
       
@@ -245,61 +246,52 @@ const ReportSubmissionHistory = ({navigation}: any) => {
       <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
       <p style="color: rgb(0, 0, 95); margin: 0px;">1. What can you tell about the student’s understanding of this subject?</p>
       <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-        <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.understanding ===
-          'Poor - Able to explain/demonstrate facts with difficulty.'
+        <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.understanding ===
+            'Poor - Able to explain/demonstrate facts with difficulty.'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-        <p style="margin: 0px;background-color: ${
-          item.understanding ===
-          'Poor - Able to explain/demonstrate facts with difficulty.'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+        <p style="margin: 0px;background-color: ${item.understanding ===
+            'Poor - Able to explain/demonstrate facts with difficulty.'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.understanding ===
-          'Poor - Able to explain/demonstrate facts with difficulty.'
+          }; padding: 5px;">${item.understanding ===
+            'Poor - Able to explain/demonstrate facts with difficulty.'
             ? 'Poor - Able to explain/demonstrate facts with difficulty.'
             : 'Poor - Able to explain/demonstrate facts with difficulty.'
-        }</p>
+          }</p>
       </div>
       <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-        <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.understanding ===
-          'Average - Able to explain/demonstrate facts with some error.'
+        <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.understanding ===
+            'Average - Able to explain/demonstrate facts with some error.'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-        <p style="margin: 0px;background-color: ${
-          item.understanding ===
-          'Average - Able to explain/demonstrate facts with some error.'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+        <p style="margin: 0px;background-color: ${item.understanding ===
+            'Average - Able to explain/demonstrate facts with some error.'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.understanding ===
-          'Average - Able to explain/demonstrate facts with some error.'
+          }; padding: 5px;">${item.understanding ===
+            'Average - Able to explain/demonstrate facts with some error.'
             ? 'Average - Able to explain/demonstrate facts with some error.'
             : 'Poor - Able to explain/demonstrate facts with difficulty.'
-        }</p>
+          }</p>
       </div>
       <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-        <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.understanding ===
-          'Good - Able to explain/demonstrate facts concisely with little error'
+        <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.understanding ===
+            'Good - Able to explain/demonstrate facts concisely with little error'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-        <p style="margin: 0px;background-color: ${
-          item.understanding ===
-          'Good - Able to explain/demonstrate facts concisely with little error'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+        <p style="margin: 0px;background-color: ${item.understanding ===
+            'Good - Able to explain/demonstrate facts concisely with little error'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.understanding ===
-          'Good - Able to explain/demonstrate facts concisely with little error'
+          }; padding: 5px;">${item.understanding ===
+            'Good - Able to explain/demonstrate facts concisely with little error'
             ? 'Good - Able to explain/demonstrate facts concisely with little error'
             : 'Poor - Able to explain/demonstrate facts with difficulty.'
-        }</p>
+          }</p>
       </div>
   </div>
   <div style="margin-top: 100px;">
@@ -307,58 +299,49 @@ const ReportSubmissionHistory = ({navigation}: any) => {
       <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
       <p style="color: rgb(0, 0, 95); margin: 0px;">1. What can you tell about the student’s understanding of this subject?</p>
       <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-        <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.analysis ===
-          'Poor - Able to solve different types of problems with guidance.'
+        <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.analysis ===
+            'Poor - Able to solve different types of problems with guidance.'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-        <p style="margin: 0px;background-color: ${
-          item.analysis ===
-          'Poor - Able to solve different types of problems with guidance.'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+        <p style="margin: 0px;background-color: ${item.analysis ===
+            'Poor - Able to solve different types of problems with guidance.'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.analysis ===
-          'Poor - Able to solve different types of problems with guidance.'
+          }; padding: 5px;">${item.analysis ===
+            'Poor - Able to solve different types of problems with guidance.'
             ? 'Poor - Able to solve different types of problems with guidance.'
             : 'Poor - Able to solve different types of problems with guidance.'
-        }</p>
+          }</p>
       </div>
       <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-        <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.analysis ===
-          'Average - Able to solve different types of problems with some hint.'
+        <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.analysis ===
+            'Average - Able to solve different types of problems with some hint.'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-        <p style="margin: 0px;background-color: ${
-          item.analysis ===
-          'Average - Able to solve different types of problems with some hint.'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+        <p style="margin: 0px;background-color: ${item.analysis ===
+            'Average - Able to solve different types of problems with some hint.'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.analysis ===
-          'Average - Able to solve different types of problems with some hint.'
+          }; padding: 5px;">${item.analysis ===
+            'Average - Able to solve different types of problems with some hint.'
             ? 'Average - Able to solve different types of problems with some hint.'
             : 'Average - Able to solve different types of problems with some hint.'
-        }</p>
+          }</p>
       </div>
       <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-        <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.analysis === 'Good - Able to solve problems with different ways.'
+        <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.analysis === 'Good - Able to solve problems with different ways.'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-        <p style="margin: 0px;background-color: ${
-          item.analysis === 'Good - Able to solve problems with different ways.'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+        <p style="margin: 0px;background-color: ${item.analysis === 'Good - Able to solve problems with different ways.'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.analysis === 'Good - Able to solve problems with different ways.'
+          }; padding: 5px;">${item.analysis === 'Good - Able to solve problems with different ways.'
             ? 'Good - Able to solve problems with different ways.'
             : 'Good - Able to solve problems with different ways.'
-        }</p>
+          }</p>
       </div>
   </div>
   <div style="margin-top: 30px;">
@@ -395,7 +378,7 @@ const ReportSubmissionHistory = ({navigation}: any) => {
       }
 
       const pdfFile = await RNHTMLtoPDF.convert(options);
-      const {filePath}: any = pdfFile;
+      const { filePath }: any = pdfFile;
       return filePath;
     } catch (error) {
       console.log('Error generating and downloading the PDF:', error);
@@ -412,14 +395,10 @@ const ReportSubmissionHistory = ({navigation}: any) => {
     }
   };
 
-<<<<<<< HEAD
-  const generateDownloadProgressReport = async (item: any): Promise<string | undefined> => {
-=======
   const generateDownloadProgressReport = async (
     item: any,
   ): Promise<string | undefined> => {
     console.log(item, 'items');
->>>>>>> 9b464462542b65dd124d5e6e6a608ca0412c8fd0
 
     try {
       const options = {
@@ -445,11 +424,7 @@ const ReportSubmissionHistory = ({navigation}: any) => {
        
         <div style="display: flex; justify-content: space-between;">
           <div style="display: flex; flex-direction: column; width: 45%">
-<<<<<<< HEAD
-            <img src="../../Assets/Images/logo.png" alt="logo" style="width: 70px" />
-=======
             <img src=${item.logo} alt="logo" style="width: 150px" />
->>>>>>> 9b464462542b65dd124d5e6e6a608ca0412c8fd0
             <p style="color: blue";margin-top: 20px;>Sifu Edu & Learning Sdn Bhd (1270698-W)</p>
             <p style="margin-top: 5px;">1-1F, Jalan Setia Perdana BE U13/BE Setia Alam, Shah Alam, 40170,
               Selangor Tel: 603-5888 4827</p>
@@ -487,250 +462,202 @@ const ReportSubmissionHistory = ({navigation}: any) => {
       <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 10px;">
       <p style="color: rgb(0, 0, 95); margin-top: 10px;">1. Rate student understanding on this subject?</p>
       <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-        item.rate_student_understanding_on_this_subject === 'Excellent'
-          ? 'rgb(0, 0, 95)'
-          : 'white'
-      };border: 2px solid rgb(0, 0, 95);"></div>
-      <p style="margin: 0px;background-color: ${
-        item.rate_student_understanding_on_this_subject === 'Excellent'
-          ? 'orange'
-          : 'white'
-      }; padding: 5px;">${
-          item.rate_student_understanding_on_this_subject === 'Excellent'
+      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_student_understanding_on_this_subject === 'Excellent'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+      <p style="margin: 0px;background-color: ${item.rate_student_understanding_on_this_subject === 'Excellent'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.rate_student_understanding_on_this_subject === 'Excellent'
             ? 'Excellent'
             : 'Excellent'
-        }</p>
+          }</p>
     </div>
 
       <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-        item.rate_student_understanding_on_this_subject === 'Good'
-          ? 'rgb(0, 0, 95)'
-          : 'white'
-      };border: 2px solid rgb(0, 0, 95);"></div>
-      <p style="margin: 0px;background-color: ${
-        item.rate_student_understanding_on_this_subject === 'Good'
-          ? 'orange'
-          : 'white'
-      }; padding: 5px;">${
-          item.rate_student_understanding_on_this_subject === 'Good'
+      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_student_understanding_on_this_subject === 'Good'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+      <p style="margin: 0px;background-color: ${item.rate_student_understanding_on_this_subject === 'Good'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.rate_student_understanding_on_this_subject === 'Good'
             ? 'Good'
             : 'Good'
-        }</p>
+          }</p>
     </div>
 
     <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-    <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-      item.rate_student_understanding_on_this_subject === 'Satisfactory'
-        ? 'rgb(0, 0, 95)'
-        : 'white'
-    };border: 2px solid rgb(0, 0, 95);"></div>
-    <p style="margin: 0px;background-color: ${
-      item.rate_student_understanding_on_this_subject === 'Satisfactory'
-        ? 'orange'
-        : 'white'
-    }; padding: 5px;">${
-          item.rate_student_understanding_on_this_subject === 'Satisfactory'
+    <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_student_understanding_on_this_subject === 'Satisfactory'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+    <p style="margin: 0px;background-color: ${item.rate_student_understanding_on_this_subject === 'Satisfactory'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.rate_student_understanding_on_this_subject === 'Satisfactory'
             ? 'Satisfactory'
             : 'Satisfactory'
-        }</p>
+          }</p>
   </div>
 
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.rate_student_understanding_on_this_subject === 'Average'
-      ? 'rgb(0, 0, 95)'
-      : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.rate_student_understanding_on_this_subject === 'Average'
-      ? 'orange'
-      : 'white'
-  }; padding: 5px;">${
-          item.rate_student_understanding_on_this_subject === 'Average'
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_student_understanding_on_this_subject === 'Average'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${item.rate_student_understanding_on_this_subject === 'Average'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.rate_student_understanding_on_this_subject === 'Average'
             ? 'Average'
             : 'Average'
-        }</p>
+          }</p>
 </div>
 
 
 <p style="color: rgb(0, 0, 95); margin-top: 10px;">2. how is the student performance on homework?</p>
       <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-        item.how_is_the_student_performance_on_homework === 'Excellent'
-          ? 'rgb(0, 0, 95)'
-          : 'white'
-      };border: 2px solid rgb(0, 0, 95);"></div>
-      <p style="margin: 0px;background-color: ${
-        item.how_is_the_student_performance_on_homework === 'Excellent'
-          ? 'orange'
-          : 'white'
-      }; padding: 5px;">${
-          item.how_is_the_student_performance_on_homework === 'Excellent'
+      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_is_the_student_performance_on_homework === 'Excellent'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+      <p style="margin: 0px;background-color: ${item.how_is_the_student_performance_on_homework === 'Excellent'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.how_is_the_student_performance_on_homework === 'Excellent'
             ? 'Excellent'
             : 'Excellent'
-        }</p>
+          }</p>
     </div>
 
       <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-        item.how_is_the_student_performance_on_homework === 'Good'
-          ? 'rgb(0, 0, 95)'
-          : 'white'
-      };border: 2px solid rgb(0, 0, 95);"></div>
-      <p style="margin: 0px;background-color: ${
-        item.how_is_the_student_performance_on_homework === 'Good'
-          ? 'orange'
-          : 'white'
-      }; padding: 5px;">${
-          item.how_is_the_student_performance_on_homework === 'Good'
+      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_is_the_student_performance_on_homework === 'Good'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+      <p style="margin: 0px;background-color: ${item.how_is_the_student_performance_on_homework === 'Good'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.how_is_the_student_performance_on_homework === 'Good'
             ? 'Good'
             : 'Good'
-        }</p>
+          }</p>
     </div>
 
     <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-    <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-      item.how_is_the_student_performance_on_homework === 'Satisfactory'
-        ? 'rgb(0, 0, 95)'
-        : 'white'
-    };border: 2px solid rgb(0, 0, 95);"></div>
-    <p style="margin: 0px;background-color: ${
-      item.how_is_the_student_performance_on_homework === 'Satisfactory'
-        ? 'orange'
-        : 'white'
-    }; padding: 5px;">${
-          item.how_is_the_student_performance_on_homework === 'Satisfactory'
+    <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_is_the_student_performance_on_homework === 'Satisfactory'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+    <p style="margin: 0px;background-color: ${item.how_is_the_student_performance_on_homework === 'Satisfactory'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.how_is_the_student_performance_on_homework === 'Satisfactory'
             ? 'Satisfactory'
             : 'Satisfactory'
-        }</p>
+          }</p>
   </div>
 
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_is_the_student_performance_on_homework === 'Average'
-      ? 'rgb(0, 0, 95)'
-      : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.how_is_the_student_performance_on_homework === 'Average'
-      ? 'orange'
-      : 'white'
-  }; padding: 5px;">${
-          item.how_is_the_student_performance_on_homework === 'Average'
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_is_the_student_performance_on_homework === 'Average'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${item.how_is_the_student_performance_on_homework === 'Average'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.how_is_the_student_performance_on_homework === 'Average'
             ? 'Average'
             : 'Average'
-        }</p>
+          }</p>
 </div>
 
 
 <p style="color: rgb(0, 0, 95); margin-top: 10px;">3. How well student participates in learning session?</p>
       <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-        item.how_well_student_answers === 'Excellent'
-          ? 'rgb(0, 0, 95)'
-          : 'white'
-      };border: 2px solid rgb(0, 0, 95);"></div>
-      <p style="margin: 0px;background-color: ${
-        item.how_well_student_answers === 'Excellent' ? 'orange' : 'white'
-      }; padding: 5px;">${
-          item.how_well_student_answers === 'Excellent'
+      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_student_answers === 'Excellent'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+      <p style="margin: 0px;background-color: ${item.how_well_student_answers === 'Excellent' ? 'orange' : 'white'
+          }; padding: 5px;">${item.how_well_student_answers === 'Excellent'
             ? 'Excellent'
             : 'Excellent'
-        }</p>
+          }</p>
     </div>
 
       <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-        item.how_well_student_answers === 'Good' ? 'rgb(0, 0, 95)' : 'white'
-      };border: 2px solid rgb(0, 0, 95);"></div>
-      <p style="margin: 0px;background-color: ${
-        item.how_well_student_answers === 'Good' ? 'orange' : 'white'
-      }; padding: 5px;">${
-          item.how_well_student_answers === 'Good' ? 'Good' : 'Good'
-        }</p>
+      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_student_answers === 'Good' ? 'rgb(0, 0, 95)' : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+      <p style="margin: 0px;background-color: ${item.how_well_student_answers === 'Good' ? 'orange' : 'white'
+          }; padding: 5px;">${item.how_well_student_answers === 'Good' ? 'Good' : 'Good'
+          }</p>
     </div>
 
     <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-    <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-      item.how_well_student_answers === 'Satisfactory'
-        ? 'rgb(0, 0, 95)'
-        : 'white'
-    };border: 2px solid rgb(0, 0, 95);"></div>
-    <p style="margin: 0px;background-color: ${
-      item.how_well_student_answers === 'Satisfactory' ? 'orange' : 'white'
-    }; padding: 5px;">${
-          item.how_well_student_answers === 'Satisfactory'
+    <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_student_answers === 'Satisfactory'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+    <p style="margin: 0px;background-color: ${item.how_well_student_answers === 'Satisfactory' ? 'orange' : 'white'
+          }; padding: 5px;">${item.how_well_student_answers === 'Satisfactory'
             ? 'Satisfactory'
             : 'Satisfactory'
-        }</p>
+          }</p>
   </div>
 
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_well_student_answers === 'Average' ? 'rgb(0, 0, 95)' : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.how_well_student_answers === 'Average' ? 'orange' : 'white'
-  }; padding: 5px;">${
-          item.how_well_student_answers === 'Average' ? 'Average' : 'Average'
-        }</p>
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_student_answers === 'Average' ? 'rgb(0, 0, 95)' : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${item.how_well_student_answers === 'Average' ? 'orange' : 'white'
+          }; padding: 5px;">${item.how_well_student_answers === 'Average' ? 'Average' : 'Average'
+          }</p>
 </div>
 
 
 
 <p style="color: rgb(0, 0, 95); margin-top: 10px;">4. How well student's answer/explain/eleborates questions givenby tutor?</p>
       <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-        item.how_well_student_answers === 'Excellent'
-          ? 'rgb(0, 0, 95)'
-          : 'white'
-      };border: 2px solid rgb(0, 0, 95);"></div>
-      <p style="margin: 0px;background-color: ${
-        item.how_well_student_answers === 'Excellent' ? 'orange' : 'white'
-      }; padding: 5px;">${
-          item.how_well_student_answers === 'Excellent'
+      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_student_answers === 'Excellent'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+      <p style="margin: 0px;background-color: ${item.how_well_student_answers === 'Excellent' ? 'orange' : 'white'
+          }; padding: 5px;">${item.how_well_student_answers === 'Excellent'
             ? 'Excellent'
             : 'Excellent'
-        }</p>
+          }</p>
     </div>
 
       <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-        item.how_well_student_answers === 'Good' ? 'rgb(0, 0, 95)' : 'white'
-      };border: 2px solid rgb(0, 0, 95);"></div>
-      <p style="margin: 0px;background-color: ${
-        item.how_well_student_answers === 'Good' ? 'orange' : 'white'
-      }; padding: 5px;">${
-          item.how_well_student_answers === 'Good' ? 'Good' : 'Good'
-        }</p>
+      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_student_answers === 'Good' ? 'rgb(0, 0, 95)' : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+      <p style="margin: 0px;background-color: ${item.how_well_student_answers === 'Good' ? 'orange' : 'white'
+          }; padding: 5px;">${item.how_well_student_answers === 'Good' ? 'Good' : 'Good'
+          }</p>
     </div>
 
     <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-    <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-      item.how_well_student_answers === 'Satisfactory'
-        ? 'rgb(0, 0, 95)'
-        : 'white'
-    };border: 2px solid rgb(0, 0, 95);"></div>
-    <p style="margin: 0px;background-color: ${
-      item.how_well_student_answers === 'Satisfactory' ? 'orange' : 'white'
-    }; padding: 5px;">${
-          item.how_well_student_answers === 'Satisfactory'
+    <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_student_answers === 'Satisfactory'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+    <p style="margin: 0px;background-color: ${item.how_well_student_answers === 'Satisfactory' ? 'orange' : 'white'
+          }; padding: 5px;">${item.how_well_student_answers === 'Satisfactory'
             ? 'Satisfactory'
             : 'Satisfactory'
-        }</p>
+          }</p>
   </div>
 
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_well_student_answers === 'Average' ? 'rgb(0, 0, 95)' : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.how_well_student_answers === 'Average' ? 'orange' : 'white'
-  }; padding: 5px;">${
-          item.how_well_student_answers === 'Average' ? 'Average' : 'Average'
-        }</p>
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_student_answers === 'Average' ? 'rgb(0, 0, 95)' : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${item.how_well_student_answers === 'Average' ? 'orange' : 'white'
+          }; padding: 5px;">${item.how_well_student_answers === 'Average' ? 'Average' : 'Average'
+          }</p>
 </div>
 
 
@@ -742,299 +669,251 @@ const ReportSubmissionHistory = ({navigation}: any) => {
   <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 10px;">
   <p style="color: rgb(0, 0, 95); margin-top: 10px;">1. How can you rate the student attendence for 3 months</p>
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_you_can_rate_student_attendance_for_3_months === 'Excellent'
-      ? 'rgb(0, 0, 95)'
-      : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.how_you_can_rate_student_attendance_for_3_months === 'Excellent'
-      ? 'orange'
-      : 'white'
-  }; padding: 5px;">${
-          item.how_you_can_rate_student_attendance_for_3_months === 'Excellent'
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_you_can_rate_student_attendance_for_3_months === 'Excellent'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${item.how_you_can_rate_student_attendance_for_3_months === 'Excellent'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.how_you_can_rate_student_attendance_for_3_months === 'Excellent'
             ? 'Excellent'
             : 'Excellent'
-        }</p>
+          }</p>
 </div>
 
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_you_can_rate_student_attendance_for_3_months === 'Good'
-      ? 'rgb(0, 0, 95)'
-      : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.how_you_can_rate_student_attendance_for_3_months === 'Good'
-      ? 'orange'
-      : 'white'
-  }; padding: 5px;">${
-          item.how_you_can_rate_student_attendance_for_3_months === 'Good'
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_you_can_rate_student_attendance_for_3_months === 'Good'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${item.how_you_can_rate_student_attendance_for_3_months === 'Good'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.how_you_can_rate_student_attendance_for_3_months === 'Good'
             ? 'Good'
             : 'Good'
-        }</p>
+          }</p>
 </div>
 
 <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.how_you_can_rate_student_attendance_for_3_months ===
-          'Satisfactory'
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_you_can_rate_student_attendance_for_3_months ===
+            'Satisfactory'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-<p style="margin: 0px;background-color: ${
-          item.how_you_can_rate_student_attendance_for_3_months ===
-          'Satisfactory'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${item.how_you_can_rate_student_attendance_for_3_months ===
+            'Satisfactory'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.how_you_can_rate_student_attendance_for_3_months ===
-          'Satisfactory'
+          }; padding: 5px;">${item.how_you_can_rate_student_attendance_for_3_months ===
+            'Satisfactory'
             ? 'Satisfactory'
             : 'Satisfactory'
-        }</p>
+          }</p>
 </div>
 
 <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.how_you_can_rate_student_attendance_for_3_months === 'Average'
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_you_can_rate_student_attendance_for_3_months === 'Average'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-<p style="margin: 0px;background-color: ${
-          item.how_you_can_rate_student_attendance_for_3_months === 'Average'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${item.how_you_can_rate_student_attendance_for_3_months === 'Average'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.how_you_can_rate_student_attendance_for_3_months === 'Average'
+          }; padding: 5px;">${item.how_you_can_rate_student_attendance_for_3_months === 'Average'
             ? 'Average'
             : 'Average'
-        }</p>
+          }</p>
 </div>
 
 
 <p style="color: rgb(0, 0, 95); margin-top: 10px;">2. How well do you intrect/communicate with student during/after class?</p>
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_well_do_you_interact_with_studyent_during_class === 'Excellent'
-      ? 'rgb(0, 0, 95)'
-      : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.how_well_do_you_interact_with_studyent_during_class === 'Excellent'
-      ? 'orange'
-      : 'white'
-  }; padding: 5px;">${
-          item.how_well_do_you_interact_with_studyent_during_class ===
-          'Excellent'
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_do_you_interact_with_studyent_during_class === 'Excellent'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${item.how_well_do_you_interact_with_studyent_during_class === 'Excellent'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.how_well_do_you_interact_with_studyent_during_class ===
+            'Excellent'
             ? 'Excellent'
             : 'Excellent'
-        }</p>
+          }</p>
 </div>
 
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_well_do_you_interact_with_studyent_during_class === 'Good'
-      ? 'rgb(0, 0, 95)'
-      : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.how_well_do_you_interact_with_studyent_during_class === 'Good'
-      ? 'orange'
-      : 'white'
-  }; padding: 5px;">${
-          item.how_well_do_you_interact_with_studyent_during_class === 'Good'
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_do_you_interact_with_studyent_during_class === 'Good'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${item.how_well_do_you_interact_with_studyent_during_class === 'Good'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.how_well_do_you_interact_with_studyent_during_class === 'Good'
             ? 'Good'
             : 'Good'
-        }</p>
+          }</p>
 </div>
 
 <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.how_well_do_you_interact_with_studyent_during_class ===
-          'Satisfactory'
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_do_you_interact_with_studyent_during_class ===
+            'Satisfactory'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-<p style="margin: 0px;background-color: ${
-          item.how_well_do_you_interact_with_studyent_during_class ===
-          'Satisfactory'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${item.how_well_do_you_interact_with_studyent_during_class ===
+            'Satisfactory'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.how_well_do_you_interact_with_studyent_during_class ===
-          'Satisfactory'
+          }; padding: 5px;">${item.how_well_do_you_interact_with_studyent_during_class ===
+            'Satisfactory'
             ? 'Satisfactory'
             : 'Satisfactory'
-        }</p>
+          }</p>
 </div>
 
 <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.how_well_do_you_interact_with_studyent_during_class === 'Average'
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_do_you_interact_with_studyent_during_class === 'Average'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-<p style="margin: 0px;background-color: ${
-          item.how_well_do_you_interact_with_studyent_during_class === 'Average'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${item.how_well_do_you_interact_with_studyent_during_class === 'Average'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.how_well_do_you_interact_with_studyent_during_class === 'Average'
+          }; padding: 5px;">${item.how_well_do_you_interact_with_studyent_during_class === 'Average'
             ? 'Average'
             : 'Average'
-        }</p>
+          }</p>
 </div>
 
 
 <p style="color: rgb(0, 0, 95); margin-top: 10px;">3. How well the student manage his/her time to complete his/her homework?</p>
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_well_the_student_manages_his_time_tomplete_his_homework ===
-    'Excellent'
-      ? 'rgb(0, 0, 95)'
-      : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.how_well_the_student_manages_his_time_tomplete_his_homework ===
-    'Excellent'
-      ? 'orange'
-      : 'white'
-  }; padding: 5px;">${
-          item.how_well_the_student_manages_his_time_tomplete_his_homework ===
-          'Excellent'
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_manages_his_time_tomplete_his_homework ===
+            'Excellent'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${item.how_well_the_student_manages_his_time_tomplete_his_homework ===
+            'Excellent'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.how_well_the_student_manages_his_time_tomplete_his_homework ===
+            'Excellent'
             ? 'Excellent'
             : 'Excellent'
-        }</p>
+          }</p>
 </div>
 
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_well_the_student_manages_his_time_tomplete_his_homework === 'Good'
-      ? 'rgb(0, 0, 95)'
-      : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.how_well_the_student_manages_his_time_tomplete_his_homework === 'Good'
-      ? 'orange'
-      : 'white'
-  }; padding: 5px;">${
-          item.how_well_the_student_manages_his_time_tomplete_his_homework ===
-          'Good'
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_manages_his_time_tomplete_his_homework === 'Good'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${item.how_well_the_student_manages_his_time_tomplete_his_homework === 'Good'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.how_well_the_student_manages_his_time_tomplete_his_homework ===
+            'Good'
             ? 'Good'
             : 'Good'
-        }</p>
+          }</p>
 </div>
 
 <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.how_well_the_student_manages_his_time_tomplete_his_homework ===
-          'Satisfactory'
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_manages_his_time_tomplete_his_homework ===
+            'Satisfactory'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-<p style="margin: 0px;background-color: ${
-          item.how_well_the_student_manages_his_time_tomplete_his_homework ===
-          'Satisfactory'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${item.how_well_the_student_manages_his_time_tomplete_his_homework ===
+            'Satisfactory'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.how_well_the_student_manages_his_time_tomplete_his_homework ===
-          'Satisfactory'
+          }; padding: 5px;">${item.how_well_the_student_manages_his_time_tomplete_his_homework ===
+            'Satisfactory'
             ? 'Satisfactory'
             : 'Satisfactory'
-        }</p>
+          }</p>
 </div>
 
 <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.how_well_the_student_manages_his_time_tomplete_his_homework ===
-          'Average'
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_manages_his_time_tomplete_his_homework ===
+            'Average'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-<p style="margin: 0px;background-color: ${
-          item.how_well_the_student_manages_his_time_tomplete_his_homework ===
-          'Average'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${item.how_well_the_student_manages_his_time_tomplete_his_homework ===
+            'Average'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.how_well_the_student_manages_his_time_tomplete_his_homework ===
-          'Average'
+          }; padding: 5px;">${item.how_well_the_student_manages_his_time_tomplete_his_homework ===
+            'Average'
             ? 'Average'
             : 'Average'
-        }</p>
+          }</p>
 </div>
 
 
 
 <p style="color: rgb(0, 0, 95); margin-top: 10px;">4. How well the student response were corrected?</p>
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_well_the_student_respondes_when_corrected === 'Excellent'
-      ? 'rgb(0, 0, 95)'
-      : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.how_well_the_student_respondes_when_corrected === 'Excellent'
-      ? 'orange'
-      : 'white'
-  }; padding: 5px;">${
-          item.how_well_the_student_respondes_when_corrected === 'Excellent'
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_respondes_when_corrected === 'Excellent'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${item.how_well_the_student_respondes_when_corrected === 'Excellent'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.how_well_the_student_respondes_when_corrected === 'Excellent'
             ? 'Excellent'
             : 'Excellent'
-        }</p>
+          }</p>
 </div>
 
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_well_the_student_respondes_when_corrected === 'Good'
-      ? 'rgb(0, 0, 95)'
-      : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.how_well_the_student_respondes_when_corrected === 'Good'
-      ? 'orange'
-      : 'white'
-  }; padding: 5px;">${
-          item.how_well_the_student_respondes_when_corrected === 'Good'
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_respondes_when_corrected === 'Good'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${item.how_well_the_student_respondes_when_corrected === 'Good'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.how_well_the_student_respondes_when_corrected === 'Good'
             ? 'Good'
             : 'Good'
-        }</p>
+          }</p>
 </div>
 
 <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.how_well_the_student_respondes_when_corrected === 'Satisfactory'
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_respondes_when_corrected === 'Satisfactory'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-<p style="margin: 0px;background-color: ${
-          item.how_well_the_student_respondes_when_corrected === 'Satisfactory'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${item.how_well_the_student_respondes_when_corrected === 'Satisfactory'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.how_well_the_student_respondes_when_corrected === 'Satisfactory'
+          }; padding: 5px;">${item.how_well_the_student_respondes_when_corrected === 'Satisfactory'
             ? 'Satisfactory'
             : 'Satisfactory'
-        }</p>
+          }</p>
 </div>
 
 <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.how_well_the_student_respondes_when_corrected === 'Average'
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_respondes_when_corrected === 'Average'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-<p style="margin: 0px;background-color: ${
-          item.how_well_the_student_respondes_when_corrected === 'Average'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${item.how_well_the_student_respondes_when_corrected === 'Average'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.how_well_the_student_respondes_when_corrected === 'Average'
+          }; padding: 5px;">${item.how_well_the_student_respondes_when_corrected === 'Average'
             ? 'Average'
             : 'Average'
-        }</p>
+          }</p>
 </div>
   </div>
 
@@ -1044,299 +923,251 @@ const ReportSubmissionHistory = ({navigation}: any) => {
   <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 10px;">
   <p style="color: rgb(0, 0, 95); margin-top: 10px;">1. Rate the student's performance in the quizes</p>
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.rate_the_student_performance_in_quizzes === 'Excellent'
-      ? 'rgb(0, 0, 95)'
-      : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.rate_the_student_performance_in_quizzes === 'Excellent'
-      ? 'orange'
-      : 'white'
-  }; padding: 5px;">${
-          item.rate_the_student_performance_in_quizzes === 'Excellent'
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_the_student_performance_in_quizzes === 'Excellent'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${item.rate_the_student_performance_in_quizzes === 'Excellent'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.rate_the_student_performance_in_quizzes === 'Excellent'
             ? 'Excellent'
             : 'Excellent'
-        }</p>
+          }</p>
 </div>
 
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.rate_the_student_performance_in_quizzes === 'Good'
-      ? 'rgb(0, 0, 95)'
-      : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.rate_the_student_performance_in_quizzes === 'Good'
-      ? 'orange'
-      : 'white'
-  }; padding: 5px;">${
-          item.rate_the_student_performance_in_quizzes === 'Good'
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_the_student_performance_in_quizzes === 'Good'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${item.rate_the_student_performance_in_quizzes === 'Good'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.rate_the_student_performance_in_quizzes === 'Good'
             ? 'Good'
             : 'Good'
-        }</p>
+          }</p>
 </div>
 
 <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.rate_the_student_performance_in_quizzes ===
-          'Satisfactory'
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_the_student_performance_in_quizzes ===
+            'Satisfactory'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-<p style="margin: 0px;background-color: ${
-          item.rate_the_student_performance_in_quizzes ===
-          'Satisfactory'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${item.rate_the_student_performance_in_quizzes ===
+            'Satisfactory'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.rate_the_student_performance_in_quizzes ===
-          'Satisfactory'
+          }; padding: 5px;">${item.rate_the_student_performance_in_quizzes ===
+            'Satisfactory'
             ? 'Satisfactory'
             : 'Satisfactory'
-        }</p>
+          }</p>
 </div>
 
 <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.rate_the_student_performance_in_quizzes === 'Average'
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_the_student_performance_in_quizzes === 'Average'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-<p style="margin: 0px;background-color: ${
-          item.rate_the_student_performance_in_quizzes === 'Average'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${item.rate_the_student_performance_in_quizzes === 'Average'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.rate_the_student_performance_in_quizzes === 'Average'
+          }; padding: 5px;">${item.rate_the_student_performance_in_quizzes === 'Average'
             ? 'Average'
             : 'Average'
-        }</p>
+          }</p>
 </div>
 
 
 <p style="color: rgb(0, 0, 95); margin-top: 10px;">2. How well the student prepare for the test and assignment?</p>
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_well_the_student_prepares_for_test_and_assignment === 'Excellent'
-      ? 'rgb(0, 0, 95)'
-      : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.how_well_the_student_prepares_for_test_and_assignment === 'Excellent'
-      ? 'orange'
-      : 'white'
-  }; padding: 5px;">${
-          item.how_well_the_student_prepares_for_test_and_assignment ===
-          'Excellent'
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_prepares_for_test_and_assignment === 'Excellent'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${item.how_well_the_student_prepares_for_test_and_assignment === 'Excellent'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.how_well_the_student_prepares_for_test_and_assignment ===
+            'Excellent'
             ? 'Excellent'
             : 'Excellent'
-        }</p>
+          }</p>
 </div>
 
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_well_the_student_prepares_for_test_and_assignment === 'Good'
-      ? 'rgb(0, 0, 95)'
-      : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.how_well_the_student_prepares_for_test_and_assignment === 'Good'
-      ? 'orange'
-      : 'white'
-  }; padding: 5px;">${
-          item.how_well_the_student_prepares_for_test_and_assignment === 'Good'
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_prepares_for_test_and_assignment === 'Good'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${item.how_well_the_student_prepares_for_test_and_assignment === 'Good'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.how_well_the_student_prepares_for_test_and_assignment === 'Good'
             ? 'Good'
             : 'Good'
-        }</p>
+          }</p>
 </div>
 
 <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.how_well_the_student_prepares_for_test_and_assignment ===
-          'Satisfactory'
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_prepares_for_test_and_assignment ===
+            'Satisfactory'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-<p style="margin: 0px;background-color: ${
-          item.how_well_the_student_prepares_for_test_and_assignment ===
-          'Satisfactory'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${item.how_well_the_student_prepares_for_test_and_assignment ===
+            'Satisfactory'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.how_well_the_student_prepares_for_test_and_assignment ===
-          'Satisfactory'
+          }; padding: 5px;">${item.how_well_the_student_prepares_for_test_and_assignment ===
+            'Satisfactory'
             ? 'Satisfactory'
             : 'Satisfactory'
-        }</p>
+          }</p>
 </div>
 
 <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.how_well_the_student_prepares_for_test_and_assignment === 'Average'
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_prepares_for_test_and_assignment === 'Average'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-<p style="margin: 0px;background-color: ${
-          item.how_well_the_student_prepares_for_test_and_assignment === 'Average'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${item.how_well_the_student_prepares_for_test_and_assignment === 'Average'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.how_well_the_student_prepares_for_test_and_assignment === 'Average'
+          }; padding: 5px;">${item.how_well_the_student_prepares_for_test_and_assignment === 'Average'
             ? 'Average'
             : 'Average'
-        }</p>
+          }</p>
 </div>
 
 
 <p style="color: rgb(0, 0, 95); margin-top: 10px;">3. How student's test score at school?</p>
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_is_the_student_test_score_at_school ===
-    'Excellent'
-      ? 'rgb(0, 0, 95)'
-      : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.how_is_the_student_test_score_at_school ===
-    'Excellent'
-      ? 'orange'
-      : 'white'
-  }; padding: 5px;">${
-          item.how_is_the_student_test_score_at_school ===
-          'Excellent'
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_is_the_student_test_score_at_school ===
+            'Excellent'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${item.how_is_the_student_test_score_at_school ===
+            'Excellent'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.how_is_the_student_test_score_at_school ===
+            'Excellent'
             ? 'Excellent'
             : 'Excellent'
-        }</p>
+          }</p>
 </div>
 
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_is_the_student_test_score_at_school === 'Good'
-      ? 'rgb(0, 0, 95)'
-      : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.how_is_the_student_test_score_at_school === 'Good'
-      ? 'orange'
-      : 'white'
-  }; padding: 5px;">${
-          item.how_is_the_student_test_score_at_school ===
-          'Good'
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_is_the_student_test_score_at_school === 'Good'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${item.how_is_the_student_test_score_at_school === 'Good'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.how_is_the_student_test_score_at_school ===
+            'Good'
             ? 'Good'
             : 'Good'
-        }</p>
+          }</p>
 </div>
 
 <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.how_is_the_student_test_score_at_school ===
-          'Satisfactory'
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_is_the_student_test_score_at_school ===
+            'Satisfactory'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-<p style="margin: 0px;background-color: ${
-          item.how_is_the_student_test_score_at_school ===
-          'Satisfactory'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${item.how_is_the_student_test_score_at_school ===
+            'Satisfactory'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.how_is_the_student_test_score_at_school ===
-          'Satisfactory'
+          }; padding: 5px;">${item.how_is_the_student_test_score_at_school ===
+            'Satisfactory'
             ? 'Satisfactory'
             : 'Satisfactory'
-        }</p>
+          }</p>
 </div>
 
 <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.how_is_the_student_test_score_at_school ===
-          'Average'
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_is_the_student_test_score_at_school ===
+            'Average'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-<p style="margin: 0px;background-color: ${
-          item.how_is_the_student_test_score_at_school ===
-          'Average'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${item.how_is_the_student_test_score_at_school ===
+            'Average'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.how_is_the_student_test_score_at_school ===
-          'Average'
+          }; padding: 5px;">${item.how_is_the_student_test_score_at_school ===
+            'Average'
             ? 'Average'
             : 'Average'
-        }</p>
+          }</p>
 </div>
 
 
 
 <p style="color: rgb(0, 0, 95); margin-top: 10px;">4. How student's learning prefrences, willingness to learn, and interest towords the subject?</p>
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Excellent'
-      ? 'rgb(0, 0, 95)'
-      : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Excellent'
-      ? 'orange'
-      : 'white'
-  }; padding: 5px;">${
-          item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Excellent'
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Excellent'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Excellent'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Excellent'
             ? 'Excellent'
             : 'Excellent'
-        }</p>
+          }</p>
 </div>
 
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Good'
-      ? 'rgb(0, 0, 95)'
-      : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Good'
-      ? 'orange'
-      : 'white'
-  }; padding: 5px;">${
-          item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Good'
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Good'
+            ? 'rgb(0, 0, 95)'
+            : 'white'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Good'
+            ? 'orange'
+            : 'white'
+          }; padding: 5px;">${item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Good'
             ? 'Good'
             : 'Good'
-        }</p>
+          }</p>
 </div>
 
 <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Satisfactory'
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Satisfactory'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-<p style="margin: 0px;background-color: ${
-          item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Satisfactory'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Satisfactory'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Satisfactory'
+          }; padding: 5px;">${item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Satisfactory'
             ? 'Satisfactory'
             : 'Satisfactory'
-        }</p>
+          }</p>
 </div>
 
 <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Average'
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Average'
             ? 'rgb(0, 0, 95)'
             : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-<p style="margin: 0px;background-color: ${
-          item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Average'
+          };border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Average'
             ? 'orange'
             : 'white'
-        }; padding: 5px;">${
-          item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Average'
+          }; padding: 5px;">${item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Average'
             ? 'Average'
             : 'Average'
-        }</p>
+          }</p>
 </div>
   </div>
   <div style="margin-top: 220px;">
@@ -1350,24 +1181,21 @@ const ReportSubmissionHistory = ({navigation}: any) => {
   <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
   <p style="color: rgb(0, 0, 95); margin: 0px;">2. How do you rate student's performance based on this test?</p>
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-      <p style="margin: 0px;">${
-        item.how_do_you_rate_student_performance_based_on_this_test
-      }</p>
+      <p style="margin: 0px;">${item.how_do_you_rate_student_performance_based_on_this_test
+          }</p>
   </div>
   </div>
   <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
   <p style="color: rgb(0, 0, 95); margin: 0px;">3. which topic(s) has the students showed some significant improvement?</p>
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-      <p style="margin: 0px;">${
-        item.which_topic_has_the_student_showed_some_significant_improvement
-      }</p>
+      <p style="margin: 0px;">${item.which_topic_has_the_student_showed_some_significant_improvement
+          }</p>
   </div>
   </div>
   <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
   <p style="color: rgb(0, 0, 95); margin: 0px;">4. Can you determine and name the topic(s) that the student should improve and focus on?</p>
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
-      <p style="margin: 0px;">${
-        item.can_you_determine_and_name_the_topic_that_the_student_should_imp}</p>
+      <p style="margin: 0px;">${item.can_you_determine_and_name_the_topic_that_the_student_should_imp}</p>
   </div>
   </div>
 </div>
@@ -1390,7 +1218,7 @@ const ReportSubmissionHistory = ({navigation}: any) => {
       }
 
       const pdfFile = await RNHTMLtoPDF.convert(options);
-      const {filePath}: any = pdfFile;
+      const { filePath }: any = pdfFile;
       return filePath;
     } catch (error) {
       console.log('Error generating and downloading the PDF:', error);
@@ -1408,14 +1236,14 @@ const ReportSubmissionHistory = ({navigation}: any) => {
   };
 
   return loading ? (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator size="large" color={Theme.black} />
     </View>
   ) : pdfUri ? (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <Pdf
-        source={{uri: pdfUri}}
-        style={{flex: 1, backgroundColor: 'gray', marginBottom: 5}}
+        source={{ uri: pdfUri }}
+        style={{ flex: 1, backgroundColor: 'gray', marginBottom: 5 }}
       />
       <TouchableOpacity
         onPress={() => setPdfUri('')}
@@ -1425,13 +1253,13 @@ const ReportSubmissionHistory = ({navigation}: any) => {
           padding: 10,
           backgroundColor: 'black',
         }}>
-        <Text style={{fontSize: 16, textAlign: 'center', color: 'white'}}>
+        <Text style={{ fontSize: 16, textAlign: 'center', color: 'white' }}>
           Go Back
         </Text>
       </TouchableOpacity>
     </View>
   ) : (
-    <View style={{backgroundColor: Theme.white, height: '100%'}}>
+    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="Student Reports" backBtn navigation={navigation} />
       <ScrollView
         refreshControl={
@@ -1439,9 +1267,9 @@ const ReportSubmissionHistory = ({navigation}: any) => {
         }
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled>
-        <View style={{paddingHorizontal: 15}}>
+        <View style={{ paddingHorizontal: 15 }}>
           {/* Search */}
-          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <View
               style={{
                 width: '100%',
@@ -1458,12 +1286,12 @@ const ReportSubmissionHistory = ({navigation}: any) => {
                 placeholder="Search"
                 placeholderTextColor="black"
                 onChangeText={e => searchStudent(e)}
-                style={{width: '90%', padding: 8, color: 'black'}}
+                style={{ width: '90%', padding: 8, color: 'black' }}
               />
               <TouchableOpacity onPress={() => navigation}>
                 <Image
                   source={require('../../Assets/Images/search.png')}
-                  style={{width: 20, height: 20}}
+                  style={{ width: 20, height: 20 }}
                 />
               </TouchableOpacity>
             </View>
@@ -1474,7 +1302,7 @@ const ReportSubmissionHistory = ({navigation}: any) => {
               data={searchText && foundName.length > 0 ? foundName : allReports}
               nestedScrollEnabled
               keyExtractor={(item: any) => item.id}
-              renderItem={({item, index}: any) => {
+              renderItem={({ item, index }: any) => {
                 return (
                   <View
                     key={index}
@@ -1536,13 +1364,13 @@ const ReportSubmissionHistory = ({navigation}: any) => {
                               ? handleGenerateProgressReport(item)
                               : handleGenerateAndDownloadPdf(item)
                           }
-                          style={{alignItems: 'center'}}>
+                          style={{ alignItems: 'center' }}>
                           <Image
                             source={require('../../Assets/Images/inbox.png')}
-                            style={{width: 25, height: 25}}
+                            style={{ width: 25, height: 25 }}
                             resizeMode="contain"
                           />
-                          <Text style={{fontSize: 10, color: 'black'}}>
+                          <Text style={{ fontSize: 10, color: 'black' }}>
                             Download
                           </Text>
                         </TouchableOpacity>
@@ -1553,9 +1381,9 @@ const ReportSubmissionHistory = ({navigation}: any) => {
               }}
             />
           ) : (
-            <View style={{marginTop: 35}}>
+            <View style={{ marginTop: 35 }}>
               <Text
-                style={{color: Theme.black, fontSize: 12, textAlign: 'center'}}>
+                style={{ color: Theme.black, fontSize: 12, textAlign: 'center' }}>
                 No Record Found...
               </Text>
             </View>

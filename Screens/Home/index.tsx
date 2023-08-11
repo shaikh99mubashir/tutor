@@ -24,6 +24,7 @@ import UpcomingClassState from '../../context/upcomingClassState';
 import upcomingClassContext from '../../context/upcomingClassContext';
 import paymentContext from '../../context/paymentHistoryContext';
 import scheduleContext from '../../context/scheduleContext';
+import reportSubmissionContext from '../../context/reportSubmissionContext';
 
 function Home({ navigation }: any) {
 
@@ -43,6 +44,9 @@ function Home({ navigation }: any) {
 
   const { tutorDetails, updateTutorDetails } = context
   const { students, subjects, updateStudent, updateSubject } = studentAndSubjectContext
+  let reportContext = useContext(reportSubmissionContext)
+
+  let { reportSubmission, setreportSubmission, progressReport, setProgressReport } = reportContext
 
 
   const focus = useIsFocused()
@@ -288,7 +292,60 @@ function Home({ navigation }: any) {
 
   }
 
+  const getReportSubmissionHistory = async () => {
 
+
+    let data: any = await AsyncStorage.getItem('loginAuth');
+
+    data = JSON.parse(data);
+
+    let { tutorID } = data;
+
+    axios
+      .get(`${Base_Uri}api/tutorFirstReportListing/${tutorID}`)
+      .then(({ data }) => {
+        let { tutorReportListing } = data;
+        setreportSubmission(tutorReportListing);
+
+      })
+      .catch(error => {
+
+        console.log('error');
+      });
+
+  };
+
+  const getProgressReportHistory = async () => {
+
+
+    let data: any = await AsyncStorage.getItem('loginAuth');
+
+    data = JSON.parse(data);
+
+    let { tutorID } = data;
+
+    axios
+      .get(`${Base_Uri}api/progressReportListing`)
+      .then(({ data }) => {
+        let { progressReportListing } = data;
+
+        let tutorReport =
+          progressReportListing &&
+          progressReportListing.length > 0 &&
+          progressReportListing.filter((e: any, i: number) => {
+            return e.tutorID == tutorID;
+          });
+
+        // console.log(tutorReport, "reoirt")
+        setProgressReport(
+          tutorReport && tutorReport.length > 0 ? tutorReport : [],
+        );
+      })
+      .catch(error => {
+        console.log('error');
+      });
+
+  };
 
 
   useEffect(() => {
@@ -297,6 +354,9 @@ function Home({ navigation }: any) {
     getStates()
     getCities()
     getPaymentHistory()
+    getReportSubmissionHistory();
+    getProgressReportHistory();
+
   }, [refreshing])
 
 
