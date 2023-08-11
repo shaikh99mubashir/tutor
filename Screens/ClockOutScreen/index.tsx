@@ -45,9 +45,6 @@ function ClockOut({ navigation, route }: any) {
 
     }
 
-
-    console.log(data, "dataaa")
-
     useEffect(() => {
 
         getCurrentLocation()

@@ -87,7 +87,6 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
     })
   }
 
-  console.log(progressReport, "progressReport")
 
 
   useEffect(() => {
@@ -98,12 +97,19 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
   }, [refresh])
 
 
+
+
+  let allReports = [...reportSubmission, ...progressReport]
+
+
+
+
   const [searchText, setSearchText] = useState('');
   const searchStudent = (e: any) => {
 
     setSearchText(e);
-    let filteredItems: any = reportSubmission.filter((x: any) => {
-      if (x?.studentID?.toLowerCase().includes(e?.toLowerCase())) {
+    let filteredItems: any = allReports.filter((x: any) => {
+      if (x?.studentID?.toString().toLowerCase().includes(e?.toLowerCase())) {
         return e
       }
     }
@@ -115,7 +121,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
 
   const generateAndDownalodPdf = async (item: any): Promise<string | undefined> => {
 
-    console.log(item,"items")
+    console.log(item, "items")
 
     try {
       const options = {
@@ -180,8 +186,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
       <p style="color: rgb(0, 0, 95); margin: 0px;">1. What can you tell us about the student’s knowledge of this subject?</p>
       <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
           <div style="border-radius: 50%; height: 13px; width: 13px; background-color: rgb(0, 0, 95);"></div>
-          <p style="margin: 0px;background-color: orange;padding: 5px;">${
-            item.knowledge
+          <p style="margin: 0px;background-color: orange;padding: 5px;">${item.knowledge
           }</p>
       </div>
   </div>
@@ -192,8 +197,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
       <p style="color: rgb(0, 0, 95); margin: 0px;">1. What can you tell about the student’s understanding of this subject?</p>
       <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
           <div style="border-radius: 50%; height: 13px; width: 13px; background-color: rgb(0, 0, 95);"></div>
-          <p style="margin: 0px;background-color: orange;padding: 5px;">${
-            item.understanding
+          <p style="margin: 0px;background-color: orange;padding: 5px;">${item.understanding
           }</p>
       </div>
   </div>
@@ -203,8 +207,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
       <p style="color: rgb(0, 0, 95); margin: 0px;">1. What can you tell about the student’s understanding of this subject?</p>
       <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
           <div style="border-radius: 50%; height: 13px; width: 13px; background-color: rgb(0, 0, 95);"></div>
-          <p style="margin: 0px;background-color: orange;padding: 5px;">${
-            item.analysis
+          <p style="margin: 0px;background-color: orange;padding: 5px;">${item.analysis
           }</p>
       </div>
   </div>
@@ -261,6 +264,157 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
   };
 
 
+
+  const generateDownloadProgressReport = async (item: any): Promise<string | undefined> => {
+
+    console.log(item, "items")
+
+    try {
+      const options = {
+        html: `        <html>
+        <head>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+          }
+          h1 {
+            color: #333;
+            text-align: center;
+          }
+          p {
+            font-size: 16px;
+            line-height: 1.5;
+          }
+        </style>
+      </head>
+        <body>
+        <div>
+        <div>
+       
+        <div style="display: flex; justify-content: space-between;">
+          <div style="display: flex; flex-direction: column; width: 45%">
+            <img src="./logo.png" alt="logo" style="width: 70px" />
+            <p style="color: blue";margin-top: 20px;>Sifu Edu & Learning Sdn Bhd (1270698-W)</p>
+            <p style="margin-top: 5px;">1-1F, Jalan Setia Perdana BE U13/BE Setia Alam, Shah Alam, 40170,
+              Selangor Tel: 603-5888 4827</p>
+          </div>
+          <div style="display: flex; flex-direction: column; width: 50%">
+            <span
+              style="font-size: 25px; background-color: orangered;
+               color: white; padding: 8px; white-space: pre; font-weight: 700;margin-top: 20px;"
+              >${item.tutorReportType}</span>
+          </div>
+        </div>
+        
+        <div style="display: flex; align-items: center;gap: 10px;">
+        <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Student</h3>
+        <h3 style='white-space: pre;'>${item.studentName}</h3>
+      </div>
+        <div style="display: flex; flex-direction: row;gap:10px;">
+          <div style="display: flex; align-items: center;gap:5px;">
+            <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Tutor</h3>
+            <h3 style='white-space: pre;'>${item.tutorName}</h3>
+          </div>
+          <div style="display: flex; align-items: center;gap:5px;">
+            <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Subject</h3>
+            <h3 style='white-space: pre;'>${item.subjectName}</h3>
+          </div>
+          <div style="display: flex; align-items: center;gap:5px;">
+            <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Month</h3>
+            <h3 style='white-space: pre;'>${item.month}</h3>
+          </div>
+        </div>
+      </div>
+
+      <div>
+      <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">A. KNOWLEDGE</p>
+      <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
+      <p style="color: rgb(0, 0, 95); margin: 0px;">1. What can you tell us about the student’s knowledge of this subject?</p>
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+          <div style="border-radius: 50%; height: 13px; width: 13px; background-color: rgb(0, 0, 95);"></div>
+          <p style="margin: 0px;background-color: orange;padding: 5px;">${item.knowledge
+          }</p>
+      </div>
+  </div>
+  </div>
+  <div style="margin-top: 30px;">
+      <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">B. UNDERSTANDING</p>
+      <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
+      <p style="color: rgb(0, 0, 95); margin: 0px;">1. What can you tell about the student’s understanding of this subject?</p>
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+          <div style="border-radius: 50%; height: 13px; width: 13px; background-color: rgb(0, 0, 95);"></div>
+          <p style="margin: 0px;background-color: orange;padding: 5px;">${item.rate_student_understanding_on_this_subject
+          }</p>
+      </div>
+  </div>
+  <div style="margin-top: 30px;">
+      <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">C. ANALYSIS</p>
+      <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
+      <p style="color: rgb(0, 0, 95); margin: 0px;">1. What can you tell about the student’s understanding of this subject?</p>
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+          <div style="border-radius: 50%; height: 13px; width: 13px; background-color: rgb(0, 0, 95);"></div>
+          <p style="margin: 0px;background-color: orange;padding: 5px;">${item.how_is_the_student_performance_on_homework
+          }</p>
+      </div>
+  </div>
+  <div style="margin-top: 30px;">
+  <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">D. ADDITIONAL ASSESMENT</p>
+  <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
+  <p style="color: rgb(0, 0, 95); margin: 0px;">1. What is the current score for the subject?</p>
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+      <p style="margin: 0px;">${item.how_well_student_answers}</p>
+  </div>
+  </div>
+  <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
+  <p style="color: rgb(0, 0, 95); margin: 0px;">2. Elaborate your plan to help the student?</p>
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+      <p style="margin: 0px;">${item.how_you_can_rate_student_attendance_for_3_months}</p>
+  </div>
+  </div>
+</div>
+  </div>
+        
+        </body></html>`,
+        fileName: `report${Math.random()}`,
+        directory: 'Downloads',
+        base64: false,
+      };
+      if (Platform.OS === 'android') {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+        );
+
+        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
+          console.error('Permission denied for writing to external storage.');
+          return
+        }
+      }
+
+      const pdfFile = await RNHTMLtoPDF.convert(options);
+      const { filePath }: any = pdfFile;
+      return filePath
+    } catch (error) {
+      console.log('Error generating and downloading the PDF:', error);
+      throw error
+    }
+  };
+
+
+  const handleGenerateProgressReport = async (item: any) => {
+    try {
+      const pdfUri: any = await generateDownloadProgressReport(item);
+      setPdfUri(pdfUri); // Set the local file URI of the downloaded PDF
+
+    } catch (error) {
+      console.log('Error generating and downloading the PDF:', error);
+    }
+  }
+
+
+
+
+
+
   return (
     loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
       <ActivityIndicator size="large" color={Theme.black} />
@@ -312,15 +466,19 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
                 </View>
               </View>
 
-              {reportSubmission && reportSubmission.length > 0 ? (
+              {allReports && allReports.length > 0 ? (
                 <FlatList
                   data={
                     searchText && foundName.length > 0
                       ? foundName
-                      : reportSubmission
+                      : allReports
                   }
                   nestedScrollEnabled
+                  keyExtractor={(item: any) => item.id}
                   renderItem={({ item, index }: any) => {
+
+
+
                     return (
                       <View
                         key={index}
@@ -370,9 +528,9 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
                                 fontWeight: '600',
                                 paddingTop: 10,
                               }}>
-                              {item?.tutorReportType}
+                              {item?.tutorReportType ?? item.reportType}
                             </Text>
-                            <TouchableOpacity onPress={() => handleGenerateAndDownloadPdf(item)} style={{ alignItems: "center" }} >
+                            <TouchableOpacity onPress={() => item.reportType ? handleGenerateProgressReport(item) : handleGenerateAndDownloadPdf(item)} style={{ alignItems: "center" }} >
                               <Image source={require('../../Assets/Images/inbox.png')} style={{ width: 25, height: 25 }} resizeMode='contain' />
                               <Text style={{ fontSize: 10, color: "black" }}>Download</Text>
                             </TouchableOpacity>

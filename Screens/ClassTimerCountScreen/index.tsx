@@ -87,7 +87,6 @@ function ClassTimerCount({ navigation, route }: any) {
         if (newAppState === 'active') {
             setBackTime(true)
             setFirstTimeIn(true)
-            console.log(newAppState, "APPsTATE")
             let myData: any = await AsyncStorage.getItem("timer")
             let date = JSON.parse(myData)
             if (date) {
@@ -109,10 +108,6 @@ function ClassTimerCount({ navigation, route }: any) {
                         let remainingMinutes = minutesSplit[1]
                         let secondsDiff = Number(`0.${remainingMinutes}`) * 60
                         let Myseconds = Number(Math.ceil(secondsDiff))
-
-                        console.log(seconds, "seconds")
-                        console.log(minutes, "minutes")
-                        console.log(hour, "hours")
 
                         setTime({
                             ...time,
@@ -142,8 +137,6 @@ function ClassTimerCount({ navigation, route }: any) {
                 let stringTime = JSON.stringify(time)
                 AsyncStorage.setItem("timer", stringTime)
             }
-            // App is coming back from the background
-            // Place your code here that you want to run
         }
     };
 
@@ -199,7 +192,6 @@ function ClassTimerCount({ navigation, route }: any) {
                 } else {
                     let startHour = item.startMinutes
                     let startMinutes = item.startSeconds
-
                     let endHour = startHour + hour == 24 ? 0 : startHour + hour
                     let endMinutes = startMinutes + minutes
                     if (startMinutes + minutes == 60) {

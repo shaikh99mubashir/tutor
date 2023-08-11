@@ -20,11 +20,11 @@ const NoteState = (prop) => {
     // const [seconds, setSeconds] = useState(0)
     // const [minutes, setMinutes] = useState(0)
     const [tutorID, setTutorId] = useState("")
-    const [firstTimeIn,setFirstTimeIn] = useState(false)
+    const [firstTimeIn, setFirstTimeIn] = useState(false)
 
 
     const handleAppStateChange = async (newAppState) => {
-        if (newAppState === 'active' && firstTimeIn ) {
+        if (newAppState === 'active' && firstTimeIn) {
             console.log(newAppState, "APPsTATE")
             let myData = await AsyncStorage.getItem("timer")
             let date = JSON.parse(myData)
@@ -48,8 +48,8 @@ const NoteState = (prop) => {
                         let secondsDiff = Number(`0.${remainingMinutes}`) * 60
                         let Myseconds = Number(Math.ceil(secondsDiff))
 
-                        console.log(Myseconds,"SECONRDS")
-                        console.log(myMinutes,"MINUTES")
+                        console.log(Myseconds, "SECONRDS")
+                        console.log(myMinutes, "MINUTES")
 
                         setTime({
                             ...time,
@@ -161,7 +161,7 @@ const NoteState = (prop) => {
 
 
     return (
-        <NoteContext.Provider value={{ hour, seconds, minutes, update, cleanTime, tutorID, setTime, time,setFirstTimeIn }} >
+        <NoteContext.Provider value={{ hour, seconds, minutes, update, cleanTime, tutorID, setTime, time, setFirstTimeIn }} >
 
             {prop.children}
 
