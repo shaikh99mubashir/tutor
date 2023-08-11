@@ -16,6 +16,9 @@ import StudentState from './context/studentState';
 import FilterState from './context/filterState';
 import UpcomingClassState from './context/upcomingClassState';
 import IdleTimerManager from 'react-native-idle-timer';
+import PaymentState from './context/paymentState';
+import NotificationState from './context/notificationState';
+import ScheduleState from './context/ScheduleState';
 
 
 
@@ -37,16 +40,23 @@ function App() {
     <View style={styles.container} >
 
       <UpcomingClassState>
-              <NoteState>
-        <TutorDetailsState>
-          <StudentState>
-            <FilterState>
-                <AppNavigation />
-                {/* <Timer show="false" /> */}
-            </FilterState>
-          </StudentState>
-        </TutorDetailsState>
-              </NoteState>
+        <NoteState>
+          <ScheduleState>
+            <NotificationState>
+              <PaymentState>
+                <TutorDetailsState>
+                  <StudentState>
+                    <FilterState>
+                      <AppNavigation />
+                      {/* <Timer show="false" /> */}
+                    </FilterState>
+
+                  </StudentState>
+                </TutorDetailsState>
+              </PaymentState>
+            </NotificationState>
+          </ScheduleState>
+        </NoteState>
       </UpcomingClassState>
     </View>
   );

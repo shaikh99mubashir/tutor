@@ -22,6 +22,8 @@ import StudentContext from '../../context/studentContext';
 import filterContext from '../../context/filterContext';
 import UpcomingClassState from '../../context/upcomingClassState';
 import upcomingClassContext from '../../context/upcomingClassContext';
+import paymentContext from '../../context/paymentHistoryContext';
+import scheduleContext from '../../context/scheduleContext';
 
 function Home({ navigation }: any) {
 
@@ -31,11 +33,17 @@ function Home({ navigation }: any) {
   const { setCategory, setSubjects, setState, setCity } = filter
   const [refreshing, setRefreshing] = useState(false);
   const upcomingClassCont = useContext(upcomingClassContext)
+  const paymentHistory = useContext(paymentContext)
 
-  let { upcomingClass, setUpcomingClass } = upcomingClassCont
+  const upcomingContext = useContext(scheduleContext)
+
+
+  let { commissionData, setCommissionData } = paymentHistory
+  let { upcomingClass, setUpcomingClass, scheduleData, setScheduleData } = upcomingContext
 
   const { tutorDetails, updateTutorDetails } = context
   const { students, subjects, updateStudent, updateSubject } = studentAndSubjectContext
+
 
   const focus = useIsFocused()
 
@@ -69,6 +77,7 @@ function Home({ navigation }: any) {
   const [notificationLenght, setNotificationLength] = useState(0)
   const [tutorId, setTutorId] = useState<Number | null>(null);
   const [classInProcess, setClassInProcess] = useState({})
+
 
   const [tutorData, setTutorData] = useState({
     cummulativeCommission: '',
@@ -106,6 +115,28 @@ function Home({ navigation }: any) {
     let { tutorID } = loginData;
     setTutorId(tutorID);
   };
+
+
+  const getPaymentHistory = async () => {
+
+    let data: any = await AsyncStorage.getItem('loginAuth');
+    data = JSON.parse(data);
+    let { tutorID } = data;
+
+    axios.get(`${Base_Uri}tutorPayments/${tutorID}`).then(({ data }) => {
+
+      let { response } = data
+
+      setCommissionData(response)
+
+
+    }).catch((error) => {
+
+      ToastAndroid.show("Internal Server Error", ToastAndroid.SHORT)
+
+    })
+
+  }
 
 
   const getNotificationLength = async () => {
@@ -255,9 +286,9 @@ function Home({ navigation }: any) {
 
     })
 
-
-
   }
+
+
 
 
   useEffect(() => {
@@ -265,6 +296,7 @@ function Home({ navigation }: any) {
     getSubject()
     getStates()
     getCities()
+    getPaymentHistory()
   }, [refreshing])
 
 
@@ -455,11 +487,43 @@ function Home({ navigation }: any) {
   // }, [cancelledHours, refreshing]);
 
 
-  const routeToScheduleScreen = (item: any) => {
+  const routeToScheduleScreen = async (item: any) => {
 
-    setUpcomingClass(item)
+
+    interface LoginAuth {
+      status: Number;
+      tutorID: Number;
+      token: string;
+    }
+    const login: any = await AsyncStorage.getItem('loginAuth');
+    let loginData: LoginAuth = JSON.parse(login);
+    let { tutorID } = loginData;
+
+
+
+    axios
+      .get(`${Base_Uri}getClassSchedulesTime/${tutorID}`).then((res) => {
+        let scheduledClasses = res.data
+
+        let { classSchedulesTime } = scheduledClasses
+        let checkRouteClass = classSchedulesTime && classSchedulesTime.length > 0 && classSchedulesTime.filter((e: any, i: number) => {
+          return e?.id == item?.id
+        })
+        checkRouteClass = checkRouteClass && checkRouteClass.length > 0 && checkRouteClass.map((e: any, i: number) => {
+          return {
+            ...e,
+            imageUrl: require('../../Assets/Images/student.png'),
+          }
+        })
+        setUpcomingClass(checkRouteClass && checkRouteClass.length > 0 ? checkRouteClass : [])
+      }).catch((error) => {
+        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+      })
 
     navigation.navigate("Schedule")
+
+
+
 
 
   }
@@ -478,7 +542,7 @@ function Home({ navigation }: any) {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           <Text style={styles.text}>Hello,</Text>
-          <Text style={[styles.heading,{fontSize:16}]}>{tutorDetails?.full_name}</Text>
+          <Text style={[styles.heading, { fontSize: 16 }]}>{tutorDetails?.full_name}</Text>
         </View>
 
         <View style={styles.firstBox}>
@@ -708,7 +772,7 @@ function Home({ navigation }: any) {
                     <Text style={{ color: Theme.gray, fontSize: 12 }}>
                       {item?.startTime} to {item?.endTime}{' '}
                     </Text>
-                    <Text style={{ color: Theme.gray, fontSize: 12,marginTop:10 }}>
+                    <Text style={{ color: Theme.gray, fontSize: 12, marginTop: 10 }}>
                       {item?.date?.slice(0, 11)}
                     </Text>
                   </View>

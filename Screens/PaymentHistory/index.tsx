@@ -1,5 +1,5 @@
 import { View, Text, FlatList, StyleSheet, Dimensions, Image, ToastAndroid, ActivityIndicator, ScrollView, RefreshControl } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Header from '../../Component/Header';
 const height = Dimensions.get('screen').height;
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -7,74 +7,81 @@ import { Theme } from '../../constant/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
+import paymentContext from '../../context/paymentHistoryContext';
 const PaymentHistory = ({ navigation }: any) => {
-  const [commissionData, setCommissionData] = useState<any>([
-    // {
-    //   id: 1,
-    //   tutorID: 2,
-    //   classAttendedID: null,
-    //   paymentDate: '2023-07-10 00:00:00',
-    //   comissionMonth: 'June',
-    //   comissionYear: '2023',
-    //   payAmount: 151,
-    //   payingAccount: 'Cash At Bank - Maybank',
-    //   deduction: 0,
-    //   addition: 0,
-    //   remark: 'testing remarks at 10-07-2023',
-    // },
-    // {
-    //   id: 2,
-    //   tutorID: 2,
-    //   classAttendedID: null,
-    //   paymentDate: '2023-07-10 00:00:00',
-    //   comissionMonth: 'June',
-    //   comissionYear: '2023',
-    //   payAmount: 151,
-    //   payingAccount: 'Cash At Bank - Maybank',
-    //   deduction: 0,
-    //   addition: 0,
-    //   remark: 'testing remarks at 10-07-2023',
-    // },
-    // {
-    //   id: 3,
-    //   tutorID: 2,
-    //   classAttendedID: null,
-    //   paymentDate: '2023-07-10 00:00:00',
-    //   comissionMonth: 'June',
-    //   comissionYear: '2023',
-    //   payAmount: 151,
-    //   payingAccount: 'Cash At Bank - Maybank',
-    //   deduction: 0,
-    //   addition: 0,
-    //   remark: 'testing remarks at 10-07-2023',
-    // },
-    // {
-    //   id: 4,
-    //   tutorID: 2,
-    //   classAttendedID: null,
-    //   paymentDate: '2023-07-10 00:00:00',
-    //   comissionMonth: 'June',
-    //   comissionYear: '2023',
-    //   payAmount: 151,
-    //   payingAccount: 'Cash At Bank - Maybank',
-    //   deduction: 0,
-    //   addition: 0,
-    //   remark: 'testing remarks at 10-07-2023',
-    // },
-    // {
-    //   id: 5,
-    //   tutorID: 2,
-    //   classAttendedID: null,
-    //   paymentDate: '2023-07-10 00:00:00',
-    //   comissionMonth: 'June',
-    //   comissionYear: '2023',
-    //   payAmount: 151,
-    //   payingAccount: 'Cash At Bank - Maybank',
-    //   deduction: 0,
-    //   addition: 0,
-    //   remark: 'testing remarks at 10-07-2023',
-    // },
-  ]);
+
+
+  const paymentHistory = useContext(paymentContext)
+
+  let { commissionData, setCommissionData } = paymentHistory
+
+  // const [commissionData, setCommissionData] = useState<any>([
+  // {
+  //   id: 1,
+  //   tutorID: 2,
+  //   classAttendedID: null,
+  //   paymentDate: '2023-07-10 00:00:00',
+  //   comissionMonth: 'June',
+  //   comissionYear: '2023',
+  //   payAmount: 151,
+  //   payingAccount: 'Cash At Bank - Maybank',
+  //   deduction: 0,
+  //   addition: 0,
+  //   remark: 'testing remarks at 10-07-2023',
+  // },
+  // {
+  //   id: 2,
+  //   tutorID: 2,
+  //   classAttendedID: null,
+  //   paymentDate: '2023-07-10 00:00:00',
+  //   comissionMonth: 'June',
+  //   comissionYear: '2023',
+  //   payAmount: 151,
+  //   payingAccount: 'Cash At Bank - Maybank',
+  //   deduction: 0,
+  //   addition: 0,
+  //   remark: 'testing remarks at 10-07-2023',
+  // },
+  // {
+  //   id: 3,
+  //   tutorID: 2,
+  //   classAttendedID: null,
+  //   paymentDate: '2023-07-10 00:00:00',
+  //   comissionMonth: 'June',
+  //   comissionYear: '2023',
+  //   payAmount: 151,
+  //   payingAccount: 'Cash At Bank - Maybank',
+  //   deduction: 0,
+  //   addition: 0,
+  //   remark: 'testing remarks at 10-07-2023',
+  // },
+  // {
+  //   id: 4,
+  //   tutorID: 2,
+  //   classAttendedID: null,
+  //   paymentDate: '2023-07-10 00:00:00',
+  //   comissionMonth: 'June',
+  //   comissionYear: '2023',
+  //   payAmount: 151,
+  //   payingAccount: 'Cash At Bank - Maybank',
+  //   deduction: 0,
+  //   addition: 0,
+  //   remark: 'testing remarks at 10-07-2023',
+  // },
+  // {
+  //   id: 5,
+  //   tutorID: 2,
+  //   classAttendedID: null,
+  //   paymentDate: '2023-07-10 00:00:00',
+  //   comissionMonth: 'June',
+  //   comissionYear: '2023',
+  //   payAmount: 151,
+  //   payingAccount: 'Cash At Bank - Maybank',
+  //   deduction: 0,
+  //   addition: 0,
+  //   remark: 'testing remarks at 10-07-2023',
+  // },
+  // ]);
 
   const [loading, setLoading] = useState(false)
   const [refreshing, setRefreshing] = React.useState(false);
@@ -90,23 +97,27 @@ const PaymentHistory = ({ navigation }: any) => {
 
   const getPaymentHistory = async () => {
 
-    let data: any = await AsyncStorage.getItem('loginAuth');
-    data = JSON.parse(data);
-    let { tutorID } = data;
-    setLoading(true)
-    axios.get(`${Base_Uri}tutorPayments/${tutorID}`).then(({ data }) => {
+    if (refresh) {
 
-      let { response } = data
+      let data: any = await AsyncStorage.getItem('loginAuth');
+      data = JSON.parse(data);
+      let { tutorID } = data;
+      setLoading(true)
+      axios.get(`${Base_Uri}tutorPayments/${tutorID}`).then(({ data }) => {
 
-      setCommissionData(response)
-      setLoading(false)
+        let { response } = data
+
+        setCommissionData(response)
+        setLoading(false)
 
 
-    }).catch((error) => {
-      setLoading(false)
-      ToastAndroid.show("Internal Server Error", ToastAndroid.SHORT)
+      }).catch((error) => {
+        setLoading(false)
+        ToastAndroid.show("Internal Server Error", ToastAndroid.SHORT)
 
-    })
+      })
+
+    }
 
   }
 

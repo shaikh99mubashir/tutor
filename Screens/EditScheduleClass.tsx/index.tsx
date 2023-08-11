@@ -94,6 +94,7 @@ function EditScheduleClass({ navigation, route }: any) {
             setLoading(false)
             setNextClass(initialData)
             ToastAndroid.show("Class has been successfully scheduled", ToastAndroid.SHORT)
+            navigation.navigate("Schedule", dataToSend.startTime)
 
 
 

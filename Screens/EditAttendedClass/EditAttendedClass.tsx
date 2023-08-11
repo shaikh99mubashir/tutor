@@ -35,8 +35,9 @@ function EditAttendedClass({ navigation, route }: any) {
     // }
 
     setLoading(true)
-    axios.get(`${Base_Uri}attendedClassStatus/${data?.id}/attended`).then(({ data }) => {
-      ToastAndroid.show(data?.SuccessMessage, ToastAndroid.SHORT)
+    axios.get(`${Base_Uri}attendedClassStatus/${data?.id}/attended`).then((res) => {
+      ToastAndroid.show(res?.data?.SuccessMessage, ToastAndroid.SHORT)
+      navigation.navigate("Schedule", data.id)
       setLoading(false)
       setFile({})
 

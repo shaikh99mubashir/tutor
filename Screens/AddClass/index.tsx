@@ -259,8 +259,8 @@ function AddClass({ navigation }: any) {
             padding: 10,
             borderRadius: 10,
             marginTop: 10,
-            borderWidth:1,
-            borderColor:Theme.gray
+            borderWidth: 1,
+            borderColor: Theme.gray
           }}>
           <View
             style={{
@@ -403,11 +403,11 @@ function AddClass({ navigation }: any) {
 
     axios.post(`${Base_Uri}api/addMultipleClasses`, classesss).then((res) => {
       setLoading(false)
-      navigation.navigate('Schedule', "update");
+      navigation.navigate('Schedule',classesss.classes[0].startTime);
       ToastAndroid.show(res?.data?.message, ToastAndroid.SHORT)
     }).catch((error) => {
       setLoading(false)
-      console.log(error,"error")
+      console.log(error, "error")
       ToastAndroid.show("Sorry classes added unsuccessfull", ToastAndroid.SHORT)
     })
   };

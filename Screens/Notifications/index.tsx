@@ -11,20 +11,25 @@ import {
   ActivityIndicator,
   Dimensions
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import Header from '../../Component/Header';
 import { Theme } from '../../constant/theme';
 import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import notificationContext from '../../context/notificationContext';
 const height = Dimensions.get('screen').height;
 const Notifications = ({ navigation }: any) => {
-  const [notification, setNotification] = useState<any>([]);
+  // const [notification, setNotification] = useState<any>([]);
   const [schduleNotification, setScheduleNotification] = useState<any>([])
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
   const [refresh, setRefresh] = useState(false)
+  
+  const context = useContext(notificationContext)
+
+  let {notification,setNotification} = context
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -34,6 +39,7 @@ const Notifications = ({ navigation }: any) => {
     }, 2000);
   }, [refresh]);
   const getNotificationMessage = async () => {
+    if(refresh){
     interface LoginAuth {
       status: Number;
       tutorID: Number;
@@ -61,6 +67,7 @@ const Notifications = ({ navigation }: any) => {
         setLoading(false);
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
+    }
   };
 
 

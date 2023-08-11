@@ -94,11 +94,12 @@ function EditPostpondClass({ navigation, route }: any) {
 
         axios.post(`${Base_Uri}api/addMultipleClasses`, classesss).then((res) => {
 
-            axios.get(`${Base_Uri}attendedClassStatus/${data?.id}/postponed`).then(({ data }) => {
+            axios.get(`${Base_Uri}attendedClassStatus/${data?.id}/postponed`).then(( res ) => {
 
                 setLoading(false)
                 setNextClass(initialData)
-                ToastAndroid.show(data?.SuccessMessage, ToastAndroid.SHORT)
+                ToastAndroid.show(res?.data?.SuccessMessage, ToastAndroid.SHORT)
+                navigation.navigate("Schedule", data.id)
 
             }).catch((error) => {
                 setLoading(false)

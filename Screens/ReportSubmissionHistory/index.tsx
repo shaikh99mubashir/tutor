@@ -263,11 +263,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
     }
   };
 
-
-
   const generateDownloadProgressReport = async (item: any): Promise<string | undefined> => {
-
-    console.log(item, "items")
 
     try {
       const options = {
@@ -293,7 +289,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
        
         <div style="display: flex; justify-content: space-between;">
           <div style="display: flex; flex-direction: column; width: 45%">
-            <img src="./logo.png" alt="logo" style="width: 70px" />
+            <img src="../../Assets/Images/logo.png" alt="logo" style="width: 70px" />
             <p style="color: blue";margin-top: 20px;>Sifu Edu & Learning Sdn Bhd (1270698-W)</p>
             <p style="margin-top: 5px;">1-1F, Jalan Setia Perdana BE U13/BE Setia Alam, Shah Alam, 40170,
               Selangor Tel: 603-5888 4827</p>

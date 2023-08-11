@@ -194,8 +194,8 @@ function ClassTimerCount({ navigation, route }: any) {
                     let startMinutes = item.startSeconds
                     let endHour = startHour + hour == 24 ? 0 : startHour + hour
                     let endMinutes = startMinutes + minutes
-                    if (startMinutes + minutes == 60) {
-                        endMinutes = 0
+                    if (startMinutes + minutes >= 60) {
+                        endMinutes = startMinutes + minutes - 60
                         endHour = endHour + 1
                     }
 
@@ -214,7 +214,9 @@ function ClassTimerCount({ navigation, route }: any) {
                         type: assets[0].type,
                         filename: assets[0].fileName,
                         ticketID: item?.item?.ticketID,
-                        classAttendedID: item?.data?.classAttendedID
+                        classAttendedID: item?.data?.classAttendedID,
+                        minutes: time.minutes,
+                        hour: time?.hour ? time.hour : 0
 
                     }
                     cleanTime()

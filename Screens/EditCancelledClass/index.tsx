@@ -25,10 +25,11 @@ function EditCancelledClass({ navigation, route }: any) {
             return
         }
         setLoading(true)
-        axios.get(`${Base_Uri}attendedClassStatus/${data?.id}/cancelled`).then(({ data }) => {
+        axios.get(`${Base_Uri}attendedClassStatus/${data?.id}/cancelled`).then((res) => {
 
             setLoading(false)
-            ToastAndroid.show(data?.SuccessMessage, ToastAndroid.SHORT)
+            ToastAndroid.show(res?.data?.SuccessMessage, ToastAndroid.SHORT)
+            navigation.navigate("Schedule", data.id)
 
         }).catch((error) => {
             setLoading(false)

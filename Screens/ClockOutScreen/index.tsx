@@ -20,7 +20,10 @@ function ClockOut({ navigation, route }: any) {
     const data = route?.params
     const items = route?.params
 
-    
+
+
+    console.log(data, "dataa")
+
     const focus = useIsFocused()
 
 
@@ -201,7 +204,7 @@ function ClockOut({ navigation, route }: any) {
 
                     <View style={{ flexDirection: "row" }} >
                         <Text style={{ color: Theme.gray }} > Duration:</Text>
-                        <Text style={{ color: Theme.black, fontWeight: "600" }} > {totalHours} hours {totalMinutes} minutes</Text>
+                        <Text style={{ color: Theme.black, fontWeight: "600" }} > {data.hour} hours {data.minutes} minutes</Text>
                     </View>
                     <TouchableOpacity onPress={() => handleClockOutPress()} style={{ backgroundColor: Theme.darkGray, width: "100%", padding: 10, borderRadius: 10, marginTop: 10 }} >
                         <Text style={{ textAlign: "center", fontSize: 16, color: 'white' }} >

@@ -22,9 +22,11 @@ import AsyncStorage, {
 } from '@react-native-async-storage/async-storage';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 
-function JobTicket({ navigation }: any) {
+function JobTicket({ navigation, route }: any) {
 
   const focus = useIsFocused()
+
+  let data = route.params
 
   const [isSearchItems, setIsSearchItems] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -264,7 +266,7 @@ function JobTicket({ navigation }: any) {
   useEffect(() => {
     getTicketsData();
     getAppliedData();
-  }, [focus, refresh]);
+  }, [refresh, route]);
 
   const checkSearchItems = () => {
     searchText && foundName.length == 0 && setIsSearchItems(true);

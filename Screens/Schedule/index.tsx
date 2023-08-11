@@ -24,9 +24,10 @@ import { ToastAndroid } from 'react-native';
 import { useIsFocused, useRoute } from '@react-navigation/native';
 import upcomingClassContext from '../../context/upcomingClassContext';
 import moment from 'moment';
+import scheduleContext from '../../context/scheduleContext';
 // import { ScrollView } from "react-native-gesture-handler"
 
-function Schedule({ navigation }: any) {
+function Schedule({ navigation, route }: any) {
   // type ISchedule = {
   //   imageUrl: any;
   //   name: String;
@@ -39,21 +40,29 @@ function Schedule({ navigation }: any) {
   // }[];
 
 
-  let upComingCont = useContext(upcomingClassContext)
-  const { upcomingClass, setUpcomingClass } = upComingCont
+  // let upComingCont = useContext(upcomingClassContext)
+  // const { upcomingClass, setUpcomingClass } = upComingCont
+  // let data = upcomingClass
 
-
-  let data = upcomingClass
-
+  let data = route.params
 
 
   let focus = useIsFocused()
 
+  let context = useContext(scheduleContext)
+
+  let { scheduleData, setScheduleData } = context
+  let { upcomingClass, setUpcomingClass } = context
+
   const [loading, setLoading] = useState(false);
-  const [scheduleData, setScheduleData] = useState<any>([]);
+  // const [scheduleData, setScheduleData] = useState<any>([]);
 
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedData, setSelectedData] = useState({});
+
+
+  console.log(upcomingClass, "upcomingClass")
+
 
   const [mode, setMode] = useState<any>('date');
   const [confirm, setConfirm] = useState(false);
@@ -70,11 +79,19 @@ function Schedule({ navigation }: any) {
   }, [refresh]);
 
 
+  // useEffect(() => {
+
+  //   if (!focus) {
+
+  //     setUpcomingClass("")
+  //   }
+
+  // }, [focus])
+
   useEffect(() => {
 
     if (!focus) {
-
-      setUpcomingClass("")
+      setUpcomingClass([])
     }
 
   }, [focus])
@@ -200,9 +217,17 @@ function Schedule({ navigation }: any) {
       });
   };
 
+  console.log(scheduleData, "dataa")
+
   useEffect(() => {
-    getScheduledData();
-  }, [refresh, data, focus, selectedDate]);
+
+    if (refresh || selectedDate || data || scheduleData.length == 0) {
+
+      getScheduledData();
+
+    }
+
+  }, [refresh, data, selectedDate]);
 
   const onChange = (event: any, selectedDate: any) => {
     const currentDate = selectedDate;
@@ -226,7 +251,27 @@ function Schedule({ navigation }: any) {
     showMode('time');
   };
 
-  const handleSelectPress = (index: Number) => {
+  const handleSelectPress = (index: Number, item: any) => {
+
+    if (upcomingClass && upcomingClass.length > 0) {
+
+      let myData = upcomingClass.map((e: any, i: Number) => {
+        if (i == index) {
+          return {
+            ...e,
+            selected: e?.selected ? false : true,
+          };
+        } else {
+          return {
+            ...e,
+            selected: false,
+          };
+        }
+      })
+      setUpcomingClass(myData)
+
+    }
+
     let data = scheduleData.map((e: any, i: Number) => {
       if (i == index) {
         return {
@@ -410,6 +455,7 @@ function Schedule({ navigation }: any) {
   const renderScheduleData = ({ item, index }: any): any => {
 
 
+
     let nowDate: Date = new Date()
     let date = nowDate.getDate()
     let month = nowDate.getMonth()
@@ -428,7 +474,7 @@ function Schedule({ navigation }: any) {
 
     return (
       <TouchableOpacity
-        onPress={() => handleSelectPress(index)}
+        onPress={() => handleSelectPress(index, item)}
         style={{
           borderWidth: 1,
           borderColor: item.selected ? Theme.darkGray : Theme.lightGray,
@@ -464,7 +510,7 @@ function Schedule({ navigation }: any) {
               fontWeight: '600',
               textTransform: 'uppercase',
             }}>
-            {item.subjectName}
+            {item.subjectName ?? item?.subject_name}
           </Text>
         </View>
 
@@ -568,7 +614,7 @@ function Schedule({ navigation }: any) {
             />
           )}
 
-          {scheduleData.length == 0 ? (
+          {scheduleData.length == 0 && Object.keys(upcomingClass).length == 0 ? (
             <View
               style={{
                 height: Dimensions.get('window').height - 180,
@@ -583,7 +629,7 @@ function Schedule({ navigation }: any) {
           ) : (
             <FlatList
               nestedScrollEnabled={true}
-              data={scheduleData}
+              data={upcomingClass.length > 0 ? upcomingClass : scheduleData}
               renderItem={renderScheduleData}
             />
           )}

@@ -133,7 +133,7 @@ const NoteState = (prop) => {
             setTime({
                 ...time,
                 minutes: 0,
-                hour: hours + 1
+                hour: hour + 1
             })
         }
         if (hour == 23) {
@@ -154,7 +154,7 @@ const NoteState = (prop) => {
             ...time,
             seconds: 0,
             minutes: 0,
-            hours: 0
+            hour: 0
         })
 
     }
