@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -13,11 +13,11 @@ import {
   RefreshControl,
   Modal,
 } from 'react-native';
-import {Theme} from '../../constant/theme';
+import { Theme } from '../../constant/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {Base_Uri} from '../../constant/BaseUri';
-import {useIsFocused} from '@react-navigation/native';
+import { Base_Uri } from '../../constant/BaseUri';
+import { useIsFocused } from '@react-navigation/native';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import StudentContext from '../../context/studentContext';
 import filterContext from '../../context/filterContext';
@@ -27,23 +27,26 @@ import paymentContext from '../../context/paymentHistoryContext';
 import scheduleContext from '../../context/scheduleContext';
 import reportSubmissionContext from '../../context/reportSubmissionContext';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-function Home({navigation}: any) {
+import notificationContext from '../../context/notificationContext';
+function Home({ navigation }: any) {
   const context = useContext(TutorDetailsContext);
   const filter = useContext(filterContext);
   const studentAndSubjectContext = useContext(StudentContext);
-  const {setCategory, setSubjects, setState, setCity} = filter;
+  const notContext = useContext(notificationContext)
+  let { notification, setNotification } = notContext
+  const { setCategory, setSubjects, setState, setCity } = filter;
   const [refreshing, setRefreshing] = useState(false);
   const upcomingClassCont = useContext(upcomingClassContext);
   const paymentHistory = useContext(paymentContext);
 
   const upcomingContext = useContext(scheduleContext);
 
-  let {commissionData, setCommissionData} = paymentHistory;
-  let {upcomingClass, setUpcomingClass, scheduleData, setScheduleData} =
+  let { commissionData, setCommissionData } = paymentHistory;
+  let { upcomingClass, setUpcomingClass, scheduleData, setScheduleData } =
     upcomingContext;
 
-  const {tutorDetails, updateTutorDetails} = context;
-  const {students, subjects, updateStudent, updateSubject} =
+  const { tutorDetails, updateTutorDetails } = context;
+  const { students, subjects, updateStudent, updateSubject } =
     studentAndSubjectContext;
   let reportContext = useContext(reportSubmissionContext);
 
@@ -119,19 +122,19 @@ function Home({navigation}: any) {
     }
     const data: any = await AsyncStorage.getItem('loginAuth');
     let loginData: LoginAuth = JSON.parse(data);
-    let {tutorID} = loginData;
+    let { tutorID } = loginData;
     setTutorId(tutorID);
   };
 
   const getPaymentHistory = async () => {
     let data: any = await AsyncStorage.getItem('loginAuth');
     data = JSON.parse(data);
-    let {tutorID} = data;
+    let { tutorID } = data;
 
     axios
       .get(`${Base_Uri}tutorPayments/${tutorID}`)
-      .then(({data}) => {
-        let {response} = data;
+      .then(({ data }) => {
+        let { response } = data;
 
         setCommissionData(response);
       })
@@ -143,19 +146,20 @@ function Home({navigation}: any) {
   const getNotificationLength = async () => {
     axios
       .get(`${Base_Uri}api/notifications/${tutorId}`)
-      .then(({data}) => {
+      .then(({ data }) => {
         let length = 0;
-        let {notifications} = data;
+        let { notifications } = data;
         let tutorNotification =
           notifications.length > 0 &&
           notifications.filter((e: any, i: number) => {
             return e.status == 'new';
           });
-        // setNotificationLength(tutorNotification.length > 0 ? tutorNotification.length : 0);
-        length =
-          length + tutorNotification.length > 0 ? tutorNotification.length : 0;
+        setNotification(tutorNotification)
+        // // setNotificationLength(tutorNotification.length > 0 ? tutorNotification.length : 0);
+        // length =
+        //   length + tutorNotification.length > 0 ? tutorNotification.length : 0;
 
-        setNotificationLength(length);
+        // setNotificationLength(length);
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
@@ -177,8 +181,8 @@ function Home({navigation}: any) {
   const getCategory = () => {
     axios
       .get(`${Base_Uri}getCategories`)
-      .then(({data}) => {
-        let {categories} = data;
+      .then(({ data }) => {
+        let { categories } = data;
 
         let myCategories =
           categories &&
@@ -201,8 +205,8 @@ function Home({navigation}: any) {
   const getSubject = () => {
     axios
       .get(`${Base_Uri}getSubjects`)
-      .then(({data}) => {
-        let {subjects} = data;
+      .then(({ data }) => {
+        let { subjects } = data;
 
         let mySubject =
           subjects &&
@@ -226,8 +230,8 @@ function Home({navigation}: any) {
   const getStates = () => {
     axios
       .get(`${Base_Uri}getStates`)
-      .then(({data}) => {
-        let {states} = data;
+      .then(({ data }) => {
+        let { states } = data;
 
         let myStates =
           states &&
@@ -251,8 +255,8 @@ function Home({navigation}: any) {
   const getCities = () => {
     axios
       .get(`${Base_Uri}getCities`)
-      .then(({data}) => {
-        let {cities} = data;
+      .then(({ data }) => {
+        let { cities } = data;
         let myCities =
           cities &&
           cities.length > 0 &&
@@ -276,12 +280,12 @@ function Home({navigation}: any) {
 
     data = JSON.parse(data);
 
-    let {tutorID} = data;
+    let { tutorID } = data;
 
     axios
       .get(`${Base_Uri}api/tutorFirstReportListing/${tutorID}`)
-      .then(({data}) => {
-        let {tutorReportListing} = data;
+      .then(({ data }) => {
+        let { tutorReportListing } = data;
         setreportSubmission(tutorReportListing);
       })
       .catch(error => {
@@ -294,12 +298,12 @@ function Home({navigation}: any) {
 
     data = JSON.parse(data);
 
-    let {tutorID} = data;
+    let { tutorID } = data;
 
     axios
       .get(`${Base_Uri}api/progressReportListing`)
-      .then(({data}) => {
-        let {progressReportListing} = data;
+      .then(({ data }) => {
+        let { progressReportListing } = data;
 
         let tutorReport =
           progressReportListing &&
@@ -331,8 +335,8 @@ function Home({navigation}: any) {
   const getTutorDetails = async () => {
     axios
       .get(`${Base_Uri}getTutorDetailByID/${tutorId}`)
-      .then(({data}) => {
-        let {tutorDetailById} = data;
+      .then(({ data }) => {
+        let { tutorDetailById } = data;
 
         let tutorDetails = tutorDetailById[0];
 
@@ -361,7 +365,7 @@ function Home({navigation}: any) {
   const getCummulativeCommission = () => {
     axios
       .get(`${Base_Uri}getCommulativeCommission/${tutorId}`)
-      .then(({data}) => {
+      .then(({ data }) => {
         setCumulativeCommission(data.commulativeCommission);
       })
       .catch(error => {
@@ -372,7 +376,7 @@ function Home({navigation}: any) {
   const getAttendedHours = () => {
     axios
       .get(`${Base_Uri}getAttendedHours/${tutorId}`)
-      .then(({data}) => {
+      .then(({ data }) => {
         // setTutorData({ ...tutorData, attendedHours: data.attendedHours });
         setAttendedHours(data.attendedHours);
       })
@@ -384,7 +388,7 @@ function Home({navigation}: any) {
   const getScheduledHours = () => {
     axios
       .get(`${Base_Uri}getScheduledHours/${tutorId}`)
-      .then(({data}) => {
+      .then(({ data }) => {
         setScheduledHours(data.scheduledHours);
         // setTutorData({ ...tutorData, scheduledHours: data.scheduledHours });
       })
@@ -396,7 +400,7 @@ function Home({navigation}: any) {
   const getCancelledHours = () => {
     axios
       .get(`${Base_Uri}getCancelledHours/${tutorId}`)
-      .then(({data}) => {
+      .then(({ data }) => {
         setCancelledHours(data.cancelledHours);
         // setTutorData({ ...tutorData, cancelledHours: data.cancelledHours });
       })
@@ -409,8 +413,8 @@ function Home({navigation}: any) {
   const getTutorStudents = () => {
     axios
       .get(`${Base_Uri}getTutorStudents/${tutorId}`)
-      .then(({data}) => {
-        const {tutorStudents} = data;
+      .then(({ data }) => {
+        const { tutorStudents } = data;
         setTutorStudents(tutorStudents);
         updateStudent(tutorStudents);
       })
@@ -422,8 +426,8 @@ function Home({navigation}: any) {
   const getTutorSubjects = () => {
     axios
       .get(`${Base_Uri}getTutorSubjects/${tutorId}`)
-      .then(({data}) => {
-        let {tutorSubjects} = data;
+      .then(({ data }) => {
+        let { tutorSubjects } = data;
 
         let mySubject =
           tutorSubjects &&
@@ -447,8 +451,8 @@ function Home({navigation}: any) {
   const getUpcomingClasses = () => {
     axios
       .get(`${Base_Uri}getUpcomingClassesByTutorID/${tutorId}`)
-      .then(({data}) => {
-        const {classSchedules} = data;
+      .then(({ data }) => {
+        const { classSchedules } = data;
         setUpCommingClasses(classSchedules);
       })
       .catch(error => {
@@ -507,13 +511,13 @@ function Home({navigation}: any) {
     }
     const login: any = await AsyncStorage.getItem('loginAuth');
     let loginData: LoginAuth = JSON.parse(login);
-    let {tutorID} = loginData;
+    let { tutorID } = loginData;
     axios
       .get(`${Base_Uri}getClassSchedulesTime/${tutorID}`)
       .then(res => {
         let scheduledClasses = res.data;
 
-        let {classSchedulesTime} = scheduledClasses;
+        let { classSchedulesTime } = scheduledClasses;
         let checkRouteClass =
           classSchedulesTime &&
           classSchedulesTime.length > 0 &&
@@ -543,7 +547,7 @@ function Home({navigation}: any) {
     setOpenPPModal(true)
     axios
       .get(`${Base_Uri}api/bannerAds`)
-      .then(({data}) => {
+      .then(({ data }) => {
         console.log('res', data.bannerAds);
       })
       .catch(error => {
@@ -556,7 +560,7 @@ function Home({navigation}: any) {
   }, []);
 
   return !cancelledHours ? (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator size={'large'} color={Theme.black} />
     </View>
   ) : (
@@ -568,20 +572,20 @@ function Home({navigation}: any) {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           <Text style={styles.text}>Hello,</Text>
-          <Text style={[styles.heading, {fontSize: 16}]}>
+          <Text style={[styles.heading, { fontSize: 16 }]}>
             {tutorDetails?.full_name}
           </Text>
         </View>
 
         <View style={styles.firstBox}>
-          <Text style={[styles.text, {color: Theme.white, fontSize: 11}]}>
+          <Text style={[styles.text, { color: Theme.white, fontSize: 11 }]}>
             {currentDate}
           </Text>
           <Text
-            style={[styles.heading, {color: Theme.white, fontWeight: '400'}]}>
+            style={[styles.heading, { color: Theme.white, fontWeight: '400' }]}>
             RM {cummulativeCommission}
           </Text>
-          <Text style={[styles.text, {color: Theme.white, fontSize: 11}]}>
+          <Text style={[styles.text, { color: Theme.white, fontSize: 11 }]}>
             CUMMULATIVE COMMISSION
           </Text>
         </View>
@@ -600,7 +604,7 @@ function Home({navigation}: any) {
                 marginTop: 10,
               },
             ]}>
-            <Text style={[styles.text, {color: Theme.black, fontSize: 12}]}>
+            <Text style={[styles.text, { color: Theme.black, fontSize: 12 }]}>
               You have ongoing class
             </Text>
             <View
@@ -612,7 +616,7 @@ function Home({navigation}: any) {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <Text style={[styles.text, {fontSize: 10, color: Theme.white}]}>
+              <Text style={[styles.text, { fontSize: 10, color: Theme.white }]}>
                 <ActivityIndicator color={'blue'} size="small" />
               </Text>
             </View>
@@ -631,7 +635,7 @@ function Home({navigation}: any) {
                 marginTop: 10,
               },
             ]}>
-            <Text style={[styles.text, {color: Theme.black, fontSize: 12}]}>
+            <Text style={[styles.text, { color: Theme.black, fontSize: 12 }]}>
               Notifications
             </Text>
             <View
@@ -643,32 +647,32 @@ function Home({navigation}: any) {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <Text style={[styles.text, {fontSize: 10, color: Theme.white}]}>
-                {notificationLenght}
+              <Text style={[styles.text, { fontSize: 10, color: Theme.white }]}>
+                {notification.length}
               </Text>
             </View>
           </TouchableOpacity>
         )}
 
-        <View style={{marginTop: 20}}>
-          <Text style={[styles.heading, {fontSize: 14}]}>Monthly Summary</Text>
-          <Text style={[styles.text, {fontSize: 12, color: Theme.gray}]}>
+        <View style={{ marginTop: 20 }}>
+          <Text style={[styles.heading, { fontSize: 14 }]}>Monthly Summary</Text>
+          <Text style={[styles.text, { fontSize: 12, color: Theme.gray }]}>
             {currentMonth}
           </Text>
         </View>
-        <View style={{flexDirection: 'row', marginTop: 10}}>
+        <View style={{ flexDirection: 'row', marginTop: 10 }}>
           <View
-            style={{flexDirection: 'row', width: '50%', alignItems: 'center'}}>
+            style={{ flexDirection: 'row', width: '50%', alignItems: 'center' }}>
             <View
-              style={{backgroundColor: 'pink', padding: 5, borderRadius: 10}}>
+              style={{ backgroundColor: 'pink', padding: 5, borderRadius: 10 }}>
               <Image
                 source={require('../../Assets/Images/timer-or-chronometer-tool.png')}
-                style={{width: 20, height: 20}}
+                style={{ width: 20, height: 20 }}
               />
             </View>
-            <View style={{justifyContent: 'center', marginLeft: 10}}>
-              <Text style={[styles.text, {fontSize: 9}]}>Attended hours</Text>
-              <Text style={[styles.text, {fontSize: 12, fontWeight: '700'}]}>
+            <View style={{ justifyContent: 'center', marginLeft: 10 }}>
+              <Text style={[styles.text, { fontSize: 9 }]}>Attended hours</Text>
+              <Text style={[styles.text, { fontSize: 12, fontWeight: '700' }]}>
                 {attendedHours}
               </Text>
             </View>
@@ -688,20 +692,20 @@ function Home({navigation}: any) {
               }}>
               <Image
                 source={require('../../Assets/Images/student.png')}
-                style={{width: 20, height: 20}}
+                style={{ width: 20, height: 20 }}
               />
             </View>
-            <View style={{justifyContent: 'center', marginLeft: 10}}>
-              <Text style={[styles.text, {fontSize: 10}]}>Active Student</Text>
-              <Text style={[styles.text, {fontSize: 14, fontWeight: '700'}]}>
+            <View style={{ justifyContent: 'center', marginLeft: 10 }}>
+              <Text style={[styles.text, { fontSize: 10 }]}>Active Student</Text>
+              <Text style={[styles.text, { fontSize: 14, fontWeight: '700' }]}>
                 {students?.length}
               </Text>
             </View>
           </View>
         </View>
-        <View style={{flexDirection: 'row', marginTop: 20}}>
+        <View style={{ flexDirection: 'row', marginTop: 20 }}>
           <View
-            style={{flexDirection: 'row', width: '50%', alignItems: 'center'}}>
+            style={{ flexDirection: 'row', width: '50%', alignItems: 'center' }}>
             <View
               style={{
                 backgroundColor: '#e9ccb1',
@@ -710,12 +714,12 @@ function Home({navigation}: any) {
               }}>
               <Image
                 source={require('../../Assets/Images/scheduled.png')}
-                style={{width: 20, height: 20}}
+                style={{ width: 20, height: 20 }}
               />
             </View>
-            <View style={{justifyContent: 'center', marginLeft: 10}}>
-              <Text style={[styles.text, {fontSize: 10}]}>Schedule hours</Text>
-              <Text style={[styles.text, {fontSize: 12, fontWeight: '700'}]}>
+            <View style={{ justifyContent: 'center', marginLeft: 10 }}>
+              <Text style={[styles.text, { fontSize: 10 }]}>Schedule hours</Text>
+              <Text style={[styles.text, { fontSize: 12, fontWeight: '700' }]}>
                 {schedulesHours}
               </Text>
             </View>
@@ -735,19 +739,19 @@ function Home({navigation}: any) {
               }}>
               <Image
                 source={require('../../Assets/Images/clock.png')}
-                style={{width: 20, height: 20}}
+                style={{ width: 20, height: 20 }}
               />
             </View>
-            <View style={{justifyContent: 'center', marginLeft: 10}}>
-              <Text style={[styles.text, {fontSize: 10}]}>Cancelled hours</Text>
-              <Text style={[styles.text, {fontSize: 12, fontWeight: '700'}]}>
+            <View style={{ justifyContent: 'center', marginLeft: 10 }}>
+              <Text style={[styles.text, { fontSize: 10 }]}>Cancelled hours</Text>
+              <Text style={[styles.text, { fontSize: 12, fontWeight: '700' }]}>
                 {cancelledHours}
               </Text>
             </View>
           </View>
         </View>
 
-        <Text style={[styles.text, {marginTop: 20, fontWeight: '500'}]}>
+        <Text style={[styles.text, { marginTop: 20, fontWeight: '500' }]}>
           Upcoming Classes
         </Text>
         {upCommingClasses && upCommingClasses.length > 0 ? (
@@ -756,7 +760,7 @@ function Home({navigation}: any) {
             horizontal
             nestedScrollEnabled
             showsHorizontalScrollIndicator={false}
-            renderItem={({item, index}: any) => {
+            renderItem={({ item, index }: any) => {
               return (
                 <TouchableOpacity
                   activeOpacity={0.8}
@@ -788,7 +792,7 @@ function Home({navigation}: any) {
                         borderRadius: 50,
                       }}
                     />
-                    <Text style={{color: Theme.black, fontSize: 15}}>
+                    <Text style={{ color: Theme.black, fontSize: 15 }}>
                       {item?.studentName}
                     </Text>
                   </View>
@@ -801,11 +805,11 @@ function Home({navigation}: any) {
                     {item?.subject_name}
                   </Text>
                   <View>
-                    <Text style={{color: Theme.gray, fontSize: 12}}>
+                    <Text style={{ color: Theme.gray, fontSize: 12 }}>
                       {item?.startTime} to {item?.endTime}{' '}
                     </Text>
                     <Text
-                      style={{color: Theme.gray, fontSize: 12, marginTop: 10}}>
+                      style={{ color: Theme.gray, fontSize: 12, marginTop: 10 }}>
                       {item?.date?.slice(0, 11)}
                     </Text>
                   </View>
@@ -814,52 +818,52 @@ function Home({navigation}: any) {
             }}
           />
         ) : (
-          <View style={{marginTop: 35}}>
+          <View style={{ marginTop: 35 }}>
             <Text
-              style={{color: Theme.black, fontSize: 12, textAlign: 'center'}}>
+              style={{ color: Theme.black, fontSize: 12, textAlign: 'center' }}>
               No UpComming Classes...
             </Text>
           </View>
         )}
       </ScrollView>
-      <View style={{flex: 1}}>
-          <Modal
-            visible={openPPModal}
-            animationType="fade"
-            transparent={true}
-            onRequestClose={() => setOpenPPModal(false)}>
+      <View style={{ flex: 1 }}>
+        <Modal
+          visible={openPPModal}
+          animationType="fade"
+          transparent={true}
+          onRequestClose={() => setOpenPPModal(false)}>
+          <View
+            style={{
+              flex: 1,
+              backgroundColor: 'rgba(0,0,0,0.5)',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+
             <View
               style={{
-                flex: 1,
-                backgroundColor: 'rgba(0,0,0,0.5)',
-                justifyContent: 'center',
-                alignItems: 'center',
+                backgroundColor: 'white',
+                // padding: 15,
+                borderRadius: 5,
+                marginHorizontal: 20,
               }}>
-
-              <View
-                style={{
-                  backgroundColor: 'white',
-                  // padding: 15,
-                  borderRadius: 5,
-                  marginHorizontal: 20,
-                }}>
-                <TouchableOpacity onPress={() => setOpenPPModal(false)}>
-                  <View style={{alignItems: 'flex-end',paddingVertical: 10, paddingRight:15}}>
-                    <AntDesign
-                      name="closecircleo"
-                      size={20}
-                      color={'black'}
-                    />
-                  </View>
-                </TouchableOpacity>
-                {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
-                <Image source={require('../../Assets/Images/Returnoninstallment.png')} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/>
-              
-              </View>
+              <TouchableOpacity onPress={() => setOpenPPModal(false)}>
+                <View style={{ alignItems: 'flex-end', paddingVertical: 10, paddingRight: 15 }}>
+                  <AntDesign
+                    name="closecircleo"
+                    size={20}
+                    color={'black'}
+                  />
+                </View>
+              </TouchableOpacity>
+              {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
+              <Image source={require('../../Assets/Images/Returnoninstallment.png')} style={{ width: Dimensions.get('screen').width / 1.1, height: '80%', }} resizeMode='contain' />
 
             </View>
-          </Modal>
-        </View>
+
+          </View>
+        </Modal>
+      </View>
     </ScrollView>
   );
 }

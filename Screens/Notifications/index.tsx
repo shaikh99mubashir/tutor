@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
   Dimensions
 } from 'react-native';
-import React, { useEffect, useState,useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Header from '../../Component/Header';
 import { Theme } from '../../constant/theme';
 import axios from 'axios';
@@ -19,6 +19,7 @@ import { Base_Uri } from '../../constant/BaseUri';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import notificationContext from '../../context/notificationContext';
+import TutorDetailsContext from '../../context/tutorDetailsContext';
 const height = Dimensions.get('screen').height;
 const Notifications = ({ navigation }: any) => {
   // const [notification, setNotification] = useState<any>([]);
@@ -26,10 +27,15 @@ const Notifications = ({ navigation }: any) => {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
   const [refresh, setRefresh] = useState(false)
-  
-  const context = useContext(notificationContext)
 
-  let {notification,setNotification} = context
+  const context = useContext(notificationContext)
+  let tutotContext = useContext(TutorDetailsContext)
+
+  let { tutorDetails } = tutotContext
+
+  console.log(tutorDetails, "DETAUL")
+
+  let { notification, setNotification } = context
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -39,34 +45,34 @@ const Notifications = ({ navigation }: any) => {
     }, 2000);
   }, [refresh]);
   const getNotificationMessage = async () => {
-    if(refresh){
-    interface LoginAuth {
-      status: Number;
-      tutorID: Number;
-      token: string;
-    }
+    if (refresh) {
+      interface LoginAuth {
+        status: Number;
+        tutorID: Number;
+        token: string;
+      }
 
-    const data: any = await AsyncStorage.getItem('loginAuth');
-    let loginData: LoginAuth = JSON.parse(data);
-    let { tutorID } = loginData;
+      const data: any = await AsyncStorage.getItem('loginAuth');
+      let loginData: LoginAuth = JSON.parse(data);
+      let { tutorID } = loginData;
 
-    setLoading(true);
-    axios
-      .get(`${Base_Uri}api/notifications/${tutorID}`)
-      .then(async ({ data }) => {
-        let { notifications } = data;
-        let tutorNotification =
-          notifications.length > 0 &&
-          notifications.filter((e: any, i: number) => {
-            return e.status == "new";
-          });
-        setLoading(false);
-        setNotification(tutorNotification);
-      })
-      .catch(error => {
-        setLoading(false);
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
-      });
+      setLoading(true);
+      axios
+        .get(`${Base_Uri}api/notifications/${tutorID}`)
+        .then(async ({ data }) => {
+          let { notifications } = data;
+          let tutorNotification =
+            notifications.length > 0 &&
+            notifications.filter((e: any, i: number) => {
+              return e.status == "new";
+            });
+          setLoading(false);
+          setNotification(tutorNotification);
+        })
+        .catch(error => {
+          setLoading(false);
+          ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        });
     }
   };
 
@@ -81,7 +87,28 @@ const Notifications = ({ navigation }: any) => {
       navigation.navigate("ReportSubmission", item)
       axios.get(`${Base_Uri}api/updateNotificationStatus/${item.notificationID}/old`).then((res) => {
 
-        console.log(res, "res")
+
+        let updateNotifications = notification.filter((e: any, i: number) => {
+          return e.notificationID !== item?.notificationID
+        })
+
+        setNotification(updateNotifications)
+
+        // axios
+        //   .get(`${Base_Uri}api/notifications/${tutorDetails?.tutorId}`)
+        //   .then(({ data }) => {
+        //     let { notifications } = data;
+
+        //     let tutorNotification =
+        //       notifications.length > 0 &&
+        //       notifications.filter((e: any, i: number) => {
+        //         return e.status == 'new';
+        //       });
+        //     setNotification(tutorNotification);
+        //   })
+        //   .catch(error => {
+        //     ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        //   });
 
       }).catch((error) => {
 
@@ -97,6 +124,11 @@ const Notifications = ({ navigation }: any) => {
       axios.get(`${Base_Uri}api/updateNotificationStatus/${item.notificationID}/old`).then((res) => {
 
         console.log(res, "res")
+        let updateNotifications = notification.filter((e: any, i: number) => {
+          return e.notificationID !== item?.notificationID
+        })
+
+        setNotification(updateNotifications)
 
       }).catch((error) => {
 
