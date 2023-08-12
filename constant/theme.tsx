@@ -8,7 +8,8 @@ const Theme = {
     red : "red",
     green : "green",
     gray : "gray",
-    lightGray : "#DDE6ED",
+    // lightGray : "#DDE6ED",
+    lightGray : "#eee",
     darkGray : "#27374D",
 
 }

@@ -22,6 +22,7 @@ const DropDownModalView = ({
   placeHolder,
   modalHeading,
   subTitle,
+  style,
 }: any) => {
 
   const [serviceDD, setServiceDD] = useState(false);
@@ -83,6 +84,7 @@ const getModalValue = () => {
             borderBottomRightRadius: 5,
             borderColor: Theme.gray,
             alignItems: 'center',
+            ...style
           }}>
           <View
             style={{
