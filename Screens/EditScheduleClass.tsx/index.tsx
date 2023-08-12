@@ -11,6 +11,7 @@ function EditScheduleClass({ navigation, route }: any) {
 
     let data = route.params?.data
 
+    console.log(data, "data")
 
 
     const [postponedReason, setPostponedReason] = useState<any>("")
@@ -183,20 +184,20 @@ function EditScheduleClass({ navigation, route }: any) {
                         <View style={{ backgroundColor: Theme.lightGray, padding: 20, borderRadius: 10, marginTop: 10 }}>
                             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                                 <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: "500" }}>Date</Text>
-                                <TouchableOpacity onPress={() => setClassDate("date")} >
+                                <TouchableOpacity>
                                     <Text style={{ color: Theme.black, fontSize: 14, fontWeight: "500" }}>{nextClass?.date.toString().slice(0, 15)}</Text>
                                 </TouchableOpacity>
                             </View>
                             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 10 }}>
                                 <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: "500" }}>Start Time</Text>
-                                <TouchableOpacity onPress={() => setClassDate("time", true)} style={{ minWidth: 60, alignItems: "flex-end" }}  >
-                                    <Text style={{ color: Theme.black, fontSize: 14, fontWeight: "500" }}>{nextClass.startTime !== "-" ? nextClass?.startTime.toLocaleString().slice(10) : "-"} </Text>
+                                <TouchableOpacity style={{ minWidth: 60, alignItems: "flex-end" }}  >
+                                    <Text style={{ color: Theme.black, fontSize: 14, fontWeight: "500" }}>{data.startTime} </Text>
                                 </TouchableOpacity>
                             </View>
                             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginTop: 10 }}>
                                 <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: "500" }}>End Time</Text>
-                                <TouchableOpacity onPress={() => setClassDate("time")} style={{ minWidth: 60, alignItems: "flex-end" }} >
-                                    <Text style={{ color: Theme.black, fontSize: 14, fontWeight: "500" }}>{nextClass.endTime !== "-" ? nextClass?.endTime.toLocaleString().slice(10) : "-"}</Text>
+                                <TouchableOpacity style={{ minWidth: 60, alignItems: "flex-end" }} >
+                                    <Text style={{ color: Theme.black, fontSize: 14, fontWeight: "500" }}>{data.endTime}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

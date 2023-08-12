@@ -164,17 +164,14 @@ function JobTicket({ navigation, route }: any) {
 
       filter = JSON.parse(filter)
 
-      console.log(filter, "gilter")
-
       let { Category, subject, mode, state, city } = filter
-
       let categoryID = Category.id ?? "noFilter"
       let subjectID = subject.id ?? "noFilter"
       let myMode = mode.subject ?? "noFilter"
       let myState = state.id ?? "noFilter"
       let myCity = city.id ?? "noFilter"
 
-      console.log(categoryID,subjectID,myMode,myState,myCity)
+      console.log(categoryID, subjectID, myMode, myState, myCity)
 
 
       axios
@@ -186,7 +183,7 @@ function JobTicket({ navigation, route }: any) {
             tickets.length > 0 &&
             tickets.filter((e: any, i: number) => {
 
-                console.log(e,"eeee")
+              console.log(e, "eeee")
 
               return (myMode == "noFilter" || e?.mode?.toString()?.toLowerCase() == myMode?.toString()?.toLowerCase())
                 && (subjectID == "noFilter" || e.subject_id == subjectID)
