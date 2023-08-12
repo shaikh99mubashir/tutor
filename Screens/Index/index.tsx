@@ -9,6 +9,8 @@ import {
   RefreshControl,
   Image,
   ToastAndroid,
+  Dimensions,
+  Modal,
 } from 'react-native';
 import { Theme } from '../../constant/theme';
 import CustomHeader from '../../Component/Header';
@@ -355,7 +357,24 @@ function Index({ navigation }: any) {
   useEffect(() => {
     getNews();
   }, [refresh]);
-  console.log('inboxData',inboxData);
+  // console.log('inboxData',inboxData);
+
+  const [openPPModal, setOpenPPModal] = useState(false);
+  const displayBanner = async () => {
+    setOpenPPModal(true)
+    axios
+      .get(`${Base_Uri}api/bannerAds`)
+      .then(({data}) => {
+        console.log('res', data.bannerAds);
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+      });
+  };
+
+  useEffect(() => {
+    displayBanner();
+  }, []);
   
   const renderInboxData = ({ item, index }: any): any => {
     return (
@@ -438,7 +457,47 @@ function Index({ navigation }: any) {
         </View>
 
         <FlatList data={inboxData} renderItem={renderInboxData} />
+        <View style={{flex: 1}}>
+          <Modal
+            visible={openPPModal}
+            animationType="fade"
+            transparent={true}
+            onRequestClose={() => setOpenPPModal(false)}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  // padding: 15,
+                  borderRadius: 5,
+                  marginHorizontal: 20,
+                }}>
+                <TouchableOpacity onPress={() => setOpenPPModal(false)}>
+                  <View style={{alignItems: 'flex-end',paddingVertical: 10, paddingRight:15}}>
+                    <AntDesign
+                      name="closecircleo"
+                      size={20}
+                      color={'black'}
+                    />
+                  </View>
+                </TouchableOpacity>
+                {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
+                <Image source={require('../../Assets/Images/Returnoninstallment.png')} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/>
+              
+              </View>
+
+            </View>
+          </Modal>
+        </View>
       </ScrollView>
+
+      
   );
 }
 

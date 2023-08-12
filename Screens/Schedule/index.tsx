@@ -25,6 +25,8 @@ import { useIsFocused, useRoute } from '@react-navigation/native';
 import upcomingClassContext from '../../context/upcomingClassContext';
 import moment from 'moment';
 import scheduleContext from '../../context/scheduleContext';
+import AntDesig from 'react-native-vector-icons/AntDesign';
+
 // import { ScrollView } from "react-native-gesture-handler"
 
 function Schedule({ navigation, route }: any) {
@@ -98,6 +100,22 @@ function Schedule({ navigation, route }: any) {
 
 
 
+  const [openPPModal, setOpenPPModal] = useState(false);
+  const displayBanner = async () => {
+    setOpenPPModal(true)
+    axios
+      .get(`${Base_Uri}api/bannerAds`)
+      .then(({data}) => {
+        console.log('res', data.bannerAds);
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+      });
+  };
+
+  useEffect(() => {
+    displayBanner();
+  }, []);
 
 
   const getScheduledData = async () => {
@@ -217,7 +235,6 @@ function Schedule({ navigation, route }: any) {
       });
   };
 
-  console.log(scheduleData, "dataa")
 
   useEffect(() => {
 
@@ -472,6 +489,8 @@ function Schedule({ navigation, route }: any) {
 
 
 
+
+
     return (
       <TouchableOpacity
         onPress={() => handleSelectPress(index, item)}
@@ -637,6 +656,43 @@ function Schedule({ navigation, route }: any) {
 
         {confirm && confirmModal()}
       </ScrollView>
+      <View style={{flex: 1}}>
+          <Modal
+            visible={openPPModal}
+            animationType="fade"
+            transparent={true}
+            onRequestClose={() => setOpenPPModal(false)}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  borderRadius: 5,
+                  marginHorizontal: 20,
+                }}>
+                <TouchableOpacity onPress={() => setOpenPPModal(false)}>
+                  <View style={{alignItems: 'flex-end',paddingVertical: 10, paddingRight:15}}>
+                    <AntDesig
+                      name="closecircleo"
+                      size={20}
+                      color={'black'}
+                    />
+                  </View>
+                </TouchableOpacity>
+                {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
+                <Image source={require('../../Assets/Images/Returnoninstallment.png')} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/>
+              
+              </View>
+
+            </View>
+          </Modal>
+        </View>
     </View>
   );
 }

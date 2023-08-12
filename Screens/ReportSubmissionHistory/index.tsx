@@ -12,6 +12,9 @@ import {
   PermissionsAndroid,
   RefreshControl,
   NativeModules,
+  Dimensions,
+  ToastAndroid,
+  Modal
 } from 'react-native';
 import React, { useEffect, useState, useContext } from 'react';
 import { Theme } from '../../constant/theme';
@@ -22,7 +25,7 @@ import { Base_Uri } from '../../constant/BaseUri';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import Pdf from 'react-native-pdf';
 import reportSubmissionContext from '../../context/reportSubmissionContext';
-
+import AntDesign from 'react-native-vector-icons/AntDesign';
 const ReportSubmissionHistory = ({ navigation }: any) => {
   // const [reportSubmission, setreportSubmission] = useState([]);
   // const [progressReport, setProgressReport] = useState([]);
@@ -1170,7 +1173,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
   </div>
-  <div style="margin-top: 220px;">
+  <div style="margin-top: 320px;">
   <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">D. OBSERVATION</p>
   <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
   <p style="color: rgb(0, 0, 95); margin: 0px;">1.  Did you (tutor) hold or carried out any form of eximination/test/quiz for student within this 3 months?</p>
@@ -1235,6 +1238,22 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
     }
   };
 
+  const [openPPModal, setOpenPPModal] = useState(false);
+  const displayBanner = async () => {
+    setOpenPPModal(true)
+    axios
+      .get(`${Base_Uri}api/bannerAds`)
+      .then(({data}) => {
+        console.log('res', data.bannerAds);
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+      });
+  };
+
+  useEffect(() => {
+    displayBanner();
+  }, []);
   return loading ? (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator size="large" color={Theme.black} />
@@ -1390,6 +1409,43 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           )}
         </View>
       </ScrollView>
+      <View style={{flex: 1}}>
+          <Modal
+            visible={openPPModal}
+            animationType="fade"
+            transparent={true}
+            onRequestClose={() => setOpenPPModal(false)}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  borderRadius: 5,
+                  marginHorizontal: 20,
+                }}>
+                <TouchableOpacity onPress={() => setOpenPPModal(false)}>
+                  <View style={{alignItems: 'flex-end',paddingVertical: 10, paddingRight:15}}>
+                    <AntDesign
+                      name="closecircleo"
+                      size={20}
+                      color={'black'}
+                    />
+                  </View>
+                </TouchableOpacity>
+                {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
+                <Image source={require('../../Assets/Images/Returnoninstallment.png')} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/>
+              
+              </View>
+
+            </View>
+          </Modal>
+        </View>
     </View>
   );
 };

@@ -1,4 +1,4 @@
-import { View, Text, FlatList, StyleSheet, Dimensions, Image, ToastAndroid, ActivityIndicator, ScrollView, RefreshControl } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Dimensions, Image, ToastAndroid, ActivityIndicator, ScrollView, RefreshControl, TouchableOpacity, Modal } from 'react-native';
 import React, { useEffect, useState, useContext } from 'react';
 import Header from '../../Component/Header';
 const height = Dimensions.get('screen').height;
@@ -125,6 +125,8 @@ const PaymentHistory = ({ navigation }: any) => {
     getPaymentHistory()
   }, [refresh])
 
+
+
   const renderItem = ({ item }: any) => (
     <View style={styles.itemContainer}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
@@ -154,6 +156,23 @@ const PaymentHistory = ({ navigation }: any) => {
       </Text>
     </View>
   );
+
+  const [openPPModal, setOpenPPModal] = useState(false);
+  const displayBanner = async () => {
+    setOpenPPModal(true)
+    axios
+      .get(`${Base_Uri}api/bannerAds`)
+      .then(({data}) => {
+        console.log('res', data.bannerAds);
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+      });
+  };
+
+  useEffect(() => {
+    displayBanner();
+  }, []);
   return (
     loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
       <ActivityIndicator color={"black"} size={"large"} />
@@ -190,6 +209,44 @@ const PaymentHistory = ({ navigation }: any) => {
           <Text style={{ color: Theme.gray }}>  Payment History Not Found</Text>
         </View>
       )}
+              <View style={{flex: 1}}>
+          <Modal
+            visible={openPPModal}
+            animationType="fade"
+            transparent={true}
+            onRequestClose={() => setOpenPPModal(false)}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  // padding: 15,
+                  borderRadius: 5,
+                  marginHorizontal: 20,
+                }}>
+                <TouchableOpacity onPress={() => setOpenPPModal(false)}>
+                  <View style={{alignItems: 'flex-end',paddingVertical: 10, paddingRight:15}}>
+                    <AntDesign
+                      name="closecircleo"
+                      size={20}
+                      color={'black'}
+                    />
+                  </View>
+                </TouchableOpacity>
+                {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
+                <Image source={require('../../Assets/Images/Returnoninstallment.png')} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/>
+              
+              </View>
+
+            </View>
+          </Modal>
+        </View>
     </View>
   );
 };

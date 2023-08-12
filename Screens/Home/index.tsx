@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -11,12 +11,13 @@ import {
   ActivityIndicator,
   ToastAndroid,
   RefreshControl,
+  Modal,
 } from 'react-native';
-import { Theme } from '../../constant/theme';
+import {Theme} from '../../constant/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { Base_Uri } from '../../constant/BaseUri';
-import { useIsFocused } from '@react-navigation/native';
+import {Base_Uri} from '../../constant/BaseUri';
+import {useIsFocused} from '@react-navigation/native';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import StudentContext from '../../context/studentContext';
 import filterContext from '../../context/filterContext';
@@ -25,31 +26,35 @@ import upcomingClassContext from '../../context/upcomingClassContext';
 import paymentContext from '../../context/paymentHistoryContext';
 import scheduleContext from '../../context/scheduleContext';
 import reportSubmissionContext from '../../context/reportSubmissionContext';
-
-function Home({ navigation }: any) {
-
-  const context = useContext(TutorDetailsContext)
-  const filter = useContext(filterContext)
-  const studentAndSubjectContext = useContext(StudentContext)
-  const { setCategory, setSubjects, setState, setCity } = filter
+import AntDesign from 'react-native-vector-icons/AntDesign';
+function Home({navigation}: any) {
+  const context = useContext(TutorDetailsContext);
+  const filter = useContext(filterContext);
+  const studentAndSubjectContext = useContext(StudentContext);
+  const {setCategory, setSubjects, setState, setCity} = filter;
   const [refreshing, setRefreshing] = useState(false);
-  const upcomingClassCont = useContext(upcomingClassContext)
-  const paymentHistory = useContext(paymentContext)
+  const upcomingClassCont = useContext(upcomingClassContext);
+  const paymentHistory = useContext(paymentContext);
 
-  const upcomingContext = useContext(scheduleContext)
+  const upcomingContext = useContext(scheduleContext);
 
+  let {commissionData, setCommissionData} = paymentHistory;
+  let {upcomingClass, setUpcomingClass, scheduleData, setScheduleData} =
+    upcomingContext;
 
-  let { commissionData, setCommissionData } = paymentHistory
-  let { upcomingClass, setUpcomingClass, scheduleData, setScheduleData } = upcomingContext
+  const {tutorDetails, updateTutorDetails} = context;
+  const {students, subjects, updateStudent, updateSubject} =
+    studentAndSubjectContext;
+  let reportContext = useContext(reportSubmissionContext);
 
-  const { tutorDetails, updateTutorDetails } = context
-  const { students, subjects, updateStudent, updateSubject } = studentAndSubjectContext
-  let reportContext = useContext(reportSubmissionContext)
+  let {
+    reportSubmission,
+    setreportSubmission,
+    progressReport,
+    setProgressReport,
+  } = reportContext;
 
-  let { reportSubmission, setreportSubmission, progressReport, setProgressReport } = reportContext
-
-
-  const focus = useIsFocused()
+  const focus = useIsFocused();
 
   const date: Date = new Date();
   const currentDate: string = date.toLocaleDateString('en-US', {
@@ -78,10 +83,9 @@ function Home({ navigation }: any) {
     //   date: '20 May 2023',
     // },
   ]);
-  const [notificationLenght, setNotificationLength] = useState(0)
+  const [notificationLenght, setNotificationLength] = useState(0);
   const [tutorId, setTutorId] = useState<Number | null>(null);
-  const [classInProcess, setClassInProcess] = useState({})
-
+  const [classInProcess, setClassInProcess] = useState({});
 
   const [tutorData, setTutorData] = useState({
     cummulativeCommission: '',
@@ -91,12 +95,11 @@ function Home({ navigation }: any) {
     scheduledHours: '',
   });
 
-  const [cummulativeCommission, setCumulativeCommission] = useState("")
-  const [attendedHours, setAttendedHours] = useState("")
-  const [activeHours, setActiveHours] = useState("")
-  const [cancelledHours, setCancelledHours] = useState("")
-  const [schedulesHours, setScheduledHours] = useState("")
-
+  const [cummulativeCommission, setCumulativeCommission] = useState('');
+  const [attendedHours, setAttendedHours] = useState('');
+  const [activeHours, setActiveHours] = useState('');
+  const [cancelledHours, setCancelledHours] = useState('');
+  const [schedulesHours, setScheduledHours] = useState('');
 
   const [tutorStudents, setTutorStudents] = useState([]);
 
@@ -104,7 +107,7 @@ function Home({ navigation }: any) {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
-      getTutorId()
+      getTutorId();
     }, 2000);
   }, [refreshing]);
 
@@ -116,218 +119,187 @@ function Home({ navigation }: any) {
     }
     const data: any = await AsyncStorage.getItem('loginAuth');
     let loginData: LoginAuth = JSON.parse(data);
-    let { tutorID } = loginData;
+    let {tutorID} = loginData;
     setTutorId(tutorID);
   };
 
-
   const getPaymentHistory = async () => {
-
     let data: any = await AsyncStorage.getItem('loginAuth');
     data = JSON.parse(data);
-    let { tutorID } = data;
-
-    axios.get(`${Base_Uri}tutorPayments/${tutorID}`).then(({ data }) => {
-
-      let { response } = data
-
-      setCommissionData(response)
-
-
-    }).catch((error) => {
-
-      ToastAndroid.show("Internal Server Error", ToastAndroid.SHORT)
-
-    })
-
-  }
-
-
-  const getNotificationLength = async () => {
-
+    let {tutorID} = data;
 
     axios
-      .get(`${Base_Uri}api/notifications/${tutorId}`)
-      .then(({ data }) => {
+      .get(`${Base_Uri}tutorPayments/${tutorID}`)
+      .then(({data}) => {
+        let {response} = data;
 
-        let length = 0
-        let { notifications } = data;
+        setCommissionData(response);
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+      });
+  };
+
+  const getNotificationLength = async () => {
+    axios
+      .get(`${Base_Uri}api/notifications/${tutorId}`)
+      .then(({data}) => {
+        let length = 0;
+        let {notifications} = data;
         let tutorNotification =
           notifications.length > 0 &&
           notifications.filter((e: any, i: number) => {
-            return e.status == "new";
+            return e.status == 'new';
           });
         // setNotificationLength(tutorNotification.length > 0 ? tutorNotification.length : 0);
-        length = length + tutorNotification.length > 0 ? tutorNotification.length : 0
+        length =
+          length + tutorNotification.length > 0 ? tutorNotification.length : 0;
 
-        setNotificationLength(length)
-
+        setNotificationLength(length);
       })
       .catch(error => {
-
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
-
-
-  }
+  };
 
   const getClassInProcess = async () => {
+    let data: any = await AsyncStorage.getItem('classInProcess');
+    data = JSON.parse(data);
 
-    let data: any = await AsyncStorage.getItem("classInProcess")
-    data = JSON.parse(data)
-
-    setClassInProcess(data)
-
-
-  }
+    setClassInProcess(data);
+  };
 
   useEffect(() => {
     getTutorId();
-    getClassInProcess()
+    getClassInProcess();
   }, [focus, refreshing]);
 
-
   const getCategory = () => {
-    axios.get(`${Base_Uri}getCategories`).then(({ data }) => {
+    axios
+      .get(`${Base_Uri}getCategories`)
+      .then(({data}) => {
+        let {categories} = data;
 
-
-      let { categories } = data
-
-      let myCategories = categories && categories.length > 0 && categories.map((e: any, i: Number) => {
-        if (e.category_name) {
-          return {
-            subject: e.category_name,
-            id: e.id
-          }
-        }
+        let myCategories =
+          categories &&
+          categories.length > 0 &&
+          categories.map((e: any, i: Number) => {
+            if (e.category_name) {
+              return {
+                subject: e.category_name,
+                id: e.id,
+              };
+            }
+          });
+        setCategory(myCategories);
       })
-      setCategory(myCategories)
-
-    }).catch((error) => {
-      console.log(error)
-    })
-  }
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   const getSubject = () => {
+    axios
+      .get(`${Base_Uri}getSubjects`)
+      .then(({data}) => {
+        let {subjects} = data;
 
-    axios.get(`${Base_Uri}getSubjects`).then(({ data }) => {
+        let mySubject =
+          subjects &&
+          subjects.length > 0 &&
+          subjects.map((e: any, i: Number) => {
+            if (e.name) {
+              return {
+                subject: e.name,
+                id: e.id,
+              };
+            }
+          });
 
-
-
-      let { subjects } = data
-
-      let mySubject = subjects && subjects.length > 0 && subjects.map((e: any, i: Number) => {
-        if (e.name) {
-          return {
-            subject: e.name,
-            id: e.id
-          }
-        }
+        setSubjects(mySubject);
       })
-
-      setSubjects(mySubject)
-
-
-    }).catch((error) => {
-
-      console.log(error)
-
-    })
-  }
-
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   const getStates = () => {
+    axios
+      .get(`${Base_Uri}getStates`)
+      .then(({data}) => {
+        let {states} = data;
 
-    axios.get(`${Base_Uri}getStates`).then(({ data }) => {
+        let myStates =
+          states &&
+          states.length > 0 &&
+          states.map((e: any, i: Number) => {
+            if (e.name) {
+              return {
+                subject: e.name,
+                id: e.id,
+              };
+            }
+          });
 
-
-
-      let { states } = data
-
-      let myStates = states && states.length > 0 && states.map((e: any, i: Number) => {
-        if (e.name) {
-          return {
-            subject: e.name,
-            id: e.id
-          }
-        }
+        setState(myStates);
       })
-
-      setState(myStates)
-
-
-    }).catch((error) => {
-
-      console.log(error)
-
-    })
-
-
-  }
-
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   const getCities = () => {
-
-
-    axios.get(`${Base_Uri}getCities`).then(({ data }) => {
-
-
-
-      let { cities } = data
-      let myCities = cities && cities.length > 0 && cities.map((e: any, i: Number) => {
-        if (e.name) {
-          return {
-            subject: e.name,
-            id: e.id
-          }
-        }
+    axios
+      .get(`${Base_Uri}getCities`)
+      .then(({data}) => {
+        let {cities} = data;
+        let myCities =
+          cities &&
+          cities.length > 0 &&
+          cities.map((e: any, i: Number) => {
+            if (e.name) {
+              return {
+                subject: e.name,
+                id: e.id,
+              };
+            }
+          });
+        setCity(myCities);
       })
-      setCity(myCities)
-
-    }).catch((error) => {
-
-      console.log(error)
-
-    })
-
-  }
+      .catch(error => {
+        console.log(error);
+      });
+  };
 
   const getReportSubmissionHistory = async () => {
-
-
     let data: any = await AsyncStorage.getItem('loginAuth');
 
     data = JSON.parse(data);
 
-    let { tutorID } = data;
+    let {tutorID} = data;
 
     axios
       .get(`${Base_Uri}api/tutorFirstReportListing/${tutorID}`)
-      .then(({ data }) => {
-        let { tutorReportListing } = data;
+      .then(({data}) => {
+        let {tutorReportListing} = data;
         setreportSubmission(tutorReportListing);
-
       })
       .catch(error => {
-
         console.log('error');
       });
-
   };
 
   const getProgressReportHistory = async () => {
-
-
     let data: any = await AsyncStorage.getItem('loginAuth');
 
     data = JSON.parse(data);
 
-    let { tutorID } = data;
+    let {tutorID} = data;
 
     axios
       .get(`${Base_Uri}api/progressReportListing`)
-      .then(({ data }) => {
-        let { progressReportListing } = data;
+      .then(({data}) => {
+        let {progressReportListing} = data;
 
         let tutorReport =
           progressReportListing &&
@@ -344,29 +316,23 @@ function Home({ navigation }: any) {
       .catch(error => {
         console.log('error');
       });
-
   };
 
-
   useEffect(() => {
-    getCategory()
-    getSubject()
-    getStates()
-    getCities()
-    getPaymentHistory()
+    getCategory();
+    getSubject();
+    getStates();
+    getCities();
+    getPaymentHistory();
     getReportSubmissionHistory();
     getProgressReportHistory();
-
-  }, [refreshing])
-
-
+  }, [refreshing]);
 
   const getTutorDetails = async () => {
-
     axios
       .get(`${Base_Uri}getTutorDetailByID/${tutorId}`)
-      .then(({ data }) => {
-        let { tutorDetailById } = data;
+      .then(({data}) => {
+        let {tutorDetailById} = data;
 
         let tutorDetails = tutorDetailById[0];
 
@@ -378,31 +344,25 @@ function Home({ navigation }: any) {
           age: tutorDetails.age,
           nric: tutorDetails.nric,
           tutorImage: tutorDetails.tutorImage,
-          tutorId: tutorDetails?.id
+          tutorId: tutorDetails?.id,
         };
 
-        updateTutorDetails(details)
-
+        updateTutorDetails(details);
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
-
-
-  }
+  };
   useEffect(() => {
-    tutorId && getNotificationLength()
-    tutorId && getTutorDetails()
-
-  }, [tutorId, refreshing])
+    tutorId && getNotificationLength();
+    tutorId && getTutorDetails();
+  }, [tutorId, refreshing]);
 
   const getCummulativeCommission = () => {
     axios
       .get(`${Base_Uri}getCommulativeCommission/${tutorId}`)
-      .then(({ data }) => {
-
-        setCumulativeCommission(data.commulativeCommission)
-
+      .then(({data}) => {
+        setCumulativeCommission(data.commulativeCommission);
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
@@ -412,10 +372,9 @@ function Home({ navigation }: any) {
   const getAttendedHours = () => {
     axios
       .get(`${Base_Uri}getAttendedHours/${tutorId}`)
-      .then(({ data }) => {
+      .then(({data}) => {
         // setTutorData({ ...tutorData, attendedHours: data.attendedHours });
-        setAttendedHours(data.attendedHours)
-
+        setAttendedHours(data.attendedHours);
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
@@ -425,8 +384,8 @@ function Home({ navigation }: any) {
   const getScheduledHours = () => {
     axios
       .get(`${Base_Uri}getScheduledHours/${tutorId}`)
-      .then(({ data }) => {
-        setScheduledHours(data.scheduledHours)
+      .then(({data}) => {
+        setScheduledHours(data.scheduledHours);
         // setTutorData({ ...tutorData, scheduledHours: data.scheduledHours });
       })
       .catch(error => {
@@ -437,9 +396,8 @@ function Home({ navigation }: any) {
   const getCancelledHours = () => {
     axios
       .get(`${Base_Uri}getCancelledHours/${tutorId}`)
-      .then(({ data }) => {
-
-        setCancelledHours(data.cancelledHours)
+      .then(({data}) => {
+        setCancelledHours(data.cancelledHours);
         // setTutorData({ ...tutorData, cancelledHours: data.cancelledHours });
       })
       .catch(error => {
@@ -451,10 +409,10 @@ function Home({ navigation }: any) {
   const getTutorStudents = () => {
     axios
       .get(`${Base_Uri}getTutorStudents/${tutorId}`)
-      .then(({ data }) => {
-        const { tutorStudents } = data;
+      .then(({data}) => {
+        const {tutorStudents} = data;
         setTutorStudents(tutorStudents);
-        updateStudent(tutorStudents)
+        updateStudent(tutorStudents);
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
@@ -462,11 +420,10 @@ function Home({ navigation }: any) {
   };
 
   const getTutorSubjects = () => {
-
     axios
       .get(`${Base_Uri}getTutorSubjects/${tutorId}`)
-      .then(({ data }) => {
-        let { tutorSubjects } = data;
+      .then(({data}) => {
+        let {tutorSubjects} = data;
 
         let mySubject =
           tutorSubjects &&
@@ -480,22 +437,18 @@ function Home({ navigation }: any) {
             }
           });
 
-
-
-        updateSubject(mySubject)
+        updateSubject(mySubject);
       })
       .catch(error => {
         console.log(error);
       });
-
-
-  }
+  };
 
   const getUpcomingClasses = () => {
     axios
       .get(`${Base_Uri}getUpcomingClassesByTutorID/${tutorId}`)
-      .then(({ data }) => {
-        const { classSchedules } = data;
+      .then(({data}) => {
+        const {classSchedules} = data;
         setUpCommingClasses(classSchedules);
       })
       .catch(error => {
@@ -518,10 +471,10 @@ function Home({ navigation }: any) {
   useEffect(() => {
     if (tutorId && cummulativeCommission) {
       getAttendedHours();
-      getScheduledHours()
-      getTutorStudents()
-      getTutorSubjects()
-      getCancelledHours()
+      getScheduledHours();
+      getTutorStudents();
+      getTutorSubjects();
+      getCancelledHours();
     }
   }, [cummulativeCommission, refreshing]);
   // useEffect(() => {
@@ -546,10 +499,7 @@ function Home({ navigation }: any) {
   //   }
   // }, [cancelledHours, refreshing]);
 
-
   const routeToScheduleScreen = async (item: any) => {
-
-
     interface LoginAuth {
       status: Number;
       tutorID: Number;
@@ -557,40 +507,56 @@ function Home({ navigation }: any) {
     }
     const login: any = await AsyncStorage.getItem('loginAuth');
     let loginData: LoginAuth = JSON.parse(login);
-    let { tutorID } = loginData;
-
-
-
+    let {tutorID} = loginData;
     axios
-      .get(`${Base_Uri}getClassSchedulesTime/${tutorID}`).then((res) => {
-        let scheduledClasses = res.data
+      .get(`${Base_Uri}getClassSchedulesTime/${tutorID}`)
+      .then(res => {
+        let scheduledClasses = res.data;
 
-        let { classSchedulesTime } = scheduledClasses
-        let checkRouteClass = classSchedulesTime && classSchedulesTime.length > 0 && classSchedulesTime.filter((e: any, i: number) => {
-          return e?.id == item?.id
-        })
-        checkRouteClass = checkRouteClass && checkRouteClass.length > 0 && checkRouteClass.map((e: any, i: number) => {
-          return {
-            ...e,
-            imageUrl: require('../../Assets/Images/student.png'),
-          }
-        })
-        setUpcomingClass(checkRouteClass && checkRouteClass.length > 0 ? checkRouteClass : [])
-      }).catch((error) => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        let {classSchedulesTime} = scheduledClasses;
+        let checkRouteClass =
+          classSchedulesTime &&
+          classSchedulesTime.length > 0 &&
+          classSchedulesTime.filter((e: any, i: number) => {
+            return e?.id == item?.id;
+          });
+        checkRouteClass =
+          checkRouteClass &&
+          checkRouteClass.length > 0 &&
+          checkRouteClass.map((e: any, i: number) => {
+            return {
+              ...e,
+              imageUrl: require('../../Assets/Images/student.png'),
+            };
+          });
+        setUpcomingClass(
+          checkRouteClass && checkRouteClass.length > 0 ? checkRouteClass : [],
+        );
       })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+      });
+    navigation.navigate('Schedule');
+  };
+  const [openPPModal, setOpenPPModal] = useState(false);
+  const displayBanner = async () => {
+    setOpenPPModal(true)
+    axios
+      .get(`${Base_Uri}api/bannerAds`)
+      .then(({data}) => {
+        console.log('res', data.bannerAds);
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+      });
+  };
 
-    navigation.navigate("Schedule")
-
-
-
-
-
-  }
+  useEffect(() => {
+    displayBanner();
+  }, []);
 
   return !cancelledHours ? (
-    <View
-      style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <ActivityIndicator size={'large'} color={Theme.black} />
     </View>
   ) : (
@@ -602,50 +568,56 @@ function Home({ navigation }: any) {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           <Text style={styles.text}>Hello,</Text>
-          <Text style={[styles.heading, { fontSize: 16 }]}>{tutorDetails?.full_name}</Text>
+          <Text style={[styles.heading, {fontSize: 16}]}>
+            {tutorDetails?.full_name}
+          </Text>
         </View>
 
         <View style={styles.firstBox}>
-          <Text style={[styles.text, { color: Theme.white, fontSize: 11 }]}>
+          <Text style={[styles.text, {color: Theme.white, fontSize: 11}]}>
             {currentDate}
           </Text>
           <Text
-            style={[styles.heading, { color: Theme.white, fontWeight: '400' }]}>
+            style={[styles.heading, {color: Theme.white, fontWeight: '400'}]}>
             RM {cummulativeCommission}
           </Text>
-          <Text style={[styles.text, { color: Theme.white, fontSize: 11 }]}>
+          <Text style={[styles.text, {color: Theme.white, fontSize: 11}]}>
             CUMMULATIVE COMMISSION
           </Text>
         </View>
-        {classInProcess && Object.keys(classInProcess).length > 0 ? <TouchableOpacity
-          onPress={() => navigation.navigate('ClassTimerCount', classInProcess)}
-          style={[
-            styles.firstBox,
-            {
-              backgroundColor: Theme.lightGray,
-              justifyContent: 'space-between',
-              paddingHorizontal: 15,
-              flexDirection: 'row',
-              marginTop: 10,
-            },
-          ]}>
-          <Text style={[styles.text, { color: Theme.black, fontSize: 12 }]}>
-            You have ongoing class
-          </Text>
-          <View
-            style={{
-              borderRadius: 100,
-              backgroundColor: "white",
-              width: 25,
-              height: 25,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <Text style={[styles.text, { fontSize: 10, color: Theme.white }]}>
-              <ActivityIndicator color={"blue"} size="small" />
+        {classInProcess && Object.keys(classInProcess).length > 0 ? (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('ClassTimerCount', classInProcess)
+            }
+            style={[
+              styles.firstBox,
+              {
+                backgroundColor: Theme.lightGray,
+                justifyContent: 'space-between',
+                paddingHorizontal: 15,
+                flexDirection: 'row',
+                marginTop: 10,
+              },
+            ]}>
+            <Text style={[styles.text, {color: Theme.black, fontSize: 12}]}>
+              You have ongoing class
             </Text>
-          </View>
-        </TouchableOpacity> :
+            <View
+              style={{
+                borderRadius: 100,
+                backgroundColor: 'white',
+                width: 25,
+                height: 25,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text style={[styles.text, {fontSize: 10, color: Theme.white}]}>
+                <ActivityIndicator color={'blue'} size="small" />
+              </Text>
+            </View>
+          </TouchableOpacity>
+        ) : (
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => navigation.navigate('Notifications')}
@@ -659,7 +631,7 @@ function Home({ navigation }: any) {
                 marginTop: 10,
               },
             ]}>
-            <Text style={[styles.text, { color: Theme.black, fontSize: 12 }]}>
+            <Text style={[styles.text, {color: Theme.black, fontSize: 12}]}>
               Notifications
             </Text>
             <View
@@ -671,31 +643,32 @@ function Home({ navigation }: any) {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <Text style={[styles.text, { fontSize: 10, color: Theme.white }]}>
+              <Text style={[styles.text, {fontSize: 10, color: Theme.white}]}>
                 {notificationLenght}
               </Text>
             </View>
-          </TouchableOpacity>}
+          </TouchableOpacity>
+        )}
 
-        <View style={{ marginTop: 20 }}>
-          <Text style={[styles.heading, { fontSize: 14 }]}>Monthly Summary</Text>
-          <Text style={[styles.text, { fontSize: 12, color: Theme.gray }]}>
+        <View style={{marginTop: 20}}>
+          <Text style={[styles.heading, {fontSize: 14}]}>Monthly Summary</Text>
+          <Text style={[styles.text, {fontSize: 12, color: Theme.gray}]}>
             {currentMonth}
           </Text>
         </View>
-        <View style={{ flexDirection: 'row', marginTop: 10 }}>
+        <View style={{flexDirection: 'row', marginTop: 10}}>
           <View
-            style={{ flexDirection: 'row', width: '50%', alignItems: 'center' }}>
+            style={{flexDirection: 'row', width: '50%', alignItems: 'center'}}>
             <View
-              style={{ backgroundColor: 'pink', padding: 5, borderRadius: 10 }}>
+              style={{backgroundColor: 'pink', padding: 5, borderRadius: 10}}>
               <Image
                 source={require('../../Assets/Images/timer-or-chronometer-tool.png')}
-                style={{ width: 20, height: 20 }}
+                style={{width: 20, height: 20}}
               />
             </View>
-            <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-              <Text style={[styles.text, { fontSize: 9 }]}>Attended hours</Text>
-              <Text style={[styles.text, { fontSize: 12, fontWeight: '700' }]}>
+            <View style={{justifyContent: 'center', marginLeft: 10}}>
+              <Text style={[styles.text, {fontSize: 9}]}>Attended hours</Text>
+              <Text style={[styles.text, {fontSize: 12, fontWeight: '700'}]}>
                 {attendedHours}
               </Text>
             </View>
@@ -715,20 +688,20 @@ function Home({ navigation }: any) {
               }}>
               <Image
                 source={require('../../Assets/Images/student.png')}
-                style={{ width: 20, height: 20 }}
+                style={{width: 20, height: 20}}
               />
             </View>
-            <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-              <Text style={[styles.text, { fontSize: 10 }]}>Active Student</Text>
-              <Text style={[styles.text, { fontSize: 14, fontWeight: '700' }]}>
+            <View style={{justifyContent: 'center', marginLeft: 10}}>
+              <Text style={[styles.text, {fontSize: 10}]}>Active Student</Text>
+              <Text style={[styles.text, {fontSize: 14, fontWeight: '700'}]}>
                 {students?.length}
               </Text>
             </View>
           </View>
         </View>
-        <View style={{ flexDirection: 'row', marginTop: 20 }}>
+        <View style={{flexDirection: 'row', marginTop: 20}}>
           <View
-            style={{ flexDirection: 'row', width: '50%', alignItems: 'center' }}>
+            style={{flexDirection: 'row', width: '50%', alignItems: 'center'}}>
             <View
               style={{
                 backgroundColor: '#e9ccb1',
@@ -737,12 +710,12 @@ function Home({ navigation }: any) {
               }}>
               <Image
                 source={require('../../Assets/Images/scheduled.png')}
-                style={{ width: 20, height: 20 }}
+                style={{width: 20, height: 20}}
               />
             </View>
-            <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-              <Text style={[styles.text, { fontSize: 10 }]}>Schedule hours</Text>
-              <Text style={[styles.text, { fontSize: 12, fontWeight: '700' }]}>
+            <View style={{justifyContent: 'center', marginLeft: 10}}>
+              <Text style={[styles.text, {fontSize: 10}]}>Schedule hours</Text>
+              <Text style={[styles.text, {fontSize: 12, fontWeight: '700'}]}>
                 {schedulesHours}
               </Text>
             </View>
@@ -762,19 +735,19 @@ function Home({ navigation }: any) {
               }}>
               <Image
                 source={require('../../Assets/Images/clock.png')}
-                style={{ width: 20, height: 20 }}
+                style={{width: 20, height: 20}}
               />
             </View>
-            <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-              <Text style={[styles.text, { fontSize: 10 }]}>Cancelled hours</Text>
-              <Text style={[styles.text, { fontSize: 12, fontWeight: '700' }]}>
+            <View style={{justifyContent: 'center', marginLeft: 10}}>
+              <Text style={[styles.text, {fontSize: 10}]}>Cancelled hours</Text>
+              <Text style={[styles.text, {fontSize: 12, fontWeight: '700'}]}>
                 {cancelledHours}
               </Text>
             </View>
           </View>
         </View>
 
-        <Text style={[styles.text, { marginTop: 20, fontWeight: '500' }]}>
+        <Text style={[styles.text, {marginTop: 20, fontWeight: '500'}]}>
           Upcoming Classes
         </Text>
         {upCommingClasses && upCommingClasses.length > 0 ? (
@@ -783,7 +756,7 @@ function Home({ navigation }: any) {
             horizontal
             nestedScrollEnabled
             showsHorizontalScrollIndicator={false}
-            renderItem={({ item, index }: any) => {
+            renderItem={({item, index}: any) => {
               return (
                 <TouchableOpacity
                   activeOpacity={0.8}
@@ -799,8 +772,7 @@ function Home({ navigation }: any) {
                     marginRight: 10,
                     borderColor: '#eee',
                   }}
-                  onPress={() => routeToScheduleScreen(item)}
-                >
+                  onPress={() => routeToScheduleScreen(item)}>
                   <View
                     style={{
                       display: 'flex',
@@ -816,7 +788,7 @@ function Home({ navigation }: any) {
                         borderRadius: 50,
                       }}
                     />
-                    <Text style={{ color: Theme.black, fontSize: 15 }}>
+                    <Text style={{color: Theme.black, fontSize: 15}}>
                       {item?.studentName}
                     </Text>
                   </View>
@@ -829,10 +801,11 @@ function Home({ navigation }: any) {
                     {item?.subject_name}
                   </Text>
                   <View>
-                    <Text style={{ color: Theme.gray, fontSize: 12 }}>
+                    <Text style={{color: Theme.gray, fontSize: 12}}>
                       {item?.startTime} to {item?.endTime}{' '}
                     </Text>
-                    <Text style={{ color: Theme.gray, fontSize: 12, marginTop: 10 }}>
+                    <Text
+                      style={{color: Theme.gray, fontSize: 12, marginTop: 10}}>
                       {item?.date?.slice(0, 11)}
                     </Text>
                   </View>
@@ -841,14 +814,52 @@ function Home({ navigation }: any) {
             }}
           />
         ) : (
-          <View style={{ marginTop: 35 }}>
+          <View style={{marginTop: 35}}>
             <Text
-              style={{ color: Theme.black, fontSize: 12, textAlign: 'center' }}>
+              style={{color: Theme.black, fontSize: 12, textAlign: 'center'}}>
               No UpComming Classes...
             </Text>
           </View>
         )}
       </ScrollView>
+      <View style={{flex: 1}}>
+          <Modal
+            visible={openPPModal}
+            animationType="fade"
+            transparent={true}
+            onRequestClose={() => setOpenPPModal(false)}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  // padding: 15,
+                  borderRadius: 5,
+                  marginHorizontal: 20,
+                }}>
+                <TouchableOpacity onPress={() => setOpenPPModal(false)}>
+                  <View style={{alignItems: 'flex-end',paddingVertical: 10, paddingRight:15}}>
+                    <AntDesign
+                      name="closecircleo"
+                      size={20}
+                      color={'black'}
+                    />
+                  </View>
+                </TouchableOpacity>
+                {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
+                <Image source={require('../../Assets/Images/Returnoninstallment.png')} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/>
+              
+              </View>
+
+            </View>
+          </Modal>
+        </View>
     </ScrollView>
   );
 }

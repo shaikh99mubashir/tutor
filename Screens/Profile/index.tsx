@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
   Image,
   ActivityIndicator,
+  Modal,
+  Dimensions,
 } from 'react-native';
 import React, { useEffect, useState, useContext } from 'react';
 import Header from '../../Component/Header';
@@ -22,6 +24,7 @@ import TutorDetailsContext from '../../context/tutorDetailsContext';
 import RNHTMLtoPDF from "react-native-html-to-pdf"
 import Share from "react-native-share"
 import { touch } from 'react-native-fs';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 
 const Profile = ({ navigation }: any) => {
@@ -234,7 +237,23 @@ const Profile = ({ navigation }: any) => {
 
   let imageUrl = image ? image : !tutorDetail.tutorImage ? "../../Assets/Images/plus.png" : tutorDetail.tutorImage.includes("https") ? tutorDetail.tutorImage : `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`
 
-  console.log(imageUrl, "image")
+  // console.log(imageUrl, "image")
+  const [openPPModal, setOpenPPModal] = useState(false);
+  const displayBanner = async () => {
+    setOpenPPModal(true)
+    axios
+      .get(`${Base_Uri}api/bannerAds`)
+      .then(({data}) => {
+        console.log('res', data.bannerAds);
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+      });
+  };
+
+  useEffect(() => {
+    displayBanner();
+  }, []);
 
   return (
     loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
@@ -246,7 +265,7 @@ const Profile = ({ navigation }: any) => {
           <View style={{ paddingVertical: 15, alignItems: 'center' }}>
             <Image
               source={{ uri: imageUrl }}
-              style={{ width: 80, height: 80 }}
+              style={{ width: 80, height: 80,borderRadius:50 }}
               resizeMode="contain"
             />
             <TouchableOpacity
@@ -474,6 +493,45 @@ const Profile = ({ navigation }: any) => {
           </View>
         </View>
       </ScrollView>
+
+      <View style={{flex: 1}}>
+          <Modal
+            visible={openPPModal}
+            animationType="fade"
+            transparent={true}
+            onRequestClose={() => setOpenPPModal(false)}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  // padding: 15,
+                  borderRadius: 5,
+                  marginHorizontal: 20,
+                }}>
+                <TouchableOpacity onPress={() => setOpenPPModal(false)}>
+                  <View style={{alignItems: 'flex-end',paddingVertical: 10, paddingRight:15}}>
+                    <AntDesign
+                      name="closecircleo"
+                      size={20}
+                      color={'black'}
+                    />
+                  </View>
+                </TouchableOpacity>
+                {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
+                <Image source={require('../../Assets/Images/Returnoninstallment.png')} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/>
+              
+              </View>
+
+            </View>
+          </Modal>
+        </View>
       {/* Submit Button */}
       <View
         style={{

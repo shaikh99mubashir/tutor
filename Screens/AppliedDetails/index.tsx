@@ -19,17 +19,18 @@ const AppliedDetails = ({route, navigation}: any) => {
       <Header title={data.code} backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <View style={{paddingHorizontal: 15}}>
+        {data.studentAddress &&
           <Text
             style={{
               color: 'green',
               fontSize: 15,
               fontWeight: '500',
               paddingVertical: 8,
-              borderBottomWidth: 1,
+              // borderBottomWidth: 1,
               borderColor: '#eee',
             }}>
             {data.studentAddress}
-          </Text>
+          </Text>}
           <View>
             <Text
               style={{

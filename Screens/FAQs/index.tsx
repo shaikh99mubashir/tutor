@@ -6,10 +6,16 @@ import {
     Image,
     ScrollView,
     FlatList,
+    ToastAndroid,
+    Modal,
+    Dimensions
   } from 'react-native';
-  import React, {useState} from 'react';
+  import React, {useEffect, useState} from 'react';
 import { Theme } from '../../constant/theme';
 import Header from '../../Component/Header';
+import axios from 'axios';
+import { Base_Uri } from '../../constant/BaseUri';
+import AntDesign from 'react-native-vector-icons/AntDesign';
   const FAQs = ({navigation}: any) => {
   
     const [faqsData, setFaqsData] = useState([
@@ -38,6 +44,23 @@ import Header from '../../Component/Header';
         }))
       );
     };
+    const [openPPModal, setOpenPPModal] = useState(false);
+    const displayBanner = async () => {
+      setOpenPPModal(true)
+      axios
+        .get(`${Base_Uri}api/bannerAds`)
+        .then(({data}) => {
+          console.log('res', data.bannerAds);
+        })
+        .catch(error => {
+          ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        });
+    };
+  
+    useEffect(() => {
+      displayBanner();
+    }, []);
+
     return (
         <View style={{backgroundColor: Theme.white, height: '100%'}}>
         <Header title="FAQs" backBtn navigation={navigation} />
@@ -118,6 +141,46 @@ import Header from '../../Component/Header';
           />
           </View>
         </ScrollView>
+
+        <View style={{flex: 1}}>
+          <Modal
+            visible={openPPModal}
+            animationType="fade"
+            transparent={true}
+            onRequestClose={() => setOpenPPModal(false)}>
+            <View
+              style={{
+                flex: 1,
+                backgroundColor: 'rgba(0,0,0,0.5)',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+
+              <View
+                style={{
+                  backgroundColor: 'white',
+                  // padding: 15,
+                  borderRadius: 5,
+                  marginHorizontal: 20,
+                }}>
+                <TouchableOpacity onPress={() => setOpenPPModal(false)}>
+                  <View style={{alignItems: 'flex-end',paddingVertical: 10, paddingRight:15}}>
+                    <AntDesign
+                      name="closecircleo"
+                      size={20}
+                      color={'black'}
+                    />
+                  </View>
+                </TouchableOpacity>
+                {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
+                <Image source={require('../../Assets/Images/Returnoninstallment.png')} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/>
+              
+              </View>
+
+            </View>
+          </Modal>
+        </View>
+
       </View>
     );
   };
