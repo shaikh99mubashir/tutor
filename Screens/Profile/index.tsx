@@ -17,7 +17,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import Header from '../../Component/Header';
 import { Theme } from '../../constant/theme';
 import { PermissionsAndroid } from 'react-native';
-import { launchImageLibrary } from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios, { isAxiosError } from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
@@ -28,6 +28,9 @@ import { touch } from 'react-native-fs';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import DropDownModalView from '../../Component/DropDownModalView';
 import bannerContext from '../../context/bannerContext';
+import ModalImg from '../../Component/Modal/modal';
+
+
 
 const Profile = ({ navigation }: any) => {
   interface ITutorDetails {
@@ -54,6 +57,7 @@ const Profile = ({ navigation }: any) => {
   const [nric, setNric] = React.useState('');
   const [age, setAge] = React.useState('');
   const [gender, setGender] = React.useState('');
+  const [openPhotoModal, setOpenPhotoModal] = useState(false)
   const [uri, setUri] = useState("")
   const [type, setType] = useState("")
   const [name, setName] = useState("")
@@ -75,9 +79,58 @@ const Profile = ({ navigation }: any) => {
 
 
 
+  const openPhoto = async () => {
+
+    setOpenPhotoModal(false)
+
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.CAMERA,
+    );
+
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+
+      const options: any = {
+        title: 'Select Picture',
+        storageOptions: {
+          skipBackup: true,
+          path: 'images',
+        },
+        maxWidth: 500,
+        maxHeight: 500,
+        quality: 0.5,
+      };
+
+      const result: any = await launchCamera(options);
+      if (result.didCancel) {
+        // ('Cancelled image selection');
+      } else if (result.errorCode == 'permission') {
+        // setToastMsg('Permission Not Satisfied');
+      } else if (result.errorCode == 'others') {
+        // setToastMsg(result.errorMessage);
+      } else {
+
+        let uri = result.assets[0].uri;
+        let type = result.assets[0].type;
+        let name = result.assets[0].fileName;
+
+
+        setUri(uri)
+        setType(type)
+        setName(name)
+
+      }
+
+    }
+
+  }
+
+
+
 
   const uploadProfilePicture = async () => {
 
+
+    setOpenPhotoModal(false)
 
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -107,6 +160,7 @@ const Profile = ({ navigation }: any) => {
         let uri = result.assets[0].uri;
         let type = result.assets[0].type;
         let name = result.assets[0].fileName;
+
 
         setUri(uri)
         setType(type)
@@ -341,7 +395,7 @@ const Profile = ({ navigation }: any) => {
               resizeMode="contain"
             />
             <TouchableOpacity
-              onPress={() => uploadProfilePicture()}
+              onPress={() => setOpenPhotoModal(true)}
               activeOpacity={0.8}>
               <Image
                 source={require('../../Assets/Images/plus.png')}
@@ -631,6 +685,12 @@ const Profile = ({ navigation }: any) => {
           </TouchableOpacity>
         </Modal>
       </View>}
+
+      {
+        openPhotoModal && <ModalImg closeModal={() => setOpenPhotoModal(false)} modalVisible={openPhotoModal} openCamera={openPhoto} openGallery={uploadProfilePicture} />
+      }
+
+
       {/* Submit Button */}
       <View
         style={{

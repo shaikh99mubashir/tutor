@@ -643,8 +643,6 @@ function JobTicket({ navigation, route }: any) {
     displayBanner();
   }, []);
 
-  console.log(jobTicketBanner, "banner")
-
   const linkToOtherPage = () => {
 
     if (jobTicketBanner.callToActionType == "Open URL") {

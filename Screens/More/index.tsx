@@ -4,12 +4,15 @@ import Header from '../../Component/Header';
 import { Theme } from '../../constant/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
+import { Base_Uri } from '../../constant/BaseUri';
 
 function More({ navigation }: any) {
 
   const context = useContext(TutorDetailsContext)
 
   const { tutorDetails } = context
+
+  console.log(tutorDetails, "detailss")
 
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -38,6 +41,12 @@ function More({ navigation }: any) {
   const CancelButton = () => {
     handleCloseModal();
   };
+
+  let imageUrl = tutorDetails?.tutorImage?.includes('https')
+    ? tutorDetails.tutorImage
+    : `${Base_Uri}public/tutorImage/${tutorDetails.tutorImage}`;
+
+
   return (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="More" navigation={navigation} />
@@ -63,7 +72,7 @@ function More({ navigation }: any) {
                 alignItems: 'center',
               }}>
               <Image
-                source={require('../../Assets/Images/avatar.png')}
+                source={tutorDetails.tutorImage ? { uri: imageUrl } : require('../../Assets/Images/avatar.png')}
                 style={{ height: 60, width: 60 }}
               />
               <View>

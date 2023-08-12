@@ -125,7 +125,6 @@ function Schedule({ navigation, route }: any) {
 
   }, [focus])
 
-  console.log(upcomingClass,"upcomingcLAS")
 
   useEffect(() => {
 
