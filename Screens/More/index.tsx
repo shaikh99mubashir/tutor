@@ -1,4 +1,4 @@
-import React, { useState,useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import Header from '../../Component/Header';
 import { Theme } from '../../constant/theme';
@@ -9,7 +9,7 @@ function More({ navigation }: any) {
 
   const context = useContext(TutorDetailsContext)
 
-  const {tutorDetails} = context
+  const { tutorDetails } = context
 
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -69,7 +69,7 @@ function More({ navigation }: any) {
               <View>
                 <Text
                   style={{ fontSize: 16, fontWeight: '600', color: Theme.black }}>
-                  {tutorDetails?.full_name}
+                  {tutorDetails?.displayName ?? tutorDetails?.full_name}
                 </Text>
                 <Text
                   style={{ fontSize: 14, fontWeight: '300', color: Theme.gray }}>

@@ -205,7 +205,7 @@ const Profile = ({ navigation }: any) => {
 
       let formData = new FormData();
       formData.append('tutorID', tutorDetail.tutorId);
-      formData.append('name', tutorDetail.displayName);
+      formData.append('name', tutorDetail.full_name);
       formData.append('email', tutorDetail.email);
       formData.append('displayName', tutorDetail.displayName);
       formData.append('gender', tutorDetail.gender);
@@ -352,7 +352,7 @@ const Profile = ({ navigation }: any) => {
             <View style={{ alignItems: 'center' }}>
               <Text
                 style={{ fontSize: 18, fontWeight: '600', color: Theme.black }}>
-                {tutorDetail?.full_name}
+                {tutorDetail?.displayName}
               </Text>
               <Text
                 style={{ fontSize: 14, fontWeight: '300', color: Theme.gray }}>
@@ -455,7 +455,7 @@ const Profile = ({ navigation }: any) => {
               <TextInput
                 editable
                 onChangeText={text => setDispalyName(text)}
-                placeholder={tutorDetail?.full_name}
+                placeholder={tutorDetail?.displayName}
                 style={{ color: "black" }}
                 placeholderTextColor={Theme.black}
               />

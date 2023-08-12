@@ -54,6 +54,8 @@ const Verification = ({ navigation, route }: any) => {
         ToastAndroid.show("Login Successfully", ToastAndroid.SHORT)
         data = JSON.stringify(data)
         AsyncStorage.setItem("loginAuth", data)
+
+
         navigation.reset({
           index: 0,
           routes: [

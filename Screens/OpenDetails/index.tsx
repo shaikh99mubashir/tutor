@@ -43,7 +43,7 @@ const OpenDetails = ({ route, navigation }: any) => {
       if (data?.result?.status == "Applied") {
         setLoading(false)
         ToastAndroid.show("You have successfully applied for this ticket", ToastAndroid.SHORT)
-        navigation.navigate("Job Ticket")
+        navigation.navigate("Job Ticket", ticket_id)
       } else {
         ToastAndroid.show("Failed to Apply for ticket", ToastAndroid.SHORT)
         setLoading(false)

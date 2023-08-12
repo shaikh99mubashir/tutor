@@ -132,6 +132,9 @@ function Home({ navigation, route }: any) {
     }
     const data: any = await AsyncStorage.getItem('loginAuth');
     let loginData: LoginAuth = JSON.parse(data);
+
+    console.log(loginData, "dataaa")
+
     let { tutorID } = loginData;
     setTutorId(tutorID);
   };
@@ -348,6 +351,8 @@ function Home({ navigation, route }: any) {
       .then(({ data }) => {
         let { tutorDetailById } = data;
 
+
+
         let tutorDetails = tutorDetailById[0];
 
         console.log(tutorDetails, "detaillllssssss")
@@ -355,6 +360,7 @@ function Home({ navigation, route }: any) {
         let details = {
           full_name: tutorDetails?.full_name,
           email: tutorDetails?.email,
+          displayName: tutorDetails?.displayName,
           gender: tutorDetails?.gender,
           phoneNumber: tutorDetails.phoneNumber,
           age: tutorDetails.age,
@@ -411,9 +417,14 @@ function Home({ navigation, route }: any) {
   };
 
   const getCancelledHours = () => {
+
+    console.log(tutorId, "iddd")
+
     axios
       .get(`${Base_Uri}getCancelledHours/${tutorId}`)
       .then(({ data }) => {
+        console.log(cancelledHours, "hoursss")
+
         setCancelledHours(data.cancelledHours);
         // setTutorData({ ...tutorData, cancelledHours: data.cancelledHours });
       })
@@ -664,6 +675,8 @@ function Home({ navigation, route }: any) {
       }
   }
 
+  console.log(cancelledHours, "cancelledHour")
+
 
   return !cancelledHours ? (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -679,7 +692,7 @@ function Home({ navigation, route }: any) {
         <View>
           <Text style={styles.text}>Hello,</Text>
           <Text style={[styles.heading, { fontSize: 16 }]}>
-            {tutorDetails?.full_name}
+            {tutorDetails?.displayName ?? tutorDetails.full_name}
           </Text>
         </View>
 
@@ -754,7 +767,7 @@ function Home({ navigation, route }: any) {
                 justifyContent: 'center',
               }}>
               <Text style={[styles.text, { fontSize: 10, color: Theme.white }]}>
-                {notification.length}
+                {notification.length > 0 ? notification.length : 0}
               </Text>
             </View>
           </TouchableOpacity>
@@ -932,7 +945,7 @@ function Home({ navigation, route }: any) {
           </View>
         )}
       </ScrollView>
-      {Object.keys(homePageBanner).length > 0 && (homePageBanner.tutorStatusCriteria == "All" || tutorDetails.status == "verified") && <View style={{ flex: 1 }}>
+      {openPPModal && Object.keys(homePageBanner).length > 0 && (homePageBanner.tutorStatusCriteria == "All" || tutorDetails.status == "verified") && <View style={{ flex: 1 }}>
         <Modal
           visible={openPPModal}
           animationType="fade"
