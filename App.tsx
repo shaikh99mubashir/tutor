@@ -20,6 +20,7 @@ import PaymentState from './context/paymentState';
 import NotificationState from './context/notificationState';
 import ScheduleState from './context/ScheduleState';
 import ReportSubmissionState from './context/reportSubmissionState';
+import BannerState from './context/bannerState';
 
 
 
@@ -41,25 +42,27 @@ function App() {
     <View style={styles.container} >
 
       <UpcomingClassState>
-        <NoteState>
-          <ReportSubmissionState>
-            <ScheduleState>
-              <NotificationState>
-                <PaymentState>
-                  <TutorDetailsState>
-                    <StudentState>
-                      <FilterState>
-                        <AppNavigation />
-                        {/* <Timer show="false" /> */}
-                      </FilterState>
+        <BannerState>
+          <NoteState>
+            <ReportSubmissionState>
+              <ScheduleState>
+                <NotificationState>
+                  <PaymentState>
+                    <TutorDetailsState>
+                      <StudentState>
+                        <FilterState>
+                          <AppNavigation />
+                          {/* <Timer show="false" /> */}
+                        </FilterState>
 
-                    </StudentState>
-                  </TutorDetailsState>
-                </PaymentState>
-              </NotificationState>
-            </ScheduleState>
-          </ReportSubmissionState>
-        </NoteState>
+                      </StudentState>
+                    </TutorDetailsState>
+                  </PaymentState>
+                </NotificationState>
+              </ScheduleState>
+            </ReportSubmissionState>
+          </NoteState>
+        </BannerState>
       </UpcomingClassState>
     </View>
   );

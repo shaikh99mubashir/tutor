@@ -5,19 +5,19 @@ import TutorDetailsContext from "./tutorDetailsContext"
 
 const TutorDetailsState = (prop) => {
 
-    const [tutorDetails,setTutorDetaials] = useState("")
+    const [tutorDetails,setTutorDetail] = useState("")
 
 
     const updateTutorDetails = (details) => {
 
-            setTutorDetaials(details)
+        setTutorDetail(details)
 
 
     }
 
 
     return (
-        <TutorDetailsContext.Provider value={{tutorDetails,updateTutorDetails}} >
+        <TutorDetailsContext.Provider value={{tutorDetails,updateTutorDetails,setTutorDetail}} >
 
             {prop.children}
 

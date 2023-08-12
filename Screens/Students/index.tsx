@@ -3,6 +3,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Text,
+  Linking,
   View,
   Image,
   FlatList,
@@ -20,11 +21,19 @@ import { Base_Uri } from '../../constant/BaseUri';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import StudentContext from '../../context/studentContext';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import bannerContext from '../../context/bannerContext';
+import TutorDetailsContext from '../../context/tutorDetailsContext';
 const Students = ({ navigation }: any) => {
 
   const context = useContext(StudentContext)
 
   let student = context.students
+  let bannerCont = useContext(bannerContext)
+
+  let { studentBanner, setStudentBanner } = bannerCont
+  const tutorDetailsContext = useContext(TutorDetailsContext)
+  let { tutorDetails } = tutorDetailsContext
+
 
 
 
@@ -41,6 +50,59 @@ const Students = ({ navigation }: any) => {
     setstudents(student)
 
   }, [])
+
+  console.log(studentBanner, "nanmmmer")
+
+  const linkToOtherPage = () => {
+
+    if (studentBanner.callToActionType == "Open URL") {
+      Linking.openURL(studentBanner.urlToOpen);
+    }
+    else if (studentBanner.callToActionType == "Open Page")
+
+      if (studentBanner.pageToOpen == "Dashboard") {
+
+        navigation.navigate("Home")
+      }
+      else if (studentBanner.pageToOpen == "Faq") {
+
+        navigation.navigate("FAQs")
+
+      }
+      else if (studentBanner.pageToOpen == ("Class Schedule List")) {
+
+        navigation.navigate("Schedule")
+
+      }
+
+      else if (studentBanner.pageToOpen == "Student List") {
+
+        navigation.navigate("Students")
+
+      }
+      else if (studentBanner.pageToOpen == "Inbox") {
+
+        navigation.navigate("inbox")
+
+      }
+      else if (studentBanner.pageToOpen == "Profile") {
+        navigation.navigate("Profile")
+      }
+      else if (studentBanner.pageToOpen == ("Payment History")) {
+
+        navigation.navigate("PaymentHistory")
+
+
+      }
+      else if (studentBanner.pageToOpen == ("Job Ticket List")) {
+
+        navigation.navigate("Job Ticket")
+
+      }
+      else if (studentBanner.pageToOpen == ("Submission History")) {
+        navigation.navigate("ReportSubmissionHistory")
+      }
+  }
 
 
   // const getStudentData = async () => {
@@ -68,7 +130,6 @@ const Students = ({ navigation }: any) => {
   //   getStudentData();
   // }, []);
 
-  console.log(students, "studnets")
 
   const searchStudent = (e: any) => {
 
@@ -87,7 +148,7 @@ const Students = ({ navigation }: any) => {
     setOpenPPModal(true)
     axios
       .get(`${Base_Uri}api/bannerAds`)
-      .then(({data}) => {
+      .then(({ data }) => {
         console.log('res', data.bannerAds);
       })
       .catch(error => {
@@ -98,7 +159,7 @@ const Students = ({ navigation }: any) => {
   useEffect(() => {
     displayBanner();
   }, []);
-  
+
 
   return (
     loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
@@ -194,44 +255,45 @@ const Students = ({ navigation }: any) => {
           )}
         </View>
       </ScrollView>
-      <View style={{flex: 1}}>
-          <Modal
-            visible={openPPModal}
-            animationType="fade"
-            transparent={true}
-            onRequestClose={() => setOpenPPModal(false)}>
+      {Object.keys(studentBanner).length > 0 && (studentBanner.tutorStatusCriteria == "All" || tutorDetails.status == "verified") && <View style={{ flex: 1 }}>
+        <Modal
+          visible={openPPModal}
+          animationType="fade"
+          transparent={true}
+          onRequestClose={() => setOpenPPModal(false)}>
+          <TouchableOpacity
+            onPress={linkToOtherPage}
+            style={{
+              flex: 1,
+              backgroundColor: 'rgba(0,0,0,0.5)',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+
             <View
               style={{
-                flex: 1,
-                backgroundColor: 'rgba(0,0,0,0.5)',
-                justifyContent: 'center',
-                alignItems: 'center',
+                backgroundColor: 'white',
+                // padding: 15,
+                borderRadius: 5,
+                marginHorizontal: 20,
               }}>
-
-              <View
-                style={{
-                  backgroundColor: 'white',
-                  // padding: 15,
-                  borderRadius: 5,
-                  marginHorizontal: 20,
-                }}>
-                <TouchableOpacity onPress={() => setOpenPPModal(false)}>
-                  <View style={{alignItems: 'flex-end',paddingVertical: 10, paddingRight:15}}>
-                    <AntDesign
-                      name="closecircleo"
-                      size={20}
-                      color={'black'}
-                    />
-                  </View>
-                </TouchableOpacity>
-                {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
-                <Image source={require('../../Assets/Images/Returnoninstallment.png')} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/>
-              
-              </View>
+              <TouchableOpacity onPress={() => setOpenPPModal(false)}>
+                <View style={{ alignItems: 'flex-end', paddingVertical: 10, paddingRight: 15 }}>
+                  <AntDesign
+                    name="closecircleo"
+                    size={20}
+                    color={'black'}
+                  />
+                </View>
+              </TouchableOpacity>
+              {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
+              <Image source={{ uri: studentBanner.bannerImage }} style={{ width: Dimensions.get('screen').width / 1.1, height: '80%', }} resizeMode='contain' />
 
             </View>
-          </Modal>
-        </View>
+
+          </TouchableOpacity>
+        </Modal>
+      </View>}
     </View>
   );
 };

@@ -9,6 +9,7 @@ import {
   TextInput,
   ActivityIndicator,
   Platform,
+  Linking,
   PermissionsAndroid,
   RefreshControl,
   NativeModules,
@@ -26,11 +27,19 @@ import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import Pdf from 'react-native-pdf';
 import reportSubmissionContext from '../../context/reportSubmissionContext';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import bannerContext from '../../context/bannerContext';
+import TutorDetailsContext from '../../context/tutorDetailsContext';
 const ReportSubmissionHistory = ({ navigation }: any) => {
   // const [reportSubmission, setreportSubmission] = useState([]);
   // const [progressReport, setProgressReport] = useState([]);
 
   let context = useContext(reportSubmissionContext)
+  let bannerCont = useContext(bannerContext)
+
+  let { reportSubmissionBanner, setReportSubmissionBanner } = bannerCont
+  const tutorDetailsContext = useContext(TutorDetailsContext)
+  let { tutorDetails } = tutorDetailsContext
+
 
   let { reportSubmission, setreportSubmission, progressReport, setProgressReport } = context
 
@@ -1243,7 +1252,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
     setOpenPPModal(true)
     axios
       .get(`${Base_Uri}api/bannerAds`)
-      .then(({data}) => {
+      .then(({ data }) => {
         console.log('res', data.bannerAds);
       })
       .catch(error => {
@@ -1254,6 +1263,59 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
   useEffect(() => {
     displayBanner();
   }, []);
+
+  const linkToOtherPage = () => {
+
+    if (reportSubmissionBanner.callToActionType == "Open URL") {
+      Linking.openURL(reportSubmissionBanner.urlToOpen);
+    }
+    else if (reportSubmissionBanner.callToActionType == "Open Page")
+
+      if (reportSubmissionBanner.pageToOpen == "Dashboard") {
+
+        navigation.navigate("Home")
+      }
+      else if (reportSubmissionBanner.pageToOpen == "Faq") {
+
+        navigation.navigate("FAQs")
+
+      }
+      else if (reportSubmissionBanner.pageToOpen == ("Class Schedule List")) {
+
+        navigation.navigate("Schedule")
+
+      }
+
+      else if (reportSubmissionBanner.pageToOpen == "Student List") {
+
+        navigation.navigate("Students")
+
+      }
+      else if (reportSubmissionBanner.pageToOpen == "Inbox") {
+
+        navigation.navigate("inbox")
+
+      }
+      else if (reportSubmissionBanner.pageToOpen == "Profile") {
+        navigation.navigate("Profile")
+      }
+      else if (reportSubmissionBanner.pageToOpen == ("Payment History")) {
+
+        navigation.navigate("PaymentHistory")
+
+
+      }
+      else if (reportSubmissionBanner.pageToOpen == ("Job Ticket List")) {
+
+        navigation.navigate("Job Ticket")
+
+      }
+      else if (reportSubmissionBanner.pageToOpen == ("Submission History")) {
+        navigation.navigate("ReportSubmissionHistory")
+      }
+  }
+
+
   return loading ? (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator size="large" color={Theme.black} />
@@ -1409,43 +1471,44 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           )}
         </View>
       </ScrollView>
-      <View style={{flex: 1}}>
-          <Modal
-            visible={openPPModal}
-            animationType="fade"
-            transparent={true}
-            onRequestClose={() => setOpenPPModal(false)}>
+      {Object.keys(reportSubmissionBanner).length > 0 && (reportSubmissionBanner.tutorStatusCriteria == "All" || tutorDetails.status == "verified") && <View style={{ flex: 1 }}>
+        <Modal
+          visible={openPPModal}
+          animationType="fade"
+          transparent={true}
+          onRequestClose={() => setOpenPPModal(false)}>
+          <TouchableOpacity
+            onPress={() => linkToOtherPage()}
+            style={{
+              flex: 1,
+              backgroundColor: 'rgba(0,0,0,0.5)',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+
             <View
               style={{
-                flex: 1,
-                backgroundColor: 'rgba(0,0,0,0.5)',
-                justifyContent: 'center',
-                alignItems: 'center',
+                backgroundColor: 'white',
+                borderRadius: 5,
+                marginHorizontal: 20,
               }}>
-
-              <View
-                style={{
-                  backgroundColor: 'white',
-                  borderRadius: 5,
-                  marginHorizontal: 20,
-                }}>
-                <TouchableOpacity onPress={() => setOpenPPModal(false)}>
-                  <View style={{alignItems: 'flex-end',paddingVertical: 10, paddingRight:15}}>
-                    <AntDesign
-                      name="closecircleo"
-                      size={20}
-                      color={'black'}
-                    />
-                  </View>
-                </TouchableOpacity>
-                {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
-                <Image source={require('../../Assets/Images/Returnoninstallment.png')} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/>
-              
-              </View>
+              <TouchableOpacity onPress={() => setOpenPPModal(false)}>
+                <View style={{ alignItems: 'flex-end', paddingVertical: 10, paddingRight: 15 }}>
+                  <AntDesign
+                    name="closecircleo"
+                    size={20}
+                    color={'black'}
+                  />
+                </View>
+              </TouchableOpacity>
+              {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
+              <Image source={{ uri: reportSubmissionBanner.bannerImage }} style={{ width: Dimensions.get('screen').width / 1.1, height: '80%', }} resizeMode='contain' />
 
             </View>
-          </Modal>
-        </View>
+
+          </TouchableOpacity>
+        </Modal>
+      </View>}
     </View>
   );
 };

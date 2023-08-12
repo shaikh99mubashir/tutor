@@ -11,6 +11,7 @@ import {
   ScrollView,
   Modal,
   ActivityIndicator,
+  Linking,
 } from 'react-native';
 import { Theme } from '../../constant/theme';
 import AntDesign from 'react-native-vector-icons/EvilIcons';
@@ -26,6 +27,8 @@ import upcomingClassContext from '../../context/upcomingClassContext';
 import moment from 'moment';
 import scheduleContext from '../../context/scheduleContext';
 import AntDesig from 'react-native-vector-icons/AntDesign';
+import bannerContext from '../../context/bannerContext';
+import TutorDetailsContext from '../../context/tutorDetailsContext';
 
 // import { ScrollView } from "react-native-gesture-handler"
 
@@ -52,9 +55,16 @@ function Schedule({ navigation, route }: any) {
   let focus = useIsFocused()
 
   let context = useContext(scheduleContext)
+  let bannerCont = useContext(bannerContext)
+  const tutorDetailsContext = useContext(TutorDetailsContext)
+
+  let { tutorDetails } = tutorDetailsContext
+
+  let { schedulePageBannner, setSchedulePageBanner } = bannerCont
 
   let { scheduleData, setScheduleData } = context
   let { upcomingClass, setUpcomingClass } = context
+
 
   const [loading, setLoading] = useState(false);
   // const [scheduleData, setScheduleData] = useState<any>([]);
@@ -63,7 +73,6 @@ function Schedule({ navigation, route }: any) {
   const [selectedData, setSelectedData] = useState({});
 
 
-  console.log(upcomingClass, "upcomingClass")
 
 
   const [mode, setMode] = useState<any>('date');
@@ -105,7 +114,7 @@ function Schedule({ navigation, route }: any) {
     setOpenPPModal(true)
     axios
       .get(`${Base_Uri}api/bannerAds`)
-      .then(({data}) => {
+      .then(({ data }) => {
         console.log('res', data.bannerAds);
       })
       .catch(error => {
@@ -469,6 +478,64 @@ function Schedule({ navigation, route }: any) {
       navigation.navigate('ClockIn', item)
     }
   }
+
+  const linkToOtherPage = () => {
+
+    if (schedulePageBannner.callToActionType == "Open URL") {
+      Linking.openURL(schedulePageBannner.urlToOpen);
+    }
+    else if (schedulePageBannner.callToActionType == "Open Page")
+
+      if (schedulePageBannner.pageToOpen == "Dashboard") {
+
+        navigation.navigate("Home")
+      }
+      else if (schedulePageBannner.pageToOpen == "Faq") {
+
+        navigation.navigate("FAQs")
+
+      }
+      else if (schedulePageBannner.pageToOpen == ("Class Schedule List")) {
+
+        navigation.navigate("Schedule")
+
+      }
+
+      else if (schedulePageBannner.pageToOpen == "Student List") {
+
+        navigation.navigate("Students")
+
+      }
+      else if (schedulePageBannner.pageToOpen == "Inbox") {
+
+        navigation.navigate("inbox")
+
+      }
+      else if (schedulePageBannner.pageToOpen == "Profile") {
+        navigation.navigate("Profile")
+      }
+      else if (schedulePageBannner.pageToOpen == ("Payment History")) {
+
+        navigation.navigate("PaymentHistory")
+
+
+      }
+      else if (schedulePageBannner.pageToOpen == ("Job Ticket List")) {
+
+        navigation.navigate("Job Ticket")
+
+      }
+      else if (schedulePageBannner.pageToOpen == ("Submission History")) {
+        navigation.navigate("ReportSubmissionHistory")
+      }
+  }
+
+
+
+
+
+
+
   const renderScheduleData = ({ item, index }: any): any => {
 
 
@@ -656,43 +723,44 @@ function Schedule({ navigation, route }: any) {
 
         {confirm && confirmModal()}
       </ScrollView>
-      <View style={{flex: 1}}>
-          <Modal
-            visible={openPPModal}
-            animationType="fade"
-            transparent={true}
-            onRequestClose={() => setOpenPPModal(false)}>
+      {Object.keys(schedulePageBannner).length > 0 && (schedulePageBannner.tutorStatusCriteria == "All" || tutorDetails.status == "verified") && <View style={{ flex: 1 }}>
+        <Modal
+          visible={openPPModal}
+          animationType="fade"
+          transparent={true}
+          onRequestClose={() => setOpenPPModal(false)}>
+          <TouchableOpacity
+            onPress={() => linkToOtherPage()}
+            style={{
+              flex: 1,
+              backgroundColor: 'rgba(0,0,0,0.5)',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+
             <View
               style={{
-                flex: 1,
-                backgroundColor: 'rgba(0,0,0,0.5)',
-                justifyContent: 'center',
-                alignItems: 'center',
+                backgroundColor: 'white',
+                borderRadius: 5,
+                marginHorizontal: 20,
               }}>
-
-              <View
-                style={{
-                  backgroundColor: 'white',
-                  borderRadius: 5,
-                  marginHorizontal: 20,
-                }}>
-                <TouchableOpacity onPress={() => setOpenPPModal(false)}>
-                  <View style={{alignItems: 'flex-end',paddingVertical: 10, paddingRight:15}}>
-                    <AntDesig
-                      name="closecircleo"
-                      size={20}
-                      color={'black'}
-                    />
-                  </View>
-                </TouchableOpacity>
-                {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
-                <Image source={require('../../Assets/Images/Returnoninstallment.png')} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/>
-              
-              </View>
+              <TouchableOpacity onPress={() => setOpenPPModal(false)}>
+                <View style={{ alignItems: 'flex-end', paddingVertical: 10, paddingRight: 15 }}>
+                  <AntDesig
+                    name="closecircleo"
+                    size={20}
+                    color={'black'}
+                  />
+                </View>
+              </TouchableOpacity>
+              {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
+              <Image source={{ uri: schedulePageBannner.bannerImage }} style={{ width: Dimensions.get('screen').width / 1.1, height: '80%', }} resizeMode='contain' />
 
             </View>
-          </Modal>
-        </View>
+
+          </TouchableOpacity>
+        </Modal>
+      </View>}
     </View>
   );
 }

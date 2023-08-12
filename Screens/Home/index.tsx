@@ -12,6 +12,7 @@ import {
   ToastAndroid,
   RefreshControl,
   Modal,
+  Linking,
 } from 'react-native';
 import { Theme } from '../../constant/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -28,7 +29,11 @@ import scheduleContext from '../../context/scheduleContext';
 import reportSubmissionContext from '../../context/reportSubmissionContext';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import notificationContext from '../../context/notificationContext';
-function Home({ navigation }: any) {
+import bannerContext from '../../context/bannerContext';
+function Home({ navigation, route }: any) {
+
+  let key = route.key
+
   const context = useContext(TutorDetailsContext);
   const filter = useContext(filterContext);
   const studentAndSubjectContext = useContext(StudentContext);
@@ -38,6 +43,11 @@ function Home({ navigation }: any) {
   const [refreshing, setRefreshing] = useState(false);
   const upcomingClassCont = useContext(upcomingClassContext);
   const paymentHistory = useContext(paymentContext);
+  const bannerCon = useContext(bannerContext)
+
+  let { homePageBanner, setHomePageBanner, schedulePageBannner, setSchedulePageBanner, jobTicketBanner, setJobTicketBanner,
+    profileBanner, setProfileBanner, paymentHistoryBanner, setPaymentHistoryBanner, reportSubmissionBanner, setReportSubmissionBanner
+    , inboxBanner, setInboxBanner, faqBanner, setFaqBanner, studentBanner, setStudentBanner } = bannerCon
 
   const upcomingContext = useContext(scheduleContext);
 
@@ -103,8 +113,8 @@ function Home({ navigation }: any) {
   const [activeHours, setActiveHours] = useState('');
   const [cancelledHours, setCancelledHours] = useState('');
   const [schedulesHours, setScheduledHours] = useState('');
-
   const [tutorStudents, setTutorStudents] = useState([]);
+  const [bannerData, setBannerData] = useState([])
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -340,6 +350,8 @@ function Home({ navigation }: any) {
 
         let tutorDetails = tutorDetailById[0];
 
+        console.log(tutorDetails, "detaillllssssss")
+
         let details = {
           full_name: tutorDetails?.full_name,
           email: tutorDetails?.email,
@@ -349,6 +361,7 @@ function Home({ navigation }: any) {
           nric: tutorDetails.nric,
           tutorImage: tutorDetails.tutorImage,
           tutorId: tutorDetails?.id,
+          status: tutorDetails?.status
         };
 
         updateTutorDetails(details);
@@ -548,7 +561,45 @@ function Home({ navigation }: any) {
     axios
       .get(`${Base_Uri}api/bannerAds`)
       .then(({ data }) => {
-        console.log('res', data.bannerAds);
+
+        console.log(data, "dataaa")
+
+        let banners = data.bannerAds
+
+        let homePageBanner = banners && banners.length > 0 && banners.map((e: any, i: any) => {
+
+          if (e.displayOnPage == "Dashboard") {
+            setHomePageBanner(e)
+          }
+          else if (e.displayOnPage == "Faq") {
+            setFaqBanner(e)
+          }
+          else if (e.displayOnPage == ("Class Schedule List")) {
+            setSchedulePageBanner(e)
+          }
+
+          else if (e.displayOnPage == "Student List") {
+            setStudentBanner(e)
+          }
+          else if (e.displayOnPage == "Inbox") {
+            setInboxBanner(e)
+          }
+          else if (e.displayOnPage == "Profile") {
+            setProfileBanner(e)
+          }
+          else if (e.displayOnPage == ("Payment History")) {
+            setPaymentHistoryBanner(e)
+          }
+          else if (e.displayOnPage == ("Job Ticket List")) {
+            setJobTicketBanner(e)
+          }
+          else if (e.displayOnPage == ("Submission History")) {
+            setReportSubmissionBanner(e)
+          }
+
+        })
+
+
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
@@ -558,6 +609,61 @@ function Home({ navigation }: any) {
   useEffect(() => {
     displayBanner();
   }, []);
+
+
+
+  const linkToOtherPage = () => {
+
+    if (homePageBanner.callToActionType == "Open URL") {
+      Linking.openURL(homePageBanner.urlToOpen);
+    }
+    else if (homePageBanner.callToActionType == "Open Page")
+
+      if (homePageBanner.pageToOpen == "Dashboard") {
+
+        navigation.navigate("Home")
+      }
+
+      else if (homePageBanner.pageToOpen == "Faq") {
+
+        navigation.navigate("FAQs")
+
+      }
+      else if (homePageBanner.pageToOpen == ("Class Schedule List")) {
+
+        navigation.navigate("Schedule")
+
+      }
+
+      else if (homePageBanner.pageToOpen == "Student List") {
+
+        navigation.navigate("Students")
+
+      }
+      else if (homePageBanner.pageToOpen == "Inbox") {
+
+        navigation.navigate("inbox")
+
+      }
+      else if (homePageBanner.pageToOpen == "Profile") {
+        navigation.navigate("Profile")
+      }
+      else if (homePageBanner.pageToOpen == ("Payment History")) {
+
+        navigation.navigate("PaymentHistory")
+
+
+      }
+      else if (homePageBanner.pageToOpen == ("Job Ticket List")) {
+
+        navigation.navigate("Job Ticket")
+
+      }
+      else if (homePageBanner.pageToOpen == ("Submission History")) {
+        navigation.navigate("ReportSubmissionHistory")
+      }
+  }
+
 
   return !cancelledHours ? (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -826,13 +932,14 @@ function Home({ navigation }: any) {
           </View>
         )}
       </ScrollView>
-      <View style={{ flex: 1 }}>
+      {Object.keys(homePageBanner).length > 0 && (homePageBanner.tutorStatusCriteria == "All" || tutorDetails.status == "verified") && <View style={{ flex: 1 }}>
         <Modal
           visible={openPPModal}
           animationType="fade"
           transparent={true}
           onRequestClose={() => setOpenPPModal(false)}>
-          <View
+          <TouchableOpacity
+            onPress={() => linkToOtherPage()}
             style={{
               flex: 1,
               backgroundColor: 'rgba(0,0,0,0.5)',
@@ -857,13 +964,13 @@ function Home({ navigation }: any) {
                 </View>
               </TouchableOpacity>
               {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
-              <Image source={require('../../Assets/Images/Returnoninstallment.png')} style={{ width: Dimensions.get('screen').width / 1.1, height: '80%', }} resizeMode='contain' />
+              <Image source={{ uri: homePageBanner.bannerImage }} style={{ width: Dimensions.get('screen').width / 1.1, height: '80%', }} resizeMode='contain' />
 
             </View>
 
-          </View>
+          </TouchableOpacity>
         </Modal>
-      </View>
+      </View>}
     </ScrollView>
   );
 }

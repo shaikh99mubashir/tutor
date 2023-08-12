@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
   Image,
   ToastAndroid,
   Dimensions,
+  Linking,
   Modal,
 } from 'react-native';
 import { Theme } from '../../constant/theme';
@@ -19,8 +20,21 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
+import bannerContext from '../../context/bannerContext';
+import TutorDetailsContext from '../../context/tutorDetailsContext';
 
 function Index({ navigation }: any) {
+
+
+  let bannerCont = useContext(bannerContext)
+
+  let { inboxBanner, setInboxBanner } = bannerCont
+
+  const tutorDetailsContext = useContext(TutorDetailsContext)
+
+  let { tutorDetails } = tutorDetailsContext
+
+
   const [inboxData, setInboxData] = useState([
     // {
     //   title:
@@ -364,7 +378,7 @@ function Index({ navigation }: any) {
     setOpenPPModal(true)
     axios
       .get(`${Base_Uri}api/bannerAds`)
-      .then(({data}) => {
+      .then(({ data }) => {
         console.log('res', data.bannerAds);
       })
       .catch(error => {
@@ -375,7 +389,7 @@ function Index({ navigation }: any) {
   useEffect(() => {
     displayBanner();
   }, []);
-  
+
   const renderInboxData = ({ item, index }: any): any => {
     return (
       <TouchableOpacity
@@ -444,6 +458,61 @@ function Index({ navigation }: any) {
     );
   };
 
+  const linkToOtherPage = () => {
+
+    if (inboxBanner.callToActionType == "Open URL") {
+      Linking.openURL(inboxBanner.urlToOpen);
+    }
+    else if (inboxBanner.callToActionType == "Open Page")
+
+      if (inboxBanner.pageToOpen == "Dashboard") {
+
+        navigation.navigate("Home")
+      }
+      else if (inboxBanner.pageToOpen == "Faq") {
+
+        navigation.navigate("FAQs")
+
+      }
+      else if (inboxBanner.pageToOpen == ("Class Schedule List")) {
+
+        navigation.navigate("Schedule")
+
+      }
+
+      else if (inboxBanner.pageToOpen == "Student List") {
+
+        navigation.navigate("Students")
+
+      }
+      else if (inboxBanner.pageToOpen == "Inbox") {
+
+        navigation.navigate("inbox")
+
+      }
+      else if (inboxBanner.pageToOpen == "Profile") {
+        navigation.navigate("Profile")
+      }
+      else if (inboxBanner.pageToOpen == ("Payment History")) {
+
+        navigation.navigate("PaymentHistory")
+
+
+      }
+      else if (inboxBanner.pageToOpen == ("Job Ticket List")) {
+
+        navigation.navigate("Job Ticket")
+
+      }
+      else if (inboxBanner.pageToOpen == ("Submission History")) {
+        navigation.navigate("ReportSubmissionHistory")
+      }
+  }
+
+  console.log(inboxBanner, "inboxBanner")
+
+
+
   return (
     loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
       <ActivityIndicator size="large" color="black" />
@@ -457,13 +526,14 @@ function Index({ navigation }: any) {
         </View>
 
         <FlatList data={inboxData} renderItem={renderInboxData} />
-        <View style={{flex: 1}}>
+        {Object.keys(inboxBanner).length > 0 && (inboxBanner.tutorStatusCriteria == "All" || tutorDetails.status == "verified") && <View style={{ flex: 1 }}>
           <Modal
             visible={openPPModal}
             animationType="fade"
             transparent={true}
             onRequestClose={() => setOpenPPModal(false)}>
-            <View
+            <TouchableOpacity
+              onPress={linkToOtherPage}
               style={{
                 flex: 1,
                 backgroundColor: 'rgba(0,0,0,0.5)',
@@ -479,7 +549,7 @@ function Index({ navigation }: any) {
                   marginHorizontal: 20,
                 }}>
                 <TouchableOpacity onPress={() => setOpenPPModal(false)}>
-                  <View style={{alignItems: 'flex-end',paddingVertical: 10, paddingRight:15}}>
+                  <View style={{ alignItems: 'flex-end', paddingVertical: 10, paddingRight: 15 }}>
                     <AntDesign
                       name="closecircleo"
                       size={20}
@@ -488,16 +558,16 @@ function Index({ navigation }: any) {
                   </View>
                 </TouchableOpacity>
                 {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
-                <Image source={require('../../Assets/Images/Returnoninstallment.png')} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/>
-              
+                <Image source={{ uri: inboxBanner.bannerImage }} style={{ width: Dimensions.get('screen').width / 1.1, height: '80%', }} resizeMode='contain' />
+
               </View>
 
-            </View>
+            </TouchableOpacity>
           </Modal>
-        </View>
+        </View>}
       </ScrollView>
 
-      
+
   );
 }
 

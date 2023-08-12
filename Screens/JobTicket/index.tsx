@@ -10,6 +10,7 @@ import {
   TextInput,
   RefreshControl,
   Image,
+  Linking,
   Dimensions,
   Modal,
 } from 'react-native';
@@ -24,12 +25,17 @@ import AsyncStorage, {
 } from '@react-native-async-storage/async-storage';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import bannerContext from '../../context/bannerContext';
 
 function JobTicket({ navigation, route }: any) {
 
   const focus = useIsFocused()
 
   let data = route.params
+
+  const bannerCont = useContext(bannerContext)
+
+  let { jobTicketBanner, setJobTicketBanner } = bannerCont
 
   const [isSearchItems, setIsSearchItems] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -319,6 +325,7 @@ function JobTicket({ navigation, route }: any) {
 
     setFoundName(filteredItems);
   };
+
 
   const renderOpenData: any = ({ item }: any) => {
 
@@ -624,7 +631,7 @@ function JobTicket({ navigation, route }: any) {
     setOpenPPModal(true)
     axios
       .get(`${Base_Uri}api/bannerAds`)
-      .then(({data}) => {
+      .then(({ data }) => {
         console.log('res', data.bannerAds);
       })
       .catch(error => {
@@ -635,6 +642,62 @@ function JobTicket({ navigation, route }: any) {
   useEffect(() => {
     displayBanner();
   }, []);
+
+  console.log(jobTicketBanner, "banner")
+
+  const linkToOtherPage = () => {
+
+    if (jobTicketBanner.callToActionType == "Open URL") {
+      Linking.openURL(jobTicketBanner.urlToOpen);
+    }
+    else if (jobTicketBanner.callToActionType == "Open Page")
+
+      if (jobTicketBanner.pageToOpen == "Dashboard") {
+
+        navigation.navigate("Home")
+      }
+      else if (jobTicketBanner.pageToOpen == "Faq") {
+
+        navigation.navigate("FAQs")
+
+      }
+      else if (jobTicketBanner.pageToOpen == ("Class Schedule List")) {
+
+        navigation.navigate("Schedule")
+
+      }
+
+      else if (jobTicketBanner.pageToOpen == "Student List") {
+
+        navigation.navigate("Students")
+
+      }
+      else if (jobTicketBanner.pageToOpen == "Inbox") {
+
+        navigation.navigate("inbox")
+
+      }
+      else if (jobTicketBanner.pageToOpen == "Profile") {
+        navigation.navigate("Profile")
+      }
+      else if (jobTicketBanner.pageToOpen == ("Payment History")) {
+
+        navigation.navigate("PaymentHistory")
+
+
+      }
+      else if (jobTicketBanner.pageToOpen == ("Job Ticket List")) {
+
+        navigation.navigate("Job Ticket")
+
+      }
+      else if (jobTicketBanner.pageToOpen == ("Submission History")) {
+        navigation.navigate("ReportSubmissionHistory")
+      }
+  }
+
+
+
   return loading ? (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator size={'large'} color={'black'} />
@@ -658,44 +721,45 @@ function JobTicket({ navigation, route }: any) {
           />
         </View>
       </ScrollView>
-      <View style={{flex: 1}}>
-          <Modal
-            visible={openPPModal}
-            animationType="fade"
-            transparent={true}
-            onRequestClose={() => setOpenPPModal(false)}>
+      {Object.keys(jobTicketBanner).length > 0 && (jobTicketBanner.tutorStatusCriteria == "All" || tutorDetails.status == "verified") && <View style={{ flex: 1 }}>
+        <Modal
+          visible={openPPModal}
+          animationType="fade"
+          transparent={true}
+          onRequestClose={() => setOpenPPModal(false)}>
+          <TouchableOpacity
+            onPress={linkToOtherPage}
+            style={{
+              flex: 1,
+              backgroundColor: 'rgba(0,0,0,0.5)',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+
             <View
               style={{
-                flex: 1,
-                backgroundColor: 'rgba(0,0,0,0.5)',
-                justifyContent: 'center',
-                alignItems: 'center',
+                backgroundColor: 'white',
+                // padding: 15,
+                borderRadius: 5,
+                marginHorizontal: 20,
               }}>
-
-              <View
-                style={{
-                  backgroundColor: 'white',
-                  // padding: 15,
-                  borderRadius: 5,
-                  marginHorizontal: 20,
-                }}>
-                <TouchableOpacity onPress={() => setOpenPPModal(false)}>
-                  <View style={{alignItems: 'flex-end',paddingVertical: 10, paddingRight:15}}>
-                    <AntDesign
-                      name="closecircleo"
-                      size={20}
-                      color={'black'}
-                    />
-                  </View>
-                </TouchableOpacity>
-                {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
-                <Image source={require('../../Assets/Images/Returnoninstallment.png')} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/>
-              
-              </View>
+              <TouchableOpacity onPress={() => setOpenPPModal(false)}>
+                <View style={{ alignItems: 'flex-end', paddingVertical: 10, paddingRight: 15 }}>
+                  <AntDesign
+                    name="closecircleo"
+                    size={20}
+                    color={'black'}
+                  />
+                </View>
+              </TouchableOpacity>
+              {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
+              <Image source={{ uri: jobTicketBanner.bannerImages }} style={{ width: Dimensions.get('screen').width / 1.1, height: '80%', }} resizeMode='contain' />
 
             </View>
-          </Modal>
-        </View>
+
+          </TouchableOpacity>
+        </Modal>
+      </View>}
     </View>
   );
 }

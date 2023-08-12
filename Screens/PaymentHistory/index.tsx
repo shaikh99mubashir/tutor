@@ -1,4 +1,4 @@
-import { View, Text, FlatList, StyleSheet, Dimensions, Image, ToastAndroid, ActivityIndicator, ScrollView, RefreshControl, TouchableOpacity, Modal } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Dimensions, Image, Linking, ToastAndroid, ActivityIndicator, ScrollView, RefreshControl, TouchableOpacity, Modal } from 'react-native';
 import React, { useEffect, useState, useContext } from 'react';
 import Header from '../../Component/Header';
 const height = Dimensions.get('screen').height;
@@ -8,12 +8,21 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
 import paymentContext from '../../context/paymentHistoryContext';
+import bannerContext from '../../context/bannerContext';
+import TutorDetailsContext from '../../context/tutorDetailsContext';
 const PaymentHistory = ({ navigation }: any) => {
 
 
   const paymentHistory = useContext(paymentContext)
 
   let { commissionData, setCommissionData } = paymentHistory
+
+  let bannerCont = useContext(bannerContext)
+
+  let { paymentHistoryBanner, setPaymentHistoryBanner } = bannerCont
+  const tutorDetailsContext = useContext(TutorDetailsContext)
+  let { tutorDetails } = tutorDetailsContext
+
 
   // const [commissionData, setCommissionData] = useState<any>([
   // {
@@ -126,6 +135,56 @@ const PaymentHistory = ({ navigation }: any) => {
   }, [refresh])
 
 
+  const linkToOtherPage = () => {
+
+    if (paymentHistoryBanner.callToActionType == "Open URL") {
+      Linking.openURL(paymentHistoryBanner.urlToOpen);
+    }
+    else if (paymentHistoryBanner.callToActionType == "Open Page")
+
+      if (paymentHistoryBanner.pageToOpen == "Dashboard") {
+
+        navigation.navigate("Home")
+      }
+      else if (paymentHistoryBanner.pageToOpen == "Faq") {
+
+        navigation.navigate("FAQs")
+
+      }
+      else if (paymentHistoryBanner.pageToOpen == ("Class Schedule List")) {
+
+        navigation.navigate("Schedule")
+
+      }
+
+      else if (paymentHistoryBanner.pageToOpen == "Student List") {
+
+        navigation.navigate("Students")
+
+      }
+      else if (paymentHistoryBanner.pageToOpen == "Inbox") {
+
+        navigation.navigate("inbox")
+
+      }
+      else if (paymentHistoryBanner.pageToOpen == "Profile") {
+        navigation.navigate("Profile")
+      }
+      else if (paymentHistoryBanner.pageToOpen == ("Payment History")) {
+
+        navigation.navigate("PaymentHistory")
+
+
+      }
+      else if (paymentHistoryBanner.pageToOpen == ("Job Ticket List")) {
+
+        navigation.navigate("Job Ticket")
+
+      }
+      else if (paymentHistoryBanner.pageToOpen == ("Submission History")) {
+        navigation.navigate("ReportSubmissionHistory")
+      }
+  }
 
   const renderItem = ({ item }: any) => (
     <View style={styles.itemContainer}>
@@ -162,7 +221,7 @@ const PaymentHistory = ({ navigation }: any) => {
     setOpenPPModal(true)
     axios
       .get(`${Base_Uri}api/bannerAds`)
-      .then(({data}) => {
+      .then(({ data }) => {
         console.log('res', data.bannerAds);
       })
       .catch(error => {
@@ -209,44 +268,45 @@ const PaymentHistory = ({ navigation }: any) => {
           <Text style={{ color: Theme.gray }}>  Payment History Not Found</Text>
         </View>
       )}
-              <View style={{flex: 1}}>
-          <Modal
-            visible={openPPModal}
-            animationType="fade"
-            transparent={true}
-            onRequestClose={() => setOpenPPModal(false)}>
+      {Object.keys(paymentHistoryBanner).length > 0 && (paymentHistoryBanner.tutorStatusCriteria == "All" || tutorDetails.status == "verified") && <View style={{ flex: 1 }}>
+        <Modal
+          visible={openPPModal}
+          animationType="fade"
+          transparent={true}
+          onRequestClose={() => setOpenPPModal(false)}>
+          <TouchableOpacity
+            onPress={linkToOtherPage}
+            style={{
+              flex: 1,
+              backgroundColor: 'rgba(0,0,0,0.5)',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+
             <View
               style={{
-                flex: 1,
-                backgroundColor: 'rgba(0,0,0,0.5)',
-                justifyContent: 'center',
-                alignItems: 'center',
+                backgroundColor: 'white',
+                // padding: 15,
+                borderRadius: 5,
+                marginHorizontal: 20,
               }}>
-
-              <View
-                style={{
-                  backgroundColor: 'white',
-                  // padding: 15,
-                  borderRadius: 5,
-                  marginHorizontal: 20,
-                }}>
-                <TouchableOpacity onPress={() => setOpenPPModal(false)}>
-                  <View style={{alignItems: 'flex-end',paddingVertical: 10, paddingRight:15}}>
-                    <AntDesign
-                      name="closecircleo"
-                      size={20}
-                      color={'black'}
-                    />
-                  </View>
-                </TouchableOpacity>
-                {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
-                <Image source={require('../../Assets/Images/Returnoninstallment.png')} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/>
-              
-              </View>
+              <TouchableOpacity onPress={() => setOpenPPModal(false)}>
+                <View style={{ alignItems: 'flex-end', paddingVertical: 10, paddingRight: 15 }}>
+                  <AntDesign
+                    name="closecircleo"
+                    size={20}
+                    color={'black'}
+                  />
+                </View>
+              </TouchableOpacity>
+              {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
+              <Image source={require('../../Assets/Images/Returnoninstallment.png')} style={{ width: Dimensions.get('screen').width / 1.1, height: '80%', }} resizeMode='contain' />
 
             </View>
-          </Modal>
-        </View>
+
+          </TouchableOpacity>
+        </Modal>
+      </View>}
     </View>
   );
 };

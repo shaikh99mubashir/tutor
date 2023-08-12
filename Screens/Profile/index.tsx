@@ -7,27 +7,29 @@ import {
   TextInput,
   Platform,
   TouchableOpacity,
+  Linking,
   Image,
   ActivityIndicator,
   Modal,
   Dimensions,
 } from 'react-native';
-import React, {useEffect, useState, useContext} from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import Header from '../../Component/Header';
-import {Theme} from '../../constant/theme';
-import {PermissionsAndroid} from 'react-native';
-import {launchImageLibrary} from 'react-native-image-picker';
+import { Theme } from '../../constant/theme';
+import { PermissionsAndroid } from 'react-native';
+import { launchImageLibrary } from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios, {isAxiosError} from 'axios';
-import {Base_Uri} from '../../constant/BaseUri';
+import axios, { isAxiosError } from 'axios';
+import { Base_Uri } from '../../constant/BaseUri';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import Share from 'react-native-share';
-import {touch} from 'react-native-fs';
+import { touch } from 'react-native-fs';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import DropDownModalView from '../../Component/DropDownModalView';
+import bannerContext from '../../context/bannerContext';
 
-const Profile = ({navigation}: any) => {
+const Profile = ({ navigation }: any) => {
   interface ITutorDetails {
     full_name: string | undefined;
     email: string | undefined;
@@ -52,130 +54,46 @@ const Profile = ({navigation}: any) => {
   const [nric, setNric] = React.useState('');
   const [age, setAge] = React.useState('');
   const [gender, setGender] = React.useState('');
+  const [uri, setUri] = useState("")
+  const [type, setType] = useState("")
+  const [name, setName] = useState("")
   const context = useContext(TutorDetailsContext);
 
-  let tutorDetail = context?.tutorDetails;
 
-  let {updateTutorDetails} = context;
 
-  // const getTutorDetails = async () => {
+  let tutorDetail = context?.tutorDetails
 
-  //   setLoading(true)
-  //   interface LoginAuth {
-  //     status: Number;
-  //     tutorID: Number;
-  //     token: string;
-  //   }
-  //   const data: any = await AsyncStorage.getItem('loginAuth');
-  //   let loginData: LoginAuth = JSON.parse(data);
-  //   let { tutorID } = loginData;
+  let tutorDetails = context?.tutorDetails
 
-  //   axios
-  //     .get(`${Base_Uri}getTutorDetailByID/${tutorID}`)
-  //     .then(({ data }) => {
-  //       let { tutorDetailById } = data;
 
-  //       let tutorDetails = tutorDetailById[0];
+  let bannerCont = useContext(bannerContext)
 
-  //       let details: ITutorDetails = {
-  //         full_name: tutorDetails?.full_name,
-  //         email: tutorDetails?.email,
-  //         gender: tutorDetails?.gender,
-  //         phoneNumber: tutorDetails.phoneNumber,
-  //         age: tutorDetails.age,
-  //         nric: tutorDetails.nric,
-  //       };
-  //       setTutorDetail(details);
-  //       setLoading(false)
-  //     })
-  //     .catch(error => {
-  //       ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
-  //       setLoading(false)
-  //     });
-  // };
+  let { profileBanner, setProfileBanner } = bannerCont
 
-  // useEffect(() => {
-  //   getTutorDetails();
-  // }, []);
 
-  const generateAndDownalodPdf = async (
-    item: any,
-  ): Promise<string | undefined> => {
-    try {
-      const options = {
-        html: `<html><body>
-        <div>
-        <h1>Tutor Name</h1>
-        <h2>${item.full_name}</h3>
-        </div>
-        <div>
-        <h1>Tutor Email</h1>
-        <h3>${item.email}</h3>
-        </div>
-        <div>
-        <div>
-        <h1>Tutor Age</h1>
-        <h3>${item.age}</h3>
-        </div>
-        <div>
-        <h1>Tutor Gender</h1>
-        <h3>${item.gender ?? 'Not Provided'}</h3>
-        </div>
-        <div>
-        <h1>Tutor NRIC</h1>
-        <h3>${item.nric}</h3>
-        </div>
-        <div>
-        <div>
-        <h1>Tutor PhoneNumber</h1>
-        <h3>${item.phoneNumber}</h3>
-        </div>
-        
-        </body></html>`,
-        fileName: `tutor${Math.random()}`,
-        directory: 'Downloads',
-        base64: false,
-      };
-      if (Platform.OS === 'android') {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-        );
+  let { updateTutorDetails, setTutorDetail } = context;
 
-        if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
-          console.error('Permission denied for writing to external storage.');
-          return;
-        }
-      }
 
-      const pdfFile = await RNHTMLtoPDF.convert(options);
-      const {filePath}: any = pdfFile;
-      return filePath;
-    } catch (error) {
-      console.log('Error generating and downloading the PDF:', error);
-      throw error;
-    }
-  };
 
-  console.log(tutorDetail, 'tutorDetail');
 
   const uploadProfilePicture = async () => {
-    const expression: RegExp = /^[A -Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    const userEmail: any = email;
-    const result: boolean = expression.test(userEmail); // true
-    if (!result) {
-      ToastAndroid.show('Enter correct email', ToastAndroid.SHORT);
-      return;
-    }
-    console.log('dispalyName',dispalyName);
-    
+
+
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.CAMERA,
     );
 
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      let options: any = {
-        saveToPhotos: true,
-        mediaType: 'photo',
+
+      const options: any = {
+        title: 'Select Picture',
+        storageOptions: {
+          skipBackup: true,
+          path: 'images',
+        },
+        maxWidth: 500,
+        maxHeight: 500,
+        quality: 0.5,
       };
       const result: any = await launchImageLibrary(options);
       if (result.didCancel) {
@@ -185,57 +103,22 @@ const Profile = ({navigation}: any) => {
       } else if (result.errorCode == 'others') {
         // setToastMsg(result.errorMessage);
       } else {
-        setLoading(true);
 
         let uri = result.assets[0].uri;
         let type = result.assets[0].type;
         let name = result.assets[0].fileName;
 
+        setUri(uri)
+        setType(type)
+        setName(name)
 
-        let formData = new FormData();
-        formData.append('tutorImage', {
-          uri: uri,
-          type: type,
-          name: name,
-        });
-        formData.append('tutorID', tutorDetail.tutorId);
-        formData.append('name', tutorDetail.full_name);
-        formData.append('email', email);
-        formData.append('dispalyName', dispalyName);
-        formData.append('gender', gender);
-        formData.append('nric', nric);
-        formData.append('phone', tutorDetail.phoneNumber);
-        formData.append('age', age);
-        axios
-          .post(`${Base_Uri}api/editTutorProfile`, formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          })
-          .then(({data}) => {
-            setLoading(false);
-            let {response} = data;
-            let {tutorImage} = response;
 
-            setImage(tutorImage);
-            tutorDetail.tutorImage = tutorImage;
-            updateTutorDetails(tutorDetail);
-            ToastAndroid.show(
-              'Successfully Update Profile Picture',
-              ToastAndroid.SHORT,
-            );
-          })
-          .catch(error => {
-            setLoading(false);
-            console.log(error);
-            ToastAndroid.show(
-              'Profile picture update unsuccessfull',
-              ToastAndroid.SHORT,
-            );
-          });
       }
     }
   };
+
+  console.log(name, "name")
+
 
   const genderOption = [
     {
@@ -245,33 +128,138 @@ const Profile = ({navigation}: any) => {
       option: 'Female',
     },
   ];
-  const sendTutorDetails = async () => {
-    // try {
-    //   const pdfUri: any = await generateAndDownalodPdf(tutorDetail);
-    //   await Share.open({
-    //     url: `file://${pdfUri}`,
-    //     type: 'application/pdf',
-    //   });
-    // } catch (error) {
-    //   console.log('Error generating and downloading the PDF:', error);
-    // }
+
+
+  const updateTutorDetail = async () => {
+
+    const expression: RegExp = /^[A -Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    const userEmail: any = tutorDetail.email;
+    const result: boolean = expression.test(userEmail); // true
+    if (!result) {
+      ToastAndroid.show('Enter correct email', ToastAndroid.SHORT);
+      return;
+    }
+
+    if (uri && name && type) {
+
+      setLoading(true)
+
+      tutorDetail.displayName = dispalyName ? dispalyName : tutorDetail.displayName
+      tutorDetail.email = email ? email : tutorDetail.email
+      tutorDetail.age = age ? age : tutorDetail.age
+      tutorDetail.nric = nric ? nric : tutorDetail.nric
+
+      let formData = new FormData();
+      formData.append('tutorImage', {
+        uri: uri,
+        type: type,
+        name: name,
+      });
+      formData.append('tutorID', tutorDetail.tutorId);
+      formData.append('name', tutorDetail.full_name);
+      formData.append('email', tutorDetail.email);
+      formData.append('displayName', tutorDetail.displayName);
+      formData.append('gender', tutorDetail.gender);
+      formData.append('nric', tutorDetail.nric);
+      formData.append('phone', tutorDetail.phoneNumber);
+      formData.append('age', tutorDetail.age);
+      axios
+        .post(`${Base_Uri}api/editTutorProfile`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(({ data }) => {
+          setLoading(false);
+          let { response } = data;
+
+          console.log(data, "dataaaa")
+
+          let { tutorImage } = response;
+          setImage(tutorImage);
+          tutorDetail.tutorImage = tutorImage;
+          setTutorDetail({ ...tutorDetail, tutorImage: tutorImage });
+          setUri("")
+          setType("")
+          setName("")
+          ToastAndroid.show(
+            'Successfully Update Tutor Details',
+            ToastAndroid.SHORT,
+          );
+        })
+        .catch(error => {
+          setLoading(false);
+          console.log(error);
+          ToastAndroid.show(
+            'Tutor Details update unsuccessfull',
+            ToastAndroid.SHORT,
+          );
+        });
+    } else {
+
+      setLoading(true)
+      tutorDetail.displayName = dispalyName ? dispalyName : tutorDetail.displayName
+      tutorDetail.email = email ? email : tutorDetail.email
+      tutorDetail.age = age ? age : tutorDetail.age
+      tutorDetail.nric = nric ? nric : tutorDetail.nric
+
+      let formData = new FormData();
+      formData.append('tutorID', tutorDetail.tutorId);
+      formData.append('name', tutorDetail.displayName);
+      formData.append('email', tutorDetail.email);
+      formData.append('displayName', tutorDetail.displayName);
+      formData.append('gender', tutorDetail.gender);
+      formData.append('nric', tutorDetail.nric);
+      formData.append('phone', tutorDetail.phoneNumber);
+      formData.append('age', tutorDetail.age);
+      axios
+        .post(`${Base_Uri}api/editTutorProfile`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+        .then(({ data }) => {
+          setLoading(false);
+          let { response } = data;
+
+          setTutorDetail({ ...tutorDetail, displayName: tutorDetail.displayName, email: tutorDetail.email, nric: tutorDetail.nric, age: tutorDetail.age })
+
+
+          ToastAndroid.show(
+            'Successfully Update Tutor Details',
+            ToastAndroid.SHORT,
+          );
+        })
+        .catch(error => {
+          setLoading(false);
+          console.log(error);
+          ToastAndroid.show(
+            'Tutor Details update unsuccessfull',
+            ToastAndroid.SHORT,
+          );
+        });
+
+
+    }
   };
+
+  console.log(`file://${name}`)
 
   let imageUrl = image
     ? image
     : !tutorDetail.tutorImage
-    ? '../../Assets/Images/plus.png'
-    : tutorDetail.tutorImage.includes('https')
-    ? tutorDetail.tutorImage
-    : `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`;
+      ? '../../Assets/Images/plus.png'
+      : tutorDetail.tutorImage.includes('https')
+        ? tutorDetail.tutorImage
+        : `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`;
 
   // console.log(imageUrl, "image")
   const [openPPModal, setOpenPPModal] = useState(false);
   const displayBanner = async () => {
-    // setOpenPPModal(true)
+    setOpenPPModal(true)
     axios
       .get(`${Base_Uri}api/bannerAds`)
-      .then(({data}) => {
+      .then(({ data }) => {
         console.log('res', data.bannerAds);
       })
       .catch(error => {
@@ -283,19 +271,73 @@ const Profile = ({navigation}: any) => {
     displayBanner();
   }, []);
 
+
+
+  const linkToOtherPage = () => {
+
+    if (profileBanner.callToActionType == "Open URL") {
+      Linking.openURL(profileBanner.urlToOpen);
+    }
+    else if (profileBanner.callToActionType == "Open Page")
+
+      if (profileBanner.pageToOpen == "Dashboard") {
+
+        navigation.navigate("Home")
+      }
+      else if (profileBanner.pageToOpen == "Faq") {
+
+        navigation.navigate("FAQs")
+
+      }
+      else if (profileBanner.pageToOpen == ("Class Schedule List")) {
+
+        navigation.navigate("Schedule")
+
+      }
+
+      else if (profileBanner.pageToOpen == "Student List") {
+
+        navigation.navigate("Students")
+
+      }
+      else if (profileBanner.pageToOpen == "Inbox") {
+
+        navigation.navigate("inbox")
+
+      }
+      else if (profileBanner.pageToOpen == "Profile") {
+        navigation.navigate("Profile")
+      }
+      else if (profileBanner.pageToOpen == ("Payment History")) {
+
+        navigation.navigate("PaymentHistory")
+
+
+      }
+      else if (profileBanner.pageToOpen == ("Job Ticket List")) {
+
+        navigation.navigate("Job Ticket")
+
+      }
+      else if (profileBanner.pageToOpen == ("Submission History")) {
+        navigation.navigate("ReportSubmissionHistory")
+      }
+  }
+
+
   return loading ? (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator size="large" color={Theme.black} />
     </View>
   ) : (
-    <View style={{backgroundColor: Theme.white, height: '100%'}}>
+    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="Profile" navigation={navigation} backBtn />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{paddingHorizontal: 15, marginBottom: 100}}>
-          <View style={{paddingVertical: 15, alignItems: 'center'}}>
+        <View style={{ paddingHorizontal: 15, marginBottom: 100 }}>
+          <View style={{ paddingVertical: 15, alignItems: 'center' }}>
             <Image
-              source={{uri: imageUrl}}
-              style={{width: 80, height: 80, borderRadius: 50}}
+              source={{ uri: name ? `file://${uri}` : imageUrl }}
+              style={{ width: 80, height: 80, borderRadius: 50 }}
               resizeMode="contain"
             />
             <TouchableOpacity
@@ -303,23 +345,23 @@ const Profile = ({navigation}: any) => {
               activeOpacity={0.8}>
               <Image
                 source={require('../../Assets/Images/plus.png')}
-                style={{width: 20, height: 20, top: -20, left: 25}}
+                style={{ width: 20, height: 20, top: -20, left: 25 }}
                 resizeMode="contain"
               />
             </TouchableOpacity>
-            <View style={{alignItems: 'center'}}>
+            <View style={{ alignItems: 'center' }}>
               <Text
-                style={{fontSize: 18, fontWeight: '600', color: Theme.black}}>
+                style={{ fontSize: 18, fontWeight: '600', color: Theme.black }}>
                 {tutorDetail?.full_name}
               </Text>
               <Text
-                style={{fontSize: 14, fontWeight: '300', color: Theme.gray}}>
+                style={{ fontSize: 14, fontWeight: '300', color: Theme.gray }}>
                 {tutorDetail?.email}
               </Text>
             </View>
           </View>
           {/* Full Name */}
-          <View style={{marginVertical: 15}}>
+          <View style={{ marginVertical: 15 }}>
             <Text
               style={{
                 color: Theme.black,
@@ -348,7 +390,7 @@ const Profile = ({navigation}: any) => {
             </View>
           </View>
           {/* Email */}
-          <View style={{marginBottom: 15}}>
+          <View style={{ marginBottom: 15 }}>
             <Text
               style={{
                 color: Theme.black,
@@ -378,12 +420,13 @@ const Profile = ({navigation}: any) => {
                 editable
                 onChangeText={text => setEmail(text)}
                 placeholder={tutorDetail?.email}
+                style={{ color: "black" }}
                 placeholderTextColor={Theme.black}
               />
             </View>
           </View>
           {/* Displlay name */}
-          <View style={{marginBottom: 15}}>
+          <View style={{ marginBottom: 15 }}>
             <Text
               style={{
                 color: Theme.black,
@@ -413,12 +456,13 @@ const Profile = ({navigation}: any) => {
                 editable
                 onChangeText={text => setDispalyName(text)}
                 placeholder={tutorDetail?.full_name}
+                style={{ color: "black" }}
                 placeholderTextColor={Theme.black}
               />
             </View>
           </View>
           {/* MObile number*/}
-          <View style={{marginBottom: 15}}>
+          <View style={{ marginBottom: 15 }}>
             <Text
               style={{
                 color: Theme.black,
@@ -447,7 +491,7 @@ const Profile = ({navigation}: any) => {
             </View>
           </View>
           {/* Gender*/}
-          <View style={{marginBottom: 15}}>
+          <View style={{ marginBottom: 15 }}>
             <Text
               style={{
                 color: Theme.black,
@@ -475,17 +519,18 @@ const Profile = ({navigation}: any) => {
               </Text> */}
               <DropDownModalView
                 // title="Gender"
-                selectedValue={setGender}
+                selectedValue={(e: any) => setTutorDetail({ ...tutorDetail, gender: e.option })}
                 // subTitle="Rate the student's performance in the quizes"
                 placeHolder="Select Answer"
                 option={genderOption}
+                value={tutorDetail.gender}
                 modalHeading="Select Gender"
-                style={{borderWidth: 0,marginTop: 0,}}
+                style={{ borderWidth: 0, marginTop: 0, }}
               />
             </View>
           </View>
           {/* Age*/}
-          <View style={{marginBottom: 15}}>
+          <View style={{ marginBottom: 15 }}>
             <Text
               style={{
                 color: Theme.black,
@@ -502,25 +547,18 @@ const Profile = ({navigation}: any) => {
                 borderRadius: 5,
                 marginVertical: 5,
               }}>
-              {/* <Text
-                style={{
-                  color: Theme.black,
-                  fontSize: 14,
-                  fontWeight: '600',
-                  marginTop: 5,
-                }}>
-                {tutorDetail.age}
-              </Text> */}
-              {/* <TextInput
+              <TextInput
                 editable
+                style={{ color: "black" }}
+                keyboardType='numeric'
                 onChangeText={text => setAge(text)}
-                placeholder={tutorDetail.age}
+                placeholder={tutorDetail?.age ? tutorDetail?.age.toString() : "not provided"}
                 placeholderTextColor={Theme.black}
-              /> */}
+              />
             </View>
           </View>
           {/* Nric*/}
-          <View style={{marginBottom: 15}}>
+          <View style={{ marginBottom: 15 }}>
             <Text
               style={{
                 color: Theme.black,
@@ -537,33 +575,26 @@ const Profile = ({navigation}: any) => {
                 borderRadius: 5,
                 marginVertical: 5,
               }}>
-              {/* <Text
-                style={{
-                  color: Theme.black,
-                  fontSize: 14,
-                  fontWeight: '600',
-                  marginTop: 5,
-                }}>
-                {tutorDetail?.nric ? tutorDetail?.nric : 'not Provided'}
-              </Text> */}
-              {/* <TextInput
+              <TextInput
                 editable
-                onChangeText={text => setNric(text)}
-                placeholder={tutorDetail?.nric ? tutorDetail?.nric : 'not Provided'}
+                style={{ color: "black" }}
+                onChangeText={text => setNric(nric)}
+                placeholder={tutorDetail?.nric ? tutorDetail.nric : "not provided"}
                 placeholderTextColor={Theme.black}
-              /> */}
+              />
             </View>
           </View>
         </View>
       </ScrollView>
 
-      <View style={{flex: 1}}>
+      {Object.keys(profileBanner).length > 0 && (profileBanner.tutorStatusCriteria == "All" || tutorDetails.status == "verified") && <View style={{ flex: 1 }}>
         <Modal
           visible={openPPModal}
           animationType="fade"
           transparent={true}
           onRequestClose={() => setOpenPPModal(false)}>
-          <View
+          <TouchableOpacity
+            onPress={linkToOtherPage}
             style={{
               flex: 1,
               backgroundColor: 'rgba(0,0,0,0.5)',
@@ -589,7 +620,7 @@ const Profile = ({navigation}: any) => {
               </TouchableOpacity>
               {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
               <Image
-                source={require('../../Assets/Images/Returnoninstallment.png')}
+                source={{ uri: profileBanner.bannerImage }}
                 style={{
                   width: Dimensions.get('screen').width / 1.1,
                   height: '80%',
@@ -597,14 +628,14 @@ const Profile = ({navigation}: any) => {
                 resizeMode="contain"
               />
             </View>
-          </View>
+          </TouchableOpacity>
         </Modal>
-      </View>
+      </View>}
       {/* Submit Button */}
       <View
         style={{
           backgroundColor: Theme.white,
-          position: 'absolute',
+          // position: 'absolute',
           bottom: 0,
           width: '100%',
           alignItems: 'center',
@@ -617,7 +648,7 @@ const Profile = ({navigation}: any) => {
             width: '94%',
           }}>
           <TouchableOpacity
-            onPress={uploadProfilePicture}
+            onPress={updateTutorDetail}
             style={{
               alignItems: 'center',
               padding: 10,
@@ -635,6 +666,10 @@ const Profile = ({navigation}: any) => {
           </TouchableOpacity>
         </View>
       </View>
+
+
+
+
     </View>
   );
 };
