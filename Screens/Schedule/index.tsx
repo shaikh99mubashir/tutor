@@ -105,8 +105,38 @@ function Schedule({ navigation, route }: any) {
       setUpcomingClass([])
     }
 
+    if (focus) {
+
+      let now = new Date()
+
+      let date = now.getDate()
+      let month = now.getMonth()
+      let year = now.getFullYear()
+
+      let selectday = selectedDate.getDate()
+      let selectMonth = selectedDate.getMonth()
+      let selectYear = selectedDate.getFullYear()
+
+      if (date !== selectday || selectMonth !== month || selectYear !== year) {
+
+        setSelectedDate(new Date())
+      }
+    }
+
   }, [focus])
 
+  console.log(upcomingClass,"upcomingcLAS")
+
+  useEffect(() => {
+
+    if (selectedDate !== new Date()) {
+
+      setUpcomingClass([])
+
+    }
+
+
+  }, [selectedDate])
 
 
   const [openPPModal, setOpenPPModal] = useState(false);
@@ -137,7 +167,6 @@ function Schedule({ navigation, route }: any) {
     const login: any = await AsyncStorage.getItem('loginAuth');
     let loginData: LoginAuth = JSON.parse(login);
     let { tutorID } = loginData;
-
 
 
     if (upcomingClass && Object.keys(upcomingClass).length > 0) {
