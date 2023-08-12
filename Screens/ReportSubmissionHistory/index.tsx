@@ -54,6 +54,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
     setTimeout(() => {
       setRefreshing(false);
       setRefresh(!refresh);
+      setOpenPPModal(true)
     }, 2000);
   }, [refresh]);
 

@@ -85,13 +85,14 @@ function Schedule({ navigation, route }: any) {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
+      setOpenPPModal(true)
       setRefresh(!refresh)
     }, 2000);
   }, [refresh]);
 
 
-  
-  console.log(data,"routeeee")
+
+  console.log(data, "routeeee")
 
 
   useEffect(() => {

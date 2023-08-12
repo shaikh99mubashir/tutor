@@ -147,6 +147,7 @@ function JobTicket({ navigation, route }: any) {
       setRefreshing(true);
       setTimeout(() => {
         setRefreshing(false);
+        setOpenPPModal(true)
         setRefresh(refresh ? false : true)
 
       }, 2000);
@@ -163,15 +164,17 @@ function JobTicket({ navigation, route }: any) {
 
       filter = JSON.parse(filter)
 
+      console.log(filter, "gilter")
+
       let { Category, subject, mode, state, city } = filter
 
-      let categoryID = Category.id
-      let subjectID = subject.id
-      let myMode = mode.subject
-      let myState = state.id
-      let myCity = city.id
+      let categoryID = Category.id ?? "noFilter"
+      let subjectID = subject.id ?? "noFilter"
+      let myMode = mode.subject ?? "noFilter"
+      let myState = state.id ?? "noFilter"
+      let myCity = city.id ?? "noFilter"
 
-      console.log(myState, myCity, "cityyy")
+      console.log(categoryID,subjectID,myMode,myState,myCity)
 
 
       axios
@@ -183,16 +186,13 @@ function JobTicket({ navigation, route }: any) {
             tickets.length > 0 &&
             tickets.filter((e: any, i: number) => {
 
-              console.log(e, "eee")
+                console.log(e,"eeee")
 
-              console.log(e.mode, myMode)
-              console.log(e.subject_id, "subk")
-              console.log(subjectID, "subject")
-              return e?.mode?.toString()?.toLowerCase() == myMode?.toString()?.toLowerCase()
-                && e.subject_id == subjectID
-                && e.categoryID == categoryID
-                && e?.cityID == myCity
-                && e.stateID == myState
+              return (myMode == "noFilter" || e?.mode?.toString()?.toLowerCase() == myMode?.toString()?.toLowerCase())
+                && (subjectID == "noFilter" || e.subject_id == subjectID)
+                && (categoryID == "noFilter" || e.categoryID == categoryID
+                ) && (myCity == "noFilter" || e?.cityID == myCity)
+                && (myState == "noFilter" || e.stateID == myState)
 
             }),
 
@@ -248,6 +248,7 @@ function JobTicket({ navigation, route }: any) {
   };
 
   const getAppliedData = async () => {
+
     setLoading(true);
 
     let tutorData: any = await AsyncStorage.getItem('loginAuth');
@@ -442,7 +443,6 @@ function JobTicket({ navigation, route }: any) {
   };
   const renderCloseData = ({ item }: any) => {
 
-    console.log(item, "item")
 
     return (
       <TouchableOpacity
@@ -632,7 +632,6 @@ function JobTicket({ navigation, route }: any) {
     axios
       .get(`${Base_Uri}api/bannerAds`)
       .then(({ data }) => {
-        console.log('res', data.bannerAds);
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);

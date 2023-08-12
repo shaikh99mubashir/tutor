@@ -63,16 +63,6 @@ const Filter = ({ navigation }: any) => {
       city: selectedCity
     }
 
-
-    let values = Object.values(jobFilter)
-    let flag = values.some((e, i) => !e)
-
-    if (flag) {
-      ToastAndroid.show("Required Fields are missing", ToastAndroid.SHORT)
-      return
-    }
-
-
     let myFilter = JSON.stringify(jobFilter)
     navigation.navigate("Job Ticket", jobFilter)
     await AsyncStorage.setItem('filter', myFilter)

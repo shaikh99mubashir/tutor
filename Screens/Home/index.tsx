@@ -120,6 +120,7 @@ function Home({ navigation, route }: any) {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
+      setOpenPPModal(true)
       getTutorId();
     }, 2000);
   }, [refreshing]);

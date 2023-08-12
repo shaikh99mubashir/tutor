@@ -346,6 +346,7 @@ function Index({ navigation }: any) {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
+      setOpenPPModal(true)
       setRefresh(!refresh)
     }, 2000);
   }, [refresh]);
