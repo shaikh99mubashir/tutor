@@ -90,20 +90,16 @@ function Schedule({ navigation, route }: any) {
   }, [refresh]);
 
 
-  // useEffect(() => {
+  
+  console.log(data,"routeeee")
 
-  //   if (!focus) {
-
-  //     setUpcomingClass("")
-  //   }
-
-  // }, [focus])
 
   useEffect(() => {
 
     if (!focus) {
       setUpcomingClass([])
     }
+
 
     if (focus) {
 
@@ -128,15 +124,30 @@ function Schedule({ navigation, route }: any) {
 
   useEffect(() => {
 
+    let now = new Date()
+
+    let date = now.getDate()
+    let month = now.getMonth()
+    let year = now.getFullYear()
+
+    let selectday = selectedDate.getDate()
+    let selectMonth = selectedDate.getMonth()
+    let selectYear = selectedDate.getFullYear()
+
+
+
     if (selectedDate !== new Date()) {
 
-      setUpcomingClass([])
-
+      if (date !== selectday || selectMonth !== month || selectYear !== year) {
+        setUpcomingClass([])
+      }
     }
-
 
   }, [selectedDate])
 
+
+  // console.log(upcomingClass, "upcomingClass")
+  // console.log(scheduleData, "scheduleData")
 
   const [openPPModal, setOpenPPModal] = useState(false);
   const displayBanner = async () => {
@@ -184,7 +195,7 @@ function Schedule({ navigation, route }: any) {
               imageUrl: require('../../Assets/Images/student.png'),
             }
           })
-          setScheduleData(checkRouteClass && checkRouteClass.length > 0 ? checkRouteClass : [])
+          setUpcomingClass(checkRouteClass && checkRouteClass.length > 0 ? checkRouteClass : [])
           setLoading(false)
         }).catch((error) => {
           setLoading(false);
