@@ -32,18 +32,35 @@ const FAQs = ({ navigation }: any) => {
   const [faqsData, setFaqsData] = useState([
     {
       id: 1,
-      question: 'Question 1',
+      question: 'First time user',
       answer:
-        'Hey! Remember you have to attribute Ilham Fitrotul Hayat Every time you attribute, you get +10 to your Karma Select your favorite social network and share our icons with your contacts or friends. If you don’t have these social networks, simply copy the link and paste it in the one you use. For more information read the  or download the license.',
+        "a) Apply Job (refer to the steps\n https://youtu.be/ztb3bTfTqxA)\n\n"
+        + "b) Register as a Tutor.\n"
+        + "https://sifututor.my/tutor/apply/\n\n"
+        + "If you have completed these two steps, admin will contact you as soon as possible via call or whatsapp.",
       open: false,
     },
     {
       id: 2,
-      question: 'Question 2',
+      question: 'Verified Tutor',
       answer:
-        'Hey! Remember you have to attribute Ilham Fitrotul Hayat Every time you attribute, you get +10 to your Karma Select your favorite social network and share our icons with your contacts or friends. If you don’t have these social networks, simply copy the link and paste it in the one you use. For more information read the  or download the license.',
+        "1. How much do I get paid for being a tutor?\n"
+        + "(https://sifututor.my/tutor/tutor-guidelines/)\n\n"
+        + "2. When should I expect to receive my monthly commission?\n"
+        + "Kindly expect to receive monthly commission every 3rd to 10th day of the following month.\n\n"
+        + "3. What if I forgot to clock in and out using mobile apps?\n"
+        + "Apps will notify you on 'Notification' tab. Please provide attachment(s) to verify your attendance.\n\n"
+        + "4. How should I register my attendance for online class?\n"
+        + "Follow the same SOP as the physical class. You can clock in and out from any desired location.\n\n"
+        + "5. When to complete and submit Student Progress Report?\n"
+        + "Apps will notify you on 'Notification' tab. Reports shall be completed and submitted by every end of March, June, September, and December of every year.\n\n"
+        + "6. How is cumulative commission being calculated?\n"
+        + "It is calculated based on 'Attended Hours'.\n\n"
+        + "7. Apps are not working properly?\n"
+        + "Contact us via WhatsApp or call Ms. Atirah at +60146437500.\n\n"
+        + "Read full guidelines and SOP via link below: \n(https://sifututor.my/tutor/tutor-guidelines/)",
       open: false,
-    },
+    }
   ]);
 
   const handleQuestionPress = (index: number) => {

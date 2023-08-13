@@ -87,7 +87,7 @@ function JobTicket({ navigation, route }: any) {
     //   time: '22:00',
     //   status: 'scheduled',
     //   subscription: 'LongTerm',
-    //   created_at: '2023-06-14 14:17:43',
+    //   created_at: '2023-06-16 16:17:43',
     //   updated_at: '2023-06-14 14:17:43',
     //   uid: 'JT-144743',
     //   slug: null,
@@ -324,9 +324,29 @@ function JobTicket({ navigation, route }: any) {
     setFoundName(filteredItems);
   };
 
+  function convertTo12HourFormat(time24: string): string {
+    const [hourStr, minuteStr] = time24.split(":");
+    const hour = parseInt(hourStr);
+    let period = "AM";
+    let twelveHour = hour;
+
+    if (hour >= 12) {
+        period = "PM";
+        if (hour > 12) {
+            twelveHour = hour - 12;
+        }
+    }
+
+    if (twelveHour === 0) {
+        twelveHour = 12;
+    }
+
+    return `${twelveHour}:${minuteStr} ${period}`;
+}
 
   const renderOpenData: any = ({ item }: any) => {
     console.log('Item',item);
+    
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('OpenDetails', item)}
@@ -344,17 +364,17 @@ function JobTicket({ navigation, route }: any) {
             justifyContent: 'space-between',
             width: '100%',
           }}>
-          <Text style={{ color: 'green', fontSize: 14, fontWeight: '600' }}>
+          <Text style={{ color: 'green', fontSize: 16, fontWeight: '600' }}>
             {item.uid}
           </Text>
-          <Text style={{ color: 'green', fontSize: 14, fontWeight: '600' }}>
+          <Text style={{ color: 'green', fontSize: 16, fontWeight: '600' }}>
             {item.status}
           </Text>
         </View>
         <Text
           style={{
             color: Theme.black,
-            fontSize: 14,
+            fontSize: 16,
             fontWeight: '600',
             marginTop: 10,
           }}>
@@ -364,67 +384,44 @@ function JobTicket({ navigation, route }: any) {
           <Text
             style={{
               color: Theme.black,
-              fontSize: 14,
+              fontSize: 16,
               fontWeight: '600',
               marginTop: 10,
             }}>
             Details
           </Text>
-          <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-            Name: {item.studentName}
-          </Text>
-          <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-            City: {item.studentCity}
-          </Text>
-          <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-            Address 1: {item.studentAddress1 ?? "not provided"}
-          </Text>
-          <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-            Address 2: {item.studentAddress2 ?? "not provided"}
-          </Text>
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            {item?.classDay} at {convertTo12HourFormat(item?.classTime)} for {item?.hours} hour(s) of each class.</Text>
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            {item?.studentGender} Student ({item?.studentAge}y/o)</Text>
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            {item?.subject} - {item?.session} sessions {item?.hours}
+            </Text>
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            - Tutor Gender: {item?.tutorGender}
+            </Text>
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            - PreferredDay/Time: {item?.preferredDay}
+            </Text>
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            - Mode: {item?.subscription}
+            </Text>
+            {item?.remarks &&
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            - Remarks: {item?.remarks}
+            </Text>
+          }
+            {item?.first8Hour &&
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+           {item?.first8Hour}
+            </Text>
+          }
+            {item?.above9Hour &&
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            {item?.above9Hour}
+            </Text>
+          }
         </View>
-        <Text
-          style={{
-            color: Theme.gray,
-            fontSize: 14,
-            fontWeight: '600',
-            marginTop: 10,
-          }}>
-          Day: {item.classDay}
-        </Text>
-        <Text
-          style={{
-            color: Theme.gray,
-            fontSize: 14,
-            fontWeight: '600',
-            marginTop: 10,
-          }}>
-          Time: {item.classTime}
-        </Text>
-        <Text
-          style={{
-            color: Theme.gray,
-            fontSize: 14,
-            fontWeight: '600',
-            marginTop: 10,
-          }}>
-          Mode: {item.mode}
-        </Text>
-        {/* <Text
-          style={{
-            color: Theme.gray,
-            fontSize: 14,
-            fontWeight: '600',
-            marginTop: 10,
-          }}>
-          {item.details3}
-        </Text>
-        <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-          {item.details4}
-        </Text>
-        <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-          {item.details5}
-        </Text> */}
         <Text
           style={{
             color: Theme.black,
@@ -438,11 +435,11 @@ function JobTicket({ navigation, route }: any) {
     );
   };
   const renderCloseData = ({ item }: any) => {
-
-
+    console.log('item==>close',item);
+    
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate('AppliedDetails', item)}
+        // onPress={() => navigation.navigate('AppliedDetails', item)}
         activeOpacity={0.8}
         style={{
           borderWidth: 1,
@@ -457,17 +454,17 @@ function JobTicket({ navigation, route }: any) {
             justifyContent: 'space-between',
             width: '100%',
           }}>
-          <Text style={{ color: 'green', fontSize: 14, fontWeight: '600' }}>
+          <Text style={{ color: 'green', fontSize: 16, fontWeight: '600' }}>
             {item.jtuid}
           </Text>
-          <Text style={{ color: 'green', fontSize: 14, fontWeight: '600' }}>
+          <Text style={{ color: 'green', fontSize: 16, fontWeight: '600' }}>
             {item.ticketStatus}
           </Text>
         </View>
         <Text
           style={{
             color: Theme.black,
-            fontSize: 14,
+            fontSize: 15,
             fontWeight: '600',
             marginTop: 10,
           }}>
@@ -477,43 +474,46 @@ function JobTicket({ navigation, route }: any) {
           <Text
             style={{
               color: Theme.black,
-              fontSize: 14,
+              fontSize: 16,
               fontWeight: '600',
               marginTop: 10,
             }}>
             Details
           </Text>
-          <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-            Name: {item.studentName}
-          </Text>
-          <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-            ID: {item.studentID}
-          </Text>
-          <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-            City: {item.studentCity}
-          </Text>
-          <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-            Address: {item.studentAddress}
-          </Text>
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            {item?.classDay} at {convertTo12HourFormat(item?.classTime)} for {item?.hours} hour(s) of each class.</Text>
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            {item?.studentGender} Student ({item?.studentAge}y/o)</Text>
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            {item?.subject} - {item?.session} sessions {item?.hours}
+            </Text>
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            - Tutor Gender: {item?.tutorGender}
+            </Text>
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            - PreferredDay/Time: {item?.preferredDay}
+            </Text>
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            - Mode: {item?.subscription}
+            </Text>
+            {item?.remarks &&
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            - Remarks: {item?.remarks}
+            </Text>
+          }
+            {item?.first8Hour &&
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+           {item?.first8Hour}
+            </Text>
+          }
+            {item?.above9Hour &&
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            {item?.above9Hour}
+            </Text>
+          }
 
         </View>
-        <Text
-          style={{
-            color: Theme.gray,
-            fontSize: 14,
-            fontWeight: '600',
-            marginTop: 10,
-          }}>
-          Day: {item.classDay}
-        </Text>
-        <Text
-          style={{
-            color: Theme.gray,
-            fontSize: 14,
-            fontWeight: '600',
-          }}>
-          Time: {item.classTime}
-        </Text>
+       
         <Text
           style={{
             color: Theme.black,

@@ -540,7 +540,10 @@ function Schedule({navigation, route}: any) {
       }
   };
 
-  function convertTo12HourFormat(time24: string): string {
+  function convertTo12HourFormat(time24: string | null): string {
+    if (!time24) {
+      return ''; // Return an empty string or some default value when time24 is null
+    }
     const [hourStr, minuteStr] = time24.split(':');
     const hour = parseInt(hourStr);
     let period = 'AM';
@@ -685,7 +688,7 @@ function Schedule({navigation, route}: any) {
             )}
           </View>
         )}
-        {item.selected && item.status == 'attended' && (
+        {/* {item.selected && item.status == 'attended' && (
           <View
             style={{
               flexDirection: 'row',
@@ -707,7 +710,7 @@ function Schedule({navigation, route}: any) {
               </Text>
             </TouchableOpacity>
           </View>
-        )}
+        )} */}
       </TouchableOpacity>
     );
   };

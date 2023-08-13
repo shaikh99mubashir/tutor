@@ -70,7 +70,7 @@ const OpenDetails = ({ route, navigation }: any) => {
               borderBottomWidth: 1,
               borderColor: '#eee',
             }}>
-            {data?.subject_name}
+            {data?.studentAddress1} {data?.studentAddress2}
           </Text>
           <View>
             <Text
@@ -82,37 +82,37 @@ const OpenDetails = ({ route, navigation }: any) => {
               }}>
               Details
             </Text>
-            <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-              Student: {data.studentName}
+            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            {data?.classDay} at {data?.classTime} for {data?.hours} hour(s) of each class.</Text>
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            {data?.studentGender} Student ({data?.studentAge}y/o)</Text>
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            {data?.subject} - {data?.session} sessions {data?.hours}
             </Text>
-            <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-              Student City: {data.studentCity}
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            - Tutor Gender: {data?.tutorGender}
             </Text>
-            <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-              Student Address 1: {data.studentAddress1}
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            - PreferredDay/Time: {data?.preferredDay}
             </Text>
-            <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '600' }}>
-              Student Address 2: {data.studentAddress2}
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            - Mode: {data?.subscription}
             </Text>
-          </View>
-          <Text
-            style={{
-              color: Theme.gray,
-              fontSize: 14,
-              fontWeight: '600',
-              marginTop: 10,
-            }}>
-            Day: {data.day}
-          </Text>
-          <Text
-            style={{
-              color: Theme.gray,
-              fontSize: 14,
-              fontWeight: '600',
-              marginTop: 10,
-            }}>
-            Time: {data.time}
-          </Text>
+            {data?.remarks &&
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            - Remarks: {data?.remarks}
+            </Text>
+          }
+            {data?.first8Hour &&
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+           {data?.first8Hour}
+            </Text>
+          }
+            {data?.above9Hour &&
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            {data?.above9Hour}
+            </Text>
+          }
           <View style={{ marginVertical: 15 }}>
             <Text
               style={{
@@ -210,6 +210,7 @@ const OpenDetails = ({ route, navigation }: any) => {
               />
             </View>
           </View>
+        </View>
         </View>
       </ScrollView>
       {/* Submit Button */}

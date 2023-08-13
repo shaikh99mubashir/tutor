@@ -64,8 +64,8 @@ function AddClass({ navigation }: any) {
   const [show, setShow] = useState(false);
   const [indexClicked, setIndexClicked] = useState<null | Number>(null);
   const [value, setValue] = useState(new Date());
-  const [selectedStudent, setSelectedStudent] = useState<any>("")
-  const [selectedSubject, setSelectedSubject] = useState<any>("")
+  const [selectedStudent, setSelectedStudent] = useState<any>(null)
+  const [selectedSubject, setSelectedSubject] = useState<any>(null)
   const [loading, setLoading] = useState(false)
 
 
@@ -456,6 +456,7 @@ function AddClass({ navigation }: any) {
                 fontWeight: '700',
               }}
             />
+             {selectedStudent && (
             <CustomDropDown
               ddTitle={'Subject'}
               selectedSubject={selectedSubject}
@@ -475,7 +476,7 @@ function AddClass({ navigation }: any) {
                 fontSize: 14,
                 fontWeight: '700',
               }}
-            />
+            />)}
           </View>
 
           <FlatList data={classes} renderItem={renderClasses} />
