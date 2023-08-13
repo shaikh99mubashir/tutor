@@ -1,0 +1,19 @@
+{"admin_charge": null, 
+"application_status": "incomplete",
+ "categoryID": 34, "categoryName": "DEGREE", 
+ "cityID": "447", "cityName": "Banting", "classDay": "Monday",
+  "classTime": "22:00", "created_at": "2023-08-13 00:51:03", 
+  "day": "Monday", "days": 1, "estimate_commission": 0, "fee_payment_date": "2023-08-13",
+   "id": 79, "jtuid": "JT-122103", "mode": "online", "payment_attachment": null, "quantity": 3,
+    "receiving_account": "44", "register_date": "2023-08-13", "remarks": null, "slug": null, "ssid": 128,
+     "stateID": "1", "stateName": "Selangor", "status": "pending", "studentAddress1": "address lne 1",
+      "studentAddress2": "address  line 2", "studentAge": 43, "studentGender": "Male", "studentName": "student17", 
+      "student_address": null, "student_id": 99, "students": null, "subject": 166, "subject_id": 166, 
+"subject_name": "Account (DEGREE) - ONLINE", "subjects": "166", "subscription": "LongTerm",
+ "subscription_duration": null, "ticketID": 79, "ticket_id": 79, "ticket_status": "Accepted",
+  "time": "22:00", "tutorID": 3, "tutor_id": null, "tutor_status": "pending", "uid": "JT-122103", 
+  "updated_at": "2023-08-13 00:51:03"}
+
+
+
+  
