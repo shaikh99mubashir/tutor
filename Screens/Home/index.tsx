@@ -71,11 +71,11 @@ function Home({ navigation, route }: any) {
 
   const date: Date = new Date();
   const currentDate: string = date.toLocaleDateString('en-US', {
-    month: 'short',
+    month: 'long',
     year: 'numeric',
   });
   const currentMonth: string = date.toLocaleDateString('en-US', {
-    month: 'short',
+    month: 'long',
   });
 
   const [upCommingClasses, setUpCommingClasses] = useState([
@@ -351,13 +351,7 @@ function Home({ navigation, route }: any) {
       .get(`${Base_Uri}getTutorDetailByID/${tutorId}`)
       .then(({ data }) => {
         let { tutorDetailById } = data;
-
-
-
         let tutorDetails = tutorDetailById[0];
-
-        console.log(tutorDetails, "detaillllssssss")
-
         let details = {
           full_name: tutorDetails?.full_name,
           email: tutorDetails?.email,
@@ -676,8 +670,49 @@ function Home({ navigation, route }: any) {
       }
   }
 
-  console.log(cancelledHours, "cancelledHour")
+  // console.log(cancelledHours, "cancelledHour")
 
+  function convertTo12HourFormat(time24: string): string {
+    const [hourStr, minuteStr] = time24.split(":");
+    const hour = parseInt(hourStr);
+    let period = "AM";
+    let twelveHour = hour;
+
+    if (hour >= 12) {
+        period = "PM";
+        if (hour > 12) {
+            twelveHour = hour - 12;
+        }
+    }
+
+    if (twelveHour === 0) {
+        twelveHour = 12;
+    }
+
+    return `${twelveHour}:${minuteStr} ${period}`;
+}
+
+// function convertDateFormat(date: string): string {
+//   const formattedDate = new Date(date).toLocaleDateString('en-US', {
+//     day: '2-digit',
+//     month: 'short',
+//     year: 'numeric',
+//   });
+//   return formattedDate;
+// }
+
+function convertDateFormat(date: string): string {
+  const dateObj = new Date(date);
+  const day = dateObj.getDate();
+  const monthNames = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+  ];
+  const monthIndex = dateObj.getMonth();
+  const year = dateObj.getFullYear();
+
+  return `${day} ${monthNames[monthIndex]} ${year}`;
+}
 
   return !cancelledHours ? (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -688,24 +723,24 @@ function Home({ navigation, route }: any) {
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
-      style={styles.container}>
+      style={[styles.container,{}]} showsVerticalScrollIndicator={false}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View>
-          <Text style={styles.text}>Hello,</Text>
-          <Text style={[styles.heading, { fontSize: 16 }]}>
+        <View style={{marginTop:15}}>
+          <Text style={[styles.text, { fontSize: 20 }]}>Hello,</Text>
+          <Text style={[styles.heading, { fontSize: 22 }]}>
             {tutorDetails?.displayName ?? tutorDetails.full_name}
           </Text>
         </View>
 
         <View style={styles.firstBox}>
-          <Text style={[styles.text, { color: Theme.white, fontSize: 11 }]}>
+          <Text style={[styles.text, { color: Theme.white, fontSize: 12 }]}>
             {currentDate}
           </Text>
           <Text
             style={[styles.heading, { color: Theme.white, fontWeight: '400' }]}>
             RM {cummulativeCommission}
           </Text>
-          <Text style={[styles.text, { color: Theme.white, fontSize: 11 }]}>
+          <Text style={[styles.text, { color: Theme.white, fontSize: 12 }]}>
             CUMMULATIVE COMMISSION
           </Text>
         </View>
@@ -750,12 +785,12 @@ function Home({ navigation, route }: any) {
               {
                 backgroundColor: Theme.lightGray,
                 justifyContent: 'space-between',
-                paddingHorizontal: 15,
+                paddingHorizontal: 20,
                 flexDirection: 'row',
-                marginTop: 10,
+                marginTop: 15,
               },
             ]}>
-            <Text style={[styles.text, { color: Theme.black, fontSize: 12 }]}>
+            <Text style={[styles.text, { color: Theme.black, fontSize: 16 }]}>
               Notifications
             </Text>
             <View
@@ -774,29 +809,31 @@ function Home({ navigation, route }: any) {
           </TouchableOpacity>
         )}
 
-        <View style={{ marginTop: 20 }}>
-          <Text style={[styles.heading, { fontSize: 14 }]}>Monthly Summary</Text>
-          <Text style={[styles.text, { fontSize: 12, color: Theme.gray }]}>
+        <View style={{ marginTop: 25 }}>
+          <Text style={[styles.heading, { fontSize: 16 }]}>Monthly Summary</Text>
+          <Text style={[styles.text, { fontSize: 14, color: Theme.gray,fontWeight:'500' }]}>
             {currentMonth}
           </Text>
         </View>
-        <View style={{ flexDirection: 'row', marginTop: 10 }}>
+        {/* attended hours */}
+        <View style={{ flexDirection: 'row', marginTop: 15 }}>
           <View
             style={{ flexDirection: 'row', width: '50%', alignItems: 'center' }}>
             <View
-              style={{ backgroundColor: 'pink', padding: 5, borderRadius: 10 }}>
+              style={{ backgroundColor: 'pink', padding: 10, borderRadius: 8 }}>
               <Image
                 source={require('../../Assets/Images/timer-or-chronometer-tool.png')}
                 style={{ width: 20, height: 20 }}
               />
             </View>
             <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-              <Text style={[styles.text, { fontSize: 9 }]}>Attended hours</Text>
-              <Text style={[styles.text, { fontSize: 12, fontWeight: '700' }]}>
+              <Text style={[styles.text, { fontSize: 12 }]}>Attended hours</Text>
+              <Text style={[styles.text, { fontSize: 16, fontWeight: '700' }]}>
                 {attendedHours}
               </Text>
             </View>
           </View>
+          {/* Active student */}
           <View
             style={{
               flexDirection: 'row',
@@ -807,8 +844,8 @@ function Home({ navigation, route }: any) {
             <View
               style={{
                 backgroundColor: '#c1a7b0',
-                padding: 5,
-                borderRadius: 10,
+                padding: 10,
+                borderRadius: 8,
               }}>
               <Image
                 source={require('../../Assets/Images/student.png')}
@@ -816,21 +853,22 @@ function Home({ navigation, route }: any) {
               />
             </View>
             <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-              <Text style={[styles.text, { fontSize: 10 }]}>Active Student</Text>
-              <Text style={[styles.text, { fontSize: 14, fontWeight: '700' }]}>
+              <Text style={[styles.text, { fontSize: 12 }]}>Active Student</Text>
+              <Text style={[styles.text, { fontSize: 16, fontWeight: '700' }]}>
                 {students?.length}
               </Text>
             </View>
           </View>
         </View>
+        {/*Schedule hours & cancel hours  */}
         <View style={{ flexDirection: 'row', marginTop: 20 }}>
           <View
             style={{ flexDirection: 'row', width: '50%', alignItems: 'center' }}>
             <View
               style={{
                 backgroundColor: '#e9ccb1',
-                padding: 5,
-                borderRadius: 10,
+                padding: 10,
+                borderRadius: 8,
               }}>
               <Image
                 source={require('../../Assets/Images/scheduled.png')}
@@ -838,8 +876,8 @@ function Home({ navigation, route }: any) {
               />
             </View>
             <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-              <Text style={[styles.text, { fontSize: 10 }]}>Schedule hours</Text>
-              <Text style={[styles.text, { fontSize: 12, fontWeight: '700' }]}>
+              <Text style={[styles.text, { fontSize: 12 }]}>Schedule hours</Text>
+              <Text style={[styles.text, { fontSize: 16, fontWeight: '700' }]}>
                 {schedulesHours}
               </Text>
             </View>
@@ -854,8 +892,8 @@ function Home({ navigation, route }: any) {
             <View
               style={{
                 backgroundColor: '#e8e6b9',
-                padding: 5,
-                borderRadius: 10,
+                padding: 10,
+                borderRadius: 8,
               }}>
               <Image
                 source={require('../../Assets/Images/clock.png')}
@@ -863,15 +901,15 @@ function Home({ navigation, route }: any) {
               />
             </View>
             <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-              <Text style={[styles.text, { fontSize: 10 }]}>Cancelled hours</Text>
-              <Text style={[styles.text, { fontSize: 12, fontWeight: '700' }]}>
+              <Text style={[styles.text, { fontSize: 12 }]}>Cancelled hours</Text>
+              <Text style={[styles.text, { fontSize: 16, fontWeight: '700' }]}>
                 {cancelledHours}
               </Text>
             </View>
           </View>
         </View>
 
-        <Text style={[styles.text, { marginTop: 20, fontWeight: '500' }]}>
+        <Text style={[styles.text, { marginTop: 20, fontWeight: '500',fontSize:16 }]}>
           Upcoming Classes
         </Text>
         {upCommingClasses && upCommingClasses.length > 0 ? (
@@ -881,20 +919,24 @@ function Home({ navigation, route }: any) {
             nestedScrollEnabled
             showsHorizontalScrollIndicator={false}
             renderItem={({ item, index }: any) => {
+              const startTime12Hour = convertTo12HourFormat(item.startTime);
+                const endTime12Hour = convertTo12HourFormat(item.endTime);
+                // const formattedDate = convertDateFormat(item.date);
               return (
                 <TouchableOpacity
                   activeOpacity={0.8}
                   style={{
                     borderWidth: 1,
                     paddingHorizontal: 15,
-                    width: 250,
+                    width: 280,
                     height: 150,
-                    marginTop: 10,
+                    marginTop: 15,
                     paddingVertical: 15,
                     borderRadius: 10,
                     gap: 10,
                     marginRight: 10,
                     borderColor: '#eee',
+                    marginBottom:40
                   }}
                   onPress={() => routeToScheduleScreen(item)}>
                   <View
@@ -912,25 +954,26 @@ function Home({ navigation, route }: any) {
                         borderRadius: 50,
                       }}
                     />
-                    <Text style={{ color: Theme.black, fontSize: 15 }}>
+                    <Text style={{ color: Theme.black, fontSize: 16 }}>
                       {item?.studentName}
                     </Text>
                   </View>
                   <Text
                     style={{
                       color: Theme.black,
-                      fontSize: 14,
+                      fontSize: 16,
                       fontWeight: '600',
                     }}>
                     {item?.subject_name}
                   </Text>
                   <View>
-                    <Text style={{ color: Theme.gray, fontSize: 12 }}>
-                      {item?.startTime} to {item?.endTime}{' '}
+                    <Text style={{ color: Theme.gray, fontSize: 14 }}>
+                      Time - {startTime12Hour} to {endTime12Hour}{' '}
                     </Text>
                     <Text
-                      style={{ color: Theme.gray, fontSize: 12, marginTop: 10 }}>
-                      {item?.date?.slice(0, 11)}
+                      style={{ color: Theme.gray, fontSize: 14, marginTop: 10 }}>
+                      {/* Date - {item?.date?.slice(0, 11)} */}
+                      Date - {convertDateFormat(item.date)}
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -999,18 +1042,18 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Theme.black,
-    fontSize: 14,
+    fontSize: 22,
   },
   heading: {
     color: Theme.black,
     fontSize: 22,
-    fontWeight: '600',
+    fontWeight: '500',
   },
   firstBox: {
     alignItems: 'center',
     paddingVertical: 25,
     backgroundColor: Theme.darkGray,
     borderRadius: 6,
-    marginTop: 10,
+    marginTop: 15,
   },
 });

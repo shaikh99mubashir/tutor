@@ -212,7 +212,7 @@ function EditAttendedClass({ navigation, route }: any) {
                       : 'Attended'}
               </Text>
 
-              <AntDesign name="chevron-down" color={Theme.black} size={30} />
+              {/* <AntDesign name="chevron-down" color={Theme.black} size={30} /> */}
             </View>
           </View>
 
@@ -242,7 +242,7 @@ function EditAttendedClass({ navigation, route }: any) {
           </View>
         </View>
       </ScrollView>
-      <View style={{ width: '100%', alignItems: 'center', marginBottom: 20 }}>
+      <View style={{ width: '92%', alignItems: 'center', marginBottom: 20,alignSelf:'center' }}>
         <TouchableOpacity
           onPress={() => changeStatus()}
           style={{

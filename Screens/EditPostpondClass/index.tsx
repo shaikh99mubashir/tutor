@@ -124,6 +124,7 @@ function EditPostpondClass({ navigation, route }: any) {
 
 
     const onChange = (event: any, selectedDate: any) => {
+        setShow(false)
         const currentDate = selectedDate;
 
         let data = { ...nextClass }
@@ -211,7 +212,7 @@ function EditPostpondClass({ navigation, route }: any) {
                                 {route?.params?.schedule ? "Scheduled" : route?.params?.postpond ? "Postponed" : ""}
                             </Text>
 
-                            <AntDesign name="chevron-down" color={Theme.black} size={30} />
+                            {/* <AntDesign name="chevron-down" color={Theme.black} size={30} /> */}
                         </View>
                     </View>
 
@@ -262,7 +263,7 @@ function EditPostpondClass({ navigation, route }: any) {
                     )}
                 </ScrollView>
             </View>
-            <View style={{ width: "100%", alignItems: "center", marginBottom: 20 }} >
+            <View style={{ width: "92%", alignItems: "center", marginBottom: 20,alignSelf:'center' }} >
                 <TouchableOpacity onPress={() => editTutorPostPonedClass()} style={{ backgroundColor: Theme.darkGray, padding: 15, borderRadius: 10, width: "95%" }} >
                     <Text style={{ textAlign: "center", fontSize: 16, color: Theme.white }} >
                         Confirm Class

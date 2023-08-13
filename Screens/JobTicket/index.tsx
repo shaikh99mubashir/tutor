@@ -326,8 +326,7 @@ function JobTicket({ navigation, route }: any) {
 
 
   const renderOpenData: any = ({ item }: any) => {
-
-
+    console.log('Item',item);
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('OpenDetails', item)}

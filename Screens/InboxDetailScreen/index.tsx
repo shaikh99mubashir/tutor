@@ -46,7 +46,13 @@ function InboxDetail({navigation, route}: any) {
     getDetailedNews();
   }, []);
 
-  console.log('data', data);
+  // console.log('data', data);
+  const [loading1, setLoading1] = useState(true);
+  const imageUrl = data?.headerimage; // Replace with your image URL
+
+  const handleImageLoad = () => {
+    setLoading(false); // Set loading to false when image is loaded
+  };
 
   return loading ? (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -64,52 +70,89 @@ function InboxDetail({navigation, route}: any) {
       </View>
 
       <ScrollView style={{height: '100%', padding: 20}}>
-        <Text style={{fontSize: 16, color: Theme.black, fontWeight: '500'}}>
-          {newsData.subject}
-        </Text>
-        <Text
-          style={{
-            fontSize: 12,
-            color: Theme.black,
-            fontWeight: '400',
-            marginTop: 5,
-          }}>
-          {newsData.preheader}
-        </Text>
-
-        <View style={{flexDirection: 'row', marginTop: 10}}>
-          <Text style={{fontSize: 12, color: Theme.black, fontWeight: '500'}}>
-            {newsData?.created_at?.slice(0, 10)}
+        {newsData.subject && (
+          <Text style={{fontSize: 18, color: Theme.black, fontWeight: '500'}}>
+            {newsData.subject}
           </Text>
-          <Text style={{fontSize: 12, color: Theme.black, fontWeight: '500'}}>
-            {' '}
-            -{' '}
-          </Text>
-          <Text style={{fontSize: 12, color: Theme.black, fontWeight: '500'}}>
-            {newsData?.created_at?.slice(11, 19)}
-          </Text>
-        </View>
+        )}
+        
 
-        <Text
-          style={{
-            fontSize: 12,
-            color: Theme.black,
-            fontWeight: '700',
-            marginTop: 15,
-          }}>
-          {newsData.content}
-        </Text>
-
-        <Image
+        {/* <Image
           source={{uri: data?.headerimage}}
           style={{
             width: '95%',
             height: 200,
-            borderRadius: 10,
-            marginVertical: 5,
+            marginVertical: 15,
+          }}
+          resizeMode="contain"
+        /> */}
+
+        {loading && (
+          <ActivityIndicator
+            style={{marginTop: 100}}
+            size="large"
+            color="gray"
+          />
+        )}
+        {data?.headerimage && (
+          <Image
+            source={{uri: imageUrl}}
+            style={{
+              width: '95%',
+              height: 200,
+              marginVertical: 15,
+              display: loading ? 'none' : 'flex', // Show the image when loading is false
+            }}
+            resizeMode="contain"
+            onLoad={handleImageLoad}
+          />
+        )}
+        {/* Actual Image */}
+        {/* {!loading && (
+        <Image
+          source={{ uri: imageUrl }}
+          style={{
+            width: '95%',
+            height: 200,
+            marginVertical: 15,
           }}
           resizeMode="contain"
         />
+      )} */}
+        <View style={{flexDirection: 'row', marginTop: 5}}>
+          <Text style={{fontSize: 14, color: Theme.black, fontWeight: '500'}}>
+            {newsData?.created_at?.slice(0, 10)}
+          </Text>
+          <Text style={{fontSize: 14, color: Theme.black, fontWeight: '500'}}>
+            {' '}
+            -{' '}
+          </Text>
+          <Text style={{fontSize: 14, color: Theme.black, fontWeight: '500'}}>
+            {newsData?.created_at?.slice(11, 19)}
+          </Text>
+        </View>
+
+        {newsData.preheader && (
+          <Text
+            style={{
+              fontSize: 14,
+              color: Theme.black,
+              fontWeight: '500',
+              marginTop: 10,
+            }}>
+            {newsData.preheader}
+          </Text>
+        )}
+
+        <Text
+          style={{
+            fontSize: 14,
+            color: Theme.black,
+            // fontWeight: '700',
+            marginTop: 10,
+          }}>
+          {newsData.content}
+        </Text>
 
         {/* <View style={{marginTop: 20, flexDirection: 'row'}}>
           <View

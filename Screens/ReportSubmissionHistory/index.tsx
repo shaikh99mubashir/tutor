@@ -155,6 +155,8 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           p {
             font-size: 16px;
             line-height: 1.5;
+            padding:0;
+            margin:0;
           }
         </style>
       </head>
@@ -165,32 +167,39 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
         <div style="display: flex; justify-content: space-between;">
           <div style="display: flex; flex-direction: column; width: 45%">
             <img src=${item.logo} alt="logo" style="width: 150px" />
-            <p style="color: blue";margin-top: 20px;>Sifu Edu & Learning Sdn Bhd (1270698-W)</p>
-            <p style="margin-top: 5px;">1-1F, Jalan Setia Perdana BE U13/BE Setia Alam, Shah Alam, 40170,
-              Selangor Tel: 603-5888 4827</p>
+            <span style="color: blue";margin-top: 15px;>Sifu Edu & Learning Sdn Bhd (1270698-W)</span>
+            <span style="margin-top: 15px;">1-1F, Jalan Setia Perdana BE U13/BE Setia Alam, Shah Alam, 40170,
+              Selangor Tel: 603-5888 4827</span>
           </div>
           <div style="display: flex; flex-direction: column; width: 50%">
-            <span
+            <p
               style="font-size: 25px; background-color: orangered;
                color: white; padding: 8px; white-space: pre; font-weight: 700;margin-top: 20px;"
-              >${item.tutorReportType}</span>
+              >${item.tutorReportType}</p>
           </div>
         </div>
         
-        <div style="display: flex; align-items: center;gap: 10px;">
+        <div style="display: flex; flex-direction: row;">
+        <div style="display: flex; align-items: center;gap: 10px; width:50%;">
         <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Student</h3>
         <h3 style='white-space: pre;'>${item.studentName}</h3>
       </div>
-        <div style="display: flex; flex-direction: row;gap:10px;">
-          <div style="display: flex; align-items: center;gap:5px;">
-            <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Tutor</h3>
-            <h3 style='white-space: pre;'>${item.tutorName}</h3>
-          </div>
-          <div style="display: flex; align-items: center;gap:5px;">
+  
+      <div style="display: flex; align-items: center;gap:5px;width:50%;">
+      <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Tutor</h3>
+      <h3 style='white-space: pre;'>${item.tutorName}</h3>
+    </div>
+    </div>
+
+
+
+    <div style="display: flex; flex-direction: row;">
+          
+          <div style="display: flex; align-items: center;gap:5px;width:50%">
             <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Subject</h3>
             <h3 style='white-space: pre;'>${item.subjectName}</h3>
           </div>
-          <div style="display: flex; align-items: center;gap:5px;">
+          <div style="display: flex; align-items: center;gap:5px;width:50%">
             <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Month</h3>
             <h3 style='white-space: pre;'>${item.month}</h3>
           </div>
@@ -198,10 +207,10 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
       </div>
 
       <div>
-      <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">A. KNOWLEDGE</p>
+      <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; marginTop: 10px;">A. KNOWLEDGE</p>
       <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
       <p style="color: rgb(0, 0, 95); margin: 0px;">1. What can you tell us about the student’s knowledge of this subject?</p>
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 5px;">
         <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.knowledge ===
             'Poor - Able to recall basic facts after giving hints about the subject matter.'
             ? 'rgb(0, 0, 95)'
@@ -217,7 +226,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
             : 'Poor - Able to recall basic facts after giving hints about the subject matter.'
           }</p>
       </div>
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 5px;">
         <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.knowledge ===
             'Average - Able to recall some basic facts independently.'
             ? 'rgb(0, 0, 95)'
@@ -233,7 +242,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
             : 'Average - Able to recall some basic facts independently.'
           }</p>
       </div>
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 5px;">
         <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.knowledge ===
             'Good - Able to recall basic facts with ease and little error.'
             ? 'rgb(0, 0, 95)'
@@ -254,11 +263,11 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
      
   </div>
   </div>
-  <div style="margin-top: 30px;">
+  <div style="margin-top: 20px;">
       <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">B. UNDERSTANDING</p>
       <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
       <p style="color: rgb(0, 0, 95); margin: 0px;">1. What can you tell about the student’s understanding of this subject?</p>
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 5px;">
         <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.understanding ===
             'Poor - Able to explain/demonstrate facts with difficulty.'
             ? 'rgb(0, 0, 95)'
@@ -274,7 +283,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
             : 'Poor - Able to explain/demonstrate facts with difficulty.'
           }</p>
       </div>
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 5px;">
         <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.understanding ===
             'Average - Able to explain/demonstrate facts with some error.'
             ? 'rgb(0, 0, 95)'
@@ -290,7 +299,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
             : 'Poor - Able to explain/demonstrate facts with difficulty.'
           }</p>
       </div>
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 5px;">
         <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.understanding ===
             'Good - Able to explain/demonstrate facts concisely with little error'
             ? 'rgb(0, 0, 95)'
@@ -307,11 +316,11 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
       </div>
   </div>
-  <div style="margin-top: 100px;">
+  <div style="margin-top: 20px;">
       <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">C. ANALYSIS</p>
       <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
       <p style="color: rgb(0, 0, 95); margin: 0px;">1. What can you tell about the student’s understanding of this subject?</p>
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 5px;">
         <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.analysis ===
             'Poor - Able to solve different types of problems with guidance.'
             ? 'rgb(0, 0, 95)'
@@ -327,7 +336,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
             : 'Poor - Able to solve different types of problems with guidance.'
           }</p>
       </div>
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 5px;">
         <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.analysis ===
             'Average - Able to solve different types of problems with some hint.'
             ? 'rgb(0, 0, 95)'
@@ -343,7 +352,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
             : 'Average - Able to solve different types of problems with some hint.'
           }</p>
       </div>
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 5px;">
         <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.analysis === 'Good - Able to solve problems with different ways.'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -357,7 +366,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
       </div>
   </div>
-  <div style="margin-top: 30px;">
+  <div style="margin-top: 20px;">
   <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">D. ADDITIONAL ASSESMENT</p>
   <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
   <p style="color: rgb(0, 0, 95); margin: 0px;">1. What is the current score for the subject?</p>
@@ -450,20 +459,25 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           </div>
         </div>
         
-        <div style="display: flex; align-items: center;gap: 10px;">
+        <div style="display: flex; flex-direction: row;gap:10px;">
+        <div style="display: flex; align-items: center;gap: 10px;width:50%;">
         <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Student</h3>
         <h3 style='white-space: pre;'>${item.studentID}</h3>
+        </div>
+
+        <div style="display: flex; align-items: center;gap:5px;width:50%;">
+        <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Tutor</h3>
+        <h3 style='white-space: pre;'>${item.tutorID}</h3>
       </div>
+      </div>
+
         <div style="display: flex; flex-direction: row;gap:10px;">
-          <div style="display: flex; align-items: center;gap:5px;">
-            <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Tutor</h3>
-            <h3 style='white-space: pre;'>${item.tutorID}</h3>
-          </div>
-          <div style="display: flex; align-items: center;gap:5px;">
+         
+          <div style="display: flex; align-items: center;gap:5px;width:50%;">
             <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Subject</h3>
             <h3 style='white-space: pre;'>${item.subjectID}</h3>
           </div>
-          <div style="display: flex; align-items: center;gap:5px;">
+          <div style="display: flex; align-items: center;gap:5px;width:50%;">
             <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Month</h3>
             <h3 style='white-space: pre;'>${item.month}</h3>
           </div>
@@ -472,9 +486,10 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
 
       <div>
       <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">A. PERFOMANCE</p>
-      <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 10px;">
-      <p style="color: rgb(0, 0, 95); margin-top: 10px;">1. Rate student understanding on this subject?</p>
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+      <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
+      <p style="color: rgb(0, 0, 95); margin-top: 5px;">1. Rate student understanding on this subject?</p>
+      <div style='display:flex; flex-direction:row; justify-content: space-between;'>
+      <div style="display: flex; align-items: center; gap: 15px; padding-bottom: 0px; padding-top: 0px;">
       <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_student_understanding_on_this_subject === 'Excellent'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -482,13 +497,13 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
       <p style="margin: 0px;background-color: ${item.rate_student_understanding_on_this_subject === 'Excellent'
             ? 'orange'
             : 'white'
-          }; padding: 5px;">${item.rate_student_understanding_on_this_subject === 'Excellent'
+          }; padding: 0px;">${item.rate_student_understanding_on_this_subject === 'Excellent'
             ? 'Excellent'
             : 'Excellent'
           }</p>
     </div>
 
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
       <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_student_understanding_on_this_subject === 'Good'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -496,13 +511,13 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
       <p style="margin: 0px;background-color: ${item.rate_student_understanding_on_this_subject === 'Good'
             ? 'orange'
             : 'white'
-          }; padding: 5px;">${item.rate_student_understanding_on_this_subject === 'Good'
+          }; padding: 0px;">${item.rate_student_understanding_on_this_subject === 'Good'
             ? 'Good'
             : 'Good'
           }</p>
     </div>
 
-    <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+    <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
     <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_student_understanding_on_this_subject === 'Satisfactory'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -510,13 +525,13 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
     <p style="margin: 0px;background-color: ${item.rate_student_understanding_on_this_subject === 'Satisfactory'
             ? 'orange'
             : 'white'
-          }; padding: 5px;">${item.rate_student_understanding_on_this_subject === 'Satisfactory'
+          }; padding: 0px;">${item.rate_student_understanding_on_this_subject === 'Satisfactory'
             ? 'Satisfactory'
             : 'Satisfactory'
           }</p>
   </div>
 
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_student_understanding_on_this_subject === 'Average'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -524,15 +539,18 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
   <p style="margin: 0px;background-color: ${item.rate_student_understanding_on_this_subject === 'Average'
             ? 'orange'
             : 'white'
-          }; padding: 5px;">${item.rate_student_understanding_on_this_subject === 'Average'
+          }; padding: 0px;">${item.rate_student_understanding_on_this_subject === 'Average'
             ? 'Average'
             : 'Average'
           }</p>
 </div>
 
+</div>
+
 
 <p style="color: rgb(0, 0, 95); margin-top: 10px;">2. how is the student performance on homework?</p>
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style='display:flex; flex-direction:row; justify-content: space-between;'>
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
       <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_is_the_student_performance_on_homework === 'Excellent'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -546,7 +564,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
     </div>
 
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
       <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_is_the_student_performance_on_homework === 'Good'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -560,7 +578,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
     </div>
 
-    <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+    <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
     <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_is_the_student_performance_on_homework === 'Satisfactory'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -574,7 +592,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
   </div>
 
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_is_the_student_performance_on_homework === 'Average'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -587,10 +605,12 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
             : 'Average'
           }</p>
 </div>
+</div>
 
 
 <p style="color: rgb(0, 0, 95); margin-top: 10px;">3. How well student participates in learning session?</p>
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style='display:flex; flex-direction:row; justify-content: space-between;'>
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
       <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_student_answers === 'Excellent'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -602,7 +622,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
     </div>
 
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
       <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_student_answers === 'Good' ? 'rgb(0, 0, 95)' : 'white'
           };border: 2px solid rgb(0, 0, 95);"></div>
       <p style="margin: 0px;background-color: ${item.how_well_student_answers === 'Good' ? 'orange' : 'white'
@@ -610,7 +630,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
     </div>
 
-    <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+    <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
     <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_student_answers === 'Satisfactory'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -622,18 +642,20 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
   </div>
 
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_student_answers === 'Average' ? 'rgb(0, 0, 95)' : 'white'
           };border: 2px solid rgb(0, 0, 95);"></div>
   <p style="margin: 0px;background-color: ${item.how_well_student_answers === 'Average' ? 'orange' : 'white'
           }; padding: 5px;">${item.how_well_student_answers === 'Average' ? 'Average' : 'Average'
           }</p>
+</div>
 </div>
 
 
 
 <p style="color: rgb(0, 0, 95); margin-top: 10px;">4. How well student's answer/explain/eleborates questions givenby tutor?</p>
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style='display:flex; flex-direction:row; justify-content: space-between;'>
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
       <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_student_answers === 'Excellent'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -645,7 +667,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
     </div>
 
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
       <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_student_answers === 'Good' ? 'rgb(0, 0, 95)' : 'white'
           };border: 2px solid rgb(0, 0, 95);"></div>
       <p style="margin: 0px;background-color: ${item.how_well_student_answers === 'Good' ? 'orange' : 'white'
@@ -653,7 +675,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
     </div>
 
-    <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+    <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
     <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_student_answers === 'Satisfactory'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -665,23 +687,25 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
   </div>
 
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_student_answers === 'Average' ? 'rgb(0, 0, 95)' : 'white'
           };border: 2px solid rgb(0, 0, 95);"></div>
   <p style="margin: 0px;background-color: ${item.how_well_student_answers === 'Average' ? 'orange' : 'white'
           }; padding: 5px;">${item.how_well_student_answers === 'Average' ? 'Average' : 'Average'
           }</p>
 </div>
+</div>
 
 
 
   </div>
   </div>
-  <div style="margin-top: 30px;">
+  <div style="margin-top: 10px;">
   <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">B. ATTITUDE</p>
   <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 10px;">
   <p style="color: rgb(0, 0, 95); margin-top: 10px;">1. How can you rate the student attendence for 3 months</p>
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+  <div style='display:flex; flex-direction:row; justify-content: space-between;'>
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_you_can_rate_student_attendance_for_3_months === 'Excellent'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -695,7 +719,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_you_can_rate_student_attendance_for_3_months === 'Good'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -709,7 +733,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
 <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_you_can_rate_student_attendance_for_3_months ===
             'Satisfactory'
             ? 'rgb(0, 0, 95)'
@@ -726,7 +750,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
 <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_you_can_rate_student_attendance_for_3_months === 'Average'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -739,10 +763,12 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
             : 'Average'
           }</p>
 </div>
+</div>
 
 
 <p style="color: rgb(0, 0, 95); margin-top: 10px;">2. How well do you intrect/communicate with student during/after class?</p>
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style='display:flex; flex-direction:row; justify-content: space-between;'>
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_do_you_interact_with_studyent_during_class === 'Excellent'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -757,7 +783,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_do_you_interact_with_studyent_during_class === 'Good'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -771,7 +797,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
 <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_do_you_interact_with_studyent_during_class ===
             'Satisfactory'
             ? 'rgb(0, 0, 95)'
@@ -788,7 +814,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
 <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_do_you_interact_with_studyent_during_class === 'Average'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -801,10 +827,12 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
             : 'Average'
           }</p>
 </div>
+</div>
 
 
 <p style="color: rgb(0, 0, 95); margin-top: 10px;">3. How well the student manage his/her time to complete his/her homework?</p>
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style='display:flex; flex-direction:row; justify-content: space-between;'>
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_manages_his_time_tomplete_his_homework ===
             'Excellent'
             ? 'rgb(0, 0, 95)'
@@ -821,7 +849,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_manages_his_time_tomplete_his_homework === 'Good'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -836,7 +864,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
 <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_manages_his_time_tomplete_his_homework ===
             'Satisfactory'
             ? 'rgb(0, 0, 95)'
@@ -853,7 +881,8 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 5px;">
 <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_manages_his_time_tomplete_his_homework ===
             'Average'
             ? 'rgb(0, 0, 95)'
@@ -869,11 +898,13 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
             : 'Average'
           }</p>
 </div>
+</div>
 
 
 
 <p style="color: rgb(0, 0, 95); margin-top: 10px;">4. How well the student response were corrected?</p>
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style='display:flex; flex-direction:row; justify-content: space-between;'>
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_respondes_when_corrected === 'Excellent'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -887,7 +918,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_respondes_when_corrected === 'Good'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -901,7 +932,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: px;">
 <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_respondes_when_corrected === 'Satisfactory'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -915,7 +946,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: px;">
 <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_respondes_when_corrected === 'Average'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -929,13 +960,15 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
   </div>
+  </div>
 
 
-  <div style="margin-top: 30px;">
+  <div style="margin-top: 10px;">
   <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">C. RESULT</p>
   <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 10px;">
   <p style="color: rgb(0, 0, 95); margin-top: 10px;">1. Rate the student's performance in the quizes</p>
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+  <div style='display:flex; flex-direction:row; justify-content: space-between;'>
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_the_student_performance_in_quizzes === 'Excellent'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -949,7 +982,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_the_student_performance_in_quizzes === 'Good'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -963,7 +996,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
 <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_the_student_performance_in_quizzes ===
             'Satisfactory'
             ? 'rgb(0, 0, 95)'
@@ -980,7 +1013,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
 <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_the_student_performance_in_quizzes === 'Average'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -993,10 +1026,12 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
             : 'Average'
           }</p>
 </div>
+</div>
 
 
 <p style="color: rgb(0, 0, 95); margin-top: 10px;">2. How well the student prepare for the test and assignment?</p>
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style='display:flex; flex-direction:row; justify-content: space-between;'>
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_prepares_for_test_and_assignment === 'Excellent'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -1011,7 +1046,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_prepares_for_test_and_assignment === 'Good'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -1025,7 +1060,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
 <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_prepares_for_test_and_assignment ===
             'Satisfactory'
             ? 'rgb(0, 0, 95)'
@@ -1042,7 +1077,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
 <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_well_the_student_prepares_for_test_and_assignment === 'Average'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -1055,10 +1090,12 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
             : 'Average'
           }</p>
 </div>
+</div>
 
 
 <p style="color: rgb(0, 0, 95); margin-top: 10px;">3. How student's test score at school?</p>
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style='display:flex; flex-direction:row; justify-content: space-between;'>
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_is_the_student_test_score_at_school ===
             'Excellent'
             ? 'rgb(0, 0, 95)'
@@ -1075,7 +1112,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_is_the_student_test_score_at_school === 'Good'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -1090,7 +1127,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
 <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_is_the_student_test_score_at_school ===
             'Satisfactory'
             ? 'rgb(0, 0, 95)'
@@ -1107,7 +1144,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
 <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.how_is_the_student_test_score_at_school ===
             'Average'
             ? 'rgb(0, 0, 95)'
@@ -1123,11 +1160,13 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
             : 'Average'
           }</p>
 </div>
+</div>
 
 
 
 <p style="color: rgb(0, 0, 95); margin-top: 10px;">4. How student's learning prefrences, willingness to learn, and interest towords the subject?</p>
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style='display:flex; flex-direction:row; justify-content: space-between;'> 
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Excellent'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -1141,7 +1180,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Good'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -1155,7 +1194,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
 <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Satisfactory'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -1169,7 +1208,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           }</p>
 </div>
 
-<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 10px; padding-top: 5px;">
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
 <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${item.rate_student_learning_preferences_willingness_to_learn_and_inter === 'Average'
             ? 'rgb(0, 0, 95)'
             : 'white'
@@ -1182,8 +1221,9 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
             : 'Average'
           }</p>
 </div>
+</div>
   </div>
-  <div style="margin-top: 320px;">
+  <div style="margin-top: 10px;">
   <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">D. OBSERVATION</p>
   <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
   <p style="color: rgb(0, 0, 95); margin: 0px;">1.  Did you (tutor) hold or carried out any form of eximination/test/quiz for student within this 3 months?</p>

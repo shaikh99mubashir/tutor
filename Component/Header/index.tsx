@@ -40,7 +40,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
           paddingHorizontal:15,
           borderBottomColor:'grey',
           borderBottomWidth:1,
-          height:50,
+          height:60,
           ...containerStyle
         }}>
         <>
@@ -66,11 +66,11 @@ import Icon from 'react-native-vector-icons/AntDesign';
             <View style={{flex: 2, alignItems: 'center'}}>
               <Text
                 style={{
-                  fontFamily: 'Poppins-Regular',
-                  fontSize: 16,
+                  // fontFamily: 'Poppins-Regular',
+                  fontSize: 22,
                   color: Theme.darkGray,
-                  marginVertical: 15,
-                  fontWeight: 'bold',
+                  marginVertical: 0,
+                fontWeight: '600',
                 }}>
                 {title}
               </Text>
@@ -103,7 +103,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
                 }}
                 activeOpacity={0.8}
                 onPress={() =>{} }>
-                <Image source={require('../../Assets/Images/plus.png')} style={{width:20, height:20}} resizeMode='contain' />
+                <Image source={require('../../Assets/Images/plus.png')} style={{width:25, height:25}} resizeMode='contain' />
               </TouchableOpacity>
             </View>
           ) : plus ?   <View style={{flex: 1,alignItems:"flex-end"}}>

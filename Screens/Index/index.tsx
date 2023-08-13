@@ -410,8 +410,8 @@ function Index({ navigation }: any) {
               borderWidth: 1,
               borderColor: Theme.lightGray,
               borderRadius: 100,
-              width: 40,
-              height: 40,
+              width: 50,
+              height: 50,
               alignItems: 'center',
               justifyContent: 'center',
             }}>
@@ -422,30 +422,30 @@ function Index({ navigation }: any) {
                 width: 8,
                 backgroundColor: Theme.lightGray,
                 borderRadius: 100,
-                left: 2,
+                left: 4,
                 top: 0,
               }}></View>
 
             <Icon
               name="chatbubble-ellipses-outline"
-              size={30}
+              size={25}
               color={Theme.gray}
             />
           </View>
 
           <View style={{ marginLeft: 10 }}>
             <Text
-              style={{ fontSize: 14, fontWeight: '700', color: Theme.black }}
+              style={{ fontSize: 16, fontWeight: '700', color: Theme.black }}
               numberOfLines={1}>
               {item?.subject}
             </Text>
             <Text
-              style={{ fontSize: 12, fontWeight: '500', color: Theme.black }}
+              style={{ fontSize: 14, fontWeight: '500', color: Theme.black }}
               numberOfLines={1}>
               {item.status}
             </Text>
             <Text
-              style={{ fontSize: 10, fontWeight: '500', color: Theme.gray }}
+              style={{ fontSize: 12, fontWeight: '500', color: Theme.gray }}
               numberOfLines={1}>
               {item.created_at}
             </Text>

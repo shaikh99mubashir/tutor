@@ -209,7 +209,7 @@ function EditScheduleClass({ navigation, route }: any) {
                             <Text style={{ color: Theme.black, fontSize: 16, fontWeight: "500" }}>
                                 {route?.params?.schedule ? "Scheduled" : route?.params?.postpond ? "Postponed" : ""}
                             </Text>
-                            <AntDesign name="chevron-down" color={Theme.black} size={30} />
+                            {/* <AntDesign name="chevron-down" color={Theme.black} size={30} /> */}
                         </View>
                     </View>
 

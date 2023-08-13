@@ -58,7 +58,7 @@ const OpenDetails = ({ route, navigation }: any) => {
 
   return (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
-      <Header title={data.code} backBtn navigation={navigation} />
+      <Header title={data.uid} backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <View style={{ paddingHorizontal: 15 }}>
           <Text

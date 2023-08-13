@@ -76,9 +76,10 @@ function AddClass({ navigation }: any) {
       tutorID: tutorId,
       studentID: selectedStudent?.studentID,
       subjectID: selectedSubject?.id,
-      startTime: '-',
-      endTime: '-',
-      date: new Date(),
+      startTime: '12:00 PM',
+      endTime: '02:00 PM',
+      // date: new Date(),
+      date: '-',
     },
   ]);
 
@@ -165,7 +166,7 @@ function AddClass({ navigation }: any) {
 
 
   const onChange = (event: any, selectedDate: any) => {
-
+    setShow(false);
     const currentDate = selectedDate;
     let hours = currentDate.getHours()
     let minutes = currentDate.getMinutes()
@@ -262,6 +263,7 @@ function AddClass({ navigation }: any) {
             borderWidth: 1,
             borderColor: Theme.gray
           }}>
+            <TouchableOpacity activeOpacity={0.8} style={{paddingVertical:5}} onPress={() => setClassDate('date', index)}>
           <View
             style={{
               flexDirection: 'row',
@@ -271,13 +273,15 @@ function AddClass({ navigation }: any) {
             <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '500' }}>
               Date
             </Text>
-            <TouchableOpacity onPress={() => setClassDate('date', index)}>
               <Text
                 style={{ color: Theme.black, fontSize: 12, fontWeight: '500' }}>
-                {item.date.toString().slice(0, 15)}
+                
+                {item?.date !== '-'
+                  ? item.date.toString().slice(0, 15)
+                  : '-'}
               </Text>
-            </TouchableOpacity>
           </View>
+            </TouchableOpacity>
           <View
             style={{
               flexDirection: 'row',
@@ -295,9 +299,9 @@ function AddClass({ navigation }: any) {
               style={{ minWidth: 50, alignItems: 'flex-end' }}>
               <Text
                 style={{ color: Theme.black, fontSize: 12, fontWeight: '500' }}>
-                {item?.startTime !== '-'
+                {item?.startTime !== '12:00 PM'
                   ? item?.startTime.toLocaleString().slice(10)
-                  : '-'}
+                  : '12:00 PM'}
               </Text>
             </TouchableOpacity>
           </View>
@@ -317,9 +321,9 @@ function AddClass({ navigation }: any) {
               style={{ minWidth: 50, alignItems: 'flex-end' }}>
               <Text
                 style={{ color: Theme.black, fontSize: 12, fontWeight: '500' }}>
-                {item?.endTime !== '-'
+                {item?.endTime !== '02:00 PM'
                   ? item?.endTime.toLocaleString().slice(10)
-                  : '-'}
+                  : '02:00 PM'}
               </Text>
             </TouchableOpacity>
           </View>
@@ -335,9 +339,10 @@ function AddClass({ navigation }: any) {
       tutorID: tutorId,
       studentID: selectedStudent?.studentID,
       subjectID: selectedSubject?.id,
-      startTime: '-',
-      endTime: '-',
-      date: new Date(),
+      startTime: '12:00 PM',
+      endTime: '02:00 PM',
+      // date: new Date(),
+      date: '-',
     };
 
     setClasses([...classes, newClass]);
@@ -411,6 +416,18 @@ function AddClass({ navigation }: any) {
       ToastAndroid.show("Sorry classes added unsuccessfull", ToastAndroid.SHORT)
     })
   };
+  const showToast = (message:any) => {
+    ToastAndroid.show(message, ToastAndroid.SHORT);
+  };
+  const handleSubjectDropdownOpen = () => {
+    if (selectedStudent) {
+      // Open the subject dropdown or perform any action
+      // showToast('Subject dropdown opened.');
+    } else {
+      // Show an error message
+      showToast('Please select the student before you select the subject.');
+    }
+  };
   return (
     loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
       <ActivityIndicator size="large" color={Theme.black} />
@@ -443,6 +460,7 @@ function AddClass({ navigation }: any) {
               ddTitle={'Subject'}
               selectedSubject={selectedSubject}
               setSelectedSubject={setSelectedSubject}
+              // setSelectedSubject={handleSubjectDropdownOpen}
               dropdownContainerStyle={{
                 // backgroundColor: Theme.lightGray,
                 paddingVertical: 17,
