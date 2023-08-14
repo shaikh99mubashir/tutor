@@ -204,6 +204,7 @@ const Filter = ({ navigation, route }: any) => {
             selectedValue={setSelectedStatus}
             placeHolder="Select Status"
             option={status}
+            modalHeading="Select Status"
           />
         </View>
           : <View style={{ paddingHorizontal: 15 }}>
