@@ -160,6 +160,22 @@ const Students = ({ navigation }: any) => {
     displayBanner();
   }, []);
 
+  const closeBannerModal = async () => {
+
+    if (studentBanner.displayOnce == "on") {
+
+      let bannerData = { ...studentBanner }
+
+      let stringData = JSON.stringify(bannerData)
+
+      let data = await AsyncStorage.setItem("studentBanner", stringData)
+      setStudentBanner([])
+      setOpenPPModal(false)
+    } else {
+      setOpenPPModal(false)
+    }
+  }
+
 
   return (
     loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
@@ -260,7 +276,7 @@ const Students = ({ navigation }: any) => {
           visible={openPPModal}
           animationType="fade"
           transparent={true}
-          onRequestClose={() => setOpenPPModal(false)}>
+          onRequestClose={() => closeBannerModal()}>
           <TouchableOpacity
             onPress={linkToOtherPage}
             style={{
@@ -277,7 +293,7 @@ const Students = ({ navigation }: any) => {
                 borderRadius: 5,
                 marginHorizontal: 20,
               }}>
-              <TouchableOpacity onPress={() => setOpenPPModal(false)}>
+              <TouchableOpacity onPress={() => closeBannerModal()}>
                 <View style={{ alignItems: 'flex-end', paddingVertical: 10, paddingRight: 15 }}>
                   <AntDesign
                     name="closecircleo"

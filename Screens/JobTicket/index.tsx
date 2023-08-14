@@ -26,6 +26,7 @@ import AsyncStorage, {
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import bannerContext from '../../context/bannerContext';
+import Status from '../Status';
 
 function JobTicket({ navigation, route }: any) {
 
@@ -56,6 +57,9 @@ function JobTicket({ navigation, route }: any) {
       selected: false,
     },
   ]);
+
+
+
   const activateTab = (index: any) => {
     setCurrentTab(
       currentTab &&
@@ -171,9 +175,6 @@ function JobTicket({ navigation, route }: any) {
       let myState = state.id ?? "noFilter"
       let myCity = city.id ?? "noFilter"
 
-      console.log(categoryID, subjectID, myMode, myState, myCity)
-
-
       axios
         .get(`${Base_Uri}ticketsAPI/${tutorDetails?.tutorId}`)
         .then(({ data }) => {
@@ -183,7 +184,7 @@ function JobTicket({ navigation, route }: any) {
             tickets.length > 0 &&
             tickets.filter((e: any, i: number) => {
 
-              console.log(e, "eeee")
+
 
               return (myMode == "noFilter" || e?.mode?.toString()?.toLowerCase() == myMode?.toString()?.toLowerCase())
                 && (subjectID == "noFilter" || e.subject_id == subjectID)
@@ -253,6 +254,40 @@ function JobTicket({ navigation, route }: any) {
     tutorData = JSON.parse(tutorData);
 
     let tutor_id = tutorData?.tutorID;
+
+
+    let appliedStatus: any = await AsyncStorage.getItem("statusFilter")
+
+    let status = JSON.parse(appliedStatus)
+
+
+
+    if (status) {
+
+
+      axios
+        .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
+        .then(({ data }) => {
+          let { getTutorOffers } = data;
+
+          let tutorOffer = getTutorOffers && getTutorOffers.length > 0 && getTutorOffers.filter((e: any, i: number) => {
+            return e?.ticketStatus?.toString().toLowerCase() == status.option.toString().toLowerCase()
+          })
+
+          console.log(tutorOffer, "offerrrrrr")
+          console.log(status, "statusss")
+
+          setAppliedData(tutorOffer)
+          setLoading(false);
+        })
+        .catch(error => {
+          ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+          setLoading(false);
+        });
+      return
+
+    }
+
 
     axios
       .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
@@ -331,22 +366,24 @@ function JobTicket({ navigation, route }: any) {
     let twelveHour = hour;
 
     if (hour >= 12) {
-        period = "PM";
-        if (hour > 12) {
-            twelveHour = hour - 12;
-        }
+      period = "PM";
+      if (hour > 12) {
+        twelveHour = hour - 12;
+      }
     }
 
     if (twelveHour === 0) {
-        twelveHour = 12;
+      twelveHour = 12;
     }
 
     return `${twelveHour}:${minuteStr} ${period}`;
-}
+  }
 
   const renderOpenData: any = ({ item }: any) => {
-    console.log('Item',item);
-    
+
+    console.log(item, "itemsss")
+
+
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('OpenDetails', item)}
@@ -396,29 +433,29 @@ function JobTicket({ navigation, route }: any) {
             {item?.studentGender} Student ({item?.studentAge}y/o)</Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
             {item?.subject} - {item?.session} sessions {item?.hours}
-            </Text>
+          </Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
             - Tutor Gender: {item?.tutorGender}
-            </Text>
+          </Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
             - PreferredDay/Time: {item?.preferredDay}
-            </Text>
+          </Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
             - Mode: {item?.subscription}
-            </Text>
-            {item?.remarks &&
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            - Remarks: {item?.remarks}
-            </Text>
-          }
-            {item?.first8Hour &&
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-           {item?.first8Hour}
+          </Text>
+          {item?.remarks &&
+            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+              - Remarks: {item?.remarks}
             </Text>
           }
-            {item?.above9Hour &&
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            {item?.above9Hour}
+          {item?.first8Hour &&
+            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+              {item?.first8Hour}
+            </Text>
+          }
+          {item?.above9Hour &&
+            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+              {item?.above9Hour}
             </Text>
           }
         </View>
@@ -435,11 +472,9 @@ function JobTicket({ navigation, route }: any) {
     );
   };
   const renderCloseData = ({ item }: any) => {
-    console.log('item==>close',item);
-    
+
     return (
       <TouchableOpacity
-        // onPress={() => navigation.navigate('AppliedDetails', item)}
         activeOpacity={0.8}
         style={{
           borderWidth: 1,
@@ -486,34 +521,34 @@ function JobTicket({ navigation, route }: any) {
             {item?.studentGender} Student ({item?.studentAge}y/o)</Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
             {item?.subject} - {item?.session} sessions {item?.hours}
-            </Text>
+          </Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
             - Tutor Gender: {item?.tutorGender}
-            </Text>
+          </Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
             - PreferredDay/Time: {item?.preferredDay}
-            </Text>
+          </Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
             - Mode: {item?.subscription}
-            </Text>
-            {item?.remarks &&
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            - Remarks: {item?.remarks}
-            </Text>
-          }
-            {item?.first8Hour &&
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-           {item?.first8Hour}
+          </Text>
+          {item?.remarks &&
+            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+              - Remarks: {item?.remarks}
             </Text>
           }
-            {item?.above9Hour &&
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            {item?.above9Hour}
+          {item?.first8Hour &&
+            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+              {item?.first8Hour}
+            </Text>
+          }
+          {item?.above9Hour &&
+            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+              {item?.above9Hour}
             </Text>
           }
 
         </View>
-       
+
         <Text
           style={{
             color: Theme.black,
@@ -689,6 +724,22 @@ function JobTicket({ navigation, route }: any) {
       }
   }
 
+  const closeBannerModal = async () => {
+
+    if (jobTicketBanner.displayOnce == "on") {
+
+      let bannerData = { ...jobTicketBanner }
+
+      let stringData = JSON.stringify(bannerData)
+
+      let data = await AsyncStorage.setItem("ticketBanner", stringData)
+      setJobTicketBanner([])
+      setOpenPPModal(false)
+    } else {
+      setOpenPPModal(false)
+    }
+  }
+
 
 
   return loading ? (
@@ -697,7 +748,7 @@ function JobTicket({ navigation, route }: any) {
     </View>
   ) : (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
-      <Header title="Job Ticket" filter navigation={navigation} />
+      <Header tab={currentTab} title="Job Ticket" filter navigation={navigation} />
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -719,7 +770,7 @@ function JobTicket({ navigation, route }: any) {
           visible={openPPModal}
           animationType="fade"
           transparent={true}
-          onRequestClose={() => setOpenPPModal(false)}>
+          onRequestClose={() => closeBannerModal()}>
           <TouchableOpacity
             onPress={linkToOtherPage}
             style={{
@@ -736,7 +787,7 @@ function JobTicket({ navigation, route }: any) {
                 borderRadius: 5,
                 marginHorizontal: 20,
               }}>
-              <TouchableOpacity onPress={() => setOpenPPModal(false)}>
+              <TouchableOpacity onPress={() => closeBannerModal()}>
                 <View style={{ alignItems: 'flex-end', paddingVertical: 10, paddingRight: 15 }}>
                   <AntDesign
                     name="closecircleo"

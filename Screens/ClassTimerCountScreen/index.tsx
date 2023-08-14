@@ -178,9 +178,9 @@ function ClassTimerCount({ navigation, route }: any) {
                     skipBackup: true,
                     path: 'images',
                 },
-                maxWidth: 500,
-                maxHeight: 500,
-                quality: 0.5,
+                maxWidth: 250,
+                maxHeight: 250,
+                quality: 0.3,
             };
 
             launchCamera(options, (res: any) => {

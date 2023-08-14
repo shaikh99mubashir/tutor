@@ -17,9 +17,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import JobTicket from '../JobTicket';
 import filterContext from '../../context/filterContext';
 import { stat } from 'react-native-fs';
+import DropDownModalView from '../../Component/DropDownModalView';
 
 
-const Filter = ({ navigation }: any) => {
+const Filter = ({ navigation, route }: any) => {
+
+
+
+  let data = route.params
 
 
 
@@ -38,6 +43,20 @@ const Filter = ({ navigation }: any) => {
   const [selectedCity, setSelectedCity] = useState('')
   const [searchCityData, setSearchCityData] = useState([])
 
+
+  const [status, setStatus] = useState([
+    {
+      option: "Approved"
+    },
+    {
+      option: "Pending"
+    },
+    {
+      option: "Rejected"
+    }
+  ])
+
+  const [selectedStatus, setSelectedStatus] = useState("")
 
 
 
@@ -140,50 +159,92 @@ const Filter = ({ navigation }: any) => {
     }
   }
 
+  const applyStatusFilter = async () => {
+
+    if (!selectedStatus) {
+
+      ToastAndroid.show("Kindly Select Status", ToastAndroid.SHORT)
+      return
+    }
+
+    let data = JSON.stringify(selectedStatus)
+
+    await AsyncStorage.setItem("statusFilter", data)
+
+    ToastAndroid.show("Filter has been succesfully Applied", ToastAndroid.SHORT)
+
+    navigation.navigate("Job Ticket", selectedStatus)
+
+
+  }
+
+  const resetStatusFilter = async () => {
+
+
+    await AsyncStorage.removeItem("statusFilter")
+    ToastAndroid.show("Filter has been succesfully reset", ToastAndroid.SHORT)
+
+
+    navigation.navigate("Job Ticket", "reset")
+
+
+
+  }
+
+
+
 
   return (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="Filter" backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{ paddingHorizontal: 15 }}>
-          <CustomDropDown
-            setSelectedSubject={setSelectedCategory}
-            search={"category"}
-            dataShow={5}
-            searchData={searchCategoryData}
-            searchFunc={handleSearchData}
-            selectedSubject={selectedCategory}
-            ddTitle="Category"
-            headingStyle={{ color: Theme.black, fontWeight: "700" }}
-            dropdownPlace={"Select Category"}
-            dropdownContainerStyle={{
-              paddingVertical: 15,
-            }}
-            subject={category}
-            categoryShow={"complain_name"} />
-          <CustomDropDown
-            setSelectedSubject={setSelectedSubject}
-            search={"subject"}
-            searchData={searchSubjectData}
-            searchFunc={handleSearchData}
-            selectedSubject={selectedSubject}
-            ddTitle="Subject" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select Subject"}
-            dropdownContainerStyle={{ paddingVertical: 15, }} subject={subjects} categoryShow={"subject"} />
-          <CustomDropDown
-            setSelectedSubject={setSelectedMode}
-            selectedSubject={selectedMode}
-            ddTitle="Mode" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select Mode"} dropdownContainerStyle={{ paddingVertical: 15, }} subject={classMode} categoryShow={"subject"} />
-          <CustomDropDown setSelectedSubject={setSelectedState}
-            selectedSubject={selectedState} search={"state"} searchData={searchStateData}
-            searchFunc={handleSearchData} ddTitle="State" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select State"} dropdownContainerStyle={{ paddingVertical: 15, }} subject={state} categoryShow={"subject"} />
-          <CustomDropDown ddTitle="City"
-            search={"city"} searchData={searchCityData}
-            searchFunc={handleSearchData}
-            setSelectedSubject={setSelectedCity}
-
-            selectedSubject={selectedCity}
-            headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select City"} dropdownContainerStyle={{ paddingVertical: 15, }} subject={city} categoryShow={"subject"} />
+        {data ? <View style={{ paddingHorizontal: 15 }} >
+          <DropDownModalView
+            title="Status"
+            selectedValue={setSelectedStatus}
+            placeHolder="Select Status"
+            option={status}
+          />
         </View>
+          : <View style={{ paddingHorizontal: 15 }}>
+            <CustomDropDown
+              setSelectedSubject={setSelectedCategory}
+              search={"category"}
+              dataShow={5}
+              searchData={searchCategoryData}
+              searchFunc={handleSearchData}
+              selectedSubject={selectedCategory}
+              ddTitle="Category"
+              headingStyle={{ color: Theme.black, fontWeight: "700" }}
+              dropdownPlace={"Select Category"}
+              dropdownContainerStyle={{
+                paddingVertical: 15,
+              }}
+              subject={category}
+              categoryShow={"complain_name"} />
+            <CustomDropDown
+              setSelectedSubject={setSelectedSubject}
+              search={"subject"}
+              searchData={searchSubjectData}
+              searchFunc={handleSearchData}
+              selectedSubject={selectedSubject}
+              ddTitle="Subject" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select Subject"}
+              dropdownContainerStyle={{ paddingVertical: 15, }} subject={subjects} categoryShow={"subject"} />
+            <CustomDropDown
+              setSelectedSubject={setSelectedMode}
+              selectedSubject={selectedMode}
+              ddTitle="Mode" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select Mode"} dropdownContainerStyle={{ paddingVertical: 15, }} subject={classMode} categoryShow={"subject"} />
+            <CustomDropDown setSelectedSubject={setSelectedState}
+              selectedSubject={selectedState} search={"state"} searchData={searchStateData}
+              searchFunc={handleSearchData} ddTitle="State" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select State"} dropdownContainerStyle={{ paddingVertical: 15, }} subject={state} categoryShow={"subject"} />
+            <CustomDropDown ddTitle="City"
+              search={"city"} searchData={searchCityData}
+              searchFunc={handleSearchData}
+              setSelectedSubject={setSelectedCity}
+
+              selectedSubject={selectedCity}
+              headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select City"} dropdownContainerStyle={{ paddingVertical: 15, }} subject={city} categoryShow={"subject"} />
+          </View>}
       </ScrollView>
       <View style={{ width: "100%", alignItems: "center" }} >
         <View
@@ -203,7 +264,7 @@ const Filter = ({ navigation }: any) => {
               padding: 10,
               borderRadius: 10,
             }}
-            onPress={() => applyFilter()}
+            onPress={() => data ? applyStatusFilter() : applyFilter()}
           >
             <Text style={{ color: 'white', fontWeight: '700', fontSize: 12 }}>
               Apply
@@ -217,7 +278,7 @@ const Filter = ({ navigation }: any) => {
               padding: 10,
               borderRadius: 10,
             }}
-            onPress={() => resetFilter()}
+            onPress={() => data ? resetStatusFilter() : resetFilter()}
           >
             <Text style={{ color: 'white', fontWeight: '700', fontSize: 12 }}>
               Reset

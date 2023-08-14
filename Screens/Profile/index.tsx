@@ -63,8 +63,6 @@ const Profile = ({ navigation }: any) => {
   const [name, setName] = useState("")
   const context = useContext(TutorDetailsContext);
 
-
-
   let tutorDetail = context?.tutorDetails
 
   let tutorDetails = context?.tutorDetails
@@ -170,8 +168,6 @@ const Profile = ({ navigation }: any) => {
       }
     }
   };
-
-  console.log(name, "name")
 
 
   const genderOption = [
@@ -379,6 +375,25 @@ const Profile = ({ navigation }: any) => {
   }
 
 
+  const closeBannerModal = async () => {
+
+    if (profileBanner.displayOnce == "on") {
+
+      let bannerData = { ...profileBanner }
+
+      let stringData = JSON.stringify(bannerData)
+
+      let data = await AsyncStorage.setItem("profileBanner", stringData)
+      setProfileBanner([])
+      setOpenPPModal(false)
+    } else {
+      setOpenPPModal(false)
+    }
+
+  }
+
+
+
   return loading ? (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator size="large" color={Theme.black} />
@@ -579,7 +594,7 @@ const Profile = ({ navigation }: any) => {
                 option={genderOption}
                 value={tutorDetail.gender}
                 modalHeading="Select Gender"
-                style={{ borderWidth: 0, marginTop: 0, }}
+                style={{ borderWidth: 0, marginTop: 0 }}
               />
             </View>
           </View>
@@ -646,7 +661,7 @@ const Profile = ({ navigation }: any) => {
           visible={openPPModal}
           animationType="fade"
           transparent={true}
-          onRequestClose={() => setOpenPPModal(false)}>
+          onRequestClose={() => closeBannerModal()}>
           <TouchableOpacity
             onPress={linkToOtherPage}
             style={{
@@ -662,7 +677,7 @@ const Profile = ({ navigation }: any) => {
                 borderRadius: 5,
                 marginHorizontal: 20,
               }}>
-              <TouchableOpacity onPress={() => setOpenPPModal(false)}>
+              <TouchableOpacity onPress={() => closeBannerModal()}>
                 <View
                   style={{
                     alignItems: 'flex-end',

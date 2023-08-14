@@ -76,8 +76,6 @@ const Notifications = ({ navigation }: any) => {
     }
   };
 
-
-
   useEffect(() => {
     getNotificationMessage();
   }, [refresh]);

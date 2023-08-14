@@ -48,6 +48,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
   const [pdfUri, setPdfUri] = React.useState('');
   const [refreshing, setRefreshing] = React.useState(false);
   const [refresh, setRefresh] = useState(false);
+  const [openPPModal, setOpenPPModal] = useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -134,6 +135,23 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
     });
     setFoundName(filteredItems);
   };
+  const closeBannerModal = async () => {
+
+    if (reportSubmissionBanner.displayOnce == "on") {
+
+      let bannerData = { ...reportSubmissionBanner }
+
+      let stringData = JSON.stringify(bannerData)
+
+      let data = await AsyncStorage.setItem("reportBanner", stringData)
+      setReportSubmissionBanner([])
+      setOpenPPModal(false)
+    } else {
+      setOpenPPModal(false)
+    }
+  }
+
+
 
   const generateAndDownalodPdf = async (
     item: any,
@@ -1288,7 +1306,6 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
     }
   };
 
-  const [openPPModal, setOpenPPModal] = useState(false);
   const displayBanner = async () => {
     setOpenPPModal(true)
     axios
@@ -1517,7 +1534,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
           visible={openPPModal}
           animationType="fade"
           transparent={true}
-          onRequestClose={() => setOpenPPModal(false)}>
+          onRequestClose={() => closeBannerModal()}>
           <TouchableOpacity
             onPress={() => linkToOtherPage()}
             style={{
@@ -1533,7 +1550,7 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
                 borderRadius: 5,
                 marginHorizontal: 20,
               }}>
-              <TouchableOpacity onPress={() => setOpenPPModal(false)}>
+              <TouchableOpacity onPress={() => closeBannerModal()}>
                 <View style={{ alignItems: 'flex-end', paddingVertical: 10, paddingRight: 15 }}>
                   <AntDesign
                     name="closecircleo"

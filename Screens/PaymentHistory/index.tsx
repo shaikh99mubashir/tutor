@@ -195,47 +195,65 @@ const PaymentHistory = ({ navigation }: any) => {
     ];
     const monthIndex = dateObj.getMonth();
     const year = dateObj.getFullYear();
-  
+
     return `${day} ${monthNames[monthIndex]} ${year}`;
   }
+
+  const closeBannerModal = async () => {
+
+    if (paymentHistoryBanner.displayOnce == "on") {
+
+      let bannerData = { ...paymentHistoryBanner }
+
+      let stringData = JSON.stringify(bannerData)
+
+      let data = await AsyncStorage.setItem("paymentBanner", stringData)
+      setPaymentHistoryBanner([])
+      setOpenPPModal(false)
+    } else {
+      setOpenPPModal(false)
+    }
+  }
+
+
 
   const renderItem = ({ item }: any) => (
     <View style={styles.itemContainer}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <View style={{flexDirection:'column'}}>
-        <Text style={{ color: 'black', fontWeight: '600' }}>
-        Comission Month
-        </Text>
-        <Text style={{ color: 'grey',  }}>
-          {item.comissionMonth} {item.comissionYear}
-        </Text>
+        <View style={{ flexDirection: 'column' }}>
+          <Text style={{ color: 'black', fontWeight: '600' }}>
+            Comission Month
+          </Text>
+          <Text style={{ color: 'grey', }}>
+            {item.comissionMonth} {item.comissionYear}
+          </Text>
         </View>
-        <View style={{flexDirection:'column'}}>
-        <Text style={{ color: 'black', fontWeight: '600' }}>
-        Payment Date
-        </Text>
-        <Text style={{ color: 'grey',  }}>
-          {convertDateFormat(item.paymentDate)}
-        </Text>
+        <View style={{ flexDirection: 'column' }}>
+          <Text style={{ color: 'black', fontWeight: '600' }}>
+            Payment Date
+          </Text>
+          <Text style={{ color: 'grey', }}>
+            {convertDateFormat(item.paymentDate)}
+          </Text>
         </View>
-        
+
       </View>
       <Text style={{ marginTop: 5, color: 'black', fontWeight: '600' }}>
-        Payment Amount : <Text style={{ color: 'grey',  }}>{item.payAmount}</Text>
+        Payment Amount : <Text style={{ color: 'grey', }}>{item.payAmount}</Text>
       </Text>
       <Text style={{ marginTop: 5, color: 'black', fontWeight: '600' }}>
-        Paying Account :<Text style={{ color: 'grey',  }}> {item.payingAccount}</Text>
+        Paying Account :<Text style={{ color: 'grey', }}> {item.payingAccount}</Text>
       </Text>
       <View style={{ flexDirection: 'row', marginTop: 5 }}>
         <Text style={{ color: 'black', fontWeight: '600' }}>
-          Deduction: <Text style={{ color: 'grey',  }}>{item.deduction} |{' '}</Text>
+          Deduction: <Text style={{ color: 'grey', }}>{item.deduction} |{' '}</Text>
         </Text>
         <Text style={{ color: 'black', fontWeight: '600' }}>
-          Addition: <Text style={{ color: 'grey',  }}>{item.addition}</Text>
+          Addition: <Text style={{ color: 'grey', }}>{item.addition}</Text>
         </Text>
       </View>
       <Text style={{ marginTop: 5, color: 'black', fontWeight: '600' }}>
-        Remarks: <Text style={{ color: 'grey',  }}>{item.remark ? item.remark : "No Remarks"}</Text>
+        Remarks: <Text style={{ color: 'grey', }}>{item.remark ? item.remark : "No Remarks"}</Text>
       </Text>
     </View>
   );
@@ -289,7 +307,7 @@ const PaymentHistory = ({ navigation }: any) => {
             source={require('../../Assets/Images/payment.png')}
             style={{ height: 25, width: 25 }}
           />
-          <Text style={{ color: 'black',fontSize:14}}>No payment history at this moment...</Text>
+          <Text style={{ color: 'black', fontSize: 14 }}>No payment history at this moment...</Text>
         </View>
       )}
       {Object.keys(paymentHistoryBanner).length > 0 && (paymentHistoryBanner.tutorStatusCriteria == "All" || tutorDetails.status == "verified") && <View style={{ flex: 1 }}>
@@ -297,7 +315,7 @@ const PaymentHistory = ({ navigation }: any) => {
           visible={openPPModal}
           animationType="fade"
           transparent={true}
-          onRequestClose={() => setOpenPPModal(false)}>
+          onRequestClose={() => closeBannerModal()}>
           <TouchableOpacity
             onPress={linkToOtherPage}
             style={{
@@ -314,7 +332,7 @@ const PaymentHistory = ({ navigation }: any) => {
                 borderRadius: 5,
                 marginHorizontal: 20,
               }}>
-              <TouchableOpacity onPress={() => setOpenPPModal(false)}>
+              <TouchableOpacity onPress={() => closeBannerModal()}>
                 <View style={{ alignItems: 'flex-end', paddingVertical: 10, paddingRight: 15 }}>
                   <AntDesign
                     name="closecircleo"

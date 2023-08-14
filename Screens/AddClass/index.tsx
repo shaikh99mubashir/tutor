@@ -38,24 +38,7 @@ function AddClass({ navigation }: any) {
     },
   ]);
 
-  const [subject, setSubject] = useState([
-    {
-      id: 1,
-      subject: 'math',
-    },
-    {
-      id: 2,
-      subject: 'physic',
-    },
-    {
-      id: 3,
-      subject: 'science',
-    },
-    {
-      id: 3,
-      subject: 'history',
-    },
-  ]);
+  const [subject, setSubject] = useState([]);
 
   const [tutorId, setTutorId] = useState(null)
   const [mode, setMode] = useState<any>('date');
@@ -76,37 +59,41 @@ function AddClass({ navigation }: any) {
       tutorID: tutorId,
       studentID: selectedStudent?.studentID,
       subjectID: selectedSubject?.id,
-      startTime: '12:00 PM',
-      endTime: '02:00 PM',
+      startTime: '-',
+      endTime: '-',
       // date: new Date(),
-      date: '-',
+      date: new Date(),
     },
   ]);
 
 
   const getSubject = () => {
-    // axios
-    //   .get(`${Base_Uri}getTutorSubjects/${tutorId}`)
-    //   .then(({ data }) => {
-    //     let { tutorSubjects } = data;
 
-    let mySubject =
-      subjects &&
-      subjects.length > 0 &&
-      subjects.map((e: any, i: Number) => {
-        if (e.subject) {
-          return {
-            subject: e.subject,
-            id: e.id,
-          };
-        }
+    setSelectedSubject("")
+    setSubject([])
+
+    axios
+      .get(`${Base_Uri}api/getStudentSubjects/${selectedStudent?.studentID}`)
+      .then(({ data }) => {
+        let { studentSubjects } = data;
+
+        let mySubject =
+          studentSubjects &&
+          studentSubjects.length > 0 &&
+          studentSubjects.map((e: any, i: Number) => {
+            if (e.subject) {
+              return {
+                subject: e.name,
+                id: e.id,
+              };
+            }
+          });
+
+        setSubject(mySubject);
+      })
+      .catch(error => {
+        console.log(error);
       });
-
-    setSubject(mySubject);
-    // })
-    // .catch(error => {
-    //   console.log(error);
-    // });
   };
 
   const getTutorID = async () => {
@@ -123,6 +110,7 @@ function AddClass({ navigation }: any) {
 
 
   const getStudents = async () => {
+
 
 
     let myStudents =
@@ -147,10 +135,21 @@ function AddClass({ navigation }: any) {
 
   useEffect(() => {
     if (tutorId) {
-      getSubject();
       getStudents();
     }
   }, [tutorId]);
+
+  useEffect(() => {
+
+
+
+    if (selectedStudent) {
+      getSubject()
+    }
+
+
+  }, [selectedStudent])
+
 
   const deleteClass = (index: Number) => {
     let data: any =
@@ -263,25 +262,25 @@ function AddClass({ navigation }: any) {
             borderWidth: 1,
             borderColor: Theme.gray
           }}>
-            <TouchableOpacity activeOpacity={0.8} style={{paddingVertical:5}} onPress={() => setClassDate('date', index)}>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
-            <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '500' }}>
-              Date
-            </Text>
+          <TouchableOpacity activeOpacity={0.8} style={{ paddingVertical: 5 }} onPress={() => setClassDate('date', index)}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}>
+              <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '500' }}>
+                Date
+              </Text>
               <Text
                 style={{ color: Theme.black, fontSize: 12, fontWeight: '500' }}>
-                
+
                 {item?.date !== '-'
                   ? item.date.toString().slice(0, 15)
                   : '-'}
               </Text>
-          </View>
-            </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
           <View
             style={{
               flexDirection: 'row',
@@ -299,9 +298,9 @@ function AddClass({ navigation }: any) {
               style={{ minWidth: 50, alignItems: 'flex-end' }}>
               <Text
                 style={{ color: Theme.black, fontSize: 12, fontWeight: '500' }}>
-                {item?.startTime !== '12:00 PM'
+                {item?.startTime !== '-'
                   ? item?.startTime.toLocaleString().slice(10)
-                  : '12:00 PM'}
+                  : '-'}
               </Text>
             </TouchableOpacity>
           </View>
@@ -321,9 +320,9 @@ function AddClass({ navigation }: any) {
               style={{ minWidth: 50, alignItems: 'flex-end' }}>
               <Text
                 style={{ color: Theme.black, fontSize: 12, fontWeight: '500' }}>
-                {item?.endTime !== '02:00 PM'
+                {item?.endTime !== '-'
                   ? item?.endTime.toLocaleString().slice(10)
-                  : '02:00 PM'}
+                  : '-'}
               </Text>
             </TouchableOpacity>
           </View>
@@ -339,18 +338,14 @@ function AddClass({ navigation }: any) {
       tutorID: tutorId,
       studentID: selectedStudent?.studentID,
       subjectID: selectedSubject?.id,
-      startTime: '12:00 PM',
-      endTime: '02:00 PM',
+      startTime: '-',
+      endTime: '-',
       // date: new Date(),
-      date: '-',
+      date: new Date(),
     };
 
     setClasses([...classes, newClass]);
   };
-
-
-
-
 
   const confirmClass = () => {
 
@@ -373,17 +368,17 @@ function AddClass({ navigation }: any) {
         return "false"
       }
 
-      const year = e.date.getFullYear();
-      const month = (e.date.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 since month is zero-based
-      const day = e.date.getDate().toString().padStart(2, '0');
+      const year = e?.date?.getFullYear();
+      const month = (e?.date?.getMonth() + 1)?.toString()?.padStart(2, '0'); // Adding 1 since month is zero-based
+      const day = e?.date?.getDate()?.toString()?.padStart(2, '0');
 
-      let hours = e.startTime.getHours()
-      let minutes = e.startTime.getMinutes()
-      let seconds = e.startTime.getSeconds()
+      let hours = e?.startTime?.getHours()
+      let minutes = e?.startTime?.getMinutes()
+      let seconds = e?.startTime?.getSeconds()
 
-      let endHour = e.endTime.getHours()
-      let endMinutes = e.endTime.getMinutes()
-      let endSeconds = e.endTime.getSeconds()
+      let endHour = e?.endTime?.getHours()
+      let endMinutes = e?.endTime?.getMinutes()
+      let endSeconds = e?.endTime?.getSeconds()
       return {
         tutorID: tutorId,
         studentID: selectedStudent?.studentID,
@@ -408,7 +403,7 @@ function AddClass({ navigation }: any) {
 
     axios.post(`${Base_Uri}api/addMultipleClasses`, classesss).then((res) => {
       setLoading(false)
-      navigation.navigate('Schedule',classesss.classes[0].startTime);
+      navigation.navigate('Schedule', classesss.classes[0].startTime);
       ToastAndroid.show(res?.data?.message, ToastAndroid.SHORT)
     }).catch((error) => {
       setLoading(false)
@@ -416,7 +411,7 @@ function AddClass({ navigation }: any) {
       ToastAndroid.show("Sorry classes added unsuccessfull", ToastAndroid.SHORT)
     })
   };
-  const showToast = (message:any) => {
+  const showToast = (message: any) => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
   };
   const handleSubjectDropdownOpen = () => {
@@ -456,27 +451,27 @@ function AddClass({ navigation }: any) {
                 fontWeight: '700',
               }}
             />
-             {selectedStudent && (
-            <CustomDropDown
-              ddTitle={'Subject'}
-              selectedSubject={selectedSubject}
-              setSelectedSubject={setSelectedSubject}
-              // setSelectedSubject={handleSubjectDropdownOpen}
-              dropdownContainerStyle={{
-                // backgroundColor: Theme.lightGray,
-                paddingVertical: 17,
-                borderColor: Theme.gray,
-                borderWidth: 1,
-                // borderBottomWidth: 0,
-              }}
-              dropdownPlace={'Select Subject '}
-              subject={subject}
-              headingStyle={{
-                color: Theme.black,
-                fontSize: 14,
-                fontWeight: '700',
-              }}
-            />)}
+            {selectedStudent && (
+              <CustomDropDown
+                ddTitle={'Subject'}
+                selectedSubject={selectedSubject}
+                setSelectedSubject={setSelectedSubject}
+                // setSelectedSubject={handleSubjectDropdownOpen}
+                dropdownContainerStyle={{
+                  // backgroundColor: Theme.lightGray,
+                  paddingVertical: 17,
+                  borderColor: Theme.gray,
+                  borderWidth: 1,
+                  // borderBottomWidth: 0,
+                }}
+                dropdownPlace={'Select Subject '}
+                subject={subject}
+                headingStyle={{
+                  color: Theme.black,
+                  fontSize: 14,
+                  fontWeight: '700',
+                }}
+              />)}
           </View>
 
           <FlatList data={classes} renderItem={renderClasses} />

@@ -19,6 +19,7 @@ import { Base_Uri } from '../../constant/BaseUri';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import bannerContext from '../../context/bannerContext';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const FAQs = ({ navigation }: any) => {
 
 
@@ -141,7 +142,27 @@ const FAQs = ({ navigation }: any) => {
       }
   }
 
-  console.log(faqBanner,"banner")
+
+  const closeBannerModal = async () => {
+
+    if (faqBanner.displayOnce == "on") {
+
+      let bannerData = { ...faqBanner }
+
+      let stringData = JSON.stringify(bannerData)
+
+      let data = await AsyncStorage.setItem("faqBanner", stringData)
+      setFaqBanner([])
+      setOpenPPModal(false)
+    } else {
+      setOpenPPModal(false)
+    }
+
+
+
+  }
+
+
 
   return (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
@@ -224,14 +245,14 @@ const FAQs = ({ navigation }: any) => {
         </View>
       </ScrollView>
 
-      
+
 
       {Object.keys(faqBanner).length > 0 && (faqBanner.tutorStatusCriteria == "All" || tutorDetails.status == "verified") && <View style={{ flex: 1 }}>
         <Modal
           visible={openPPModal}
           animationType="fade"
           transparent={true}
-          onRequestClose={() => setOpenPPModal(false)}>
+          onRequestClose={() => closeBannerModal()}>
           <TouchableOpacity
             onPress={linkToOtherPage}
             style={{
@@ -248,7 +269,7 @@ const FAQs = ({ navigation }: any) => {
                 borderRadius: 5,
                 marginHorizontal: 20,
               }}>
-              <TouchableOpacity onPress={() => setOpenPPModal(false)}>
+              <TouchableOpacity onPress={() => closeBannerModal()}>
                 <View style={{ alignItems: 'flex-end', paddingVertical: 10, paddingRight: 15 }}>
                   <AntDesign
                     name="closecircleo"

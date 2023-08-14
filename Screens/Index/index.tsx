@@ -22,6 +22,7 @@ import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
 import bannerContext from '../../context/bannerContext';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function Index({ navigation }: any) {
 
@@ -391,6 +392,22 @@ function Index({ navigation }: any) {
     displayBanner();
   }, []);
 
+  const closeBannerModal = async () => {
+
+    if (inboxBanner.displayOnce == "on") {
+
+      let bannerData = { ...inboxBanner }
+
+      let stringData = JSON.stringify(bannerData)
+
+      let data = await AsyncStorage.setItem("inboxBanner", stringData)
+      setInboxBanner([])
+      setOpenPPModal(false)
+    } else {
+      setOpenPPModal(false)
+    }
+  }
+
   const renderInboxData = ({ item, index }: any): any => {
     return (
       <TouchableOpacity
@@ -532,7 +549,7 @@ function Index({ navigation }: any) {
             visible={openPPModal}
             animationType="fade"
             transparent={true}
-            onRequestClose={() => setOpenPPModal(false)}>
+            onRequestClose={() => closeBannerModal()}>
             <TouchableOpacity
               onPress={linkToOtherPage}
               style={{
@@ -549,7 +566,7 @@ function Index({ navigation }: any) {
                   borderRadius: 5,
                   marginHorizontal: 20,
                 }}>
-                <TouchableOpacity onPress={() => setOpenPPModal(false)}>
+                <TouchableOpacity onPress={() => closeBannerModal()}>
                   <View style={{ alignItems: 'flex-end', paddingVertical: 10, paddingRight: 15 }}>
                     <AntDesign
                       name="closecircleo"

@@ -58,9 +58,9 @@ function ClockIn({ navigation, route }: any) {
                     skipBackup: true,
                     path: 'images',
                 },
-                maxWidth: 500,
-                maxHeight: 500,
-                quality: 0.5,
+                maxWidth: 250,
+                maxHeight: 250,
+                quality: 0.3,
             };
 
             launchCamera(options, (res: any) => {
@@ -175,7 +175,7 @@ function ClockIn({ navigation, route }: any) {
                         <Text style={{ color: Theme.gray }} >{(item.date.slice(0, 10)).toString()}</Text>
                     </View>
                     <TouchableOpacity onPress={() => handleClockInPress()} style={{ backgroundColor: Theme.darkGray, width: "100%", padding: 10, borderRadius: 10, marginTop: 10 }} >
-                        <Text style={{ textAlign: "center", fontSize: 16, color:'white' }} >
+                        <Text style={{ textAlign: "center", fontSize: 16, color: 'white' }} >
                             Clock In
                         </Text>
                     </TouchableOpacity>
