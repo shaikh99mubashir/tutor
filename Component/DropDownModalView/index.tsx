@@ -12,6 +12,7 @@ import React, {useState} from 'react';
 import {Theme} from '../../constant/theme';
 import Header from '../../Component/Header';
 import DropDownPicker from 'react-native-dropdown-picker';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const DropDownModalView = ({
   navigation,
@@ -54,7 +55,7 @@ const getModalValue = () => {
         
       <View style={{marginTop: 8}}>
         {title &&
-        <Text style={{fontSize: 12, fontWeight: 'bold', color: 'black'}}>
+        <Text style={{fontSize: 14, fontWeight: 'bold', color: 'black'}}>
           {title}
         </Text>
         }
@@ -94,9 +95,9 @@ const getModalValue = () => {
             }}>
             <Text
               style={{
-                color: Theme.gray,
+                color: 'black',
                 fontFamily: 'Poppins-SemiBold',
-                fontSize: 12,
+                fontSize: 14,
               }}>
               {value ? value : reportType ? reportType : placeHolder && placeHolder}
             </Text>
@@ -137,13 +138,14 @@ const getModalValue = () => {
               width: '100%',
             }}>
               <ScrollView showsVerticalScrollIndicator={false}>
-            <TouchableOpacity onPress={() => getModalValue()}>
-              <Text style={{textAlign: 'right',color:'black',fontSize:16,padding:10,backgroundColor:"white"}}>X</Text>
+            <TouchableOpacity style={{padding:10,backgroundColor:"white", justifyContent:'flex-end',alignItems:'flex-end'}} onPress={() => getModalValue()}>
+              {/* <Text >X</Text> */}
+              <AntDesign name="closecircleo" size={20} color={'black'} />
             </TouchableOpacity>
             <Text
               style={{
-                fontSize: 12,
-                fontWeight: 'bold',
+                fontSize: 18,
+                // fontWeight: 'bold',
                 color: 'black',
                 marginBottom: 15,
               }}>
@@ -158,12 +160,13 @@ const getModalValue = () => {
                     style={{marginVertical: 5}}>
                     <Text
                       style={{
-                        fontSize: 12,
-                        fontWeight: 'bold',
+                        fontSize: 16,
+                        // fontWeight: 'bold',
                         color: 'black',
                         borderBottomWidth:1,
                         paddingBottom:8,
-                        borderBottomColor:'#eee'
+                        borderBottomColor:'#eee',
+                       
                       }}>
                       {e.option}
                     </Text>

@@ -223,7 +223,7 @@ const Profile = ({ navigation }: any) => {
           setLoading(false);
           let { response } = data;
 
-          console.log(data, "dataaaa")
+          // console.log(data, "dataaaa")
 
           let { tutorImage } = response;
           setImage(tutorImage);
@@ -489,7 +489,7 @@ const Profile = ({ navigation }: any) => {
                 editable
                 onChangeText={text => setEmail(text)}
                 placeholder={tutorDetail?.email}
-                style={{ color: "black" }}
+                style={{ color: "black",fontSize:14 }}
                 placeholderTextColor={Theme.black}
               />
             </View>
@@ -525,7 +525,7 @@ const Profile = ({ navigation }: any) => {
                 editable
                 onChangeText={text => setDispalyName(text)}
                 placeholder={tutorDetail?.displayName}
-                style={{ color: "black" }}
+                style={{ color: "black",fontSize:14 }}
                 placeholderTextColor={Theme.black}
               />
             </View>
@@ -594,7 +594,7 @@ const Profile = ({ navigation }: any) => {
                 option={genderOption}
                 value={tutorDetail.gender}
                 modalHeading="Select Gender"
-                style={{ borderWidth: 0, marginTop: 0 }}
+                style={{ borderWidth: 0, marginTop: 0,fontSize:18,color:'black' }}
               />
             </View>
           </View>
@@ -627,7 +627,7 @@ const Profile = ({ navigation }: any) => {
             </View>
           </View>
           {/* Nric*/}
-          <View style={{ marginBottom: 15 }}>
+          <View style={{ marginBottom: 10 }}>
             <Text
               style={{
                 color: Theme.black,
@@ -691,8 +691,8 @@ const Profile = ({ navigation }: any) => {
               <Image
                 source={{ uri: profileBanner.bannerImage }}
                 style={{
-                  width: Dimensions.get('screen').width / 1.1,
-                  height: '80%',
+                  width: Dimensions.get('screen').width/1.05,
+                  height: '90%',
                 }}
                 resizeMode="contain"
               />
@@ -702,7 +702,12 @@ const Profile = ({ navigation }: any) => {
       </View>}
 
       {
-        openPhotoModal && <ModalImg closeModal={() => setOpenPhotoModal(false)} modalVisible={openPhotoModal} openCamera={openPhoto} openGallery={uploadProfilePicture} />
+        openPhotoModal &&
+         <ModalImg closeModal={() => 
+          setOpenPhotoModal(false)} 
+          modalVisible={openPhotoModal}
+          openCamera={openPhoto}
+          openGallery={uploadProfilePicture} />
       }
 
 

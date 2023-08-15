@@ -405,7 +405,7 @@ function JobTicket({ navigation, route }: any) {
             {item.uid}
           </Text>
           <Text style={{ color: 'green', fontSize: 16, fontWeight: '600' }}>
-            {item.status}
+            {item.cityName}
           </Text>
         </View>
         <Text
@@ -428,11 +428,11 @@ function JobTicket({ navigation, route }: any) {
             Details
           </Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            {item?.classDay} at {convertTo12HourFormat(item?.classTime)} for {item?.hours} hour(s) of each class.</Text>
+            {item?.classDay} at {convertTo12HourFormat(item?.classTime)} for {item?.quantity} hour(s) of each class.</Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
             {item?.studentGender} Student ({item?.studentAge}y/o)</Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            {item?.subject} - {item?.session} sessions {item?.hours}
+            {item?.subject} - {item?.session} sessions {item?.quantity}
           </Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
             - Tutor Gender: {item?.tutorGender}
@@ -441,7 +441,7 @@ function JobTicket({ navigation, route }: any) {
             - PreferredDay/Time: {item?.preferredDay}
           </Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            - Mode: {item?.subscription}
+            - Mode: {item?.mode}
           </Text>
           {item?.remarks &&
             <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
@@ -472,7 +472,6 @@ function JobTicket({ navigation, route }: any) {
     );
   };
   const renderCloseData = ({ item }: any) => {
-
     return (
       <TouchableOpacity
         activeOpacity={0.8}
@@ -493,7 +492,7 @@ function JobTicket({ navigation, route }: any) {
             {item.jtuid}
           </Text>
           <Text style={{ color: 'green', fontSize: 16, fontWeight: '600' }}>
-            {item.ticketStatus}
+            {item.status}
           </Text>
         </View>
         <Text
@@ -503,7 +502,7 @@ function JobTicket({ navigation, route }: any) {
             fontWeight: '600',
             marginTop: 10,
           }}>
-          {item.subjectName}
+          {item.subject_name}
         </Text>
         <View>
           <Text
@@ -516,11 +515,11 @@ function JobTicket({ navigation, route }: any) {
             Details
           </Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            {item?.classDay} at {convertTo12HourFormat(item?.classTime)} for {item?.hours} hour(s) of each class.</Text>
+            {item?.classDay} at {convertTo12HourFormat(item?.classTime)} for {item?.quantity} hour(s) of each class.</Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
             {item?.studentGender} Student ({item?.studentAge}y/o)</Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            {item?.subject} - {item?.session} sessions {item?.hours}
+            {item?.subject} - {item?.session} sessions {item?.quantity}hour(s)
           </Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
             - Tutor Gender: {item?.tutorGender}
@@ -797,7 +796,7 @@ function JobTicket({ navigation, route }: any) {
                 </View>
               </TouchableOpacity>
               {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
-              <Image source={{ uri: jobTicketBanner.bannerImages }} style={{ width: Dimensions.get('screen').width / 1.1, height: '80%', }} resizeMode='contain' />
+              <Image source={{ uri: jobTicketBanner.bannerImages }} style={{ width: Dimensions.get('screen').width / 1.05, height: '90%', }} resizeMode='contain' />
 
             </View>
 

@@ -279,7 +279,7 @@ const FAQs = ({ navigation }: any) => {
                 </View>
               </TouchableOpacity>
               {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
-              <Image source={{ uri: faqBanner.bannerImage }} style={{ width: Dimensions.get('screen').width / 1.1, height: '80%', }} resizeMode='contain' />
+              <Image source={{ uri: faqBanner.bannerImage }} style={{ width: Dimensions.get('screen').width / 1.05, height: '90%', }} resizeMode='contain' />
             </View>
 
           </TouchableOpacity>

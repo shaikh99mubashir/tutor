@@ -15,6 +15,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Foundation from 'react-native-vector-icons/Foundation';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Theme } from '../../constant/theme';
 // import {
 //     widthPercentageToDP as wp,
@@ -33,16 +34,22 @@ export default function ModalImg({
     return (
         <Modal transparent={true} visible={modalVisible} animationType="slide">
             <View style={styles.backContainer}>
-                <View style={styles.frontContainer}>
-                    <TouchableOpacity style={styles.innerContainer} onPress={openCamera}>
-                        <Text style={styles.textStyle}>Take a Photo</Text>
+                <View style={[styles.frontContainer,{}]}>
+                    <TouchableOpacity style={[styles.innerContainer,{alignSelf:'flex-end'}]} onPress={closeModal}>
+                        {/* <Text style={styles.textStyle}>Close</Text> */}
+                        <AntDesign name="closecircleo" size={20} color={'black'} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.midContainer} onPress={openGallery} >
-                        <Text style={styles.textStyle}>Upload a Photo</Text>
+                    <View style={{flexDirection:'row', paddingVertical:20}}>
+
+                    <TouchableOpacity style={[styles.innerContainer,{alignItems:'center'}]} onPress={openCamera}>
+                    <AntDesign name="camera" size={40} color={'black'} />
+                        <Text style={[styles.textStyle,{marginTop:20}]}>Take a Photo</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.innerContainer} onPress={closeModal}>
-                        <Text style={styles.textStyle}>Close</Text>
+                    <TouchableOpacity style={[styles.midContainer,{alignItems:'center'}]} onPress={openGallery} >
+                    <AntDesign name="clouduploado" size={40} color={'black'} />
+                        <Text style={[styles.textStyle,{marginTop:20}]}>Upload a Photo</Text>
                     </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         </Modal>
@@ -60,6 +67,7 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center',
+        width:'90%',
     },
     innerContainer: {
         padding: 10,
@@ -68,14 +76,14 @@ const styles = StyleSheet.create({
     midContainer: {
         padding: 10,
         paddingHorizontal: 30,
-        borderBottomWidth: 1,
-        borderTopWidth: 1,
+        // borderBottomWidth: 1,
+        // borderTopWidth: 1,
         borderColor: Theme.gray
     },
     removeContainer: {
         padding: 10,
         paddingHorizontal: 30,
-        borderBottomWidth: 1,
+        // borderBottomWidth: 1,
         borderColor: Theme.gray
     },
     textStyle: {

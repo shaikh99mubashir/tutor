@@ -73,7 +73,7 @@ function More({ navigation }: any) {
               }}>
               <Image
                 source={tutorDetails.tutorImage ? { uri: imageUrl } : require('../../Assets/Images/avatar.png')}
-                style={{ height: 60, width: 60 }}
+                style={{ height: 60, width: 60, borderRadius:50 }}
               />
               <View>
                 <Text
