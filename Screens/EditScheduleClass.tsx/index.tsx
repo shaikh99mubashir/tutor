@@ -39,76 +39,72 @@ function EditScheduleClass({ navigation, route }: any) {
 
     const [loading, setLoading] = useState(false)
 
-    const editTutorPostPonedClass = () => {
+    // const editTutorPostPonedClass = () => {
 
 
-        if (!nextClass.date) {
-            ToastAndroid.show("Kindly enter next class Date", ToastAndroid.SHORT)
-            return
-        }
-        if (!nextClass.startTime || (nextClass.startTime == "-")) {
-            ToastAndroid.show("Kindly enter next class start time", ToastAndroid.SHORT)
-            return
-        }
-        if (!nextClass.endTime || (nextClass.endTime == "-")) {
-            ToastAndroid.show("Kindly enter next class end time", ToastAndroid.SHORT)
-            return
-        }
+    //     if (!nextClass.date) {
+    //         ToastAndroid.show("Kindly enter next class Date", ToastAndroid.SHORT)
+    //         return
+    //     }
+    //     if (!nextClass.startTime || (nextClass.startTime == "-")) {
+    //         ToastAndroid.show("Kindly enter next class start time", ToastAndroid.SHORT)
+    //         return
+    //     }
+    //     if (!nextClass.endTime || (nextClass.endTime == "-")) {
+    //         ToastAndroid.show("Kindly enter next class end time", ToastAndroid.SHORT)
+    //         return
+    //     }
 
 
-        setLoading(true)
+    //     setLoading(true)
 
-        const year = nextClass.date.getFullYear();
-        const month = (nextClass.date.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 since month is zero-based
-        const day = nextClass.date.getDate().toString().padStart(2, '0');
+    //     const year = nextClass.date.getFullYear();
+    //     const month = (nextClass.date.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 since month is zero-based
+    //     const day = nextClass.date.getDate().toString().padStart(2, '0');
 
-        let hours = nextClass?.startTime.getHours()
-        let minutes = nextClass?.startTime.getMinutes()
-        let seconds = nextClass?.startTime.getSeconds()
+    //     let hours = nextClass?.startTime.getHours()
+    //     let minutes = nextClass?.startTime.getMinutes()
+    //     let seconds = nextClass?.startTime.getSeconds()
 
-        let endHour = nextClass.endTime.getHours()
-        let endMinutes = nextClass.endTime.getMinutes()
-        let endSeconds = nextClass.endTime.getSeconds()
-
-
-
-        let dataToSend = {
-            tutorID: nextClass.tutorID,
-            studentID: nextClass?.studentID,
-            subjectID: nextClass?.subjectID,
-            startTime: hours + ":" + minutes + ":" + seconds,
-            endTime: endHour + ":" + endMinutes + ":" + endSeconds,
-            date: year + '/' + month + '/' + day
-        }
+    //     let endHour = nextClass.endTime.getHours()
+    //     let endMinutes = nextClass.endTime.getMinutes()
+    //     let endSeconds = nextClass.endTime.getSeconds()
 
 
 
+    //     let dataToSend = {
+    //         tutorID: nextClass.tutorID,
+    //         studentID: nextClass?.studentID,
+    //         subjectID: nextClass?.subjectID,
+    //         startTime: hours + ":" + minutes + ":" + seconds,
+    //         endTime: endHour + ":" + endMinutes + ":" + endSeconds,
+    //         date: year + '/' + month + '/' + day
+    //     }
+
+    //     let classesss = {
+    //         classes: [dataToSend]
+    //     }
 
 
-        let classesss = {
-            classes: [dataToSend]
-        }
+    //     axios.post(`${Base_Uri}api/addMultipleClasses`, classesss).then((res) => {
 
-
-        axios.post(`${Base_Uri}api/addMultipleClasses`, classesss).then((res) => {
-
-            setLoading(false)
-            setNextClass(initialData)
-            ToastAndroid.show("Class has been successfully scheduled", ToastAndroid.SHORT)
-            navigation.navigate("Schedule", dataToSend.startTime)
+    //         setLoading(false)
+    //         setNextClass(initialData)
+    //         ToastAndroid.show("Class has been successfully scheduled", ToastAndroid.SHORT)
+    //         navigation.navigate("Schedule", dataToSend.startTime)
 
 
 
-        }).catch((error) => {
-            setLoading(false)
-            console.log(error, "error")
-            ToastAndroid.show("Sorry classes added unsuccessfull", ToastAndroid.SHORT)
-        })
+    //     }).catch((error) => {
+    //         setLoading(false)
+    //         console.log(error, "error")
+    //         ToastAndroid.show("Sorry classes added unsuccessfull", ToastAndroid.SHORT)
+    //     })
 
 
 
 
-    }
+    // }
 
 
 
@@ -225,7 +221,7 @@ function EditScheduleClass({ navigation, route }: any) {
                 </ScrollView>
             </View>
             <View style={{ width: "100%", alignItems: "center", marginBottom: 20 }} >
-                <TouchableOpacity onPress={() => editTutorPostPonedClass()} style={{ backgroundColor: Theme.darkGray, padding: 15, borderRadius: 10, width: "95%" }} >
+                <TouchableOpacity style={{ backgroundColor: Theme.darkGray, padding: 15, borderRadius: 10, width: "95%" }} >
                     <Text style={{ textAlign: "center", fontSize: 16, color: Theme.white }} >
                         Confirm Class
                     </Text>

@@ -26,6 +26,8 @@ function EditAttendedClass({ navigation, route }: any) {
   const [file, setFile] = useState<any>({});
 
 
+  console.log(file, "fileee")
+
 
   const changeStatus = () => {
 
@@ -35,6 +37,14 @@ function EditAttendedClass({ navigation, route }: any) {
     // }
 
     setLoading(true)
+
+    let formData = new FormData()
+
+    formData.append("id", data?.id)
+    formData.append("status", "attended")
+
+
+
     axios.get(`${Base_Uri}attendedClassStatus/${data?.id}/attended`).then((res) => {
       ToastAndroid.show(res?.data?.SuccessMessage, ToastAndroid.SHORT)
       navigation.navigate("Schedule", data.id)
@@ -242,7 +252,7 @@ function EditAttendedClass({ navigation, route }: any) {
           </View>
         </View>
       </ScrollView>
-      <View style={{ width: '92%', alignItems: 'center', marginBottom: 20,alignSelf:'center' }}>
+      <View style={{ width: '92%', alignItems: 'center', marginBottom: 20, alignSelf: 'center' }}>
         <TouchableOpacity
           onPress={() => changeStatus()}
           style={{

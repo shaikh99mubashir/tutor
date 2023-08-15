@@ -19,7 +19,8 @@ function EditPostpondClass({ navigation, route }: any) {
     const [value, setValue] = useState(new Date())
 
 
-    console.log(data, "data")
+
+    console.log(postponedReason, "reason")
 
     const initialData: any = {
         date: new Date(),
@@ -32,8 +33,6 @@ function EditPostpondClass({ navigation, route }: any) {
 
 
     const [nextClass, setNextClass] = useState(initialData)
-
-
 
     const [loading, setLoading] = useState(false)
 
@@ -94,7 +93,7 @@ function EditPostpondClass({ navigation, route }: any) {
 
         axios.post(`${Base_Uri}api/addMultipleClasses`, classesss).then((res) => {
 
-            axios.get(`${Base_Uri}attendedClassStatus/${data?.id}/postponed`).then(( res ) => {
+            axios.get(`${Base_Uri}attendedClassStatus/${data?.id}/postponed/${postponedReason}`).then((res) => {
 
                 setLoading(false)
                 setNextClass(initialData)
@@ -145,7 +144,6 @@ function EditPostpondClass({ navigation, route }: any) {
             data = {
                 ...nextClass,
                 startTime: currentDate
-
             }
         }
         else {
@@ -257,13 +255,13 @@ function EditPostpondClass({ navigation, route }: any) {
                             testID="dateTimePicker"
                             value={value}
                             mode={mode}
-                            is24Hour={false}
+                            is24Hour={true}
                             onChange={onChange}
                         />
                     )}
                 </ScrollView>
             </View>
-            <View style={{ width: "92%", alignItems: "center", marginBottom: 20,alignSelf:'center' }} >
+            <View style={{ width: "92%", alignItems: "center", marginBottom: 20, alignSelf: 'center' }} >
                 <TouchableOpacity onPress={() => editTutorPostPonedClass()} style={{ backgroundColor: Theme.darkGray, padding: 15, borderRadius: 10, width: "95%" }} >
                     <Text style={{ textAlign: "center", fontSize: 16, color: Theme.white }} >
                         Confirm Class

@@ -19,12 +19,16 @@ const OpenDetails = ({ route, navigation }: any) => {
   const data = route.params;
 
   const [openDetailItem, setopenDetailItem] = useState({
-    comment: '',
+    comment: "",
   });
   const [loading, setLoading] = useState(false)
 
 
 
+  console.log(openDetailItem.comment, "comment")
+
+
+  console.log(data, "dataaa")
 
   const sendOpenDetailData = async () => {
 
@@ -35,23 +39,31 @@ const OpenDetails = ({ route, navigation }: any) => {
     let subjectId = data?.subject_id
     let ticket_id = data?.ticket_id
     let tutor_id = tutorData?.tutorID
+    let comment = openDetailItem.comment ? openDetailItem.comment : null
+
+    console.log(subjectId)
+    console.log(ticket_id)
+    console.log(tutor_id)
+
+    console.log(comment, "comment")
 
     setLoading(true)
 
-    axios.get(`${Base_Uri}offerSendByTutor/${subjectId}/${tutor_id}/${ticket_id}`).then(({ data }) => {
+    axios.get(`${Base_Uri}offerSendByTutor/${subjectId}/${tutor_id}/${ticket_id}/${comment}`).then(({ data }) => {
 
       if (data?.result?.status == "Applied") {
         setLoading(false)
         ToastAndroid.show("You have successfully applied for this ticket", ToastAndroid.SHORT)
         navigation.navigate("Job Ticket", ticket_id)
       } else {
-        ToastAndroid.show("Failed to Apply for ticket", ToastAndroid.SHORT)
+        console.log(data, "dataaa")
+        ToastAndroid.show(data?.result, ToastAndroid.SHORT)
         setLoading(false)
       }
 
-
     }).catch((error) => {
       setLoading(false)
+      console.log(error, "error")
       ToastAndroid.show("Internal Server Error", ToastAndroid.SHORT)
     })
   };
@@ -83,134 +95,134 @@ const OpenDetails = ({ route, navigation }: any) => {
               Details
             </Text>
             <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            {data?.classDay} at {data?.classTime} for {data?.hours} hour(s) of each class.</Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            {data?.studentGender} Student ({data?.studentAge}y/o)</Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            {data?.subject} - {data?.session} sessions {data?.hours}
+              {data?.classDay} at {data?.classTime} for {data?.hours} hour(s) of each class.</Text>
+            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+              {data?.studentGender} Student ({data?.studentAge}y/o)</Text>
+            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+              {data?.subject} - {data?.session} sessions {data?.hours}
             </Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            - Tutor Gender: {data?.tutorGender}
+            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+              - Tutor Gender: {data?.tutorGender}
             </Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            - PreferredDay/Time: {data?.preferredDay}
+            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+              - PreferredDay/Time: {data?.preferredDay}
             </Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            - Mode: {data?.subscription}
+            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+              - Mode: {data?.subscription}
             </Text>
             {data?.remarks &&
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            - Remarks: {data?.remarks}
-            </Text>
-          }
+              <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+                - Remarks: {data?.remarks}
+              </Text>
+            }
             {data?.first8Hour &&
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-           {data?.first8Hour}
-            </Text>
-          }
+              <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+                {data?.first8Hour}
+              </Text>
+            }
             {data?.above9Hour &&
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            {data?.above9Hour}
-            </Text>
-          }
-          <View style={{ marginVertical: 15 }}>
-            <Text
-              style={{
-                color: Theme.black,
-                fontSize: 15,
-                fontWeight: '600',
-              }}>
-              Estimated Commission
-            </Text>
-            <Text
-              style={{
-                color: 'green',
-                fontSize: 17,
-                fontWeight: '600',
-                marginTop: 5,
-              }}>
-              RM {data.receiving_account}/subject
-            </Text>
-          </View>
-          {/* Avaiable Subject */}
-          <View style={{ marginVertical: 15 }}>
-            <Text
-              style={{
-                color: Theme.black,
-                fontSize: 15,
-                fontWeight: '600',
-              }}>
-              Available Subjects
-            </Text>
-            <View
-              style={{
-                backgroundColor: Theme.lightGray,
-                paddingHorizontal: 10,
-                paddingVertical: 12,
-                borderRadius: 10,
-                marginVertical: 5,
-              }}>
+              <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+                {data?.above9Hour}
+              </Text>
+            }
+            <View style={{ marginVertical: 15 }}>
               <Text
                 style={{
                   color: Theme.black,
-                  fontSize: 14,
+                  fontSize: 15,
                   fontWeight: '600',
-                  marginTop: 5,
                 }}>
-                {data.subject_name}
+                Estimated Commission
               </Text>
               <Text
                 style={{
-                  color: Theme.gray,
-                  fontSize: 12,
+                  color: 'green',
+                  fontSize: 17,
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                {/* {data.subject_id} */}
+                RM {data.receiving_account}/subject
               </Text>
             </View>
-          </View>
-          {/* Comment */}
-          <View style={{ marginBottom: 100 }}>
-            <Text
-              style={{
-                color: Theme.black,
-                fontSize: 15,
-                fontWeight: '600',
-              }}>
-              Comment
-            </Text>
-            <View
-              style={[
-                styles.textAreaContainer,
-                {
-                  // borderWidth: 1,
-                  marginTop: 5,
+            {/* Avaiable Subject */}
+            <View style={{ marginVertical: 15 }}>
+              <Text
+                style={{
+                  color: Theme.black,
+                  fontSize: 15,
+                  fontWeight: '600',
+                }}>
+                Available Subjects
+              </Text>
+              <View
+                style={{
+                  backgroundColor: Theme.lightGray,
+                  paddingHorizontal: 10,
+                  paddingVertical: 12,
                   borderRadius: 10,
-                  marginHorizontal: 2,
-                },
-              ]}>
-              <TextInput
-                placeholder="Enter Your Comment For The First Time, Let us Know your Teaching Experience"
-                multiline={true}
-                maxLength={300}
-                onChangeText={e =>
-                  setopenDetailItem({ ...openDetailItem, comment: e })
-                }
+                  marginVertical: 5,
+                }}>
+                <Text
+                  style={{
+                    color: Theme.black,
+                    fontSize: 14,
+                    fontWeight: '600',
+                    marginTop: 5,
+                  }}>
+                  {data.subject_name}
+                </Text>
+                <Text
+                  style={{
+                    color: Theme.gray,
+                    fontSize: 12,
+                    fontWeight: '600',
+                    marginTop: 5,
+                  }}>
+                  {/* {data.subject_id} */}
+                </Text>
+              </View>
+            </View>
+            {/* Comment */}
+            <View style={{ marginBottom: 100 }}>
+              <Text
+                style={{
+                  color: Theme.black,
+                  fontSize: 15,
+                  fontWeight: '600',
+                }}>
+                Comment
+              </Text>
+              <View
                 style={[
-                  styles.textArea,
+                  styles.textAreaContainer,
                   {
-                    backgroundColor: Theme.lightGray,
-                    padding: 12,
-                    color: Theme.black
+                    // borderWidth: 1,
+                    marginTop: 5,
+                    borderRadius: 10,
+                    marginHorizontal: 2,
                   },
-                ]}
-                underlineColorAndroid="transparent"
-                placeholderTextColor="grey"
-              />
+                ]}>
+                <TextInput
+                  placeholder="Enter Your Comment For The First Time, Let us Know your Teaching Experience"
+                  multiline={true}
+                  maxLength={300}
+                  onChangeText={e =>
+                    setopenDetailItem({ ...openDetailItem, comment: e })
+                  }
+                  style={[
+                    styles.textArea,
+                    {
+                      backgroundColor: Theme.lightGray,
+                      padding: 12,
+                      color: Theme.black
+                    },
+                  ]}
+                  underlineColorAndroid="transparent"
+                  placeholderTextColor="grey"
+                />
+              </View>
             </View>
           </View>
-        </View>
         </View>
       </ScrollView>
       {/* Submit Button */}

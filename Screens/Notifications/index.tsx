@@ -20,10 +20,11 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import notificationContext from '../../context/notificationContext';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
+import scheduleContext from '../../context/scheduleContext';
 const height = Dimensions.get('screen').height;
 const Notifications = ({ navigation }: any) => {
   // const [notification, setNotification] = useState<any>([]);
-  const [schduleNotification, setScheduleNotification] = useState<any>([])
+  const [scheduleNotification, setScheduleNotification] = useState<any>([])
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
   const [refresh, setRefresh] = useState(false)
@@ -76,16 +77,42 @@ const Notifications = ({ navigation }: any) => {
     }
   };
 
+  const getScheduleNotification = () => {
+
+
+    console.log(tutorDetails, "details")
+
+    axios.get(`${Base_Uri}api/classScheduleStatusNotifications/${tutorDetails.tutorId}`).then((res) => {
+
+      let { data } = res
+
+      setScheduleNotification(data.record)
+
+
+    }).catch((error) => {
+
+      setLoading(false);
+      ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+    })
+
+
+  }
+
   useEffect(() => {
     getNotificationMessage();
+    getScheduleNotification()
   }, [refresh]);
+
+
+
+  console.log(scheduleNotification, "notification")
+
 
   const navigateToOtherScreen = (item: any) => {
 
     if (item.notificationType == "Submit Evaluation Report" || item.notificationType == "Submit Progress Report") {
       navigation.navigate("ReportSubmission", item)
       axios.get(`${Base_Uri}api/updateNotificationStatus/${item.notificationID}/old`).then((res) => {
-
 
         let updateNotifications = notification.filter((e: any, i: number) => {
           return e.notificationID !== item?.notificationID
@@ -122,7 +149,6 @@ const Notifications = ({ navigation }: any) => {
 
       axios.get(`${Base_Uri}api/updateNotificationStatus/${item.notificationID}/old`).then((res) => {
 
-        console.log(res, "res")
         let updateNotifications = notification.filter((e: any, i: number) => {
           return e.notificationID !== item?.notificationID
         })
@@ -140,8 +166,7 @@ const Notifications = ({ navigation }: any) => {
 
   }
 
-
-
+  let totalNotifications = [...notification, ...scheduleNotification]
 
   return loading ? (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -155,10 +180,10 @@ const Notifications = ({ navigation }: any) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        {notification && notification.length > 0 ? (
+        {totalNotifications && totalNotifications.length > 0 ? (
           <FlatList
 
-            data={notification}
+            data={totalNotifications}
             nestedScrollEnabled={true}
             renderItem={({ item, index }: any) => {
 
@@ -194,7 +219,7 @@ const Notifications = ({ navigation }: any) => {
                             marginTop: 5,
                             width: '75%',
                           }}>
-                          {item.notificationType}
+                          {item.notificationType ?? "Update Schedule Classs"}
                         </Text>
                       </View>
                       <Text
@@ -204,7 +229,7 @@ const Notifications = ({ navigation }: any) => {
                           fontWeight: '600',
                           marginTop: 10,
                         }}>
-                        {item.notificationMessage}
+                        {item.notificationMessage ?? `Update Schedule Class, Tutor Name: ${tutorDetails.full_name}, Student Name: ${item?.studentName}, Subject Name: ${item?.subjectName}`}
                       </Text>
                       <Text
                         style={{
