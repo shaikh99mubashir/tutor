@@ -99,16 +99,16 @@ const OpenDetails = ({ route, navigation }: any) => {
             <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
               {data?.studentGender} Student ({data?.studentAge}y/o)</Text>
             <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-              {data?.subject} - {data?.session} sessions {data?.hours}
+              {data?.subject_name} - {data?.session} sessions {data?.quantity}
             </Text>
-            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            {/* <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
               - Tutor Gender: {data?.tutorGender}
+            </Text> */}
+            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+              - PreferredDay/Time: {data?.classDay}
             </Text>
             <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-              - PreferredDay/Time: {data?.preferredDay}
-            </Text>
-            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-              - Mode: {data?.subscription}
+              - Mode: {data?.mode}
             </Text>
             {data?.remarks &&
               <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>

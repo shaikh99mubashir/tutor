@@ -525,7 +525,7 @@ function JobTicket({ navigation, route }: any) {
             - Tutor Gender: {item?.tutorGender}
           </Text> */}
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            - classDay/Time: {item?.PreferredDay}
+            - classDay/Time: {item?.classDay}
           </Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
             - Mode: {item?.mode}
