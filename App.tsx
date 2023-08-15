@@ -21,6 +21,7 @@ import NotificationState from './context/notificationState';
 import ScheduleState from './context/ScheduleState';
 import ReportSubmissionState from './context/reportSubmissionState';
 import BannerState from './context/bannerState';
+import ScheduleNotificationState from './context/scheduleNotificationState';
 
 
 
@@ -47,17 +48,19 @@ function App() {
             <ReportSubmissionState>
               <ScheduleState>
                 <NotificationState>
-                  <PaymentState>
-                    <TutorDetailsState>
-                      <StudentState>
-                        <FilterState>
-                          <AppNavigation />
-                          {/* <Timer show="false" /> */}
-                        </FilterState>
+                  <ScheduleNotificationState>
+                    <PaymentState>
+                      <TutorDetailsState>
+                        <StudentState>
+                          <FilterState>
+                            <AppNavigation />
+                            {/* <Timer show="false" /> */}
+                          </FilterState>
 
-                      </StudentState>
-                    </TutorDetailsState>
-                  </PaymentState>
+                        </StudentState>
+                      </TutorDetailsState>
+                    </PaymentState>
+                  </ScheduleNotificationState>
                 </NotificationState>
               </ScheduleState>
             </ReportSubmissionState>

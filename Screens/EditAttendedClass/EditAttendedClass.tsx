@@ -26,15 +26,16 @@ function EditAttendedClass({ navigation, route }: any) {
   const [file, setFile] = useState<any>({});
 
 
-  console.log(file, "fileee")
+  console.log(data, "dataaa")
 
+  console.log(file, "fileee")
 
   const changeStatus = () => {
 
-    // if (Object.keys(file).length == 0) {
-    //   ToastAndroid.show("Kindly attach file", ToastAndroid.SHORT)
-    //   return
-    // }
+    if (Object.keys(file).length == 0) {
+      ToastAndroid.show("Kindly attach file", ToastAndroid.SHORT)
+      return
+    }
 
     setLoading(true)
 
@@ -42,10 +43,19 @@ function EditAttendedClass({ navigation, route }: any) {
 
     formData.append("id", data?.id)
     formData.append("status", "attended")
+    formData.append('attendedStatusAttachment', {
+      uri: file.uri,
+      type: file.type,
+      name: file.name,
+    });
 
 
 
-    axios.get(`${Base_Uri}attendedClassStatus/${data?.id}/attended`).then((res) => {
+    axios.post(`${Base_Uri}api/classScheduleAttendedStatusWithImage`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    }).then((res) => {
       ToastAndroid.show(res?.data?.SuccessMessage, ToastAndroid.SHORT)
       navigation.navigate("Schedule", data.id)
       setLoading(false)
@@ -53,6 +63,7 @@ function EditAttendedClass({ navigation, route }: any) {
 
     }).catch((error) => {
       setLoading(false)
+
 
       ToastAndroid.show("You have not attended this class yet", ToastAndroid.SHORT)
 

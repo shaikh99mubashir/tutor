@@ -30,9 +30,14 @@ import reportSubmissionContext from '../../context/reportSubmissionContext';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import notificationContext from '../../context/notificationContext';
 import bannerContext from '../../context/bannerContext';
+import scheduleNotificationContext from '../../context/scheduleNotificationContext';
 function Home({ navigation, route }: any) {
 
   let key = route.key
+
+  const scheduleNotCont = useContext(scheduleNotificationContext)
+
+  let { scheduleNotification, setScheduleNotification } = scheduleNotCont
 
   const context = useContext(TutorDetailsContext);
   const filter = useContext(filterContext);
@@ -370,9 +375,31 @@ function Home({ navigation, route }: any) {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
+
+  const getScheduleNotification = () => {
+
+
+    axios.get(`${Base_Uri}api/classScheduleStatusNotifications/${tutorId}`).then((res) => {
+
+      let { data } = res
+
+      setScheduleNotification(data.record)
+
+
+    }).catch((error) => {
+
+      setLoading(false);
+      ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+    })
+
+
+  }
+
+
   useEffect(() => {
     tutorId && getNotificationLength();
     tutorId && getTutorDetails();
+    tutorId && getScheduleNotification()
   }, [tutorId, refreshing]);
 
   const getCummulativeCommission = () => {
@@ -953,7 +980,7 @@ function Home({ navigation, route }: any) {
                   justifyContent: 'center',
                 }}>
                 <Text style={[styles.text, { fontSize: 10, color: Theme.white }]}>
-                  {notification.length > 0 ? notification.length : 0}
+                  {notification.length + scheduleNotification.length > 0 ? (notification.length + scheduleNotification.length) : 0}
                 </Text>
               </View>
             </TouchableOpacity>

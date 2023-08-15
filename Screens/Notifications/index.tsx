@@ -21,18 +21,24 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import notificationContext from '../../context/notificationContext';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import scheduleContext from '../../context/scheduleContext';
+import scheduleNotificationContext from '../../context/scheduleNotificationContext';
 const height = Dimensions.get('screen').height;
 const Notifications = ({ navigation }: any) => {
   // const [notification, setNotification] = useState<any>([]);
-  const [scheduleNotification, setScheduleNotification] = useState<any>([])
+
+
+
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
   const [refresh, setRefresh] = useState(false)
 
   const context = useContext(notificationContext)
   let tutotContext = useContext(TutorDetailsContext)
-
   let { tutorDetails } = tutotContext
+
+  const scheduleNotCont = useContext(scheduleNotificationContext)
+
+  let { scheduleNotification, setScheduleNotification } = scheduleNotCont
 
   console.log(tutorDetails, "DETAUL")
 
@@ -45,21 +51,24 @@ const Notifications = ({ navigation }: any) => {
       setRefresh(!refresh)
     }, 2000);
   }, [refresh]);
-  const getNotificationMessage = async () => {
+  const getNotificationMessage = () => {
     if (refresh) {
-      interface LoginAuth {
-        status: Number;
-        tutorID: Number;
-        token: string;
-      }
 
-      const data: any = await AsyncStorage.getItem('loginAuth');
-      let loginData: LoginAuth = JSON.parse(data);
-      let { tutorID } = loginData;
+
+
+      // interface LoginAuth {
+      //   status: Number;
+      //   tutorID: Number;
+      //   token: string;
+      // }
+
+      // const data: any = await AsyncStorage.getItem('loginAuth');
+      // let loginData: LoginAuth = JSON.parse(data);
+      // let { tutorID } = loginData;
 
       setLoading(true);
       axios
-        .get(`${Base_Uri}api/notifications/${tutorID}`)
+        .get(`${Base_Uri}api/notifications/${tutorDetails.tutorId}`)
         .then(async ({ data }) => {
           let { notifications } = data;
           let tutorNotification =
@@ -79,21 +88,17 @@ const Notifications = ({ navigation }: any) => {
 
   const getScheduleNotification = () => {
 
-
-    console.log(tutorDetails, "details")
-
-    axios.get(`${Base_Uri}api/classScheduleStatusNotifications/${tutorDetails.tutorId}`).then((res) => {
-
-      let { data } = res
-
-      setScheduleNotification(data.record)
+    if (refresh) {
 
 
-    }).catch((error) => {
+      axios.get(`${Base_Uri}api/classScheduleStatusNotifications/${tutorDetails.tutorId}`).then((res) => {
+        let { data } = res
+        setScheduleNotification(data.record)
+      }).catch((error) => {
 
-      setLoading(false);
-      ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
-    })
+        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+      })
+    }
 
 
   }
@@ -102,10 +107,6 @@ const Notifications = ({ navigation }: any) => {
     getNotificationMessage();
     getScheduleNotification()
   }, [refresh]);
-
-
-
-  console.log(scheduleNotification, "notification")
 
 
   const navigateToOtherScreen = (item: any) => {
@@ -143,8 +144,9 @@ const Notifications = ({ navigation }: any) => {
 
     } else {
 
-      item.status = "scheduled"
-      navigation.navigate("EditScheduleClass", { data: item, schedule: "Scheduled" })
+      item.status = "attended"
+      item.id = item.class_schedule_id
+      navigation.navigate("EditAttendedClass", { data: item })
 
 
       axios.get(`${Base_Uri}api/updateNotificationStatus/${item.notificationID}/old`).then((res) => {

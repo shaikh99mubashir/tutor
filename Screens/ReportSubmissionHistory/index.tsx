@@ -129,9 +129,14 @@ const ReportSubmissionHistory = ({ navigation }: any) => {
   const searchStudent = (e: any) => {
     setSearchText(e);
     let filteredItems: any = allReports.filter((x: any) => {
+
       if (x?.studentID?.toString().toLowerCase().includes(e?.toLowerCase())) {
         return e;
       }
+      else if (x?.studentName?.toString().toLowerCase().includes(e?.toLowerCase())) {
+        return e;
+      }
+
     });
     setFoundName(filteredItems);
   };
