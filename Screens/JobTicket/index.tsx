@@ -432,13 +432,13 @@ function JobTicket({ navigation, route }: any) {
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
             {item?.studentGender} Student ({item?.studentAge}y/o)</Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            {item?.subject} - {item?.session} sessions {item?.quantity}
+            {item?.subject_name} - {item?.session} sessions {item?.quantity} hour(s)
           </Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+          {/* <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
             - Tutor Gender: {item?.tutorGender}
-          </Text>
+          </Text> */}
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            - PreferredDay/Time: {item?.preferredDay}
+            - PreferredDay/Time: {item?.classDay}
           </Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
             - Mode: {item?.mode}
@@ -519,16 +519,16 @@ function JobTicket({ navigation, route }: any) {
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
             {item?.studentGender} Student ({item?.studentAge}y/o)</Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            {item?.subject} - {item?.session} sessions {item?.quantity}hour(s)
+            {item?.subject_name} - {item?.session} sessions {item?.quantity}hour(s)
           </Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+          {/* <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
             - Tutor Gender: {item?.tutorGender}
+          </Text> */}
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            - classDay/Time: {item?.PreferredDay}
           </Text>
           <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            - PreferredDay/Time: {item?.preferredDay}
-          </Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            - Mode: {item?.subscription}
+            - Mode: {item?.mode}
           </Text>
           {item?.remarks &&
             <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
@@ -555,7 +555,7 @@ function JobTicket({ navigation, route }: any) {
             fontWeight: '600',
             marginTop: 10,
           }}>
-          RM {item.subjectPrice}/subject
+          RM {item.receiving_account}/subject
         </Text>
       </TouchableOpacity>
     );
