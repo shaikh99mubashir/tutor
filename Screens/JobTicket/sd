@@ -12,8 +12,21 @@
 "subject_name": "Account (DEGREE) - ONLINE", "subjects": "166", "subscription": "LongTerm",
  "subscription_duration": null, "ticketID": 79, "ticket_id": 79, "ticket_status": "Accepted",
   "time": "22:00", "tutorID": 3, "tutor_id": null, "tutor_status": "pending", "uid": "JT-122103", 
-  "updated_at": "2023-08-13 00:51:03"}
+  "updated_at": "2023-08-13 00:51:03"},
 
 
 
-  
+
+  {"admin_charge": null, "application_status": "incomplete", "categoryID": 34, 
+ "categoryName": "DEGREE", "cityID": "448", "cityName": "Batang Kali", "classDay": "Monday", 
+ "classTime": "22:00", "created_at": "2023-08-12 17:24:27", "day": "Monday", "days": null,
+  "estimate_commission": 0, "fee_payment_date": "2023-08-12", "id": 76, "jtuid": "JT-125427", "mode": "online",
+   "payment_attachment": null, "quantity": 12, "receiving_account": "44", "register_date": "2023-08-12",
+    "remarks": null, "slug": null, "ssid": 135, "stateID": "1", "stateName": "Selangor", "status": "pending", 
+    "studentAddress1": "Line address 1", "studentAddress2": "Line address 2", "studentAge": 0, "studentGender": "Male", 
+    "studentName": "fahad", "student_address": null, "student_id": 56, "students": null, "subject": 173, 
+    "subject_id": 173, "subject_name": "Chemistry (DEGREE) - ONLINE", "subjects": "173", "subscription": "LongTerm", 
+    "subscription_duration": null, "ticketID": 76, "ticket_id": 76, "ticket_status": "pending", "time": "22:00", 
+"tutorID": null, "tutor_id": null,
+ "tutor_status": "pending", "uid": "JT-125427",
+  "updated_at": "2023-08-12 17:24:27"}
