@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useContext } from 'react';
+import React, {useState, useCallback, useEffect, useContext} from 'react';
 import {
   View,
   Text,
@@ -12,18 +12,18 @@ import {
   Modal,
   ActivityIndicator,
   Linking,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from 'react-native';
-import { Theme } from '../../constant/theme';
+import {Theme} from '../../constant/theme';
 import AntDesign from 'react-native-vector-icons/EvilIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 import CustomHeader from '../../Component/Header';
-import { Base_Uri } from '../../constant/BaseUri';
+import {Base_Uri} from '../../constant/BaseUri';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { ToastAndroid } from 'react-native';
-import { useIsFocused, useRoute } from '@react-navigation/native';
+import {ToastAndroid} from 'react-native';
+import {useIsFocused, useRoute} from '@react-navigation/native';
 import upcomingClassContext from '../../context/upcomingClassContext';
 import moment from 'moment';
 import scheduleContext from '../../context/scheduleContext';
@@ -33,7 +33,7 @@ import TutorDetailsContext from '../../context/tutorDetailsContext';
 
 // import { ScrollView } from "react-native-gesture-handler"
 
-function Schedule({ navigation, route }: any) {
+function Schedule({navigation, route}: any) {
   // type ISchedule = {
   //   imageUrl: any;
   //   name: String;
@@ -57,12 +57,12 @@ function Schedule({ navigation, route }: any) {
   let bannerCont = useContext(bannerContext);
   const tutorDetailsContext = useContext(TutorDetailsContext);
 
-  let { tutorDetails } = tutorDetailsContext;
+  let {tutorDetails} = tutorDetailsContext;
 
-  let { schedulePageBannner, setSchedulePageBanner } = bannerCont;
+  let {schedulePageBannner, setSchedulePageBanner} = bannerCont;
 
-  let { scheduleData, setScheduleData } = context;
-  let { upcomingClass, setUpcomingClass } = context;
+  let {scheduleData, setScheduleData} = context;
+  let {upcomingClass, setUpcomingClass} = context;
 
   const [loading, setLoading] = useState(false);
   // const [scheduleData, setScheduleData] = useState<any>([]);
@@ -120,10 +120,8 @@ function Schedule({ navigation, route }: any) {
     let selectMonth = selectedDate.getMonth();
     let selectYear = selectedDate.getFullYear();
 
-    if (selectedDate !== new Date()) {
-      if (date !== selectday || selectMonth !== month || selectYear !== year) {
-        setUpcomingClass([]);
-      }
+    if (date !== selectday || selectMonth !== month || selectYear !== year) {
+      setUpcomingClass([]);
     }
   }, [selectedDate]);
 
@@ -135,7 +133,7 @@ function Schedule({ navigation, route }: any) {
     setOpenPPModal(true);
     axios
       .get(`${Base_Uri}api/bannerAds`)
-      .then(({ data }) => {
+      .then(({data}) => {
         console.log('res', data.bannerAds);
       })
       .catch(error => {
@@ -156,7 +154,7 @@ function Schedule({ navigation, route }: any) {
     }
     const login: any = await AsyncStorage.getItem('loginAuth');
     let loginData: LoginAuth = JSON.parse(login);
-    let { tutorID } = loginData;
+    let {tutorID} = loginData;
 
     if (upcomingClass && Object.keys(upcomingClass).length > 0) {
       axios
@@ -164,7 +162,7 @@ function Schedule({ navigation, route }: any) {
         .then(res => {
           let scheduledClasses = res.data;
 
-          let { classSchedulesTime } = scheduledClasses;
+          let {classSchedulesTime} = scheduledClasses;
           let checkRouteClass =
             classSchedulesTime &&
             classSchedulesTime.length > 0 &&
@@ -195,8 +193,8 @@ function Schedule({ navigation, route }: any) {
     }
     axios
       .get(`${Base_Uri}getClassSchedulesTime/${tutorID}`)
-      .then(({ data }) => {
-        let { classSchedulesTime } = data;
+      .then(({data}) => {
+        let {classSchedulesTime} = data;
 
         let Date = selectedDate.getDate();
         let month = selectedDate.getMonth();
@@ -205,35 +203,35 @@ function Schedule({ navigation, route }: any) {
         classSchedulesTime =
           classSchedulesTime && classSchedulesTime.length > 0
             ? classSchedulesTime
-              .map((e: any, i: number) => {
-                let getDate: any = moment(e.date);
+                .map((e: any, i: number) => {
+                  let getDate: any = moment(e.date);
 
-                let convertDate = getDate.toDate();
+                  let convertDate = getDate.toDate();
 
-                let scheduleDate = convertDate.getDate();
-                let scheduleMonth = convertDate.getMonth();
-                let scheduleYear = convertDate.getFullYear();
+                  let scheduleDate = convertDate.getDate();
+                  let scheduleMonth = convertDate.getMonth();
+                  let scheduleYear = convertDate.getFullYear();
 
-                if (
-                  Date == scheduleDate &&
-                  month == scheduleMonth &&
-                  year == scheduleYear
-                ) {
-                  return {
-                    ...e,
-                    imageUrl: require('../../Assets/Images/student.png'),
-                  };
-                } else {
-                  return false;
-                }
-              })
-              .filter(Boolean)
+                  if (
+                    Date == scheduleDate &&
+                    month == scheduleMonth &&
+                    year == scheduleYear
+                  ) {
+                    return {
+                      ...e,
+                      imageUrl: require('../../Assets/Images/student.png'),
+                    };
+                  } else {
+                    return false;
+                  }
+                })
+                .filter(Boolean)
             : [];
 
         axios
           .get(`${Base_Uri}getClassAttendedTime/${tutorID}`)
-          .then(({ data }) => {
-            let { classAttendedTime } = data;
+          .then(({data}) => {
+            let {classAttendedTime} = data;
 
             let Date = selectedDate.getDate();
             let month = selectedDate.getMonth();
@@ -242,29 +240,29 @@ function Schedule({ navigation, route }: any) {
             classAttendedTime =
               classAttendedTime && classAttendedTime.length > 0
                 ? classAttendedTime
-                  .map((e: any, i: number) => {
-                    let getDate: any = moment(e.date);
+                    .map((e: any, i: number) => {
+                      let getDate: any = moment(e.date);
 
-                    let convertDate = getDate.toDate();
+                      let convertDate = getDate.toDate();
 
-                    let scheduleDate = convertDate.getDate();
-                    let scheduleMonth = convertDate.getMonth();
-                    let scheduleYear = convertDate.getFullYear();
+                      let scheduleDate = convertDate.getDate();
+                      let scheduleMonth = convertDate.getMonth();
+                      let scheduleYear = convertDate.getFullYear();
 
-                    if (
-                      Date == scheduleDate &&
-                      month == scheduleMonth &&
-                      year == scheduleYear
-                    ) {
-                      return {
-                        ...e,
-                        imageUrl: require('../../Assets/Images/student.png'),
-                      };
-                    } else {
-                      return false;
-                    }
-                  })
-                  .filter(Boolean)
+                      if (
+                        Date == scheduleDate &&
+                        month == scheduleMonth &&
+                        year == scheduleYear
+                      ) {
+                        return {
+                          ...e,
+                          imageUrl: require('../../Assets/Images/student.png'),
+                        };
+                      } else {
+                        return false;
+                      }
+                    })
+                    .filter(Boolean)
                 : [];
             setLoading(false);
             let dataToSend = [...classSchedulesTime, ...classAttendedTime];
@@ -369,23 +367,18 @@ function Schedule({ navigation, route }: any) {
   };
 
   const closeBannerModal = async () => {
+    if (schedulePageBannner.displayOnce == 'on') {
+      let bannerData = {...schedulePageBannner};
 
-    if (schedulePageBannner.displayOnce == "on") {
+      let stringData = JSON.stringify(bannerData);
 
-      let bannerData = { ...schedulePageBannner }
-
-      let stringData = JSON.stringify(bannerData)
-
-      let data = await AsyncStorage.setItem("scheduleBanners", stringData)
-      setSchedulePageBanner([])
-      setOpenPPModal(false)
+      let data = await AsyncStorage.setItem('scheduleBanners', stringData);
+      setSchedulePageBanner([]);
+      setOpenPPModal(false);
     } else {
-      setOpenPPModal(false)
+      setOpenPPModal(false);
     }
-
-  }
-
-
+  };
 
   const confirmModal = useCallback(() => {
     return (
@@ -442,7 +435,7 @@ function Schedule({ navigation, route }: any) {
 
                 <TouchableOpacity
                   onPress={() => navigateToEditScreen('postponed')}
-                  style={{ width: '100%' }}>
+                  style={{width: '100%'}}>
                   <Text
                     style={[
                       styles.text,
@@ -459,7 +452,7 @@ function Schedule({ navigation, route }: any) {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => navigateToEditScreen('cancelled')}
-                  style={{ width: '100%' }}>
+                  style={{width: '100%'}}>
                   <Text
                     style={[
                       styles.text,
@@ -476,11 +469,11 @@ function Schedule({ navigation, route }: any) {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => navigateToEditScreen('attended')}
-                  style={{ width: '100%' }}>
+                  style={{width: '100%'}}>
                   <Text
                     style={[
                       styles.text,
-                      { color: Theme.black, paddingTop: 20, width: '100%' },
+                      {color: Theme.black, paddingTop: 20, width: '100%'},
                     ]}>
                     Attended
                   </Text>
@@ -582,7 +575,7 @@ function Schedule({ navigation, route }: any) {
     return `${twelveHour}:${minuteStr} ${period}`;
   }
 
-  const renderScheduleData = ({ item, index }: any): any => {
+  const renderScheduleData = ({item, index}: any): any => {
     let nowDate: Date = new Date();
     let date = nowDate.getDate();
     let month = nowDate.getMonth();
@@ -613,7 +606,7 @@ function Schedule({ navigation, route }: any) {
           marginTop: 20,
           borderRadius: 10,
         }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <View
             style={{
               borderWidth: 1,
@@ -625,14 +618,14 @@ function Schedule({ navigation, route }: any) {
               justifyContent: 'center',
               backgroundColor: Theme.darkGray,
             }}>
-            <Image source={item.imageUrl} style={{ width: 35, height: 35 }} />
+            <Image source={item.imageUrl} style={{width: 35, height: 35}} />
           </View>
-          <Text style={{ fontSize: 16, color: Theme.gray, marginLeft: 10 }}>
+          <Text style={{fontSize: 16, color: Theme.gray, marginLeft: 10}}>
             {item?.studentName}
           </Text>
         </View>
 
-        <View style={{ marginTop: 10, flexDirection: 'row' }}>
+        <View style={{marginTop: 10, flexDirection: 'row'}}>
           <Text
             style={{
               fontSize: 14,
@@ -644,10 +637,10 @@ function Schedule({ navigation, route }: any) {
           </Text>
         </View>
 
-        <Text style={{ color: Theme.gray, marginTop: 10 }}>
+        <Text style={{color: Theme.gray, marginTop: 10}}>
           {convertDateDayFormat(item.date)}
         </Text>
-        <Text style={{ color: Theme.gray }}>
+        <Text style={{color: Theme.gray}}>
           {startTime12Hour} to {endTime12Hour}
         </Text>
         <View
@@ -656,12 +649,12 @@ function Schedule({ navigation, route }: any) {
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <Text style={{ color: Theme.gray, marginTop: 10 }}>{item.status}</Text>
+          <Text style={{color: Theme.gray, marginTop: 10}}>{item.status}</Text>
           {item.status == 'Attended' ? (
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => navigation.navigate('AttendedDetails')}>
-              <Text style={{ color: Theme.gray, marginTop: 10 }}>
+              <Text style={{color: Theme.gray, marginTop: 10}}>
                 View Details
               </Text>
             </TouchableOpacity>
@@ -686,7 +679,7 @@ function Schedule({ navigation, route }: any) {
                 padding: 10,
                 borderRadius: 10,
               }}>
-              <Text style={{ textAlign: 'center', fontSize: 14, color: 'white' }}>
+              <Text style={{textAlign: 'center', fontSize: 14, color: 'white'}}>
                 Edit
               </Text>
             </TouchableOpacity>
@@ -700,7 +693,7 @@ function Schedule({ navigation, route }: any) {
                   borderRadius: 10,
                 }}>
                 <Text
-                  style={{ textAlign: 'center', fontSize: 14, color: 'white' }}>
+                  style={{textAlign: 'center', fontSize: 14, color: 'white'}}>
                   Attend
                 </Text>
               </TouchableOpacity>
@@ -791,19 +784,23 @@ function Schedule({ navigation, route }: any) {
   }
 
   return loading ? (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <ActivityIndicator size={'large'} color={Theme.black} />
     </View>
   ) : (
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
-      <CustomHeader title="Schedule" plus={scheduleData.length !== 0} navigation={navigation} />
+    <View style={{flex: 1, backgroundColor: 'white'}}>
+      <CustomHeader
+        title="Schedule"
+        plus={scheduleData.length !== 0}
+        navigation={navigation}
+      />
       <ScrollView
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         nestedScrollEnabled={true}>
-        <View style={{ padding: 20 }}>
+        <View style={{padding: 20}}>
           <TouchableOpacity
             onPress={() => setShow(true)}
             style={{
@@ -812,7 +809,7 @@ function Schedule({ navigation, route }: any) {
               alignItems: 'center',
               gap: 5,
             }}>
-            <Text style={{ fontSize: 18, color: Theme.black, fontWeight: '700' }}>
+            <Text style={{fontSize: 18, color: Theme.black, fontWeight: '700'}}>
               {/* {selectedDate.toString().slice(4, 15)} */}
               {convertDateFormat(selectedDate)}
             </Text>
@@ -829,7 +826,7 @@ function Schedule({ navigation, route }: any) {
           )}
 
           {scheduleData.length == 0 &&
-            Object.keys(upcomingClass).length == 0 ? (
+          Object.keys(upcomingClass).length == 0 ? (
             <View
               style={{
                 height: Dimensions.get('window').height - 180,
@@ -837,7 +834,7 @@ function Schedule({ navigation, route }: any) {
                 alignItems: 'center',
               }}>
               <Text
-                style={{ fontSize: 18, fontWeight: 'bold', color: Theme.black }}>
+                style={{fontSize: 18, fontWeight: 'bold', color: Theme.black}}>
                 No class, Yet
               </Text>
               <Text
@@ -891,7 +888,7 @@ function Schedule({ navigation, route }: any) {
       {Object.keys(schedulePageBannner).length > 0 &&
         (schedulePageBannner.tutorStatusCriteria == 'All' ||
           tutorDetails.status == 'verified') && (
-          <View style={{ flex: 1 }}>
+          <View style={{flex: 1}}>
             <Modal
               visible={openPPModal}
               animationType="fade"
@@ -923,7 +920,7 @@ function Schedule({ navigation, route }: any) {
                   </TouchableOpacity>
                   {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
                   <Image
-                    source={{ uri: schedulePageBannner.bannerImage }}
+                    source={{uri: schedulePageBannner.bannerImage}}
                     style={{
                       width: Dimensions.get('screen').width / 1.1,
                       height: '80%',
@@ -990,7 +987,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 320,
     bottom: 0,
-
   },
   modalView: {
     backgroundColor: '#151c15',

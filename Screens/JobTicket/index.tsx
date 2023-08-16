@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useContext } from 'react';
+import React, {useState, useCallback, useEffect, useContext} from 'react';
 import {
   View,
   Text,
@@ -15,11 +15,11 @@ import {
   Modal,
 } from 'react-native';
 import Header from '../../Component/Header';
-import { Theme } from '../../constant/theme';
+import {Theme} from '../../constant/theme';
 import CustomTabView from '../../Component/CustomTabView';
-import { Base_Uri } from '../../constant/BaseUri';
+import {Base_Uri} from '../../constant/BaseUri';
 import axios from 'axios';
-import { useIsFocused } from "@react-navigation/native"
+import {useIsFocused} from '@react-navigation/native';
 import AsyncStorage, {
   useAsyncStorage,
 } from '@react-native-async-storage/async-storage';
@@ -28,22 +28,21 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import bannerContext from '../../context/bannerContext';
 import Status from '../Status';
 
-function JobTicket({ navigation, route }: any) {
+function JobTicket({navigation, route}: any) {
+  const focus = useIsFocused();
 
-  const focus = useIsFocused()
+  let data = route.params;
 
-  let data = route.params
+  const bannerCont = useContext(bannerContext);
 
-  const bannerCont = useContext(bannerContext)
-
-  let { jobTicketBanner, setJobTicketBanner } = bannerCont
+  let {jobTicketBanner, setJobTicketBanner} = bannerCont;
 
   const [isSearchItems, setIsSearchItems] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [refresh, setRefresh] = useState(false)
-  const tutor = useContext(TutorDetailsContext)
+  const [refresh, setRefresh] = useState(false);
+  const tutor = useContext(TutorDetailsContext);
 
-  let { tutorDetails } = tutor
+  let {tutorDetails} = tutor;
 
   const [currentTab, setCurrentTab]: any = useState([
     {
@@ -58,25 +57,23 @@ function JobTicket({ navigation, route }: any) {
     },
   ]);
 
-
-
   const activateTab = (index: any) => {
     setCurrentTab(
       currentTab &&
-      currentTab.length > 0 &&
-      currentTab.map((e: any, i: any) => {
-        if (e.index == index) {
-          return {
-            ...e,
-            selected: true,
-          };
-        } else {
-          return {
-            ...e,
-            selected: false,
-          };
-        }
-      }),
+        currentTab.length > 0 &&
+        currentTab.map((e: any, i: any) => {
+          if (e.index == index) {
+            return {
+              ...e,
+              selected: true,
+            };
+          } else {
+            return {
+              ...e,
+              selected: false,
+            };
+          }
+        }),
     );
   };
   const [openData, setOpenData] = useState<any>([
@@ -146,54 +143,48 @@ function JobTicket({ navigation, route }: any) {
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
-
     if (!refreshing) {
       setRefreshing(true);
       setTimeout(() => {
         setRefreshing(false);
-        setOpenPPModal(true)
-        setRefresh(refresh ? false : true)
-
+        setOpenPPModal(true);
+        setRefresh(refresh ? false : true);
       }, 2000);
     }
   }, [refresh]);
 
-
   const getTicketsData = async () => {
     setLoading(true);
 
-    let filter: any = await AsyncStorage.getItem("filter")
+    let filter: any = await AsyncStorage.getItem('filter');
 
     if (filter) {
+      filter = JSON.parse(filter);
 
-      filter = JSON.parse(filter)
-
-      let { Category, subject, mode, state, city } = filter
-      let categoryID = Category.id ?? "noFilter"
-      let subjectID = subject.id ?? "noFilter"
-      let myMode = mode.subject ?? "noFilter"
-      let myState = state.id ?? "noFilter"
-      let myCity = city.id ?? "noFilter"
+      let {Category, subject, mode, state, city} = filter;
+      let categoryID = Category.id ?? 'noFilter';
+      let subjectID = subject.id ?? 'noFilter';
+      let myMode = mode.subject ?? 'noFilter';
+      let myState = state.id ?? 'noFilter';
+      let myCity = city.id ?? 'noFilter';
 
       axios
         .get(`${Base_Uri}ticketsAPI/${tutorDetails?.tutorId}`)
-        .then(({ data }) => {
-
-          let { tickets } = data;
+        .then(({data}) => {
+          let {tickets} = data;
           setOpenData(
             tickets.length > 0 &&
-            tickets.filter((e: any, i: number) => {
-
-
-
-              return (myMode == "noFilter" || e?.mode?.toString()?.toLowerCase() == myMode?.toString()?.toLowerCase())
-                && (subjectID == "noFilter" || e.subject_id == subjectID)
-                && (categoryID == "noFilter" || e.categoryID == categoryID
-                ) && (myCity == "noFilter" || e?.cityID == myCity)
-                && (myState == "noFilter" || e.stateID == myState)
-
-            }),
-
+              tickets.filter((e: any, i: number) => {
+                return (
+                  (myMode == 'noFilter' ||
+                    e?.mode?.toString()?.toLowerCase() ==
+                      myMode?.toString()?.toLowerCase()) &&
+                  (subjectID == 'noFilter' || e.subject_id == subjectID) &&
+                  (categoryID == 'noFilter' || e.categoryID == categoryID) &&
+                  (myCity == 'noFilter' || e?.cityID == myCity) &&
+                  (myState == 'noFilter' || e.stateID == myState)
+                );
+              }),
           );
           setLoading(false);
         })
@@ -218,22 +209,21 @@ function JobTicket({ navigation, route }: any) {
 
       // })
 
-      return
+      return;
     } else {
-
       let tutorData: any = await AsyncStorage.getItem('loginAuth');
       tutorData = JSON.parse(tutorData);
       let tutor_id = tutorData?.tutorID;
       axios
         .get(`${Base_Uri}ticketsAPI/${tutor_id}`)
-        .then(async ({ data }) => {
-          let { tickets } = data;
+        .then(async ({data}) => {
+          let {tickets} = data;
           setOpenData(
             // tickets.length > 0 &&
             // tickets.filter((e: any, i: number) => {
             //   return e.status == 'pending'
             // }),
-            tickets
+            tickets,
           );
           setLoading(false);
         })
@@ -246,7 +236,6 @@ function JobTicket({ navigation, route }: any) {
   };
 
   const getAppliedData = async () => {
-
     setLoading(true);
 
     let tutorData: any = await AsyncStorage.getItem('loginAuth');
@@ -255,44 +244,43 @@ function JobTicket({ navigation, route }: any) {
 
     let tutor_id = tutorData?.tutorID;
 
+    let appliedStatus: any = await AsyncStorage.getItem('statusFilter');
 
-    let appliedStatus: any = await AsyncStorage.getItem("statusFilter")
-
-    let status = JSON.parse(appliedStatus)
-
-
+    let status = JSON.parse(appliedStatus);
 
     if (status) {
-
-
       axios
         .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
-        .then(({ data }) => {
-          let { getTutorOffers } = data;
+        .then(({data}) => {
+          let {getTutorOffers} = data;
 
-          let tutorOffer = getTutorOffers && getTutorOffers.length > 0 && getTutorOffers.filter((e: any, i: number) => {
-            return e?.ticketStatus?.toString().toLowerCase() == status.option.toString().toLowerCase()
-          })
+          let tutorOffer =
+            getTutorOffers &&
+            getTutorOffers.length > 0 &&
+            getTutorOffers.filter((e: any, i: number) => {
+              return (
+                e?.ticketStatus?.toString().toLowerCase() ==
+                status.option.toString().toLowerCase()
+              );
+            });
 
-          console.log(tutorOffer, "offerrrrrr")
-          console.log(status, "statusss")
+          console.log(tutorOffer, 'offerrrrrr');
+          console.log(status, 'statusss');
 
-          setAppliedData(tutorOffer)
+          setAppliedData(tutorOffer);
           setLoading(false);
         })
         .catch(error => {
           ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
           setLoading(false);
         });
-      return
-
+      return;
     }
-
 
     axios
       .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
-      .then(({ data }) => {
-        let { getTutorOffers } = data;
+      .then(({data}) => {
+        let {getTutorOffers} = data;
         setAppliedData(getTutorOffers);
         setLoading(false);
       })
@@ -301,9 +289,6 @@ function JobTicket({ navigation, route }: any) {
         setLoading(false);
       });
   };
-
-
-
 
   useEffect(() => {
     getTicketsData();
@@ -317,56 +302,52 @@ function JobTicket({ navigation, route }: any) {
   const [foundName, setFoundName] = useState([]);
   const [searchText, setSearchText] = useState('');
   const searchOpen = (e: any) => {
-
-    if (e == "") {
-      setFoundName([])
-      setSearchText(e)
-      return
+    if (e == '') {
+      setFoundName([]);
+      setSearchText(e);
+      return;
     }
 
     setSearchText(e);
-    let filteredItems: any = openData.filter((x: any) =>
-      x?.subject_name.toLowerCase().includes(e.toLowerCase())
-      || x?.studentName?.toLowerCase().includes(e?.toLowerCase())
-      || x?.mode?.toLowerCase().includes(e?.toLowerCase())
-      || x?.classDay?.toLowerCase().includes(e?.toLowerCase())
-      || x?.uid.toString().toLowerCase().includes(e?.toLowerCase()),
-
-
+    let filteredItems: any = openData.filter(
+      (x: any) =>
+        x?.subject_name.toLowerCase().includes(e.toLowerCase()) ||
+        x?.studentName?.toLowerCase().includes(e?.toLowerCase()) ||
+        x?.mode?.toLowerCase().includes(e?.toLowerCase()) ||
+        x?.classDay?.toLowerCase().includes(e?.toLowerCase()) ||
+        x?.uid.toString().toLowerCase().includes(e?.toLowerCase()),
     );
     setFoundName(filteredItems);
   };
   const searchApplied = (e: any) => {
-
-    if (e == "") {
-      setFoundName([])
-      setSearchText(e)
-      return
+    if (e == '') {
+      setFoundName([]);
+      setSearchText(e);
+      return;
     }
 
     setSearchText(e);
     let filteredItems: any = appliedData.filter((x: any) => {
-
-      return (x?.subjectName?.toLowerCase().includes(e.toLowerCase()) || x?.studentName?.toLowerCase().includes(e?.toLowerCase())
-        || x?.mode?.toLowerCase().includes(e?.toLowerCase())
-        || x?.classDay?.toLowerCase().includes(e?.toLowerCase())
-        || x?.jtuid.toString().toLowerCase().includes(e?.toLowerCase())
-      )
-    }
-
-    );
+      return (
+        x?.subjectName?.toLowerCase().includes(e.toLowerCase()) ||
+        x?.studentName?.toLowerCase().includes(e?.toLowerCase()) ||
+        x?.mode?.toLowerCase().includes(e?.toLowerCase()) ||
+        x?.classDay?.toLowerCase().includes(e?.toLowerCase()) ||
+        x?.jtuid.toString().toLowerCase().includes(e?.toLowerCase())
+      );
+    });
 
     setFoundName(filteredItems);
   };
 
   function convertTo12HourFormat(time24: string): string {
-    const [hourStr, minuteStr] = time24.split(":");
+    const [hourStr, minuteStr] = time24.split(':');
     const hour = parseInt(hourStr);
-    let period = "AM";
+    let period = 'AM';
     let twelveHour = hour;
 
     if (hour >= 12) {
-      period = "PM";
+      period = 'PM';
       if (hour > 12) {
         twelveHour = hour - 12;
       }
@@ -379,10 +360,14 @@ function JobTicket({ navigation, route }: any) {
     return `${twelveHour}:${minuteStr} ${period}`;
   }
 
-  const renderOpenData: any = ({ item }: any) => {
+  const renderOpenData: any = ({item}: any) => {
+    console.log(item, 'itemsss');
 
-    console.log(item, "itemsss")
+    let flag = appliedData && appliedData.length>0 && appliedData.some((e:any,i:number)=>e.ticket_id == item.ticket_id)
 
+    if(flag){
+      return false
+    }
 
     return (
       <TouchableOpacity
@@ -401,10 +386,10 @@ function JobTicket({ navigation, route }: any) {
             justifyContent: 'space-between',
             width: '100%',
           }}>
-          <Text style={{ color: 'green', fontSize: 16, fontWeight: '600' }}>
+          <Text style={{color: 'green', fontSize: 16, fontWeight: '600'}}>
             {item.uid}
           </Text>
-          <Text style={{ color: 'green', fontSize: 16, fontWeight: '600' }}>
+          <Text style={{color: 'green', fontSize: 16, fontWeight: '600'}}>
             {item.cityName}
           </Text>
         </View>
@@ -427,37 +412,41 @@ function JobTicket({ navigation, route }: any) {
             }}>
             Details
           </Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            {item?.classDay} at {convertTo12HourFormat(item?.classTime)} for {item?.quantity} hour(s) of each class.</Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            {item?.studentGender} Student ({item?.studentAge}y/o)</Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            {item?.subject_name} - {item?.session} sessions {item?.quantity} hour(s)
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            {item?.classDay} at {convertTo12HourFormat(item?.classTime)} for{' '}
+            {item?.quantity} hour(s) of each class.
+          </Text>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            {item?.studentGender} Student ({item?.studentAge}y/o)
+          </Text>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            {item?.subject_name} - {item?.session} sessions {item?.quantity}{' '}
+            hour(s)
           </Text>
           {/* <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
             - Tutor Gender: {item?.tutorGender}
           </Text> */}
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
             - PreferredDay/Time: {item?.classDay}
           </Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
             - Mode: {item?.mode}
           </Text>
-          {item?.remarks &&
-            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+          {item?.remarks && (
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
               - Remarks: {item?.remarks}
             </Text>
-          }
-          {item?.first8Hour &&
-            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+          )}
+          {item?.first8Hour && (
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
               {item?.first8Hour}
             </Text>
-          }
-          {item?.above9Hour &&
-            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+          )}
+          {item?.above9Hour && (
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
               {item?.above9Hour}
             </Text>
-          }
+          )}
         </View>
         <Text
           style={{
@@ -471,7 +460,7 @@ function JobTicket({ navigation, route }: any) {
       </TouchableOpacity>
     );
   };
-  const renderCloseData = ({ item }: any) => {
+  const renderCloseData = ({item}: any) => {
     return (
       <TouchableOpacity
         activeOpacity={0.8}
@@ -488,10 +477,10 @@ function JobTicket({ navigation, route }: any) {
             justifyContent: 'space-between',
             width: '100%',
           }}>
-          <Text style={{ color: 'green', fontSize: 16, fontWeight: '600' }}>
+          <Text style={{color: 'green', fontSize: 16, fontWeight: '600'}}>
             {item.jtuid}
           </Text>
-          <Text style={{ color: 'green', fontSize: 16, fontWeight: '600' }}>
+          <Text style={{color: 'green', fontSize: 16, fontWeight: '600'}}>
             {item.status}
           </Text>
         </View>
@@ -514,38 +503,41 @@ function JobTicket({ navigation, route }: any) {
             }}>
             Details
           </Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            {item?.classDay} at {convertTo12HourFormat(item?.classTime)} for {item?.quantity} hour(s) of each class.</Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            {item?.studentGender} Student ({item?.studentAge}y/o)</Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            {item?.subject_name} - {item?.session} sessions {item?.quantity}hour(s)
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            {item?.classDay} at {convertTo12HourFormat(item?.classTime)} for{' '}
+            {item?.quantity} hour(s) of each class.
+          </Text>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            {item?.studentGender} Student ({item?.studentAge}y/o)
+          </Text>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            {item?.subject_name} - {item?.session} sessions {item?.quantity}
+            hour(s)
           </Text>
           {/* <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
             - Tutor Gender: {item?.tutorGender}
           </Text> */}
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
             - classDay/Time: {item?.classDay}
           </Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
             - Mode: {item?.mode}
           </Text>
-          {item?.remarks &&
-            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+          {item?.remarks && (
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
               - Remarks: {item?.remarks}
             </Text>
-          }
-          {item?.first8Hour &&
-            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+          )}
+          {item?.first8Hour && (
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
               {item?.first8Hour}
             </Text>
-          }
-          {item?.above9Hour &&
-            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+          )}
+          {item?.above9Hour && (
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
               {item?.above9Hour}
             </Text>
-          }
-
+          )}
         </View>
 
         <Text
@@ -561,10 +553,14 @@ function JobTicket({ navigation, route }: any) {
     );
   };
   const firstRoute = useCallback(() => {
+
+
+
+
     return (
-      <View style={{ marginVertical: 20, marginBottom: 10 }}>
+      <View style={{marginVertical: 20, marginBottom: 10}}>
         {/* Search */}
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <View
             style={{
               width: '100%',
@@ -581,12 +577,12 @@ function JobTicket({ navigation, route }: any) {
               placeholder="Search"
               placeholderTextColor="black"
               onChangeText={e => searchOpen(e)}
-              style={{ width: '90%', padding: 8, color: 'black' }}
+              style={{width: '90%', padding: 8, color: 'black'}}
             />
             <TouchableOpacity onPress={() => navigation}>
               <Image
                 source={require('../../Assets/Images/search.png')}
-                style={{ width: 20, height: 20 }}
+                style={{width: 20, height: 20}}
               />
             </TouchableOpacity>
           </View>
@@ -601,19 +597,25 @@ function JobTicket({ navigation, route }: any) {
             keyExtractor={(items: any, index: number): any => index}
           />
         ) : (
-          <Text style={{ fontWeight: 'bold', fontSize: 16, color: Theme.black, textAlign: "center" }}>no data found</Text>
+          <Text
+            style={{
+              fontWeight: 'bold',
+              fontSize: 16,
+              color: Theme.black,
+              textAlign: 'center',
+            }}>
+            no data found
+          </Text>
         )}
       </View>
     );
   }, [openData, searchText, foundName]);
 
-
   const secondRoute = useCallback(() => {
-
     return (
-      <View style={{ marginVertical: 20, marginBottom: 10 }}>
+      <View style={{marginVertical: 20, marginBottom: 10}}>
         {/* Search */}
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <View
             style={{
               width: '100%',
@@ -630,12 +632,12 @@ function JobTicket({ navigation, route }: any) {
               placeholder="Search"
               placeholderTextColor="black"
               onChangeText={e => searchApplied(e)}
-              style={{ width: '90%', padding: 8, color: 'black' }}
+              style={{width: '90%', padding: 8, color: 'black'}}
             />
             <TouchableOpacity onPress={() => navigation}>
               <Image
                 source={require('../../Assets/Images/search.png')}
-                style={{ width: 20, height: 20 }}
+                style={{width: 20, height: 20}}
               />
             </TouchableOpacity>
           </View>
@@ -648,8 +650,16 @@ function JobTicket({ navigation, route }: any) {
             keyExtractor={(items: any, index: number): any => index}
           />
         ) : (
-          <View style={{ justifyContent: "center", alignItems: "center" }} >
-            <Text style={{ fontWeight: 'bold', fontSize: 16, color: Theme.black, textAlign: "center" }}>no data found</Text>
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                fontSize: 16,
+                color: Theme.black,
+                textAlign: 'center',
+              }}>
+              no data found
+            </Text>
           </View>
         )}
       </View>
@@ -658,11 +668,10 @@ function JobTicket({ navigation, route }: any) {
 
   const [openPPModal, setOpenPPModal] = useState(false);
   const displayBanner = async () => {
-    setOpenPPModal(true)
+    setOpenPPModal(true);
     axios
       .get(`${Base_Uri}api/bannerAds`)
-      .then(({ data }) => {
-      })
+      .then(({data}) => {})
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
@@ -673,87 +682,63 @@ function JobTicket({ navigation, route }: any) {
   }, []);
 
   const linkToOtherPage = () => {
-
-    if (jobTicketBanner.callToActionType == "Open URL") {
+    if (jobTicketBanner.callToActionType == 'Open URL') {
       Linking.openURL(jobTicketBanner.urlToOpen);
-    }
-    else if (jobTicketBanner.callToActionType == "Open Page")
-
-      if (jobTicketBanner.pageToOpen == "Dashboard") {
-
-        navigation.navigate("Home")
+    } else if (jobTicketBanner.callToActionType == 'Open Page')
+      if (jobTicketBanner.pageToOpen == 'Dashboard') {
+        navigation.navigate('Home');
+      } else if (jobTicketBanner.pageToOpen == 'Faq') {
+        navigation.navigate('FAQs');
+      } else if (jobTicketBanner.pageToOpen == 'Class Schedule List') {
+        navigation.navigate('Schedule');
+      } else if (jobTicketBanner.pageToOpen == 'Student List') {
+        navigation.navigate('Students');
+      } else if (jobTicketBanner.pageToOpen == 'Inbox') {
+        navigation.navigate('inbox');
+      } else if (jobTicketBanner.pageToOpen == 'Profile') {
+        navigation.navigate('Profile');
+      } else if (jobTicketBanner.pageToOpen == 'Payment History') {
+        navigation.navigate('PaymentHistory');
+      } else if (jobTicketBanner.pageToOpen == 'Job Ticket List') {
+        navigation.navigate('Job Ticket');
+      } else if (jobTicketBanner.pageToOpen == 'Submission History') {
+        navigation.navigate('ReportSubmissionHistory');
       }
-      else if (jobTicketBanner.pageToOpen == "Faq") {
-
-        navigation.navigate("FAQs")
-
-      }
-      else if (jobTicketBanner.pageToOpen == ("Class Schedule List")) {
-
-        navigation.navigate("Schedule")
-
-      }
-
-      else if (jobTicketBanner.pageToOpen == "Student List") {
-
-        navigation.navigate("Students")
-
-      }
-      else if (jobTicketBanner.pageToOpen == "Inbox") {
-
-        navigation.navigate("inbox")
-
-      }
-      else if (jobTicketBanner.pageToOpen == "Profile") {
-        navigation.navigate("Profile")
-      }
-      else if (jobTicketBanner.pageToOpen == ("Payment History")) {
-
-        navigation.navigate("PaymentHistory")
-
-
-      }
-      else if (jobTicketBanner.pageToOpen == ("Job Ticket List")) {
-
-        navigation.navigate("Job Ticket")
-
-      }
-      else if (jobTicketBanner.pageToOpen == ("Submission History")) {
-        navigation.navigate("ReportSubmissionHistory")
-      }
-  }
+  };
 
   const closeBannerModal = async () => {
+    if (jobTicketBanner.displayOnce == 'on') {
+      let bannerData = {...jobTicketBanner};
 
-    if (jobTicketBanner.displayOnce == "on") {
+      let stringData = JSON.stringify(bannerData);
 
-      let bannerData = { ...jobTicketBanner }
-
-      let stringData = JSON.stringify(bannerData)
-
-      let data = await AsyncStorage.setItem("ticketBanner", stringData)
-      setJobTicketBanner([])
-      setOpenPPModal(false)
+      let data = await AsyncStorage.setItem('ticketBanner', stringData);
+      setJobTicketBanner([]);
+      setOpenPPModal(false);
     } else {
-      setOpenPPModal(false)
+      setOpenPPModal(false);
     }
-  }
-
-
+  };
 
   return loading ? (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <ActivityIndicator size={'large'} color={'black'} />
     </View>
   ) : (
-    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
-      <Header tab={currentTab} title="Job Ticket" filter navigation={navigation} />
+    <View style={{backgroundColor: Theme.white, height: '100%'}}>
+      <Header
+        tab={currentTab}
+        title="Job Ticket"
+        filter
+        navigation={navigation}
+      />
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{ paddingHorizontal: 15, marginTop: 20 }}>
+        showsVerticalScrollIndicator={false}
+        nestedScrollEnabled>
+        <View style={{paddingHorizontal: 15, marginTop: 20}}>
           <CustomTabView
             currentTab={currentTab}
             firstRoute={firstRoute}
@@ -764,45 +749,58 @@ function JobTicket({ navigation, route }: any) {
           />
         </View>
       </ScrollView>
-      {Object.keys(jobTicketBanner).length > 0 && (jobTicketBanner.tutorStatusCriteria == "All" || tutorDetails.status == "verified") && <View style={{ flex: 1 }}>
-        <Modal
-          visible={openPPModal}
-          animationType="fade"
-          transparent={true}
-          onRequestClose={() => closeBannerModal()}>
-          <TouchableOpacity
-            onPress={linkToOtherPage}
-            style={{
-              flex: 1,
-              backgroundColor: 'rgba(0,0,0,0.5)',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-
-            <View
-              style={{
-                backgroundColor: 'white',
-                // padding: 15,
-                borderRadius: 5,
-                marginHorizontal: 20,
-              }}>
-              <TouchableOpacity onPress={() => closeBannerModal()}>
-                <View style={{ alignItems: 'flex-end', paddingVertical: 10, paddingRight: 15 }}>
-                  <AntDesign
-                    name="closecircleo"
-                    size={20}
-                    color={'black'}
+      {Object.keys(jobTicketBanner).length > 0 &&
+        (jobTicketBanner.tutorStatusCriteria == 'All' ||
+          tutorDetails.status == 'verified') && (
+          <View style={{flex: 1}}>
+            <Modal
+              visible={openPPModal}
+              animationType="fade"
+              transparent={true}
+              onRequestClose={() => closeBannerModal()}>
+              <TouchableOpacity
+                onPress={linkToOtherPage}
+                style={{
+                  flex: 1,
+                  backgroundColor: 'rgba(0,0,0,0.5)',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    // padding: 15,
+                    borderRadius: 5,
+                    marginHorizontal: 20,
+                  }}>
+                  <TouchableOpacity onPress={() => closeBannerModal()}>
+                    <View
+                      style={{
+                        alignItems: 'flex-end',
+                        paddingVertical: 10,
+                        paddingRight: 15,
+                      }}>
+                      <AntDesign
+                        name="closecircleo"
+                        size={20}
+                        color={'black'}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                  {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
+                  <Image
+                    source={{uri: jobTicketBanner.bannerImages}}
+                    style={{
+                      width: Dimensions.get('screen').width / 1.05,
+                      height: '90%',
+                    }}
+                    resizeMode="contain"
                   />
                 </View>
               </TouchableOpacity>
-              {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
-              <Image source={{ uri: jobTicketBanner.bannerImages }} style={{ width: Dimensions.get('screen').width / 1.05, height: '90%', }} resizeMode='contain' />
-
-            </View>
-
-          </TouchableOpacity>
-        </Modal>
-      </View>}
+            </Modal>
+          </View>
+        )}
     </View>
   );
 }

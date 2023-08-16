@@ -28,7 +28,7 @@ const Login = ({ navigation }: any) => {
       }
       if (data.status == 200) {
         ToastAndroid.show("Verification Code Successfully send to your registered email", ToastAndroid.SHORT)
-        navigation.replace("Verification", data)
+        navigation.navigate("Verification", data)
         setLoading(false)
       }
     }).catch((error) => {

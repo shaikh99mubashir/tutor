@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -14,11 +14,11 @@ import {
   Modal,
   Linking,
 } from 'react-native';
-import { Theme } from '../../constant/theme';
+import {Theme} from '../../constant/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { Base_Uri } from '../../constant/BaseUri';
-import { useIsFocused } from '@react-navigation/native';
+import {Base_Uri} from '../../constant/BaseUri';
+import {useIsFocused} from '@react-navigation/native';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import StudentContext from '../../context/studentContext';
 import filterContext from '../../context/filterContext';
@@ -31,37 +31,53 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import notificationContext from '../../context/notificationContext';
 import bannerContext from '../../context/bannerContext';
 import scheduleNotificationContext from '../../context/scheduleNotificationContext';
-function Home({ navigation, route }: any) {
+function Home({navigation, route}: any) {
+  let key = route.key;
 
-  let key = route.key
+  const scheduleNotCont = useContext(scheduleNotificationContext);
 
-  const scheduleNotCont = useContext(scheduleNotificationContext)
-
-  let { scheduleNotification, setScheduleNotification } = scheduleNotCont
+  let {scheduleNotification, setScheduleNotification} = scheduleNotCont;
 
   const context = useContext(TutorDetailsContext);
   const filter = useContext(filterContext);
   const studentAndSubjectContext = useContext(StudentContext);
-  const notContext = useContext(notificationContext)
-  let { notification, setNotification } = notContext
-  const { setCategory, setSubjects, setState, setCity } = filter;
+  const notContext = useContext(notificationContext);
+  let {notification, setNotification} = notContext;
+  const {setCategory, setSubjects, setState, setCity} = filter;
   const [refreshing, setRefreshing] = useState(false);
   const upcomingClassCont = useContext(upcomingClassContext);
   const paymentHistory = useContext(paymentContext);
-  const bannerCon = useContext(bannerContext)
+  const bannerCon = useContext(bannerContext);
 
-  let { homePageBanner, setHomePageBanner, schedulePageBannner, setSchedulePageBanner, jobTicketBanner, setJobTicketBanner,
-    profileBanner, setProfileBanner, paymentHistoryBanner, setPaymentHistoryBanner, reportSubmissionBanner, setReportSubmissionBanner
-    , inboxBanner, setInboxBanner, faqBanner, setFaqBanner, studentBanner, setStudentBanner } = bannerCon
+  let {
+    homePageBanner,
+    setHomePageBanner,
+    schedulePageBannner,
+    setSchedulePageBanner,
+    jobTicketBanner,
+    setJobTicketBanner,
+    profileBanner,
+    setProfileBanner,
+    paymentHistoryBanner,
+    setPaymentHistoryBanner,
+    reportSubmissionBanner,
+    setReportSubmissionBanner,
+    inboxBanner,
+    setInboxBanner,
+    faqBanner,
+    setFaqBanner,
+    studentBanner,
+    setStudentBanner,
+  } = bannerCon;
 
   const upcomingContext = useContext(scheduleContext);
 
-  let { commissionData, setCommissionData } = paymentHistory;
-  let { upcomingClass, setUpcomingClass, scheduleData, setScheduleData } =
+  let {commissionData, setCommissionData} = paymentHistory;
+  let {upcomingClass, setUpcomingClass, scheduleData, setScheduleData} =
     upcomingContext;
 
-  const { tutorDetails, updateTutorDetails } = context;
-  const { students, subjects, updateStudent, updateSubject } =
+  const {tutorDetails, updateTutorDetails} = context;
+  const {students, subjects, updateStudent, updateSubject} =
     studentAndSubjectContext;
   let reportContext = useContext(reportSubmissionContext);
 
@@ -119,13 +135,13 @@ function Home({ navigation, route }: any) {
   const [cancelledHours, setCancelledHours] = useState('');
   const [schedulesHours, setScheduledHours] = useState('');
   const [tutorStudents, setTutorStudents] = useState([]);
-  const [bannerData, setBannerData] = useState([])
+  const [bannerData, setBannerData] = useState([]);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
-      setOpenPPModal(true)
+      setOpenPPModal(true);
       getTutorId();
     }, 2000);
   }, [refreshing]);
@@ -139,20 +155,19 @@ function Home({ navigation, route }: any) {
     const data: any = await AsyncStorage.getItem('loginAuth');
     let loginData: LoginAuth = JSON.parse(data);
 
-
-    let { tutorID } = loginData;
+    let {tutorID} = loginData;
     setTutorId(tutorID);
   };
 
   const getPaymentHistory = async () => {
     let data: any = await AsyncStorage.getItem('loginAuth');
     data = JSON.parse(data);
-    let { tutorID } = data;
+    let {tutorID} = data;
 
     axios
       .get(`${Base_Uri}tutorPayments/${tutorID}`)
-      .then(({ data }) => {
-        let { response } = data;
+      .then(({data}) => {
+        let {response} = data;
 
         setCommissionData(response);
       })
@@ -164,15 +179,15 @@ function Home({ navigation, route }: any) {
   const getNotificationLength = async () => {
     axios
       .get(`${Base_Uri}api/notifications/${tutorId}`)
-      .then(({ data }) => {
+      .then(({data}) => {
         let length = 0;
-        let { notifications } = data;
+        let {notifications} = data;
         let tutorNotification =
           notifications.length > 0 &&
           notifications.filter((e: any, i: number) => {
             return e.status == 'new';
           });
-        setNotification(tutorNotification)
+        setNotification(tutorNotification);
         // // setNotificationLength(tutorNotification.length > 0 ? tutorNotification.length : 0);
         // length =
         //   length + tutorNotification.length > 0 ? tutorNotification.length : 0;
@@ -199,8 +214,8 @@ function Home({ navigation, route }: any) {
   const getCategory = () => {
     axios
       .get(`${Base_Uri}getCategories`)
-      .then(({ data }) => {
-        let { categories } = data;
+      .then(({data}) => {
+        let {categories} = data;
 
         let myCategories =
           categories &&
@@ -223,8 +238,8 @@ function Home({ navigation, route }: any) {
   const getSubject = () => {
     axios
       .get(`${Base_Uri}getSubjects`)
-      .then(({ data }) => {
-        let { subjects } = data;
+      .then(({data}) => {
+        let {subjects} = data;
 
         let mySubject =
           subjects &&
@@ -248,8 +263,8 @@ function Home({ navigation, route }: any) {
   const getStates = () => {
     axios
       .get(`${Base_Uri}getStates`)
-      .then(({ data }) => {
-        let { states } = data;
+      .then(({data}) => {
+        let {states} = data;
 
         let myStates =
           states &&
@@ -273,8 +288,8 @@ function Home({ navigation, route }: any) {
   const getCities = () => {
     axios
       .get(`${Base_Uri}getCities`)
-      .then(({ data }) => {
-        let { cities } = data;
+      .then(({data}) => {
+        let {cities} = data;
         let myCities =
           cities &&
           cities.length > 0 &&
@@ -298,12 +313,12 @@ function Home({ navigation, route }: any) {
 
     data = JSON.parse(data);
 
-    let { tutorID } = data;
+    let {tutorID} = data;
 
     axios
       .get(`${Base_Uri}api/tutorFirstReportListing/${tutorID}`)
-      .then(({ data }) => {
-        let { tutorReportListing } = data;
+      .then(({data}) => {
+        let {tutorReportListing} = data;
         setreportSubmission(tutorReportListing);
       })
       .catch(error => {
@@ -316,12 +331,12 @@ function Home({ navigation, route }: any) {
 
     data = JSON.parse(data);
 
-    let { tutorID } = data;
+    let {tutorID} = data;
 
     axios
       .get(`${Base_Uri}api/progressReportListing`)
-      .then(({ data }) => {
-        let { progressReportListing } = data;
+      .then(({data}) => {
+        let {progressReportListing} = data;
 
         let tutorReport =
           progressReportListing &&
@@ -353,8 +368,8 @@ function Home({ navigation, route }: any) {
   const getTutorDetails = async () => {
     axios
       .get(`${Base_Uri}getTutorDetailByID/${tutorId}`)
-      .then(({ data }) => {
-        let { tutorDetailById } = data;
+      .then(({data}) => {
+        let {tutorDetailById} = data;
         let tutorDetails = tutorDetailById[0];
         let details = {
           full_name: tutorDetails?.full_name,
@@ -366,7 +381,7 @@ function Home({ navigation, route }: any) {
           nric: tutorDetails.nric,
           tutorImage: tutorDetails.tutorImage,
           tutorId: tutorDetails?.id,
-          status: tutorDetails?.status
+          status: tutorDetails?.status,
         };
 
         updateTutorDetails(details);
@@ -377,35 +392,29 @@ function Home({ navigation, route }: any) {
   };
 
   const getScheduleNotification = () => {
+    axios
+      .get(`${Base_Uri}api/classScheduleStatusNotifications/${tutorId}`)
+      .then(res => {
+        let {data} = res;
 
-
-    axios.get(`${Base_Uri}api/classScheduleStatusNotifications/${tutorId}`).then((res) => {
-
-      let { data } = res
-
-      setScheduleNotification(data.record)
-
-
-    }).catch((error) => {
-
-      setLoading(false);
-      ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
-    })
-
-
-  }
-
+        setScheduleNotification(data.record);
+      })
+      .catch(error => {
+        setLoading(false);
+        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+      });
+  };
 
   useEffect(() => {
     tutorId && getNotificationLength();
     tutorId && getTutorDetails();
-    tutorId && getScheduleNotification()
+    tutorId && getScheduleNotification();
   }, [tutorId, refreshing]);
 
   const getCummulativeCommission = () => {
     axios
       .get(`${Base_Uri}getCommulativeCommission/${tutorId}`)
-      .then(({ data }) => {
+      .then(({data}) => {
         setCumulativeCommission(data.commulativeCommission);
       })
       .catch(error => {
@@ -416,7 +425,7 @@ function Home({ navigation, route }: any) {
   const getAttendedHours = () => {
     axios
       .get(`${Base_Uri}getAttendedHours/${tutorId}`)
-      .then(({ data }) => {
+      .then(({data}) => {
         // setTutorData({ ...tutorData, attendedHours: data.attendedHours });
         setAttendedHours(data.attendedHours);
       })
@@ -428,7 +437,7 @@ function Home({ navigation, route }: any) {
   const getScheduledHours = () => {
     axios
       .get(`${Base_Uri}getScheduledHours/${tutorId}`)
-      .then(({ data }) => {
+      .then(({data}) => {
         setScheduledHours(data.scheduledHours);
         // setTutorData({ ...tutorData, scheduledHours: data.scheduledHours });
       })
@@ -438,13 +447,12 @@ function Home({ navigation, route }: any) {
   };
 
   const getCancelledHours = () => {
-
-    console.log(tutorId, "iddd")
+    console.log(tutorId, 'iddd');
 
     axios
       .get(`${Base_Uri}getCancelledHours/${tutorId}`)
-      .then(({ data }) => {
-        console.log(cancelledHours, "hoursss")
+      .then(({data}) => {
+        console.log(cancelledHours, 'hoursss');
 
         setCancelledHours(data.cancelledHours);
         // setTutorData({ ...tutorData, cancelledHours: data.cancelledHours });
@@ -458,8 +466,8 @@ function Home({ navigation, route }: any) {
   const getTutorStudents = () => {
     axios
       .get(`${Base_Uri}getTutorStudents/${tutorId}`)
-      .then(({ data }) => {
-        const { tutorStudents } = data;
+      .then(({data}) => {
+        const {tutorStudents} = data;
         setTutorStudents(tutorStudents);
         updateStudent(tutorStudents);
       })
@@ -471,8 +479,8 @@ function Home({ navigation, route }: any) {
   const getTutorSubjects = () => {
     axios
       .get(`${Base_Uri}getTutorSubjects/${tutorId}`)
-      .then(({ data }) => {
-        let { tutorSubjects } = data;
+      .then(({data}) => {
+        let {tutorSubjects} = data;
 
         let mySubject =
           tutorSubjects &&
@@ -496,8 +504,8 @@ function Home({ navigation, route }: any) {
   const getUpcomingClasses = () => {
     axios
       .get(`${Base_Uri}getUpcomingClassesByTutorID/${tutorId}`)
-      .then(({ data }) => {
-        const { classSchedules } = data;
+      .then(({data}) => {
+        const {classSchedules} = data;
         setUpCommingClasses(classSchedules);
       })
       .catch(error => {
@@ -556,13 +564,13 @@ function Home({ navigation, route }: any) {
     }
     const login: any = await AsyncStorage.getItem('loginAuth');
     let loginData: LoginAuth = JSON.parse(login);
-    let { tutorID } = loginData;
+    let {tutorID} = loginData;
     axios
       .get(`${Base_Uri}getClassSchedulesTime/${tutorID}`)
       .then(res => {
         let scheduledClasses = res.data;
 
-        let { classSchedulesTime } = scheduledClasses;
+        let {classSchedulesTime} = scheduledClasses;
         let checkRouteClass =
           classSchedulesTime &&
           classSchedulesTime.length > 0 &&
@@ -589,182 +597,211 @@ function Home({ navigation, route }: any) {
   };
   const [openPPModal, setOpenPPModal] = useState(false);
   const displayBanner = async () => {
-    setOpenPPModal(true)
+    setOpenPPModal(true);
     axios
       .get(`${Base_Uri}api/bannerAds`)
-      .then(async ({ data }) => {
+      .then(async ({data}) => {
+        let myHomeBanners: any = [];
+        let myFaqBanners: any = [];
+        let myScheduleBanners: any = [];
+        let myStudentBanners: any = [];
+        let myInboxBanners: any = [];
+        let myProfileBanners: any = [];
+        let myPaymentBanners: any = [];
+        let myTicketBanners: any = [];
+        let myReportBanners: any = [];
 
-        let myHomeBanners: any = []
-        let myFaqBanners: any = []
-        let myScheduleBanners: any = []
-        let myStudentBanners: any = []
-        let myInboxBanners: any = []
-        let myProfileBanners: any = []
-        let myPaymentBanners: any = []
-        let myTicketBanners: any = []
-        let myReportBanners: any = []
+        let banners = data.bannerAds;
 
-
-        let banners = data.bannerAds
-
-        let homePageBanner = banners && banners.length > 0 && banners.map((e: any, i: any) => {
-
-          if (e.displayOnPage == "Dashboard") {
-            myHomeBanners.push(e)
-          }
-          else if (e.displayOnPage == "Faq") {
-            myFaqBanners.push(e)
-
-          }
-          else if (e.displayOnPage == ("Class Schedule List")) {
-            myScheduleBanners.push(e)
-          }
-
-          else if (e.displayOnPage == "Student List") {
-            myStudentBanners.push(e)
-          }
-          else if (e.displayOnPage == "Inbox") {
-            myInboxBanners.push(e)
-
-          }
-          else if (e.displayOnPage == "Profile") {
-            myProfileBanners.push(e)
-          }
-          else if (e.displayOnPage == ("Payment History")) {
-            myPaymentBanners.push(e)
-          }
-          else if (e.displayOnPage == ("Job Ticket List")) {
-            myTicketBanners.push(e)
-
-          }
-          else if (e.displayOnPage == ("Submission History")) {
-            myReportBanners.push(e)
-          }
-        })
+        let homePageBanner =
+          banners &&
+          banners.length > 0 &&
+          banners.map((e: any, i: any) => {
+            if (e.displayOnPage == 'Dashboard') {
+              myHomeBanners.push(e);
+            } else if (e.displayOnPage == 'Faq') {
+              myFaqBanners.push(e);
+            } else if (e.displayOnPage == 'Class Schedule List') {
+              myScheduleBanners.push(e);
+            } else if (e.displayOnPage == 'Student List') {
+              myStudentBanners.push(e);
+            } else if (e.displayOnPage == 'Inbox') {
+              myInboxBanners.push(e);
+            } else if (e.displayOnPage == 'Profile') {
+              myProfileBanners.push(e);
+            } else if (e.displayOnPage == 'Payment History') {
+              myPaymentBanners.push(e);
+            } else if (e.displayOnPage == 'Job Ticket List') {
+              myTicketBanners.push(e);
+            } else if (e.displayOnPage == 'Submission History') {
+              myReportBanners.push(e);
+            }
+          });
 
         if (myHomeBanners && myHomeBanners.length > 0) {
-          let sort: any = myHomeBanners.sort((a: any, b: any) => new Date(b.created_at) - new Date(a.created_at))
-          let bannerShow = sort[0]
+          let sort: any = myHomeBanners.sort(
+            (a: any, b: any) => new Date(b.created_at) - new Date(a.created_at),
+          );
+          let bannerShow = sort[0];
 
-          let dataInStorage: any = await AsyncStorage.getItem("homePageBanner")
+          let dataInStorage: any = await AsyncStorage.getItem('homePageBanner');
 
-          dataInStorage = JSON.parse(dataInStorage)
+          dataInStorage = JSON.parse(dataInStorage);
 
-
-          if (dataInStorage && dataInStorage.id == bannerShow.id && bannerShow.displayOnce == "on") {
-
-            setHomePageBanner([])
-
+          if (
+            dataInStorage &&
+            dataInStorage.id == bannerShow.id &&
+            bannerShow.displayOnce == 'on'
+          ) {
+            setHomePageBanner([]);
           } else {
-            setHomePageBanner(bannerShow)
+            setHomePageBanner(bannerShow);
           }
         }
 
         if (myFaqBanners && myFaqBanners.length > 0) {
-          let sort: any = myFaqBanners.sort((a: any, b: any) => new Date(b.created_at) - new Date(a.created_at))
-          let bannerShow = sort[0]
-          let dataInStorage: any = await AsyncStorage.getItem("faqBanner")
-          dataInStorage = JSON.parse(dataInStorage)
-          if (dataInStorage && dataInStorage.id == bannerShow.id && bannerShow.displayOnce == "on") {
-            setFaqBanner([])
+          let sort: any = myFaqBanners.sort(
+            (a: any, b: any) => new Date(b.created_at) - new Date(a.created_at),
+          );
+          let bannerShow = sort[0];
+          let dataInStorage: any = await AsyncStorage.getItem('faqBanner');
+          dataInStorage = JSON.parse(dataInStorage);
+          if (
+            dataInStorage &&
+            dataInStorage.id == bannerShow.id &&
+            bannerShow.displayOnce == 'on'
+          ) {
+            setFaqBanner([]);
           } else {
-            setFaqBanner(bannerShow)
+            setFaqBanner(bannerShow);
           }
         }
 
-
         if (myProfileBanners && myProfileBanners.length > 0) {
-          let sort: any = myProfileBanners.sort((a: any, b: any) => new Date(b.created_at) - new Date(a.created_at))
-          let bannerShow = sort[0]
-          let dataInStorage: any = await AsyncStorage.getItem("profileBanner")
-          dataInStorage = JSON.parse(dataInStorage)
-          if (dataInStorage && dataInStorage.id == bannerShow.id && bannerShow.displayOnce == "on") {
-            setProfileBanner([])
+          let sort: any = myProfileBanners.sort(
+            (a: any, b: any) => new Date(b.created_at) - new Date(a.created_at),
+          );
+          let bannerShow = sort[0];
+          let dataInStorage: any = await AsyncStorage.getItem('profileBanner');
+          dataInStorage = JSON.parse(dataInStorage);
+          if (
+            dataInStorage &&
+            dataInStorage.id == bannerShow.id &&
+            bannerShow.displayOnce == 'on'
+          ) {
+            setProfileBanner([]);
           } else {
-            setProfileBanner(bannerShow)
+            setProfileBanner(bannerShow);
           }
         }
 
         if (myScheduleBanners && myScheduleBanners.length > 0) {
-          let sort: any = myScheduleBanners.sort((a: any, b: any) => new Date(b.created_at) - new Date(a.created_at))
-          let bannerShow = sort[0]
-          let dataInStorage: any = await AsyncStorage.getItem("scheduleBanner")
-          dataInStorage = JSON.parse(dataInStorage)
-          if (dataInStorage && dataInStorage.id == bannerShow.id && bannerShow.displayOnce == "on") {
-            setSchedulePageBanner([])
+          let sort: any = myScheduleBanners.sort(
+            (a: any, b: any) => new Date(b.created_at) - new Date(a.created_at),
+          );
+          let bannerShow = sort[0];
+          let dataInStorage: any = await AsyncStorage.getItem('scheduleBanner');
+          dataInStorage = JSON.parse(dataInStorage);
+          if (
+            dataInStorage &&
+            dataInStorage.id == bannerShow.id &&
+            bannerShow.displayOnce == 'on'
+          ) {
+            setSchedulePageBanner([]);
           } else {
-            setSchedulePageBanner(bannerShow)
+            setSchedulePageBanner(bannerShow);
           }
         }
 
         if (myStudentBanners && myStudentBanners.length > 0) {
-          let sort: any = myStudentBanners.sort((a: any, b: any) => new Date(b.created_at) - new Date(a.created_at))
-          let bannerShow = sort[0]
-          let dataInStorage: any = await AsyncStorage.getItem("studentBanner")
-          dataInStorage = JSON.parse(dataInStorage)
-          if (dataInStorage && dataInStorage.id == bannerShow.id && bannerShow.displayOnce == "on") {
-            setStudentBanner([])
+          let sort: any = myStudentBanners.sort(
+            (a: any, b: any) => new Date(b.created_at) - new Date(a.created_at),
+          );
+          let bannerShow = sort[0];
+          let dataInStorage: any = await AsyncStorage.getItem('studentBanner');
+          dataInStorage = JSON.parse(dataInStorage);
+          if (
+            dataInStorage &&
+            dataInStorage.id == bannerShow.id &&
+            bannerShow.displayOnce == 'on'
+          ) {
+            setStudentBanner([]);
           } else {
-            setStudentBanner(bannerShow)
+            setStudentBanner(bannerShow);
           }
         }
 
         if (myInboxBanners && myInboxBanners.length > 0) {
-          let sort: any = myInboxBanners.sort((a: any, b: any) => new Date(b.created_at) - new Date(a.created_at))
-          let bannerShow = sort[0]
-          let dataInStorage: any = await AsyncStorage.getItem("inboxBanner")
-          dataInStorage = JSON.parse(dataInStorage)
-          if (dataInStorage && dataInStorage.id == bannerShow.id && bannerShow.displayOnce == "on") {
-            setInboxBanner([])
+          let sort: any = myInboxBanners.sort(
+            (a: any, b: any) => new Date(b.created_at) - new Date(a.created_at),
+          );
+          let bannerShow = sort[0];
+          let dataInStorage: any = await AsyncStorage.getItem('inboxBanner');
+          dataInStorage = JSON.parse(dataInStorage);
+          if (
+            dataInStorage &&
+            dataInStorage.id == bannerShow.id &&
+            bannerShow.displayOnce == 'on'
+          ) {
+            setInboxBanner([]);
           } else {
-            setInboxBanner(bannerShow)
+            setInboxBanner(bannerShow);
           }
         }
 
-
         if (myPaymentBanners && myPaymentBanners.length > 0) {
-          let sort: any = myPaymentBanners.sort((a: any, b: any) => new Date(b.created_at) - new Date(a.created_at))
-          let bannerShow = sort[0]
-          let dataInStorage: any = await AsyncStorage.getItem("paymentBanner")
-          dataInStorage = JSON.parse(dataInStorage)
-          if (dataInStorage && dataInStorage.id == bannerShow.id && bannerShow.displayOnce == "on") {
-            setPaymentHistoryBanner([])
+          let sort: any = myPaymentBanners.sort(
+            (a: any, b: any) => new Date(b.created_at) - new Date(a.created_at),
+          );
+          let bannerShow = sort[0];
+          let dataInStorage: any = await AsyncStorage.getItem('paymentBanner');
+          dataInStorage = JSON.parse(dataInStorage);
+          if (
+            dataInStorage &&
+            dataInStorage.id == bannerShow.id &&
+            bannerShow.displayOnce == 'on'
+          ) {
+            setPaymentHistoryBanner([]);
           } else {
-            setPaymentHistoryBanner(bannerShow)
+            setPaymentHistoryBanner(bannerShow);
           }
         }
 
         if (myTicketBanners && myTicketBanners.length > 0) {
-          let sort: any = myTicketBanners.sort((a: any, b: any) => new Date(b.created_at) - new Date(a.created_at))
-          let bannerShow = sort[0]
-          let dataInStorage: any = await AsyncStorage.getItem("ticketBanner")
-          dataInStorage = JSON.parse(dataInStorage)
-          if (dataInStorage && dataInStorage.id == bannerShow.id && bannerShow.displayOnce == "on") {
-            setJobTicketBanner([])
+          let sort: any = myTicketBanners.sort(
+            (a: any, b: any) => new Date(b.created_at) - new Date(a.created_at),
+          );
+          let bannerShow = sort[0];
+          let dataInStorage: any = await AsyncStorage.getItem('ticketBanner');
+          dataInStorage = JSON.parse(dataInStorage);
+          if (
+            dataInStorage &&
+            dataInStorage.id == bannerShow.id &&
+            bannerShow.displayOnce == 'on'
+          ) {
+            setJobTicketBanner([]);
           } else {
-            setJobTicketBanner(bannerShow)
+            setJobTicketBanner(bannerShow);
           }
         }
-
 
         if (myReportBanners && myReportBanners.length > 0) {
-          let sort: any = myReportBanners.sort((a: any, b: any) => new Date(b.created_at) - new Date(a.created_at))
-          let bannerShow = sort[0]
-          let dataInStorage: any = await AsyncStorage.getItem("reportBanner")
-          dataInStorage = JSON.parse(dataInStorage)
-          if (dataInStorage && dataInStorage.id == bannerShow.id && bannerShow.displayOnce == "on") {
-            setReportSubmissionBanner([])
+          let sort: any = myReportBanners.sort(
+            (a: any, b: any) => new Date(b.created_at) - new Date(a.created_at),
+          );
+          let bannerShow = sort[0];
+          let dataInStorage: any = await AsyncStorage.getItem('reportBanner');
+          dataInStorage = JSON.parse(dataInStorage);
+          if (
+            dataInStorage &&
+            dataInStorage.id == bannerShow.id &&
+            bannerShow.displayOnce == 'on'
+          ) {
+            setReportSubmissionBanner([]);
           } else {
-            setReportSubmissionBanner(bannerShow)
+            setReportSubmissionBanner(bannerShow);
           }
         }
-
-
-
-
-
-
-
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
@@ -775,87 +812,55 @@ function Home({ navigation, route }: any) {
     displayBanner();
   }, []);
 
-
   const linkToOtherPage = () => {
-
-    if (homePageBanner.callToActionType == "Open URL") {
+    if (homePageBanner.callToActionType == 'Open URL') {
       Linking.openURL(homePageBanner.urlToOpen);
-    }
-    else if (homePageBanner.callToActionType == "Open Page")
-
-      if (homePageBanner.pageToOpen == "Dashboard") {
-
-        navigation.navigate("Home")
+    } else if (homePageBanner.callToActionType == 'Open Page')
+      if (homePageBanner.pageToOpen == 'Dashboard') {
+        navigation.navigate('Home');
+      } else if (homePageBanner.pageToOpen == 'Faq') {
+        navigation.navigate('FAQs');
+      } else if (homePageBanner.pageToOpen == 'Class Schedule List') {
+        navigation.navigate('Schedule');
+      } else if (homePageBanner.pageToOpen == 'Student List') {
+        navigation.navigate('Students');
+      } else if (homePageBanner.pageToOpen == 'Inbox') {
+        navigation.navigate('inbox');
+      } else if (homePageBanner.pageToOpen == 'Profile') {
+        navigation.navigate('Profile');
+      } else if (homePageBanner.pageToOpen == 'Payment History') {
+        navigation.navigate('PaymentHistory');
+      } else if (homePageBanner.pageToOpen == 'Job Ticket List') {
+        navigation.navigate('Job Ticket');
+      } else if (homePageBanner.pageToOpen == 'Submission History') {
+        navigation.navigate('ReportSubmissionHistory');
       }
-
-      else if (homePageBanner.pageToOpen == "Faq") {
-
-        navigation.navigate("FAQs")
-
-      }
-      else if (homePageBanner.pageToOpen == ("Class Schedule List")) {
-
-        navigation.navigate("Schedule")
-
-      }
-
-      else if (homePageBanner.pageToOpen == "Student List") {
-
-        navigation.navigate("Students")
-
-      }
-      else if (homePageBanner.pageToOpen == "Inbox") {
-
-        navigation.navigate("inbox")
-
-      }
-      else if (homePageBanner.pageToOpen == "Profile") {
-        navigation.navigate("Profile")
-      }
-      else if (homePageBanner.pageToOpen == ("Payment History")) {
-
-        navigation.navigate("PaymentHistory")
-
-
-      }
-      else if (homePageBanner.pageToOpen == ("Job Ticket List")) {
-
-        navigation.navigate("Job Ticket")
-
-      }
-      else if (homePageBanner.pageToOpen == ("Submission History")) {
-        navigation.navigate("ReportSubmissionHistory")
-      }
-  }
+  };
 
   // console.log(cancelledHours, "cancelledHour")
 
   const closeBannerModal = async () => {
+    if (homePageBanner.displayOnce == 'on') {
+      let bannerData = {...homePageBanner};
 
-    if (homePageBanner.displayOnce == "on") {
+      let stringData = JSON.stringify(bannerData);
 
-      let bannerData = { ...homePageBanner }
-
-      let stringData = JSON.stringify(bannerData)
-
-      let data = await AsyncStorage.setItem("homePageBanner", stringData)
-      setHomePageBanner([])
-      setOpenPPModal(false)
+      let data = await AsyncStorage.setItem('homePageBanner', stringData);
+      setHomePageBanner([]);
+      setOpenPPModal(false);
     } else {
-      setOpenPPModal(false)
+      setOpenPPModal(false);
     }
-
-  }
-
+  };
 
   function convertTo12HourFormat(time24: string): string {
-    const [hourStr, minuteStr] = time24.split(":");
+    const [hourStr, minuteStr] = time24.split(':');
     const hour = parseInt(hourStr);
-    let period = "AM";
+    let period = 'AM';
     let twelveHour = hour;
 
     if (hour >= 12) {
-      period = "PM";
+      period = 'PM';
       if (hour > 12) {
         twelveHour = hour - 12;
       }
@@ -881,8 +886,18 @@ function Home({ navigation, route }: any) {
     const dateObj = new Date(date);
     const day = dateObj.getDate();
     const monthNames = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
     const monthIndex = dateObj.getMonth();
     const year = dateObj.getFullYear();
@@ -891,33 +906,34 @@ function Home({ navigation, route }: any) {
   }
 
   return !cancelledHours ? (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <ActivityIndicator size={'large'} color={Theme.black} />
     </View>
   ) : (
-    <View style={{ flex: 1 }} >
+    <View style={{flex: 1}}>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        style={[styles.container, {}]} showsVerticalScrollIndicator={false}>
+        style={[styles.container, {}]}
+        showsVerticalScrollIndicator={false}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={{ marginTop: 15 }}>
-            <Text style={[styles.text, { fontSize: 20 }]}>Hello,</Text>
-            <Text style={[styles.heading, { fontSize: 22 }]}>
+          <View style={{marginTop: 15}}>
+            <Text style={[styles.text, {fontSize: 20}]}>Hello,</Text>
+            <Text style={[styles.heading, {fontSize: 22}]}>
               {tutorDetails?.displayName ?? tutorDetails.full_name}
             </Text>
           </View>
 
           <View style={styles.firstBox}>
-            <Text style={[styles.text, { color: Theme.white, fontSize: 12 }]}>
+            <Text style={[styles.text, {color: Theme.white, fontSize: 12}]}>
               {currentDate}
             </Text>
             <Text
-              style={[styles.heading, { color: Theme.white, fontWeight: '400' }]}>
+              style={[styles.heading, {color: Theme.white, fontWeight: '400'}]}>
               RM {cummulativeCommission}
             </Text>
-            <Text style={[styles.text, { color: Theme.white, fontSize: 12 }]}>
+            <Text style={[styles.text, {color: Theme.white, fontSize: 12}]}>
               CUMMULATIVE COMMISSION
             </Text>
           </View>
@@ -936,7 +952,7 @@ function Home({ navigation, route }: any) {
                   marginTop: 10,
                 },
               ]}>
-              <Text style={[styles.text, { color: Theme.black, fontSize: 12 }]}>
+              <Text style={[styles.text, {color: Theme.black, fontSize: 12}]}>
                 You have ongoing class
               </Text>
               <View
@@ -948,7 +964,7 @@ function Home({ navigation, route }: any) {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                <Text style={[styles.text, { fontSize: 10, color: Theme.white }]}>
+                <Text style={[styles.text, {fontSize: 10, color: Theme.white}]}>
                   <ActivityIndicator color={'blue'} size="small" />
                 </Text>
               </View>
@@ -967,7 +983,7 @@ function Home({ navigation, route }: any) {
                   marginTop: 15,
                 },
               ]}>
-              <Text style={[styles.text, { color: Theme.black, fontSize: 16 }]}>
+              <Text style={[styles.text, {color: Theme.black, fontSize: 16}]}>
                 Notifications
               </Text>
               <View
@@ -979,33 +995,47 @@ function Home({ navigation, route }: any) {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}>
-                <Text style={[styles.text, { fontSize: 10, color: Theme.white }]}>
-                  {notification.length + scheduleNotification.length > 0 ? (notification.length + scheduleNotification.length) : 0}
+                <Text style={[styles.text, {fontSize: 10, color: Theme.white}]}>
+                  {notification.length + scheduleNotification.length > 0
+                    ? notification.length + scheduleNotification.length
+                    : 0}
                 </Text>
               </View>
             </TouchableOpacity>
           )}
 
-          <View style={{ marginTop: 25 }}>
-            <Text style={[styles.heading, { fontSize: 16 }]}>Monthly Summary</Text>
-            <Text style={[styles.text, { fontSize: 14, color: Theme.gray, fontWeight: '500' }]}>
+          <View style={{marginTop: 25}}>
+            <Text style={[styles.heading, {fontSize: 16}]}>
+              Monthly Summary
+            </Text>
+            <Text
+              style={[
+                styles.text,
+                {fontSize: 14, color: Theme.gray, fontWeight: '500'},
+              ]}>
               {currentMonth}
             </Text>
           </View>
           {/* attended hours */}
-          <View style={{ flexDirection: 'row', marginTop: 15 }}>
+          <View style={{flexDirection: 'row', marginTop: 15}}>
             <View
-              style={{ flexDirection: 'row', width: '50%', alignItems: 'center' }}>
+              style={{
+                flexDirection: 'row',
+                width: '50%',
+                alignItems: 'center',
+              }}>
               <View
-                style={{ backgroundColor: 'pink', padding: 10, borderRadius: 8 }}>
+                style={{backgroundColor: 'pink', padding: 10, borderRadius: 8}}>
                 <Image
                   source={require('../../Assets/Images/timer-or-chronometer-tool.png')}
-                  style={{ width: 20, height: 20 }}
+                  style={{width: 20, height: 20}}
                 />
               </View>
-              <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-                <Text style={[styles.text, { fontSize: 12 }]}>Attended hours</Text>
-                <Text style={[styles.text, { fontSize: 16, fontWeight: '700' }]}>
+              <View style={{justifyContent: 'center', marginLeft: 10}}>
+                <Text style={[styles.text, {fontSize: 12}]}>
+                  Attended hours
+                </Text>
+                <Text style={[styles.text, {fontSize: 16, fontWeight: '700'}]}>
                   {attendedHours}
                 </Text>
               </View>
@@ -1026,21 +1056,27 @@ function Home({ navigation, route }: any) {
                 }}>
                 <Image
                   source={require('../../Assets/Images/student.png')}
-                  style={{ width: 20, height: 20 }}
+                  style={{width: 20, height: 20}}
                 />
               </View>
-              <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-                <Text style={[styles.text, { fontSize: 12 }]}>Active Student</Text>
-                <Text style={[styles.text, { fontSize: 16, fontWeight: '700' }]}>
+              <View style={{justifyContent: 'center', marginLeft: 10}}>
+                <Text style={[styles.text, {fontSize: 12}]}>
+                  Active Student
+                </Text>
+                <Text style={[styles.text, {fontSize: 16, fontWeight: '700'}]}>
                   {students?.length}
                 </Text>
               </View>
             </View>
           </View>
           {/*Schedule hours & cancel hours  */}
-          <View style={{ flexDirection: 'row', marginTop: 20 }}>
+          <View style={{flexDirection: 'row', marginTop: 20}}>
             <View
-              style={{ flexDirection: 'row', width: '50%', alignItems: 'center' }}>
+              style={{
+                flexDirection: 'row',
+                width: '50%',
+                alignItems: 'center',
+              }}>
               <View
                 style={{
                   backgroundColor: '#e9ccb1',
@@ -1049,12 +1085,14 @@ function Home({ navigation, route }: any) {
                 }}>
                 <Image
                   source={require('../../Assets/Images/scheduled.png')}
-                  style={{ width: 20, height: 20 }}
+                  style={{width: 20, height: 20}}
                 />
               </View>
-              <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-                <Text style={[styles.text, { fontSize: 12 }]}>Schedule hours</Text>
-                <Text style={[styles.text, { fontSize: 16, fontWeight: '700' }]}>
+              <View style={{justifyContent: 'center', marginLeft: 10}}>
+                <Text style={[styles.text, {fontSize: 12}]}>
+                  Schedule hours
+                </Text>
+                <Text style={[styles.text, {fontSize: 16, fontWeight: '700'}]}>
                   {schedulesHours}
                 </Text>
               </View>
@@ -1074,19 +1112,25 @@ function Home({ navigation, route }: any) {
                 }}>
                 <Image
                   source={require('../../Assets/Images/clock.png')}
-                  style={{ width: 20, height: 20 }}
+                  style={{width: 20, height: 20}}
                 />
               </View>
-              <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-                <Text style={[styles.text, { fontSize: 12 }]}>Cancelled hours</Text>
-                <Text style={[styles.text, { fontSize: 16, fontWeight: '700' }]}>
+              <View style={{justifyContent: 'center', marginLeft: 10}}>
+                <Text style={[styles.text, {fontSize: 12}]}>
+                  Cancelled hours
+                </Text>
+                <Text style={[styles.text, {fontSize: 16, fontWeight: '700'}]}>
                   {cancelledHours}
                 </Text>
               </View>
             </View>
           </View>
 
-          <Text style={[styles.text, { marginTop: 20, fontWeight: '500', fontSize: 16 }]}>
+          <Text
+            style={[
+              styles.text,
+              {marginTop: 20, fontWeight: '500', fontSize: 16},
+            ]}>
             Upcoming Classes
           </Text>
           {upCommingClasses && upCommingClasses.length > 0 ? (
@@ -1095,7 +1139,7 @@ function Home({ navigation, route }: any) {
               horizontal
               nestedScrollEnabled
               showsHorizontalScrollIndicator={false}
-              renderItem={({ item, index }: any) => {
+              renderItem={({item, index}: any) => {
                 const startTime12Hour = convertTo12HourFormat(item.startTime);
                 const endTime12Hour = convertTo12HourFormat(item.endTime);
                 // const formattedDate = convertDateFormat(item.date);
@@ -1113,7 +1157,7 @@ function Home({ navigation, route }: any) {
                       gap: 10,
                       marginRight: 10,
                       borderColor: '#eee',
-                      marginBottom: 40
+                      marginBottom: 40,
                     }}
                     onPress={() => routeToScheduleScreen(item)}>
                     <View
@@ -1131,7 +1175,7 @@ function Home({ navigation, route }: any) {
                           borderRadius: 50,
                         }}
                       />
-                      <Text style={{ color: Theme.black, fontSize: 16 }}>
+                      <Text style={{color: Theme.black, fontSize: 16}}>
                         {item?.studentName}
                       </Text>
                     </View>
@@ -1144,11 +1188,15 @@ function Home({ navigation, route }: any) {
                       {item?.subject_name}
                     </Text>
                     <View>
-                      <Text style={{ color: Theme.gray, fontSize: 14 }}>
+                      <Text style={{color: Theme.gray, fontSize: 14}}>
                         Time - {startTime12Hour} to {endTime12Hour}{' '}
                       </Text>
                       <Text
-                        style={{ color: Theme.gray, fontSize: 14, marginTop: 10 }}>
+                        style={{
+                          color: Theme.gray,
+                          fontSize: 14,
+                          marginTop: 10,
+                        }}>
                         {/* Date - {item?.date?.slice(0, 11)} */}
                         Date - {convertDateFormat(item.date)}
                       </Text>
@@ -1158,55 +1206,69 @@ function Home({ navigation, route }: any) {
               }}
             />
           ) : (
-            <View style={{ marginTop: 35 }}>
+            <View style={{marginTop: 35}}>
               <Text
-                style={{ color: Theme.black, fontSize: 12, textAlign: 'center' }}>
+                style={{color: Theme.black, fontSize: 12, textAlign: 'center'}}>
                 No UpComming Classes...
               </Text>
             </View>
           )}
         </ScrollView>
       </ScrollView>
-      {openPPModal && Object.keys(homePageBanner).length > 0 && (homePageBanner.tutorStatusCriteria == "All" || tutorDetails.status == "verified") && <View style={{ flex: 1 }}>
-        <Modal
-          visible={openPPModal}
-          style={{ flex: 1 }}
-          animationType="fade"
-          transparent={true}
-          onRequestClose={() => closeBannerModal()}>
-          <TouchableOpacity
-            onPress={() => linkToOtherPage()}
-            style={{
-              flex: 1,
-              width: "100%",
-              height: "100%",
-              backgroundColor: 'rgba(0,0,0,0.5)',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-
-            <View
-              style={{
-                backgroundColor: 'white',
-                borderRadius: 5,
-              }}>
-              <TouchableOpacity onPress={() => closeBannerModal()}>
-                <View style={{ alignItems: 'flex-end', paddingVertical: 10, paddingRight: 15 }}>
-                  <AntDesign
-                    name="closecircleo"
-                    size={20}
-                    color={'black'}
+      {openPPModal &&
+        Object.keys(homePageBanner).length > 0 &&
+        (homePageBanner.tutorStatusCriteria == 'All' ||
+          tutorDetails.status == 'verified') && (
+          <View style={{flex: 1}}>
+            <Modal
+              visible={openPPModal}
+              style={{flex: 1}}
+              animationType="fade"
+              transparent={true}
+              onRequestClose={() => closeBannerModal()}>
+              <TouchableOpacity
+                onPress={() => linkToOtherPage()}
+                style={{
+                  flex: 1,
+                  width: '100%',
+                  height: '100%',
+                  backgroundColor: 'rgba(0,0,0,0.5)',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    borderRadius: 5,
+                  }}>
+                  <TouchableOpacity onPress={() => closeBannerModal()}>
+                    <View
+                      style={{
+                        alignItems: 'flex-end',
+                        paddingVertical: 10,
+                        paddingRight: 15,
+                      }}>
+                      <AntDesign
+                        name="closecircleo"
+                        size={20}
+                        color={'black'}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                  {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
+                  <Image
+                    source={{uri: homePageBanner.bannerImage}}
+                    style={{
+                      width: Dimensions.get('screen').width / 1,
+                      height: '90%',
+                    }}
+                    resizeMode="contain"
                   />
                 </View>
               </TouchableOpacity>
-              {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
-              <Image source={{ uri: homePageBanner.bannerImage }} style={{ width: Dimensions.get('screen').width / 1, height: '90%', }} resizeMode='contain' />
-
-            </View>
-
-          </TouchableOpacity>
-        </Modal>
-      </View>}
+            </Modal>
+          </View>
+        )}
     </View>
   );
 }
