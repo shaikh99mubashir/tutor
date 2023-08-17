@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   View,
   Text,
@@ -9,16 +9,17 @@ import {
   ToastAndroid,
   ActivityIndicator,
 } from 'react-native';
-import { Theme } from '../../constant/theme';
+import {Theme} from '../../constant/theme';
 import CustomDropDown from '../../Component/CustomDropDown';
 import Header from '../../Component/Header';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Base_Uri } from '../../constant/BaseUri';
+import {Base_Uri} from '../../constant/BaseUri';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import StudentContext from '../../context/studentContext';
+import scheduleContext from '../../context/scheduleContext';
 
-function AddClass({ navigation }: any) {
+function AddClass({navigation}: any) {
   const [student, setStudent] = useState([
     {
       id: 1,
@@ -40,20 +41,21 @@ function AddClass({ navigation }: any) {
 
   const [subject, setSubject] = useState([]);
 
-  const [tutorId, setTutorId] = useState(null)
+  const [tutorId, setTutorId] = useState(null);
   const [mode, setMode] = useState<any>('date');
   const [confirm, setConfirm] = useState(false);
   const [clickedStartTime, setClickedStartTime] = useState(false);
   const [show, setShow] = useState(false);
   const [indexClicked, setIndexClicked] = useState<null | Number>(null);
   const [value, setValue] = useState(new Date());
-  const [selectedStudent, setSelectedStudent] = useState<any>(null)
-  const [selectedSubject, setSelectedSubject] = useState<any>(null)
-  const [loading, setLoading] = useState(false)
+  const [selectedStudent, setSelectedStudent] = useState<any>(null);
+  const [selectedSubject, setSelectedSubject] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
+  const [scheduledClasses, setScheduledClasses] = useState([]);
 
+  const context = useContext(StudentContext);
+  const {students, subjects} = context;
 
-  const context = useContext(StudentContext)
-  const { students, subjects } = context
   const [classes, setClasses] = useState<any>([
     {
       tutorID: tutorId,
@@ -66,16 +68,14 @@ function AddClass({ navigation }: any) {
     },
   ]);
 
-
   const getSubject = () => {
-
-    setSelectedSubject("")
-    setSubject([])
+    setSelectedSubject('');
+    setSubject([]);
 
     axios
       .get(`${Base_Uri}api/getStudentSubjects/${selectedStudent?.studentID}`)
-      .then(({ data }) => {
-        let { studentSubjects } = data;
+      .then(({data}) => {
+        let {studentSubjects} = data;
 
         let mySubject =
           studentSubjects &&
@@ -97,22 +97,16 @@ function AddClass({ navigation }: any) {
   };
 
   const getTutorID = async () => {
-
     let data: any = await AsyncStorage.getItem('loginAuth');
 
     data = JSON.parse(data);
 
-    let { tutorID } = data;
+    let {tutorID} = data;
 
-    setTutorId(tutorID)
-
-  }
-
+    setTutorId(tutorID);
+  };
 
   const getStudents = async () => {
-
-
-
     let myStudents =
       students &&
       students.length > 0 &&
@@ -120,18 +114,16 @@ function AddClass({ navigation }: any) {
         if (e.studentName) {
           return {
             ...e,
-            subject: e.studentName
+            subject: e.studentName,
           };
         }
       });
     setStudent(myStudents);
-
   };
 
-
   useEffect(() => {
-    getTutorID()
-  }, [])
+    getTutorID();
+  }, []);
 
   useEffect(() => {
     if (tutorId) {
@@ -140,16 +132,10 @@ function AddClass({ navigation }: any) {
   }, [tutorId]);
 
   useEffect(() => {
-
-
-
     if (selectedStudent) {
-      getSubject()
+      getSubject();
     }
-
-
-  }, [selectedStudent])
-
+  }, [selectedStudent]);
 
   const deleteClass = (index: Number) => {
     let data: any =
@@ -162,13 +148,11 @@ function AddClass({ navigation }: any) {
     setClasses(data);
   };
 
-
-
   const onChange = (event: any, selectedDate: any) => {
     setShow(false);
     const currentDate = selectedDate;
-    let hours = currentDate.getHours()
-    let minutes = currentDate.getMinutes()
+    let hours = currentDate.getHours();
+    let minutes = currentDate.getMinutes();
     let data;
     if (mode == 'date') {
       data = classes.map((e: any, i: Number) => {
@@ -182,7 +166,6 @@ function AddClass({ navigation }: any) {
         }
       });
     } else if (mode == 'time' && clickedStartTime) {
-
       data = classes.map((e: any, i: Number) => {
         if (i == indexClicked) {
           return {
@@ -213,7 +196,6 @@ function AddClass({ navigation }: any) {
   };
 
   const setClassDate = (mode: any, index: Number, startTime?: Boolean) => {
-
     if (startTime) {
       setClickedStartTime(true);
     }
@@ -222,7 +204,7 @@ function AddClass({ navigation }: any) {
     setShow(true);
   };
 
-  const renderClasses = ({ item, index }: any) => {
+  const renderClasses = ({item, index}: any) => {
     return (
       <View>
         <View
@@ -260,24 +242,25 @@ function AddClass({ navigation }: any) {
             borderRadius: 10,
             marginTop: 10,
             borderWidth: 1,
-            borderColor: Theme.gray
+            borderColor: Theme.gray,
           }}>
-          <TouchableOpacity activeOpacity={0.8} style={{ paddingVertical: 5 }} onPress={() => setClassDate('date', index)}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            style={{paddingVertical: 5}}
+            onPress={() => setClassDate('date', index)}>
             <View
               style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
               }}>
-              <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '500' }}>
+              <Text
+                style={{color: Theme.gray, fontSize: 14, fontWeight: '500'}}>
                 Date
               </Text>
               <Text
-                style={{ color: Theme.black, fontSize: 12, fontWeight: '500' }}>
-
-                {item?.date !== '-'
-                  ? item.date.toString().slice(0, 15)
-                  : '-'}
+                style={{color: Theme.black, fontSize: 12, fontWeight: '500'}}>
+                {item?.date !== '-' ? item.date.toString().slice(0, 15) : '-'}
               </Text>
             </View>
           </TouchableOpacity>
@@ -289,15 +272,15 @@ function AddClass({ navigation }: any) {
               marginTop: 10,
               width: '100%',
             }}>
-            <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '500' }}>
+            <Text style={{color: Theme.gray, fontSize: 14, fontWeight: '500'}}>
               Start Time
             </Text>
 
             <TouchableOpacity
               onPress={() => setClassDate('time', index, true)}
-              style={{ minWidth: 50, alignItems: 'flex-end' }}>
+              style={{minWidth: 50, alignItems: 'flex-end'}}>
               <Text
-                style={{ color: Theme.black, fontSize: 12, fontWeight: '500' }}>
+                style={{color: Theme.black, fontSize: 12, fontWeight: '500'}}>
                 {item?.startTime !== '-'
                   ? item?.startTime.toLocaleString().slice(10)
                   : '-'}
@@ -311,15 +294,15 @@ function AddClass({ navigation }: any) {
               alignItems: 'center',
               marginTop: 10,
             }}>
-            <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '500' }}>
+            <Text style={{color: Theme.gray, fontSize: 14, fontWeight: '500'}}>
               End Time
             </Text>
 
             <TouchableOpacity
               onPress={() => setClassDate('time', index)}
-              style={{ minWidth: 50, alignItems: 'flex-end' }}>
+              style={{minWidth: 50, alignItems: 'flex-end'}}>
               <Text
-                style={{ color: Theme.black, fontSize: 12, fontWeight: '500' }}>
+                style={{color: Theme.black, fontSize: 12, fontWeight: '500'}}>
                 {item?.endTime !== '-'
                   ? item?.endTime.toLocaleString().slice(10)
                   : '-'}
@@ -330,8 +313,6 @@ function AddClass({ navigation }: any) {
       </View>
     );
   };
-
-
 
   const addClass = () => {
     let newClass = {
@@ -348,68 +329,101 @@ function AddClass({ navigation }: any) {
   };
 
   const confirmClass = () => {
+    setLoading(true);
 
-    setLoading(true)
+    let classesToAdd: any = [...classes];
 
-    let classesToAdd: any = [...classes]
+    for (let i = 0; i < classesToAdd.length; i++) {
+      for (let j = i + 1; j < classesToAdd.length; j++) {
+        const classA = classesToAdd[i];
+        const classB = classesToAdd[j];
 
-    classesToAdd = classesToAdd && classesToAdd.length > 0 && classesToAdd.map((e: any, i: number) => {
+        const dateA = classA.date;
+        const dateB = classB.date;
 
-      if (e?.startTime == "-") {
-        return "false"
+        if (
+          dateA.getDate() === dateB.getDate() &&
+          dateA.getMonth() === dateB.getMonth() &&
+          dateA.getFullYear() === dateB.getFullYear() &&
+          ((classA.startTime <= classB.endTime &&
+            classB.startTime <= classA.endTime) ||
+            (classB.startTime <= classA.endTime &&
+              classA.startTime <= classB.endTime))
+        ) {
+          ToastAndroid.show(
+            'Classes have overlapping time slots',
+            ToastAndroid.SHORT,
+          );
+          setLoading(false);
+          return;
+        }
       }
-      if (e?.endTime == "-") {
-        return "false"
-      }
-      if (!selectedStudent) {
-        return "false"
-      }
-      if (!selectedSubject) {
-        return "false"
-      }
+    }
 
-      const year = e?.date?.getFullYear();
-      const month = (e?.date?.getMonth() + 1)?.toString()?.padStart(2, '0'); // Adding 1 since month is zero-based
-      const day = e?.date?.getDate()?.toString()?.padStart(2, '0');
+    classesToAdd =
+      classesToAdd &&
+      classesToAdd.length > 0 &&
+      classesToAdd.map((e: any, i: number) => {
+        if (e?.startTime == '-') {
+          return 'false';
+        }
+        if (e?.endTime == '-') {
+          return 'false';
+        }
+        if (!selectedStudent) {
+          return 'false';
+        }
+        if (!selectedSubject) {
+          return 'false';
+        }
 
-      let hours = e?.startTime?.getHours()
-      let minutes = e?.startTime?.getMinutes()
-      let seconds = e?.startTime?.getSeconds()
+        const year = e?.date?.getFullYear();
+        const month = (e?.date?.getMonth() + 1)?.toString()?.padStart(2, '0'); // Adding 1 since month is zero-based
+        const day = e?.date?.getDate()?.toString()?.padStart(2, '0');
 
-      let endHour = e?.endTime?.getHours()
-      let endMinutes = e?.endTime?.getMinutes()
-      let endSeconds = e?.endTime?.getSeconds()
-      return {
-        tutorID: tutorId,
-        studentID: selectedStudent?.studentID,
-        subjectID: selectedSubject?.id,
-        startTime: hours + ":" + minutes + ":" + seconds,
-        endTime: endHour + ":" + endMinutes + ":" + endSeconds,
-        date: year + '/' + month + '/' + day
-      }
-    })
+        let hours = e?.startTime?.getHours();
+        let minutes = e?.startTime?.getMinutes();
+        let seconds = e?.startTime?.getSeconds();
 
+        let endHour = e?.endTime?.getHours();
+        let endMinutes = e?.endTime?.getMinutes();
+        let endSeconds = e?.endTime?.getSeconds();
+        return {
+          tutorID: tutorId,
+          studentID: selectedStudent?.studentID,
+          subjectID: selectedSubject?.id,
+          startTime: hours + ':' + minutes + ':' + seconds,
+          endTime: endHour + ':' + endMinutes + ':' + endSeconds,
+          date: year + '/' + month + '/' + day,
+        };
+      });
 
-    let flag = classesToAdd.some((e: any, i: number) => e == "false")
+    let flag = classesToAdd.some((e: any, i: number) => e == 'false');
 
     if (flag) {
-      ToastAndroid.show("Required Field are missing", ToastAndroid.SHORT)
-      setLoading(false)
-      return
+      ToastAndroid.show('Required Field are missing', ToastAndroid.SHORT);
+      setLoading(false);
+      return;
     }
     let classesss = {
-      classes: classesToAdd
-    }
+      classes: classesToAdd,
+    };
 
-    axios.post(`${Base_Uri}api/addMultipleClasses`, classesss).then((res) => {
-      setLoading(false)
-      navigation.navigate('Schedule', classesss.classes[0].startTime);
-      ToastAndroid.show(res?.data?.message, ToastAndroid.SHORT)
-    }).catch((error) => {
-      setLoading(false)
-      console.log(error, "error")
-      ToastAndroid.show("Sorry classes added unsuccessfull", ToastAndroid.SHORT)
-    })
+    axios
+      .post(`${Base_Uri}api/addMultipleClasses`, classesss)
+      .then(res => {
+        setLoading(false);
+        navigation.navigate('Schedule', classesss.classes[0].startTime);
+        ToastAndroid.show(res?.data?.message, ToastAndroid.SHORT);
+      })
+      .catch(error => {
+        setLoading(false);
+        console.log(error, 'error');
+        ToastAndroid.show(
+          'Sorry classes added unsuccessfull',
+          ToastAndroid.SHORT,
+        );
+      });
   };
   const showToast = (message: any) => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
@@ -423,14 +437,16 @@ function AddClass({ navigation }: any) {
       showToast('Please select the student before you select the subject.');
     }
   };
-  return (
-    loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+  return loading ? (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <ActivityIndicator size="large" color={Theme.black} />
-    </View> : <View style={{ flex: 1, backgroundColor: Theme.white }}>
+    </View>
+  ) : (
+    <View style={{flex: 1, backgroundColor: Theme.white}}>
       <View>
         <Header title={'Add Class'} backBtn navigation={navigation} />
       </View>
-      <View style={{ padding: 20, flex: 1 }}>
+      <View style={{padding: 20, flex: 1}}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View>
             <CustomDropDown
@@ -471,7 +487,8 @@ function AddClass({ navigation }: any) {
                   fontSize: 14,
                   fontWeight: '700',
                 }}
-              />)}
+              />
+            )}
           </View>
 
           <FlatList data={classes} renderItem={renderClasses} />
@@ -492,7 +509,7 @@ function AddClass({ navigation }: any) {
                 width: '100%',
               }}>
               <Text
-                style={{ textAlign: 'center', fontSize: 14, color: Theme.white }}>
+                style={{textAlign: 'center', fontSize: 14, color: Theme.white}}>
                 {classes.length > 0 ? 'Add More Classes' : 'Add Classes'}
               </Text>
             </TouchableOpacity>
@@ -525,7 +542,7 @@ function AddClass({ navigation }: any) {
             borderRadius: 10,
             width: '95%',
           }}>
-          <Text style={{ textAlign: 'center', fontSize: 14, color: Theme.white }}>
+          <Text style={{textAlign: 'center', fontSize: 14, color: Theme.white}}>
             Confirm Class
           </Text>
         </TouchableOpacity>

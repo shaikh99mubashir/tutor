@@ -207,7 +207,6 @@ function Schedule({navigation, route}: any) {
                   let getDate: any = moment(e.date);
 
                   let convertDate = getDate.toDate();
-
                   let scheduleDate = convertDate.getDate();
                   let scheduleMonth = convertDate.getMonth();
                   let scheduleYear = convertDate.getFullYear();
