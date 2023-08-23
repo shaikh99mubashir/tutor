@@ -45,7 +45,8 @@ console.log(cancelledReason,"reason")
     return (
         loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
             <ActivityIndicator size="large" color={Theme.black} />
-        </View> : <KeyboardAvoidingView behavior="height" style={{ flex: 1, backgroundColor: Theme.white }} >
+        </View> :
+         <KeyboardAvoidingView behavior="height" style={{ flex: 1, backgroundColor: Theme.white }} >
             <View>
                 <CustomHeader title="Edit Class" backBtn navigation={navigation} />
             </View>
