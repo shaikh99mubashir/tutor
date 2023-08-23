@@ -176,9 +176,10 @@ function EditPostpondClass({ navigation, route }: any) {
     }
 
     return (
-        loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+        loading ? <View style={{  justifyContent: "center", alignItems: "center" }} >
             <ActivityIndicator size="large" color={Theme.black} />
-        </View> : <KeyboardAvoidingView style={{ flex: 1, backgroundColor: Theme.white }} behavior="padding">
+        </View> :
+         <KeyboardAvoidingView style={{ flex: 1, backgroundColor: Theme.white }}>
             <View>
                 <CustomHeader title="Edit Class" backBtn navigation={navigation} />
             </View>
@@ -215,7 +216,7 @@ function EditPostpondClass({ navigation, route }: any) {
                     </View>
 
                     <View>
-                        <Text style={{ color: Theme.black, fontSize: 16, fontWeight: "600", marginTop: 5 }}>Postponed Reason</Text>
+                        <Text style={{ color: Theme.black, fontSize: 16, fontWeight: "600", marginTop: 8 }}>Postponed Reason</Text>
 
                         <View style={{ height: 150, padding: 10, backgroundColor: Theme.lightGray, borderRadius: 5, marginTop: 5 }}>
                             <TextInput
@@ -229,7 +230,7 @@ function EditPostpondClass({ navigation, route }: any) {
                     </View>
                     <View>
                         <Text style={{ color: Theme.black, fontSize: 16, fontWeight: "600", marginTop: 10 }} >Next Class</Text>
-                        <View style={{ backgroundColor: Theme.lightGray, padding: 20, borderRadius: 10, marginTop: 10 }}>
+                        <View style={{ backgroundColor: Theme.lightGray, padding: 20, borderRadius: 10, marginVertical: 10 }}>
                             <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
                                 <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: "500" }}>Date</Text>
                                 <TouchableOpacity onPress={() => setClassDate("date")} >
@@ -262,7 +263,11 @@ function EditPostpondClass({ navigation, route }: any) {
                 </ScrollView>
             </View>
             <View style={{ width: "92%", alignItems: "center", marginBottom: 20, alignSelf: 'center' }} >
-                <TouchableOpacity onPress={() => editTutorPostPonedClass()} style={{ backgroundColor: Theme.darkGray, padding: 15, borderRadius: 10, width: "95%" }} >
+                <TouchableOpacity onPress={() => editTutorPostPonedClass()} style={{ backgroundColor: Theme.darkGray,
+                     padding: 15, 
+                     borderRadius: 10, 
+                     width: "95%"
+                      }} >
                     <Text style={{ textAlign: "center", fontSize: 16, color: Theme.white }} >
                         Confirm Class
                     </Text>
