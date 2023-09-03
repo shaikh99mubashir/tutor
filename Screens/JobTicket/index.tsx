@@ -172,42 +172,42 @@ function JobTicket({navigation, route}: any) {
         .get(`${Base_Uri}ticketsAPI/${tutorDetails?.tutorId}`)
         .then(({data}) => {
           let {tickets} = data;
-          setOpenData(
-            tickets.length > 0 &&
-              tickets.filter((e: any, i: number) => {
-                return (
-                  (myMode == 'noFilter' ||
-                    e?.mode?.toString()?.toLowerCase() ==
-                      myMode?.toString()?.toLowerCase()) &&
-                  (subjectID == 'noFilter' || e.subject_id == subjectID) &&
-                  (categoryID == 'noFilter' || e.categoryID == categoryID) &&
-                  (myCity == 'noFilter' || e?.cityID == myCity) &&
-                  (myState == 'noFilter' || e.stateID == myState)
-                );
-              }),
-          );
-          setLoading(false);
+
+          axios
+            .get(`${Base_Uri}getTutorOffers/${tutorDetails.tutorId}`)
+            .then(({data}) => {
+              let {getTutorOffers} = data;
+              const filteredTickets = tickets.filter(
+                (ticket: any) =>
+                  !getTutorOffers.some((offer: any) => offer.id === ticket.id),
+              );
+              setOpenData(
+                filteredTickets.length > 0 &&
+                  filteredTickets.filter((e: any, i: number) => {
+                    return (
+                      (myMode == 'noFilter' ||
+                        e?.mode?.toString()?.toLowerCase() ==
+                          myMode?.toString()?.toLowerCase()) &&
+                      (subjectID == 'noFilter' || e.subject_id == subjectID) &&
+                      (categoryID == 'noFilter' ||
+                        e.categoryID == categoryID) &&
+                      (myCity == 'noFilter' || e?.cityID == myCity) &&
+                      (myState == 'noFilter' || e.stateID == myState)
+                    );
+                  }),
+              );
+              setLoading(false);
+            })
+            .catch(error => {
+              ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+              setLoading(false);
+            });
         })
         .catch(error => {
           setLoading(false);
           console.log(error);
           ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
         });
-
-      // axios.get(`${Base_Uri}api/searchJobTickets/${categoryID}/${subjectID}/${myMode}`).then(({ data }) => {
-
-      //   let { JobTicketsResult } = data
-
-      //   setOpenData(JobTicketsResult);
-      //   setLoading(false);
-
-      // }).catch((error) => {
-
-      //   setLoading(false);
-      //   console.log(error);
-      //   ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
-
-      // })
 
       return;
     } else {
@@ -218,14 +218,22 @@ function JobTicket({navigation, route}: any) {
         .get(`${Base_Uri}ticketsAPI/${tutor_id}`)
         .then(async ({data}) => {
           let {tickets} = data;
-          setOpenData(
-            // tickets.length > 0 &&
-            // tickets.filter((e: any, i: number) => {
-            //   return e.status == 'pending'
-            // }),
-            tickets,
-          );
-          setLoading(false);
+
+          axios
+            .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
+            .then(({data}) => {
+              let {getTutorOffers} = data;
+              const filteredTickets = tickets.filter(
+                (ticket: any) =>
+                  !getTutorOffers.some((offer: any) => offer.id === ticket.id),
+              );
+              setOpenData(filteredTickets);
+              setLoading(false);
+            })
+            .catch(error => {
+              ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+              setLoading(false);
+            });
         })
         .catch(error => {
           setLoading(false);
@@ -259,7 +267,7 @@ function JobTicket({navigation, route}: any) {
             getTutorOffers.length > 0 &&
             getTutorOffers.filter((e: any, i: number) => {
               return (
-                e?.ticketStatus?.toString().toLowerCase() ==
+                e?.status.toString().toLowerCase() ==
                 status.option.toString().toLowerCase()
               );
             });
@@ -361,14 +369,6 @@ function JobTicket({navigation, route}: any) {
   }
 
   const renderOpenData: any = ({item}: any) => {
-    console.log(item, 'itemsss');
-
-    let flag = appliedData && appliedData.length>0 && appliedData.some((e:any,i:number)=>e.ticket_id == item.ticket_id)
-
-    if(flag){
-      return false
-    }
-
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('OpenDetails', item)}
@@ -553,10 +553,6 @@ function JobTicket({navigation, route}: any) {
     );
   };
   const firstRoute = useCallback(() => {
-
-
-
-
     return (
       <View style={{marginVertical: 20, marginBottom: 10}}>
         {/* Search */}

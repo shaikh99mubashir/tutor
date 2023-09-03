@@ -1159,7 +1159,8 @@ function Home({navigation, route}: any) {
                       borderColor: '#eee',
                       marginBottom: 40,
                     }}
-                    onPress={() => routeToScheduleScreen(item)}>
+                    // onPress={() => routeToScheduleScreen(item)}
+                  >
                     <View
                       style={{
                         display: 'flex',

@@ -123,14 +123,11 @@ function Index({navigation}: any) {
       )
       .then(res => {
         console.log('successfully update tutor status');
-        getNews();
       })
       .catch(error => {
         console.log(error, 'error');
       });
   };
-
-  console.log(inboxData, 'dataaaaaa');
 
   const renderInboxData = ({item, index}: any): any => {
     return (

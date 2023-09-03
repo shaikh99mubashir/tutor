@@ -388,13 +388,38 @@ function AddClass({navigation}: any) {
         let endHour = e?.endTime?.getHours();
         let endMinutes = e?.endTime?.getMinutes();
         let endSeconds = e?.endTime?.getSeconds();
+
+        console.log(minutes, 'minutes');
+        console.log(seconds, 'seconds');
+
         return {
           tutorID: tutorId,
           studentID: selectedStudent?.studentID,
           subjectID: selectedSubject?.id,
-          startTime: hours + ':' + minutes + ':' + seconds,
-          endTime: endHour + ':' + endMinutes + ':' + endSeconds,
-          date: year + '/' + month + '/' + day,
+          startTime:
+            hours +
+            ':' +
+            (minutes.toString().length < 2 ? `0${minutes}` : minutes) +
+            ':' +
+            (seconds.toString().length < 2 ? `0${seconds}` : seconds),
+          endTime:
+            endHour +
+            ':' +
+            (endMinutes.toString().length < 2 ? `0${endMinutes}` : endMinutes) +
+            ':' +
+            (endSeconds.toString().length < 2 ? `0${endSeconds}` : endSeconds),
+          date:
+            year +
+            '-' +
+            month +
+            '-' +
+            day +
+            ' ' +
+            '00' +
+            ':' +
+            '00' +
+            ':' +
+            '00',
         };
       });
 
@@ -413,6 +438,10 @@ function AddClass({navigation}: any) {
       .post(`${Base_Uri}api/addMultipleClasses`, classesss)
       .then(res => {
         setLoading(false);
+        if (res?.data?.message?.includes('slot')) {
+          ToastAndroid.show(res.data.message, ToastAndroid.SHORT);
+          return;
+        }
         navigation.navigate('Schedule', classesss.classes[0].startTime);
         ToastAndroid.show(res?.data?.message, ToastAndroid.SHORT);
       })
