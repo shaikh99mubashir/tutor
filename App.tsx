@@ -1,10 +1,5 @@
-
-import React, { useEffect, useState, useContext } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import React, {useEffect, useState, useContext} from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import AppNavigation from './Navigation/appNavigation';
 import Timer from './Component/Timer/timer';
 import NoteState from './context/noteState';
@@ -23,24 +18,15 @@ import ReportSubmissionState from './context/reportSubmissionState';
 import BannerState from './context/bannerState';
 import ScheduleNotificationState from './context/scheduleNotificationState';
 
-
-
-
 function App() {
-
-
   useEffect(() => {
-
     IdleTimerManager.setIdleTimerDisabled(true);
 
     return () => IdleTimerManager.setIdleTimerDisabled(false);
-
-  }, [])
-
+  }, []);
 
   return (
-    <View style={styles.container} >
-
+    <View style={styles.container}>
       <UpcomingClassState>
         <BannerState>
           <NoteState>
@@ -55,7 +41,6 @@ function App() {
                             <AppNavigation />
                             {/* <Timer show="false" /> */}
                           </FilterState>
-
                         </StudentState>
                       </TutorDetailsState>
                     </PaymentState>
@@ -72,9 +57,9 @@ function App() {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "white",
-    height: "100%",
-  }
+    backgroundColor: 'white',
+    height: '100%',
+  },
 });
 
 export default App;
