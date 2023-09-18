@@ -25,6 +25,8 @@ function App() {
     return () => IdleTimerManager.setIdleTimerDisabled(false);
   }, []);
 
+
+
   return (
     <View style={styles.container}>
       <UpcomingClassState>

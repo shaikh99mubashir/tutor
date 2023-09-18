@@ -37,6 +37,8 @@ import ClockOut from '../Screens/ClockOutScreen';
 import ReportSubmission from '../Screens/ReportSubmission';
 import AttendedDetails from '../Screens/AttendedDetails';
 import PaymentHistory from '../Screens/PaymentHistory';
+import Signup from '../Screens/TutorRegister';
+import TutorDetailForm from '../Screens/TutorDetailForm';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -436,6 +438,16 @@ function AppNavigation() {
           options={{ headerShown: false }}
           name="PaymentHistory"
           component={PaymentHistory}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Signup"
+          component={Signup}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="TutorDetails"
+          component={TutorDetailForm}
         />
 
 

@@ -32,7 +32,7 @@ const ReportSubmission = ({ navigation, route }: any) => {
 
   const [value, setValue] = useState(new Date)
   const currentDate = new Date();
-  const options: any = { day: 'numeric', month: 'long', year: 'numeric' };
+  const options: any = { day: 'numeric', month: 'SHORT', year: 'numeric' };
   const formattedDate = value.toLocaleDateString('en-US', options);
   const [evaluation, setEvaluationReport] = useState<any>("")
   const [student, setStudent] = useState<any>("")

@@ -393,6 +393,9 @@ const Profile = ({ navigation }: any) => {
   }
 
 
+  
+
+
 
   return loading ? (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

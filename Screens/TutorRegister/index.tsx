@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   View,
   ActivityIndicator,
+  TextInput,
 } from 'react-native';
 import React, {useRef, useState, useEffect} from 'react';
 import PhoneInput from 'react-native-phone-number-input';
@@ -13,29 +14,53 @@ import axios from 'axios';
 import {Base_Uri} from '../../constant/BaseUri';
 import {convertArea} from 'geolib';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const Login = ({navigation}: any) => {
+const Signup = ({navigation}: any) => {
   let [phoneNumber, setPhoneNumber] = useState('');
-
+  const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
 
   const phoneInput = useRef(null);
 
   const handleLoginPress = () => {
+    if (!email) {
+      ToastAndroid.show('Kindly Enter Email Address', ToastAndroid.SHORT);
+      return;
+    }
+
+    if (!phoneNumber) {
+      ToastAndroid.show('Kindly Enter Phonenumber', ToastAndroid.SHORT);
+      return;
+    }
+
+    let emailReg = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/;
+
+    let testEmail = emailReg.test(email);
+
+    if (!testEmail) {
+      ToastAndroid.show('Invalid Email Address', ToastAndroid.SHORT);
+      return;
+    }
+
+    const formData = new FormData();
+
+    formData.append('email', email);
+    formData.append('phoneNumber', phoneNumber);
+
     setLoading(true);
+
     axios
-      .get(`${Base_Uri}loginAPI/${phoneNumber}`)
+      .post(`${Base_Uri}api/appTutorRegister`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
       .then(({data}) => {
-        if (data.status == 404) {
-          setLoading(false);
-          ToastAndroid.show(data.errorMessage, ToastAndroid.SHORT);
-          return;
-        }
         if (data.status == 200) {
           ToastAndroid.show(
-            'Verification Code Successfully send to your registered email',
+            'You have been successfully registered as tutor Login to continue',
             ToastAndroid.SHORT,
           );
-          navigation.navigate('Verification', data);
+          navigation.navigate('Login', data);
           setLoading(false);
         }
       })
@@ -44,6 +69,8 @@ const Login = ({navigation}: any) => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
+
+  console.log(phoneNumber);
 
   return (
     <View
@@ -54,12 +81,33 @@ const Login = ({navigation}: any) => {
         paddingHorizontal: 15,
       }}>
       <Text style={{fontSize: 25, color: 'black'}}>
-        Enter your{'\n'}mobile number
+        Get Yourself Registered
       </Text>
-      <Text style={{fontSize: 14, color: 'black', marginTop: 14}}>
-        A verification code will be sent{'\n'}to your registered email
+      <Text
+        style={{fontSize: 14, color: 'black', marginTop: 14, paddingRight: 15}}>
+        Fill out phoneNumber and email field to get yourself registered with
+        sifuTutor.
       </Text>
       <View style={styles.container}>
+        <TextInput
+          placeholder="Enter Your Email"
+          placeholderTextColor={Theme.gray}
+          style={{
+            height: 60,
+            backgroundColor: 'white',
+            borderRadius: 10,
+            fontSize: 16,
+            borderColor: Theme.black,
+            marginBottom: 10,
+            borderWidth: 1,
+            padding: 10,
+            color: Theme.black,
+          }}
+          onChangeText={text => {
+            setEmail(text);
+          }}
+        />
+
         <PhoneInput
           ref={phoneInput}
           placeholder="Enter Your Number"
@@ -113,32 +161,12 @@ const Login = ({navigation}: any) => {
             </Text>
           )}
         </TouchableOpacity>
-        <View
-          style={{
-            width: '100%',
-            alignItems: 'center',
-            padding: 10,
-            flexDirection: 'row',
-            justifyContent: 'center',
-          }}>
-          <Text
-            style={{
-              color: Theme.black,
-              fontSize: 14,
-              fontWeight: '400',
-            }}>
-            Don't have an account?{' '}
-          </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-            <Text style={{color: Theme.black, fontWeight: 'bold'}}>Signup</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     </View>
   );
 };
 
-export default Login;
+export default Signup;
 
 const styles = StyleSheet.create({
   container: {

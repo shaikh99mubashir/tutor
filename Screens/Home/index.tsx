@@ -30,6 +30,7 @@ import reportSubmissionContext from '../../context/reportSubmissionContext';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import notificationContext from '../../context/notificationContext';
 import bannerContext from '../../context/bannerContext';
+import messaging from '@react-native-firebase/messaging';
 import scheduleNotificationContext from '../../context/scheduleNotificationContext';
 function Home({navigation, route}: any) {
   let key = route.key;
@@ -205,6 +206,54 @@ function Home({navigation, route}: any) {
 
     setClassInProcess(data);
   };
+
+  const sendDeviceTokenToDatabase = () => {
+    messaging()
+      .requestPermission()
+      .then(() => {
+        // Retrieve the FCM token
+        return messaging().getToken();
+      })
+      .then(token => {
+        messaging()
+          .subscribeToTopic('all_devices')
+          .then(() => {
+            console.log(token, 'token');
+
+            let formData = new FormData();
+
+            formData.append('tutor_id', tutorId);
+            formData.append('device_token', token);
+
+            console.log(tutorId, 'tutorId');
+
+            axios
+              .post(`${Base_Uri}api/getTutorDeviceToken`)
+              .then(res => {
+                let data = res.data;
+                console.log(data, 'dataa');
+              })
+              .catch(error => {
+                console.log(error, 'error');
+              });
+          })
+          .catch(error => {
+            console.error('Failed to subscribe to topic: all_devices', error);
+          });
+      })
+      .catch(error => {
+        console.error(
+          'Error requesting permission or retrieving token:',
+          error,
+        );
+      });
+  };
+
+  useEffect(() => {
+    if (tutorId) {
+      sendDeviceTokenToDatabase();
+    }
+  }, [tutorId]);
 
   useEffect(() => {
     getTutorId();

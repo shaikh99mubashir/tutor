@@ -1,24 +1,60 @@
-import { Image, StyleSheet, Text, View, Dimensions } from 'react-native';
-import React, { useEffect } from 'react';
+import {Image, StyleSheet, Text, View, Dimensions} from 'react-native';
+import React, {useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
+import axios from 'axios';
+import {Base_Uri} from '../../constant/BaseUri';
 
-const Splash = ({ navigation }: any) => {
-
+const Splash = ({navigation}: any) => {
   const navigateToHomeScreen = () => {
     setTimeout(async () => {
-
-      let data = await AsyncStorage.getItem("login")
-      let authData = await AsyncStorage.getItem("loginAuth")
+      let data = await AsyncStorage.getItem('login');
+      let authData = await AsyncStorage.getItem('loginAuth');
 
       if (authData) {
-        navigation.replace("Main", authData)
-        return
+        let tutorData = JSON.parse(authData);
+        console.log(tutorData);
+
+        axios
+          .get(`${Base_Uri}getTutorDetailByID/${tutorData?.tutorID}`)
+          .then(res => {
+            let tutorData = res.data;
+
+            if (
+              !tutorData.tutorDetailById[0].full_name &&
+              !tutorData.tutorDetailById[0].displayName
+            ) {
+              navigation.reset({
+                index: 0,
+                routes: [
+                  {
+                    name: 'TutorDetails',
+                    params: {
+                      tutorData,
+                    },
+                  },
+                ],
+              });
+            } else {
+              navigation.reset({
+                index: 0,
+                routes: [
+                  {
+                    name: 'Main',
+                    params: {
+                      data,
+                    },
+                  },
+                ],
+              });
+            }
+          });
+        return;
       }
 
       if (data) {
         navigation.replace('Login');
-        return
+        return;
       }
       navigation.replace('OnBoarding');
     }, 3000);
@@ -27,8 +63,13 @@ const Splash = ({ navigation }: any) => {
     navigateToHomeScreen();
   }, []);
   return (
-    <View style={{ backgroundColor: 'white', height: '100%', paddingHorizontal: 15, alignItems: 'center' }}>
-
+    <View
+      style={{
+        backgroundColor: 'white',
+        height: '100%',
+        paddingHorizontal: 15,
+        alignItems: 'center',
+      }}>
       <Image
         source={require('../../Assets/Images/logo.png')}
         resizeMode="contain"
