@@ -22,7 +22,7 @@ import {useIsFocused} from '@react-navigation/native';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import StudentContext from '../../context/studentContext';
 import filterContext from '../../context/filterContext';
-import UpcomingClassState from '../../context/upcomingClassState';
+import UpcomingClassState from '../../context/upccmomingClassState';
 import upcomingClassContext from '../../context/upcomingClassContext';
 import paymentContext from '../../context/paymentHistoryContext';
 import scheduleContext from '../../context/scheduleContext';
@@ -225,13 +225,15 @@ function Home({navigation, route}: any) {
             formData.append('tutor_id', tutorId);
             formData.append('device_token', token);
 
-            console.log(tutorId, 'tutorId');
-
             axios
-              .post(`${Base_Uri}api/getTutorDeviceToken`)
+              .post(`${Base_Uri}api/getTutorDeviceToken`, formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              })
               .then(res => {
                 let data = res.data;
-                console.log(data, 'dataa');
+                console.log(data, 'tokenResponse');
               })
               .catch(error => {
                 console.log(error, 'error');
