@@ -451,7 +451,6 @@ function Home({navigation, route}: any) {
         setScheduleNotification(data.record);
       })
       .catch(error => {
-        setLoading(false);
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
