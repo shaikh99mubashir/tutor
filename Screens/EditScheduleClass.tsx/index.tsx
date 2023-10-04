@@ -11,7 +11,6 @@ function EditScheduleClass({ navigation, route }: any) {
 
     let data = route.params?.data
 
-    console.log(data, "data")
 
 
     const [postponedReason, setPostponedReason] = useState<any>("")

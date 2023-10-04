@@ -25,10 +25,6 @@ const OpenDetails = ({ route, navigation }: any) => {
 
 
 
-  console.log(openDetailItem.comment, "comment")
-
-
-  console.log(data, "dataaa")
 
   const sendOpenDetailData = async () => {
 

@@ -12,7 +12,6 @@ import {Theme} from '../../constant/theme';
 
 const AppliedDetails = ({route, navigation}: any) => {
   const data = route.params;
-  console.log('data===>', data);
 
   return (
     <View style={{backgroundColor: Theme.white, height: '100%'}}>

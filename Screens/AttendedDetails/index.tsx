@@ -12,7 +12,6 @@ const AttendedDetails = ({ navigation, route }: any) => {
   const [data, setData] = useState(item)
 
 
-  console.log(data, "dataaa")
 
   const [loading1, setLoading1] = useState(false)
   const [loading2, setLoading2] = useState(false)
@@ -25,7 +24,6 @@ const AttendedDetails = ({ navigation, route }: any) => {
 
   const handleLoadComplete = () => {
 
-    console.log("helllo")
 
     setLoading1(false)
     setLoading2(false)

@@ -22,8 +22,6 @@ function ClockOut({ navigation, route }: any) {
 
 
 
-    console.log(data, "dataa")
-
     const focus = useIsFocused()
 
 
@@ -72,8 +70,6 @@ function ClockOut({ navigation, route }: any) {
 
         setLoading(true)
         let formData = new FormData()
-
-        console.log(data, "data")
 
         formData.append("id", data.classAttendedID)
         formData.append("class_schedule_id", data.class_schedule_id)

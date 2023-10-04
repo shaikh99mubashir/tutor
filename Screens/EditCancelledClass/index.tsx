@@ -17,7 +17,6 @@ function EditCancelledClass({ navigation, route }: any) {
     const [loading, setLoading] = useState(false)
 
 
-console.log(cancelledReason,"reason")
 
     const editTutorCancelledClass = () => {
 
@@ -28,7 +27,6 @@ console.log(cancelledReason,"reason")
         setLoading(true)
         axios.get(`${Base_Uri}attendedClassStatus/${data?.id}/cancelled/${cancelledReason}`).then((res) => {
 
-            console.log(res,"ress")
 
             setLoading(false)
             ToastAndroid.show(res?.data?.SuccessMessage, ToastAndroid.SHORT)

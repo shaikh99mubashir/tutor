@@ -20,7 +20,6 @@ function EditPostpondClass({ navigation, route }: any) {
 
 
 
-    console.log(postponedReason, "reason")
 
     const initialData: any = {
         date: new Date(),
@@ -89,7 +88,6 @@ function EditPostpondClass({ navigation, route }: any) {
             classes: [dataToSend]
         }
 
-        console.log(classesss, "classses")
 
         axios.post(`${Base_Uri}api/addMultipleClasses`, classesss).then((res) => {
 

@@ -188,7 +188,11 @@ function Home({navigation, route}: any) {
           notifications.filter((e: any, i: number) => {
             return e.status == 'new';
           });
-        setNotification(tutorNotification);
+        setNotification(
+          tutorNotification && tutorNotification.length > 0
+            ? tutorNotification
+            : [],
+        );
         // // setNotificationLength(tutorNotification.length > 0 ? tutorNotification.length : 0);
         // length =
         //   length + tutorNotification.length > 0 ? tutorNotification.length : 0;
@@ -497,13 +501,9 @@ function Home({navigation, route}: any) {
   };
 
   const getCancelledHours = () => {
-    console.log(tutorId, 'iddd');
-
     axios
       .get(`${Base_Uri}getCancelledHours/${tutorId}`)
       .then(({data}) => {
-        console.log(cancelledHours, 'hoursss');
-
         setCancelledHours(data.cancelledHours);
         // setTutorData({ ...tutorData, cancelledHours: data.cancelledHours });
       })

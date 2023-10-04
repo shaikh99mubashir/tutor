@@ -110,14 +110,16 @@ function AddClass({navigation}: any) {
     let myStudents =
       students &&
       students.length > 0 &&
-      students.map((e: any, i: Number) => {
-        if (e.studentName) {
-          return {
-            ...e,
-            subject: e.studentName,
-          };
-        }
-      });
+      students
+        .map((e: any, i: Number) => {
+          if (e.studentName) {
+            return {
+              ...e,
+              subject: e.studentName,
+            };
+          }
+        })
+        .filter(Boolean);
     setStudent(myStudents);
   };
 
@@ -282,7 +284,10 @@ function AddClass({navigation}: any) {
               <Text
                 style={{color: Theme.black, fontSize: 12, fontWeight: '500'}}>
                 {item?.startTime !== '-'
-                  ? item?.startTime.toLocaleString().slice(10)
+                  ? new Date(item?.startTime).toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })
                   : '-'}
               </Text>
             </TouchableOpacity>
@@ -304,7 +309,10 @@ function AddClass({navigation}: any) {
               <Text
                 style={{color: Theme.black, fontSize: 12, fontWeight: '500'}}>
                 {item?.endTime !== '-'
-                  ? item?.endTime.toLocaleString().slice(10)
+                  ? new Date(item?.endTime).toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })
                   : '-'}
               </Text>
             </TouchableOpacity>
@@ -389,9 +397,6 @@ function AddClass({navigation}: any) {
         let endMinutes = e?.endTime?.getMinutes();
         let endSeconds = e?.endTime?.getSeconds();
 
-        console.log(minutes, 'minutes');
-        console.log(seconds, 'seconds');
-
         return {
           tutorID: tutorId,
           studentID: selectedStudent?.studentID,
@@ -434,6 +439,8 @@ function AddClass({navigation}: any) {
       classes: classesToAdd,
     };
 
+    console.log(classesss, 'classsessss');
+
     axios
       .post(`${Base_Uri}api/addMultipleClasses`, classesss)
       .then(res => {
@@ -457,6 +464,7 @@ function AddClass({navigation}: any) {
   const showToast = (message: any) => {
     ToastAndroid.show(message, ToastAndroid.SHORT);
   };
+
   const handleSubjectDropdownOpen = () => {
     if (selectedStudent) {
       // Open the subject dropdown or perform any action

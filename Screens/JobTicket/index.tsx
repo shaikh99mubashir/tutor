@@ -177,6 +177,7 @@ function JobTicket({navigation, route}: any) {
             .get(`${Base_Uri}getTutorOffers/${tutorDetails.tutorId}`)
             .then(({data}) => {
               let {getTutorOffers} = data;
+
               const filteredTickets = tickets.filter(
                 (ticket: any) =>
                   !getTutorOffers.some((offer: any) => offer.id === ticket.id),
@@ -214,6 +215,7 @@ function JobTicket({navigation, route}: any) {
       let tutorData: any = await AsyncStorage.getItem('loginAuth');
       tutorData = JSON.parse(tutorData);
       let tutor_id = tutorData?.tutorID;
+
       axios
         .get(`${Base_Uri}ticketsAPI/${tutor_id}`)
         .then(async ({data}) => {
@@ -222,6 +224,8 @@ function JobTicket({navigation, route}: any) {
           axios
             .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
             .then(({data}) => {
+              console.log(data, 'dataaa');
+
               let {getTutorOffers} = data;
               const filteredTickets = tickets.filter(
                 (ticket: any) =>

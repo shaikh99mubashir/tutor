@@ -26,9 +26,6 @@ function EditAttendedClass({ navigation, route }: any) {
   const [file, setFile] = useState<any>({});
 
 
-  console.log(data, "dataaa")
-
-  console.log(file, "fileee")
 
   const changeStatus = () => {
 

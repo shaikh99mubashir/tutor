@@ -9,13 +9,13 @@ import {
   RefreshControl,
   ToastAndroid,
   ActivityIndicator,
-  Dimensions
+  Dimensions,
 } from 'react-native';
-import React, { useEffect, useState, useContext } from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import Header from '../../Component/Header';
-import { Theme } from '../../constant/theme';
+import {Theme} from '../../constant/theme';
 import axios from 'axios';
-import { Base_Uri } from '../../constant/BaseUri';
+import {Base_Uri} from '../../constant/BaseUri';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import notificationContext from '../../context/notificationContext';
@@ -23,39 +23,34 @@ import TutorDetailsContext from '../../context/tutorDetailsContext';
 import scheduleContext from '../../context/scheduleContext';
 import scheduleNotificationContext from '../../context/scheduleNotificationContext';
 const height = Dimensions.get('screen').height;
-const Notifications = ({ navigation }: any) => {
+const Notifications = ({navigation}: any) => {
   // const [notification, setNotification] = useState<any>([]);
-
-
 
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
-  const [refresh, setRefresh] = useState(false)
+  const [refresh, setRefresh] = useState(false);
 
-  const context = useContext(notificationContext)
-  let tutotContext = useContext(TutorDetailsContext)
-  let { tutorDetails } = tutotContext
+  const context = useContext(notificationContext);
+  let tutotContext = useContext(TutorDetailsContext);
+  let {tutorDetails} = tutotContext;
 
-  const scheduleNotCont = useContext(scheduleNotificationContext)
+  const scheduleNotCont = useContext(scheduleNotificationContext);
 
-  let { scheduleNotification, setScheduleNotification } = scheduleNotCont
+  let {scheduleNotification, setScheduleNotification} = scheduleNotCont;
 
-  console.log(tutorDetails, "DETAUL")
+  console.log(tutorDetails, 'DETAUL');
 
-  let { notification, setNotification } = context
+  let {notification, setNotification} = context;
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
-      setRefresh(!refresh)
+      setRefresh(!refresh);
     }, 2000);
   }, [refresh]);
   const getNotificationMessage = () => {
     if (refresh) {
-
-
-
       // interface LoginAuth {
       //   status: Number;
       //   tutorID: Number;
@@ -69,15 +64,19 @@ const Notifications = ({ navigation }: any) => {
       setLoading(true);
       axios
         .get(`${Base_Uri}api/notifications/${tutorDetails.tutorId}`)
-        .then(async ({ data }) => {
-          let { notifications } = data;
+        .then(async ({data}) => {
+          let {notifications} = data;
           let tutorNotification =
             notifications.length > 0 &&
             notifications.filter((e: any, i: number) => {
-              return e.status == "new";
+              return e.status == 'new';
             });
           setLoading(false);
-          setNotification(tutorNotification);
+          setNotification(
+            tutorNotification && tutorNotification.length > 0
+              ? tutorNotification
+              : [],
+          );
         })
         .catch(error => {
           setLoading(false);
@@ -87,114 +86,122 @@ const Notifications = ({ navigation }: any) => {
   };
 
   const getScheduleNotification = () => {
-
     if (refresh) {
-
-
-      axios.get(`${Base_Uri}api/classScheduleStatusNotifications/${tutorDetails.tutorId}`).then((res) => {
-        let { data } = res
-        setScheduleNotification(data.record)
-      }).catch((error) => {
-
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
-      })
+      axios
+        .get(
+          `${Base_Uri}api/classScheduleStatusNotifications/${tutorDetails?.tutorId}`,
+        )
+        .then(res => {
+          let {data} = res;
+          setScheduleNotification(data?.record);
+        })
+        .catch(error => {
+          ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        });
     }
-
-
-  }
+  };
 
   useEffect(() => {
     getNotificationMessage();
-    getScheduleNotification()
+    getScheduleNotification();
   }, [refresh]);
 
-
   const navigateToOtherScreen = (item: any) => {
+    if (
+      item.notificationType == 'Submit Evaluation Report' ||
+      item.notificationType == 'Submit Progress Report'
+    ) {
+      navigation.navigate('ReportSubmission', item);
+      axios
+        .get(
+          `${Base_Uri}api/updateNotificationStatus/${item.notificationID}/old`,
+        )
+        .then(res => {
+          let updateNotifications = notification.filter((e: any, i: number) => {
+            return e.notificationID !== item?.notificationID;
+          });
 
-    if (item.notificationType == "Submit Evaluation Report" || item.notificationType == "Submit Progress Report") {
-      navigation.navigate("ReportSubmission", item)
-      axios.get(`${Base_Uri}api/updateNotificationStatus/${item.notificationID}/old`).then((res) => {
+          setNotification(
+            updateNotifications && updateNotifications.length > 0
+              ? updateNotifications
+              : [],
+          );
 
-        let updateNotifications = notification.filter((e: any, i: number) => {
-          return e.notificationID !== item?.notificationID
+          // axios
+          //   .get(`${Base_Uri}api/notifications/${tutorDetails?.tutorId}`)
+          //   .then(({ data }) => {
+          //     let { notifications } = data;
+
+          //     let tutorNotification =
+          //       notifications.length > 0 &&
+          //       notifications.filter((e: any, i: number) => {
+          //         return e.status == 'new';
+          //       });
+          //     setNotification(tutorNotification);
+          //   })
+          //   .catch(error => {
+          //     ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+          //   });
         })
-
-        setNotification(updateNotifications)
-
-        // axios
-        //   .get(`${Base_Uri}api/notifications/${tutorDetails?.tutorId}`)
-        //   .then(({ data }) => {
-        //     let { notifications } = data;
-
-        //     let tutorNotification =
-        //       notifications.length > 0 &&
-        //       notifications.filter((e: any, i: number) => {
-        //         return e.status == 'new';
-        //       });
-        //     setNotification(tutorNotification);
-        //   })
-        //   .catch(error => {
-        //     ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
-        //   });
-
-      }).catch((error) => {
-
-        ToastAndroid.show("Nework Error", ToastAndroid.SHORT)
-      })
-
+        .catch(error => {
+          ToastAndroid.show('Nework Error', ToastAndroid.SHORT);
+        });
     } else {
+      item.status = 'attended';
+      item.id = item.class_schedule_id;
+      navigation.navigate('EditAttendedClass', {data: item});
 
-      item.status = "attended"
-      item.id = item.class_schedule_id
-      navigation.navigate("EditAttendedClass", { data: item })
+      axios
+        .get(
+          `${Base_Uri}api/updateNotificationStatus/${item.notificationID}/old`,
+        )
+        .then(res => {
+          let updateNotifications = notification.filter((e: any, i: number) => {
+            return e.notificationID !== item?.notificationID;
+          });
 
-
-      axios.get(`${Base_Uri}api/updateNotificationStatus/${item.notificationID}/old`).then((res) => {
-
-        let updateNotifications = notification.filter((e: any, i: number) => {
-          return e.notificationID !== item?.notificationID
+          setNotification(
+            updateNotifications && updateNotifications.length > 0
+              ? updateNotifications
+              : [],
+          );
         })
-
-        setNotification(updateNotifications)
-
-      }).catch((error) => {
-
-        ToastAndroid.show("Nework Error", ToastAndroid.SHORT)
-      })
-
-
-
+        .catch(error => {
+          ToastAndroid.show('Nework Error', ToastAndroid.SHORT);
+        });
     }
+  };
 
-  }
+  // console.log(notification,"scheduleNot")
 
-  let totalNotifications = [...notification, ...scheduleNotification]
+  let totalNotifications = [...notification, ...scheduleNotification];
+
+  // let totalNotifications : any = []
 
   return loading ? (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <ActivityIndicator size="large" color="black" />
     </View>
   ) : (
-    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+    <View style={{backgroundColor: Theme.white, height: '100%'}}>
       <Header title="Notifications" backBtn navigation={navigation} />
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
-        showsVerticalScrollIndicator={false} nestedScrollEnabled>
+        showsVerticalScrollIndicator={false}
+        nestedScrollEnabled>
         {totalNotifications && totalNotifications.length > 0 ? (
           <FlatList
-
             data={totalNotifications}
             nestedScrollEnabled={true}
-            renderItem={({ item, index }: any) => {
-
+            renderItem={({item, index}: any) => {
               return (
                 <TouchableOpacity
                   onPress={() => navigateToOtherScreen(item)}
                   activeOpacity={0.8}
                   key={index}
-                  style={{ paddingHorizontal: 15 }}>
+                  style={{paddingHorizontal: 15}}>
                   <View
                     style={{
                       backgroundColor: Theme.white,
@@ -206,7 +213,7 @@ const Notifications = ({ navigation }: any) => {
                       borderColor: '#eee',
                       flexDirection: 'row',
                     }}>
-                    <View style={{ width: '95%' }}>
+                    <View style={{width: '95%'}}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -221,7 +228,7 @@ const Notifications = ({ navigation }: any) => {
                             marginTop: 5,
                             width: '75%',
                           }}>
-                          {item.notificationType ?? "Update Schedule Classs"}
+                          {item.notificationType ?? 'Update Schedule Classs'}
                         </Text>
                       </View>
                       <Text
@@ -231,7 +238,8 @@ const Notifications = ({ navigation }: any) => {
                           fontWeight: '600',
                           marginTop: 10,
                         }}>
-                        {item.notificationMessage ?? `Update Schedule Class, Tutor Name: ${tutorDetails.full_name}, Student Name: ${item?.studentName}, Subject Name: ${item?.subjectName}`}
+                        {item.notificationMessage ??
+                          `Update Schedule Class, Tutor Name: ${tutorDetails.full_name}, Student Name: ${item?.studentName}, Subject Name: ${item?.subjectName}`}
                       </Text>
                       <Text
                         style={{
@@ -243,11 +251,11 @@ const Notifications = ({ navigation }: any) => {
                         {item.notificationProgressReportMonth}
                       </Text>
                     </View>
-                    <View style={{ justifyContent: 'center' }}>
+                    <View style={{justifyContent: 'center'}}>
                       <Image
                         source={require('../../Assets/Images/right.png')}
                         resizeMode="contain"
-                        style={{ height: 18, width: 18 }}
+                        style={{height: 18, width: 18}}
                       />
                     </View>
                   </View>
@@ -265,7 +273,7 @@ const Notifications = ({ navigation }: any) => {
               height: height / 1.5,
             }}>
             <AntDesign name="copy1" size={20} color={Theme.gray} />
-            <Text style={{ color: Theme.gray }}>There are no Notifications</Text>
+            <Text style={{color: Theme.gray}}>There are no Notifications</Text>
           </View>
         )}
       </ScrollView>
