@@ -6,69 +6,68 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Header from '../../Component/Header';
-import { Theme } from '../../constant/theme';
+import {Theme} from '../../constant/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { Base_Uri } from '../../constant/BaseUri';
+import {Base_Uri} from '../../constant/BaseUri';
 
-const OpenDetails = ({ route, navigation }: any) => {
+const OpenDetails = ({route, navigation}: any) => {
   const data = route.params;
 
   const [openDetailItem, setopenDetailItem] = useState({
-    comment: "",
+    comment: '',
   });
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
-
-
-
+  console.log(data, 'data');
   const sendOpenDetailData = async () => {
+    let tutorData: any = await AsyncStorage.getItem('loginAuth');
 
-    let tutorData: any = await AsyncStorage.getItem("loginAuth")
+    tutorData = await JSON.parse(tutorData);
 
-    tutorData = await JSON.parse(tutorData)
+    console.log(data, 'dataaa');
 
-    let subjectId = data?.subject_id
-    let ticket_id = data?.ticket_id
-    let tutor_id = tutorData?.tutorID
-    let comment = openDetailItem.comment ? openDetailItem.comment : null
+    let subjectId = data?.subject_id;
+    let ticket_id = data?.ticketID ? data?.ticketID : data?.ticket_id;
+    let tutor_id = tutorData?.tutorID;
+    let comment = openDetailItem.comment ? openDetailItem.comment : null;
 
-    console.log(subjectId)
-    console.log(ticket_id)
-    console.log(tutor_id)
+    setLoading(true);
 
-    console.log(comment, "comment")
-
-    setLoading(true)
-
-    axios.get(`${Base_Uri}offerSendByTutor/${subjectId}/${tutor_id}/${ticket_id}/${comment}`).then(({ data }) => {
-
-      if (data?.result?.status == "Applied") {
-        setLoading(false)
-        ToastAndroid.show("You have successfully applied for this ticket", ToastAndroid.SHORT)
-        navigation.navigate("Job Ticket", ticket_id)
-      } else {
-        console.log(data, "dataaa")
-        ToastAndroid.show(data?.result, ToastAndroid.SHORT)
-        setLoading(false)
-      }
-
-    }).catch((error) => {
-      setLoading(false)
-      console.log(error, "error")
-      ToastAndroid.show("Internal Server Error", ToastAndroid.SHORT)
-    })
+    axios
+      .get(
+        `${Base_Uri}offerSendByTutor/${subjectId}/${tutor_id}/${ticket_id}/${comment}`,
+      )
+      .then(({data}) => {
+        if (data?.result?.status == 'Applied') {
+          setLoading(false);
+          ToastAndroid.show(
+            'You have successfully applied for this ticket',
+            ToastAndroid.SHORT,
+          );
+          navigation.navigate('Job Ticket', ticket_id);
+        } else {
+          console.log(data, 'dataaa');
+          ToastAndroid.show(data?.result, ToastAndroid.SHORT);
+          setLoading(false);
+        }
+      })
+      .catch(error => {
+        setLoading(false);
+        console.log(error, 'error');
+        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+      });
   };
 
   return (
-    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+    <View style={{backgroundColor: Theme.white, height: '100%'}}>
       <Header title={data.uid} backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{ paddingHorizontal: 15 }}>
+        <View style={{paddingHorizontal: 15}}>
           <Text
             style={{
               color: 'green',
@@ -90,38 +89,44 @@ const OpenDetails = ({ route, navigation }: any) => {
               }}>
               Details
             </Text>
-            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-              {data?.classDay} at {data?.classTime} for {data?.hours} hour(s) of each class.</Text>
-            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-              {data?.studentGender} Student ({data?.studentAge}y/o)</Text>
-            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+              {data?.classDay} at {data?.classTime} for {data?.hours} hour(s) of
+              each class.
+            </Text>
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+              {data?.studentGender} Student ({data?.studentAge}y/o)
+            </Text>
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
               {data?.subject_name} - {data?.session} sessions {data?.quantity}
             </Text>
             {/* <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
               - Tutor Gender: {data?.tutorGender}
             </Text> */}
-            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
               - PreferredDay/Time: {data?.classDay}
             </Text>
-            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
               - Mode: {data?.mode}
             </Text>
-            {data?.remarks &&
-              <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            {data?.remarks && (
+              <Text
+                style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
                 - Remarks: {data?.remarks}
               </Text>
-            }
-            {data?.first8Hour &&
-              <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            )}
+            {data?.first8Hour && (
+              <Text
+                style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
                 {data?.first8Hour}
               </Text>
-            }
-            {data?.above9Hour &&
-              <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            )}
+            {data?.above9Hour && (
+              <Text
+                style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
                 {data?.above9Hour}
               </Text>
-            }
-            <View style={{ marginVertical: 15 }}>
+            )}
+            <View style={{marginVertical: 15}}>
               <Text
                 style={{
                   color: Theme.black,
@@ -141,7 +146,7 @@ const OpenDetails = ({ route, navigation }: any) => {
               </Text>
             </View>
             {/* Avaiable Subject */}
-            <View style={{ marginVertical: 15 }}>
+            <View style={{marginVertical: 15}}>
               <Text
                 style={{
                   color: Theme.black,
@@ -179,7 +184,7 @@ const OpenDetails = ({ route, navigation }: any) => {
               </View>
             </View>
             {/* Comment */}
-            <View style={{ marginBottom: 100 }}>
+            <View style={{marginBottom: 100}}>
               <Text
                 style={{
                   color: Theme.black,
@@ -203,14 +208,14 @@ const OpenDetails = ({ route, navigation }: any) => {
                   multiline={true}
                   maxLength={300}
                   onChangeText={e =>
-                    setopenDetailItem({ ...openDetailItem, comment: e })
+                    setopenDetailItem({...openDetailItem, comment: e})
                   }
                   style={[
                     styles.textArea,
                     {
                       backgroundColor: Theme.lightGray,
                       padding: 12,
-                      color: Theme.black
+                      color: Theme.black,
                     },
                   ]}
                   underlineColorAndroid="transparent"
@@ -246,14 +251,18 @@ const OpenDetails = ({ route, navigation }: any) => {
               backgroundColor: Theme.darkGray,
               borderRadius: 10,
             }}>
-            {loading ? <ActivityIndicator size={"small"} color={"white"} /> : <Text
-              style={{
-                color: 'white',
-                fontSize: 18,
-                fontFamily: 'Poppins-Regular',
-              }}>
-              Send
-            </Text>}
+            {loading ? (
+              <ActivityIndicator size={'small'} color={'white'} />
+            ) : (
+              <Text
+                style={{
+                  color: 'white',
+                  fontSize: 18,
+                  fontFamily: 'Poppins-Regular',
+                }}>
+                Send
+              </Text>
+            )}
           </TouchableOpacity>
         </View>
       </View>

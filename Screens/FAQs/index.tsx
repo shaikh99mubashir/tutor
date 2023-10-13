@@ -31,31 +31,77 @@ const FAQs = ({navigation}: any) => {
     {
       id: 1,
       question: 'First time user',
-      answer:
-        'a) Apply Job (refer to the steps\n https://youtu.be/ztb3bTfTqxA)\n\n' +
-        'b) Register as a Tutor.\n' +
-        'https://sifututor.my/tutor/apply/\n\n',
+      answer: [
+        {
+          question: 'Apply Job',
+          answer: '(refer to the steps https://youtu.be/ztb3bTfTqxA)',
+        },
+        {
+          question: 'Register as a Tutor',
+          answer: 'https://sifututor.my/tutor/apply/',
+        },
+      ],
+      // 'a) Apply Job (refer to the steps\n https://youtu.be/ztb3bTfTqxA)\n\n' +
+      // 'b) Register as a Tutor.\n' +
+      // 'https://sifututor.my/tutor/apply/\n\n',
       open: false,
     },
     {
       id: 2,
       question: 'Verified Tutor',
-      answer:
-        '1. How much do I get paid for being a tutor?\n' +
-        '(https://tutor.sifututor.my/)\n\n' +
-        '2. When should I expect to receive my monthly commission?\n' +
-        "kindly expect to recieve monthly commission every 3rd to 10th day of the following month.' to 'kindly expect to recieve monthly commission every 5th to 10th day of the following month.\n\n" +
-        '3. What if I forgot to clock in and out using mobile apps?\n' +
-        "Apps will notify you on 'Notification' tab. Please provide attachment(s) to verify your attendance.\n\n" +
-        '4. How should I register my attendance for online class?\n' +
-        'Follow the same SOP as the physical class. You can clock in and out from any desired location.\n\n' +
-        '5. When to complete and submit Student Progress Report?\n' +
-        "Apps will notify you on 'Notification' tab. Reports shall be completed and submitted by every end of March, June, September, and December of every year.\n\n" +
-        '6. How is cumulative commission being calculated?\n' +
-        "It is calculated based on 'Attended Hours'.\n\n" +
-        '7. Apps are not working properly?\n' +
-        'Contact us via Whatsapp or call Ms. Safwah at +60165502580.\n\n' +
-        `Read full guidelines and SOP via link below: \n(https://tutor.sifututor.my/)`,
+
+      answer: [
+        {
+          question: '1. How much do I get paid for being a tutor',
+          answer: '(https://tutor.sifututor.my/)',
+        },
+        {
+          question: '2. When should I expect to receive my monthly commission?',
+          answer:
+            "kindly expect to recieve monthly commission every 3rd to 10th day of the following month.' to 'kindly expect to recieve monthly commission every 5th to 10th day of the following month.",
+        },
+        {
+          question:
+            '3. What if I forgot to clock in and out using mobile apps?',
+          answer:
+            "Apps will notify you on 'Notification' tab. Please provide attachment(s) to verify your attendance.",
+        },
+        {
+          question: '4. How should I register my attendance for online class?',
+          answer:
+            'Follow the same SOP as the physical class. You can clock in and out from any desired location.',
+        },
+        {
+          question: '5. When to complete and submit Student Progress Report?',
+          answer:
+            "Apps will notify you on 'Notification' tab. Reports shall be completed and submitted by every end of March, June, September, and December of every year.",
+        },
+        {
+          question: 'How is cumulative commission being calculated?',
+          answer: "It is calculated based on 'Attended Hours'.",
+        },
+        {
+          question: 'Apps are not working properly?',
+          answer: 'Contact us via Whatsapp or call Ms. Safwah at +60165502580.',
+        },
+      ],
+      readGuideLines:
+        'Read full guidelines and SOP via link below: \n(https://tutor.sifututor.my/)',
+      // '1. How much do I get paid for being a tutor?\n' +
+      // '(https://tutor.sifututor.my/)\n\n' +
+      // '2. When should I expect to receive my monthly commission?\n' +
+      // "kindly expect to recieve monthly commission every 3rd to 10th day of the following month.' to 'kindly expect to recieve monthly commission every 5th to 10th day of the following month.\n\n" +
+      // '3. What if I forgot to clock in and out using mobile apps?\n' +
+      // "Apps will notify you on 'Notification' tab. Please provide attachment(s) to verify your attendance.\n\n" +
+      // '4. How should I register my attendance for online class?\n' +
+      // 'Follow the same SOP as the physical class. You can clock in and out from any desired location.\n\n' +
+      // '5. When to complete and submit Student Progress Report?\n' +
+      // "Apps will notify you on 'Notification' tab. Reports shall be completed and submitted by every end of March, June, September, and December of every year.\n\n" +
+      // '6. How is cumulative commission being calculated?\n' +
+      // "It is calculated based on 'Attended Hours'.\n\n" +
+      // '7. Apps are not working properly?\n' +
+      // 'Contact us via Whatsapp or call Ms. Safwah at +60165502580.\n\n' +
+      // `Read full guidelines and SOP via link below: \n(https://tutor.sifututor.my/)`,
       open: false,
     },
   ]);
@@ -155,7 +201,7 @@ const FAQs = ({navigation}: any) => {
                       <Text
                         style={{
                           fontSize: 15,
-                          fontWeight: '600',
+                          fontWeight: 'bold',
                           color: 'black',
                         }}>
                         {item.question}
@@ -185,7 +231,7 @@ const FAQs = ({navigation}: any) => {
                         paddingHorizontal: 10,
                         paddingVertical: 5,
                         paddingBottom: 10,
-                        flexDirection: 'row',
+                        // flexDirection: 'row',
                         width: '100%',
                         borderRadius: 5,
                         borderColor: 'gray',
@@ -194,7 +240,31 @@ const FAQs = ({navigation}: any) => {
                         borderTopRightRadius: 0,
                         marginBottom: 15,
                       }}>
-                      <Text style={{color: 'black'}}>{item.answer}</Text>
+                      {item?.answer &&
+                        item?.answer?.map((e: any, i: number) => {
+                          return (
+                            <View>
+                              <Text
+                                style={{
+                                  color: 'black',
+                                  fontWeight: 'bold',
+                                  fontSize: 15,
+                                  width: '100%',
+                                }}>
+                                {e.question}
+                              </Text>
+                              <Text
+                                style={{
+                                  color: 'black',
+                                  fontWeight: '400',
+                                  fontSize: 13,
+                                  width: '100%',
+                                }}>
+                                {e.answer}
+                              </Text>
+                            </View>
+                          );
+                        })}
                     </View>
                   ) : (
                     ''
