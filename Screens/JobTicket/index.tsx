@@ -174,7 +174,7 @@ function JobTicket({navigation, route}: any) {
           let {tickets} = data;
 
           axios
-            .get(`${Base_Uri}getTutorOffers/${tutorDetails.tutorId}`)
+            .get(`${Base_Uri}getTutorOffers/${tutorDetails?.tutorId}`)
             .then(({data}) => {
               let {getTutorOffers} = data;
               const filteredTickets = tickets.filter(
@@ -188,11 +188,11 @@ function JobTicket({navigation, route}: any) {
                       (myMode == 'noFilter' ||
                         e?.mode?.toString()?.toLowerCase() ==
                           myMode?.toString()?.toLowerCase()) &&
-                      (subjectID == 'noFilter' || e.subject_id == subjectID) &&
+                      (subjectID == 'noFilter' || e?.subject_id == subjectID) &&
                       (categoryID == 'noFilter' ||
-                        e.categoryID == categoryID) &&
+                        e?.categoryID == categoryID) &&
                       (myCity == 'noFilter' || e?.cityID == myCity) &&
-                      (myState == 'noFilter' || e.stateID == myState)
+                      (myState == 'noFilter' || e?.stateID == myState)
                     );
                   }),
               );
@@ -272,9 +272,6 @@ function JobTicket({navigation, route}: any) {
               );
             });
 
-          console.log(tutorOffer, 'offerrrrrr');
-          console.log(status, 'statusss');
-
           setAppliedData(tutorOffer);
           setLoading(false);
         })
@@ -341,15 +338,18 @@ function JobTicket({navigation, route}: any) {
         x?.studentName?.toLowerCase().includes(e?.toLowerCase()) ||
         x?.mode?.toLowerCase().includes(e?.toLowerCase()) ||
         x?.classDay?.toLowerCase().includes(e?.toLowerCase()) ||
-        x?.jtuid.toString().toLowerCase().includes(e?.toLowerCase())
+        x?.jtuid?.toString().toLowerCase().includes(e?.toLowerCase())
       );
     });
-
     setFoundName(filteredItems);
   };
 
-  function convertTo12HourFormat(time24: string): string {
-    const [hourStr, minuteStr] = time24.split(':');
+  function convertTo12HourFormat(time24: any): any {
+    // console.log('time24',time24);
+    if (time24 === null) {
+      return "Invalid time";
+    }
+    const [hourStr, minuteStr] = time24?.split(':');
     const hour = parseInt(hourStr);
     let period = 'AM';
     let twelveHour = hour;

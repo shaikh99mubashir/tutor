@@ -25,11 +25,11 @@ const OpenDetails = ({ route, navigation }: any) => {
 
 
 
-  console.log(openDetailItem.comment, "comment")
+  // console.log(openDetailItem.comment, "comment")
 
 
-  console.log(data, "dataaa")
-
+  // console.log(data, "dataaa")
+  // console.log('idddddddddddddd',data)
   const sendOpenDetailData = async () => {
 
     let tutorData: any = await AsyncStorage.getItem("loginAuth")
@@ -37,18 +37,18 @@ const OpenDetails = ({ route, navigation }: any) => {
     tutorData = await JSON.parse(tutorData)
 
     let subjectId = data?.subject_id
-    let ticket_id = data?.ticket_id
+    // let ticket_id = data?.ticket_id
+    let ticket_id = data?.id
+    // let id = data?.id
     let tutor_id = tutorData?.tutorID
     let comment = openDetailItem.comment ? openDetailItem.comment : null
-
-    console.log(subjectId)
-    console.log(ticket_id)
-    console.log(tutor_id)
-
-    console.log(comment, "comment")
+    // console.log('idddddddddddddd',data.id)
+    // console.log(subjectId)
+    // console.log(subjectId)
+    // console.log(tutor_id)
+    // console.log(comment, "comment")
 
     setLoading(true)
-
     axios.get(`${Base_Uri}offerSendByTutor/${subjectId}/${tutor_id}/${ticket_id}/${comment}`).then(({ data }) => {
 
       if (data?.result?.status == "Applied") {
