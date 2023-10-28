@@ -110,7 +110,7 @@ const CustomDropDown = (props: any) => {
                   fontFamily: 'Poppins-SemiBold',
                   fontSize: 14,
                 }}>
-                {selectedSubject ? selectedSubject.subject : dropdownPlace ?? ddTitle}
+                {selectedSubject ? selectedSubject?.subject : dropdownPlace ?? ddTitle}
               </Text>
               {serviceDD ? (
                 <Image source={require('../../Assets/Images/up.png')} style={{ width: 15, height: 20 }} resizeMode='contain' />
@@ -195,7 +195,7 @@ const CustomDropDown = (props: any) => {
 
                 />}
                 {searchData && searchData.length > 0 ? Array.from(
-                  new Set(searchData && searchData.map((item: any) => item.subject)),
+                  new Set(searchData && searchData.map((item: any) => item?.subject)),
                 ).map((e: any, i: number) => {
 
                   return (
@@ -203,7 +203,7 @@ const CustomDropDown = (props: any) => {
                       onPress={() =>
                         SelectedServices(
                           subject.find(
-                            (item: any) => `${item.subject}` === e,
+                            (item: any) => `${item?.subject}` === e,
                           ),
                         )
                       }
@@ -228,7 +228,7 @@ const CustomDropDown = (props: any) => {
                 }).filter(Boolean)
                   :
                   Array.from(
-                    new Set(subject && subject.map((item: any) => item.subject)),
+                    new Set(subject && subject.map((item: any) => item?.subject)),
                   ).map((e: any, i: number) => {
                     if (i < 5) {
                       return (
@@ -236,7 +236,7 @@ const CustomDropDown = (props: any) => {
                           onPress={() =>
                             SelectedServices(
                               subject.find(
-                                (item: any) => `${item.subject}` === e,
+                                (item: any) => `${item?.subject}` === e,
                               ),
                             )
                           }

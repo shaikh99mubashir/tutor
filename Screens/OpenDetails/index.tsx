@@ -67,6 +67,7 @@ const OpenDetails = ({ route, navigation }: any) => {
       ToastAndroid.show("Internal Server Error", ToastAndroid.SHORT)
     })
   };
+console.log('data=============>',data);
 
   return (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
@@ -101,6 +102,24 @@ const OpenDetails = ({ route, navigation }: any) => {
             <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
               {data?.subject_name} - {data?.session} sessions {data?.quantity}
             </Text>
+            {data?.mode == 'physical'?
+            <>
+            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            {data?.classAddress}
+          </Text>
+            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            {data?.classCity}
+          </Text>
+            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            {data?.classState}
+          </Text>
+            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            {data?.classPostalCode}
+          </Text>
+          </>
+          :''
+            }
+            
             {/* <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
               - Tutor Gender: {data?.tutorGender}
             </Text> */}

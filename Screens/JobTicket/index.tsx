@@ -423,9 +423,15 @@ function JobTicket({navigation, route}: any) {
             {item?.subject_name} - {item?.session} sessions {item?.quantity}{' '}
             hour(s)
           </Text>
-          {/* <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            - Tutor Gender: {item?.tutorGender}
-          </Text> */}
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            - Tutor Preference: {item?.tutorPereference}
+          </Text>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            - Class Frequency: {item?.classFrequency}
+          </Text>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            - Special Request: {item?.specialRequest}
+          </Text>
           <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
             - PreferredDay/Time: {item?.classDay}
           </Text>
@@ -514,9 +520,15 @@ function JobTicket({navigation, route}: any) {
             {item?.subject_name} - {item?.session} sessions {item?.quantity}
             hour(s)
           </Text>
-          {/* <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            - Tutor Gender: {item?.tutorGender}
-          </Text> */}
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            - Tutor Pereference: {item?.tutorPereference}
+          </Text>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            - Class Frequency: {item?.classFrequency}
+          </Text>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            - Special Request: {item?.specialRequest}
+          </Text>
           <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
             - classDay/Time: {item?.classDay}
           </Text>

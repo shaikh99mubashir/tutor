@@ -20,24 +20,7 @@ import StudentContext from '../../context/studentContext';
 import scheduleContext from '../../context/scheduleContext';
 
 function AddClass({navigation}: any) {
-  const [student, setStudent] = useState([
-    {
-      id: 1,
-      subject: 'zain',
-    },
-    {
-      id: 2,
-      subject: 'bilal',
-    },
-    {
-      id: 3,
-      subject: 'mubashir',
-    },
-    {
-      id: 3,
-      subject: 'khurram',
-    },
-  ]);
+  const [student, setStudent] = useState([]);
 
   const [subject, setSubject] = useState([]);
 
@@ -106,6 +89,7 @@ function AddClass({navigation}: any) {
     setTutorId(tutorID);
   };
 
+ 
   const getStudents = async () => {
     let myStudents =
       students &&
@@ -260,7 +244,7 @@ function AddClass({navigation}: any) {
               </Text>
               <Text
                 style={{color: Theme.black, fontSize: 12, fontWeight: '500'}}>
-                {item?.date !== '-' ? item.date.toString().slice(0, 15) : '-'}
+                {item?.date !== '-' ? item?.date?.toString().slice(0, 15) : '-'}
               </Text>
             </View>
           </TouchableOpacity>
@@ -281,8 +265,11 @@ function AddClass({navigation}: any) {
               style={{minWidth: 50, alignItems: 'flex-end'}}>
               <Text
                 style={{color: Theme.black, fontSize: 12, fontWeight: '500'}}>
-                {item?.startTime !== '-'
-                  ? item?.startTime.toLocaleString().slice(10)
+                      {item?.startTime !== '-'
+                  ? new Date(item?.startTime).toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })
                   : '-'}
               </Text>
             </TouchableOpacity>
@@ -303,8 +290,11 @@ function AddClass({navigation}: any) {
               style={{minWidth: 50, alignItems: 'flex-end'}}>
               <Text
                 style={{color: Theme.black, fontSize: 12, fontWeight: '500'}}>
-                {item?.endTime !== '-'
-                  ? item?.endTime.toLocaleString().slice(10)
+                       {item?.endTime !== '-'
+                  ? new Date(item?.endTime).toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })
                   : '-'}
               </Text>
             </TouchableOpacity>
@@ -419,7 +409,7 @@ function AddClass({navigation}: any) {
             ':' +
             '00' +
             ':' +
-            '00',
+            '00'
         };
       });
 
@@ -442,7 +432,7 @@ function AddClass({navigation}: any) {
           ToastAndroid.show(res.data.message, ToastAndroid.SHORT);
           return;
         }
-        navigation.navigate('Schedule', classesss.classes[0].startTime);
+        navigation.navigate('Schedule', classesss?.classes[0]?.startTime);
         ToastAndroid.show(res?.data?.message, ToastAndroid.SHORT);
       })
       .catch(error => {

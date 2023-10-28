@@ -518,6 +518,8 @@ function Home({navigation, route}: any) {
       .get(`${Base_Uri}getTutorStudents/${tutorId}`)
       .then(({data}) => {
         const {tutorStudents} = data;
+        console.log(tutorStudents);
+        
         setTutorStudents(tutorStudents);
         updateStudent(tutorStudents);
       })
