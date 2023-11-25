@@ -17,7 +17,8 @@ import { Base_Uri } from '../../constant/BaseUri';
 
 const OpenDetails = ({ route, navigation }: any) => {
   const data = route.params;
-
+  console.log("data",data);
+  
   const [openDetailItem, setopenDetailItem] = useState({
     comment: "",
   });
@@ -200,6 +201,80 @@ console.log('data=============>',data);
                   {/* {data.subject_id} */}
                 </Text>
               </View>
+            </View>
+            {/* Avaiable student */}
+            <View style={{ marginVertical: 15 }}>
+              <Text
+                style={{
+                  color: Theme.black,
+                  fontSize: 15,
+                  fontWeight: '600',
+                }}>
+                Extra Students
+              </Text>
+              {data?.jobTicketExtraStudents?.map((e:any,i:number)=>
+              <View
+                style={{
+                  backgroundColor: Theme.lightGray,
+                  paddingHorizontal: 10,
+                  paddingVertical: 12,
+                  borderRadius: 10,
+                  marginVertical: 5,
+                }}>
+                  
+                <Text
+                  style={{
+                    color: Theme.black,
+                    fontSize: 14,
+                    fontWeight: '400',
+                    marginTop: 5,
+                  }}>
+                  Student Name : {e?.student_name}
+                </Text>
+                <Text
+                  style={{
+                    
+                    color: Theme.black,
+                    fontSize: 14,
+                    fontWeight: '400',
+                    marginTop: 5,
+                  }}>
+                  Age : {e?.student_age}
+                </Text>
+                <Text
+                  style={{
+                    
+                    color: Theme.black,
+                    fontSize: 14,
+                    fontWeight: '400',
+                    marginTop: 5,
+                  }}>
+                  Gender : {e?.student_gender}
+                </Text>
+                <Text
+                  style={{
+                    
+                    color: Theme.black,
+                    fontSize: 14,
+                    fontWeight: '400',
+                    marginTop: 5,
+                  }}>
+                  Birth Year : {e?.year_of_birth}
+                </Text>
+                <Text
+                  style={{
+                    
+                    color: Theme.black,
+                    fontSize: 14,
+                    fontWeight: '400',
+                    marginTop: 5,
+                  }}>
+                  Special Need : {e?.special_need}
+                </Text>
+                
+                
+              </View>
+               )}
             </View>
             {/* Comment */}
             <View style={{ marginBottom: 100 }}>

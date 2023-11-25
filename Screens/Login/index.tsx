@@ -41,6 +41,8 @@ const Login = ({navigation}: any) => {
       })
       .catch(error => {
         setLoading(false);
+        console.log("error",error);
+        
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
