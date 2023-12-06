@@ -205,14 +205,14 @@ const Profile = ({ navigation }: any) => {
         type: type,
         name: name,
       });
-      formData.append('tutorID', tutorDetail.tutorId);
-      formData.append('name', tutorDetail.full_name);
-      formData.append('email', tutorDetail.email);
-      formData.append('displayName', tutorDetail.displayName);
-      formData.append('gender', tutorDetail.gender);
-      formData.append('nric', tutorDetail.nric);
-      formData.append('phone', tutorDetail.phoneNumber);
-      formData.append('age', tutorDetail.age);
+      formData.append('tutorID', tutorDetail?.tutorId);
+      formData.append('name', tutorDetail?.full_name);
+      formData.append('email', tutorDetail?.email);
+      formData.append('displayName', tutorDetail?.displayName);
+      formData.append('gender', tutorDetail?.gender);
+      formData.append('nric', tutorDetail?.nric);
+      formData.append('phone', tutorDetail?.phoneNumber);
+      formData.append('age', tutorDetail?.age);
       axios
         .post(`${Base_Uri}api/editTutorProfile`, formData, {
           headers: {
@@ -254,14 +254,14 @@ const Profile = ({ navigation }: any) => {
       tutorDetail.nric = nric ? nric : tutorDetail.nric
 
       let formData = new FormData();
-      formData.append('tutorID', tutorDetail.tutorId);
-      formData.append('name', tutorDetail.full_name);
-      formData.append('email', tutorDetail.email);
-      formData.append('displayName', tutorDetail.displayName);
-      formData.append('gender', tutorDetail.gender);
-      formData.append('nric', tutorDetail.nric);
-      formData.append('phone', tutorDetail.phoneNumber);
-      formData.append('age', tutorDetail.age);
+      formData.append('tutorID', tutorDetail?.tutorId);
+      formData.append('name', tutorDetail?.full_name);
+      formData.append('email', tutorDetail?.email);
+      formData.append('displayName', tutorDetail?.displayName);
+      formData.append('gender', tutorDetail?.gender);
+      formData.append('nric', tutorDetail?.nric);
+      formData.append('phone', tutorDetail?.phoneNumber);
+      formData.append('age', tutorDetail?.age);
       axios
         .post(`${Base_Uri}api/editTutorProfile`, formData, {
           headers: {

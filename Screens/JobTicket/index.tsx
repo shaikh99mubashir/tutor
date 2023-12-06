@@ -55,6 +55,11 @@ function JobTicket({navigation, route}: any) {
       name: 'Applied',
       selected: false,
     },
+    {
+      index: 2,
+      name: 'Assigned',
+      selected: false,
+    },
   ]);
 
   const activateTab = (index: any) => {
@@ -139,7 +144,7 @@ function JobTicket({navigation, route}: any) {
   ]);
 
   const [appliedData, setAppliedData] = useState([]);
-
+  const [assignedData, setAssignedData] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
@@ -295,9 +300,36 @@ function JobTicket({navigation, route}: any) {
       });
   };
 
+  const getAssignedData = async () => {
+    setLoading(true);
+
+    let tutorData: any = await AsyncStorage.getItem('loginAuth');
+
+    tutorData = JSON.parse(tutorData);
+
+    let tutor_id = tutorData?.tutorID;
+
+    console.log('tutor_id===============>',tutor_id);
+    
+    axios
+      .get(`${Base_Uri}assignedTicketsAPI/${tutor_id}`)
+      .then(({data}) => {
+        let {tickets} = data;
+        setAssignedData(tickets);
+        console.log("tickets===>",tickets);
+        
+        setLoading(false);
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error assignedTicketsAPI', ToastAndroid.SHORT);
+        setLoading(false);
+      });
+  };
+
   useEffect(() => {
     getTicketsData();
     getAppliedData();
+    getAssignedData();
   }, [refresh, route]);
 
   const checkSearchItems = () => {
@@ -369,6 +401,7 @@ function JobTicket({navigation, route}: any) {
   }
 
   const renderOpenData: any = ({item}: any) => {
+    console.log('====================================',item);
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('OpenDetails', item)}
@@ -387,10 +420,10 @@ function JobTicket({navigation, route}: any) {
             width: '100%',
           }}>
           <Text style={{color: 'green', fontSize: 16, fontWeight: '600'}}>
-            {item.uid}
+            {item?.jtuid}
           </Text>
           <Text style={{color: 'green', fontSize: 16, fontWeight: '600'}}>
-            {item.cityName}
+            {item?.cityName}
           </Text>
         </View>
         <Text
@@ -467,6 +500,106 @@ function JobTicket({navigation, route}: any) {
     );
   };
   const renderCloseData = ({item}: any) => {
+    return (
+      <TouchableOpacity
+        activeOpacity={0.8}
+        style={{
+          borderWidth: 1,
+          borderRadius: 5,
+          marginBottom: 10,
+          padding: 10,
+          borderColor: Theme.lightGray,
+        }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '100%',
+          }}>
+          <Text style={{color: 'green', fontSize: 16, fontWeight: '600'}}>
+            {item.jtuid}
+          </Text>
+          <Text style={{color: 'green', fontSize: 16, fontWeight: '600'}}>
+            {item.status}
+          </Text>
+        </View>
+        <Text
+          style={{
+            color: Theme.black,
+            fontSize: 15,
+            fontWeight: '600',
+            marginTop: 10,
+          }}>
+          {item.subject_name}
+        </Text>
+        <View>
+          <Text
+            style={{
+              color: Theme.black,
+              fontSize: 16,
+              fontWeight: '600',
+              marginTop: 10,
+            }}>
+            Details
+          </Text>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            {item?.classDay} at {convertTo12HourFormat(item?.classTime)} for{' '}
+            {item?.quantity} hour(s) of each class.
+          </Text>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            {item?.studentGender} Student ({item?.studentAge}y/o)
+          </Text>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            {item?.subject_name} - {item?.session} sessions {item?.quantity}
+            hour(s)
+          </Text>
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+            - Tutor Pereference: {item?.tutorPereference}
+          </Text>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            - Class Frequency: {item?.classFrequency}
+          </Text>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            - Special Request: {item?.specialRequest}
+          </Text>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            - classDay/Time: {item?.classDay}
+          </Text>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            - Mode: {item?.mode}
+          </Text>
+          {item?.remarks && (
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+              - Remarks: {item?.remarks}
+            </Text>
+          )}
+          {item?.first8Hour && (
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+              {item?.first8Hour}
+            </Text>
+          )}
+          {item?.above9Hour && (
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+              {item?.above9Hour}
+            </Text>
+          )}
+        </View>
+
+        <Text
+          style={{
+            color: Theme.black,
+            fontSize: 18,
+            fontWeight: '600',
+            marginTop: 10,
+          }}>
+          RM {item.receiving_account}/subject
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
+  const renderAssignData = ({item}: any) => {
+    // console.log('====================================item',item);
     return (
       <TouchableOpacity
         activeOpacity={0.8}
@@ -674,6 +807,61 @@ function JobTicket({navigation, route}: any) {
     );
   }, [appliedData, searchText, foundName]);
 
+  const thirdRoute = useCallback(() => {
+    return (
+      <View style={{marginVertical: 20, marginBottom: 10}}>
+    
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <View
+            style={{
+              width: '100%',
+              backgroundColor: Theme.lightGray,
+              borderRadius: 10,
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingVertical: 4,
+              paddingHorizontal: 10,
+              marginBottom: 15,
+            }}>
+            <TextInput
+              placeholder="Search"
+              placeholderTextColor="black"
+              onChangeText={e => searchApplied(e)}
+              style={{width: '90%', padding: 8, color: 'black'}}
+            />
+            <TouchableOpacity onPress={() => navigation}>
+              <Image
+                source={require('../../Assets/Images/search.png')}
+                style={{width: 20, height: 20}}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+        {assignedData && assignedData.length > 0 ? (
+          <FlatList
+            data={searchText && foundName.length > 0 ? foundName : assignedData}
+            renderItem={renderAssignData}
+            nestedScrollEnabled={true}
+            keyExtractor={(items: any, index: number): any => index}
+          />
+        ) : (
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Text
+              style={{
+                fontWeight: 'bold',
+                fontSize: 16,
+                color: Theme.black,
+                textAlign: 'center',
+              }}>
+              no data found
+            </Text>
+          </View>
+        )}
+      </View>
+    );
+  }, [assignedData, searchText, foundName]);
+
   const [openPPModal, setOpenPPModal] = useState(false);
   const displayBanner = async () => {
     setOpenPPModal(true);
@@ -751,9 +939,11 @@ function JobTicket({navigation, route}: any) {
             currentTab={currentTab}
             firstRoute={firstRoute}
             secondRoute={secondRoute}
+            thirdRoute={thirdRoute}
             activateTab={activateTab}
             firstRouteTitle="Open"
             secondRouteTitle="Applied"
+            thirdRouteTitle="Assigned"
           />
         </View>
       </ScrollView>

@@ -46,7 +46,7 @@ const TutorDetailForm = ({navigation, route}: any) => {
 
   console.log(tutorData, 'dataa');
 
-  let tutorId = tutorData.id;
+  let tutorId = tutorData?.id;
 
   const [loading, setLoading] = useState(false);
   const [image, setImage] = useState('');
@@ -177,18 +177,18 @@ const TutorDetailForm = ({navigation, route}: any) => {
         name: name,
       });
       formData.append('tutorID', tutorId);
-      formData.append('name', tutorDetail.full_name);
-      formData.append('displayName', tutorDetail.displayName);
-      formData.append('email', tutorData.email);
-      formData.append('phone', tutorData.phoneNumber);
-      formData.append('gender', tutorDetail.gender);
-      formData.append('nric', tutorDetail.nric);
-      formData.append('age', tutorDetail.age);
-      formData.append('street_address)', tutorDetail.street_address);
-      formData.append('city', tutorDetail.city);
-      formData.append('state', tutorDetail.state);
-      formData.append('bank_name', tutorDetail.bank_name);
-      formData.append('bank_account_number', tutorDetail.bank_account_number);
+      formData.append('name', tutorDetail?.full_name);
+      formData.append('displayName', tutorDetail?.displayName);
+      formData.append('email', tutorData?.email);
+      formData.append('phone', tutorData?.phoneNumber);
+      formData.append('gender', tutorDetail?.gender);
+      formData.append('nric', tutorDetail?.nric);
+      formData.append('age', tutorDetail?.age);
+      formData.append('street_address)', tutorDetail?.street_address);
+      formData.append('city', tutorDetail?.city);
+      formData.append('state', tutorDetail?.state);
+      formData.append('bank_name', tutorDetail?.bank_name);
+      formData.append('bank_account_number', tutorDetail?.bank_account_number);
 
       axios
         .post(`${Base_Uri}api/editTutorProfile`, formData, {

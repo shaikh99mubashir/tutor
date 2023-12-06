@@ -973,7 +973,7 @@ function Home({navigation, route}: any) {
           <View style={{marginTop: 15}}>
             <Text style={[styles.text, {fontSize: 20}]}>Hello,</Text>
             <Text style={[styles.heading, {fontSize: 22}]}>
-              {tutorDetails?.displayName ?? tutorDetails.full_name}
+              {tutorDetails?.displayName ?? tutorDetails?.full_name}
             </Text>
           </View>
 

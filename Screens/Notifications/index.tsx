@@ -231,7 +231,7 @@ const Notifications = ({ navigation }: any) => {
                           fontWeight: '600',
                           marginTop: 10,
                         }}>
-                        {item.notificationMessage ?? `Update Schedule Class, Tutor Name: ${tutorDetails.full_name}, Student Name: ${item?.studentName}, Subject Name: ${item?.subjectName}`}
+                        {item.notificationMessage ?? `Update Schedule Class, Tutor Name: ${tutorDetails?.full_name}, Student Name: ${item?.studentName}, Subject Name: ${item?.subjectName}`}
                       </Text>
                       <Text
                         style={{

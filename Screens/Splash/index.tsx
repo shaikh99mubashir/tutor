@@ -21,8 +21,8 @@ const Splash = ({navigation}: any) => {
             let tutorData = res.data;
 
             if (
-              !tutorData.tutorDetailById[0].full_name &&
-              !tutorData.tutorDetailById[0].displayName
+              !tutorData.tutorDetailById[0]?.full_name &&
+              !tutorData.tutorDetailById[0]?.displayName
             ) {
               navigation.reset({
                 index: 0,
