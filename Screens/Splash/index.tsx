@@ -18,6 +18,8 @@ const Splash = ({navigation}: any) => {
         axios
           .get(`${Base_Uri}getTutorDetailByID/${tutorData?.tutorID}`)
           .then(res => {
+            console.log("res---->");
+            
             let tutorData = res.data;
 
             if (
@@ -48,7 +50,10 @@ const Splash = ({navigation}: any) => {
                 ],
               });
             }
-          });
+          }).catch((error)=>{
+            console.log('error',error);
+            
+          })
         return;
       }
 
@@ -58,6 +63,7 @@ const Splash = ({navigation}: any) => {
       }
       navigation.replace('OnBoarding');
     }, 3000);
+    
   };
   useEffect(() => {
     navigateToHomeScreen();
