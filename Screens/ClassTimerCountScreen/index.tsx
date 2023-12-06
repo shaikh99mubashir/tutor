@@ -161,10 +161,6 @@ function ClassTimerCount({ navigation, route }: any) {
     const [loading, setLoading] = useState(false)
 
 
-
-
-
-
     const handleClockOut = async () => {
 
         const granted = await PermissionsAndroid.request(
@@ -210,9 +206,9 @@ function ClassTimerCount({ navigation, route }: any) {
                         startMinutes: item?.startSeconds,
                         startHour: item?.startMinutes,
                         hasIncentive: item?.hasIncentive ? item?.hasIncentive : 0,
-                        uri: assets[0].uri,
-                        type: assets[0].type,
-                        filename: assets[0].fileName,
+                        uri: assets[0]?.uri,
+                        type: assets[0]?.type,
+                        filename: assets[0]?.fileName,
                         ticketID: item?.item?.ticketID,
                         classAttendedID: item?.data?.classAttendedID,
                         minutes: time.minutes,
