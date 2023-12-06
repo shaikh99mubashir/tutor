@@ -494,7 +494,7 @@ function JobTicket({navigation, route}: any) {
             fontWeight: '600',
             marginTop: 10,
           }}>
-          RM {item.receiving_account}/subject
+          RM {item?.receiving_account}/subject
         </Text>
       </TouchableOpacity>
     );

@@ -103,9 +103,10 @@ function ClockIn({ navigation, route }: any) {
                         },
                     }).then((res) => {
                         setLoading(false)
-                        data.data = res.data
+                        data.data = res?.data
                         data.item = item
-
+                        console.log('res',res);
+                        
                         let storageData: any = { ...data }
                         storageData = JSON.stringify(storageData)
                         AsyncStorage.setItem("classInProcess", storageData)
@@ -113,8 +114,6 @@ function ClockIn({ navigation, route }: any) {
                     }).catch((error) => {
                         setLoading(false)
                         console.log(error, "error")
-
-
                     })
                 }
             }

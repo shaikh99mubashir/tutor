@@ -192,7 +192,6 @@ function Home({navigation, route}: any) {
         // // setNotificationLength(tutorNotification.length > 0 ? tutorNotification.length : 0);
         // length =
         //   length + tutorNotification.length > 0 ? tutorNotification.length : 0;
-
         // setNotificationLength(length);
       })
       .catch(error => {
