@@ -101,7 +101,8 @@ const Filter = ({ navigation, route }: any) => {
   }
 
   const handleSearchData = (text: string, type: string) => {
-
+    console.log("type,text=====",type,text);
+    
     if (type == "category") {
       let myData = category && category.length > 0 && category.filter((e: any, i: number) => {
 
@@ -129,24 +130,19 @@ const Filter = ({ navigation, route }: any) => {
 
       let myData = state && state.length > 0 && state.filter((e: any, i: number) => {
 
-
+        console.log("e state work",e);
+        
 
         if (e?.subject?.toLowerCase()?.includes(text?.toLowerCase())) {
           return e
         }
       })
-
-      console.log(myData, "dataa")
-
       setSearchStateData(myData)
-
     }
     else {
-
+      console.log("city",city);
+      
       let myData = city && city.length > 0 && city.filter((e: any, i: number) => {
-
-
-
         if (e?.subject?.toLowerCase()?.includes(text?.toLowerCase())) {
           return e
         }

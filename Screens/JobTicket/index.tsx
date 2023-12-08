@@ -172,7 +172,9 @@ function JobTicket({navigation, route}: any) {
       let myMode = mode.subject ?? 'noFilter';
       let myState = state.id ?? 'noFilter';
       let myCity = city.id ?? 'noFilter';
-
+      // console.log("myCitymyCity",myCity);
+      // console.log("myCitymyCity",city);
+      
       axios
         .get(`${Base_Uri}ticketsAPI/${tutorDetails?.tutorId}`)
         .then(({data}) => {
@@ -189,6 +191,8 @@ function JobTicket({navigation, route}: any) {
               setOpenData(
                 filteredTickets.length > 0 &&
                   filteredTickets.filter((e: any, i: number) => {
+                    // console.log("e?.cityID",e);
+                    
                     return (
                       (myMode == 'noFilter' ||
                         e?.mode?.toString()?.toLowerCase() ==
@@ -339,6 +343,8 @@ function JobTicket({navigation, route}: any) {
   const [foundName, setFoundName] = useState([]);
   const [searchText, setSearchText] = useState('');
   const searchOpen = (e: any) => {
+    // console.log("rinnimg");
+    
     if (e == '') {
       setFoundName([]);
       setSearchText(e);
@@ -346,13 +352,15 @@ function JobTicket({navigation, route}: any) {
     }
 
     setSearchText(e);
+    // console.log("e === search ",searchText);
+    
     let filteredItems: any = openData.filter(
       (x: any) =>
-        x?.subject_name.toLowerCase().includes(e.toLowerCase()) ||
+        x?.subject_name?.toLowerCase().includes(e?.toLowerCase()) ||
         x?.studentName?.toLowerCase().includes(e?.toLowerCase()) ||
         x?.mode?.toLowerCase().includes(e?.toLowerCase()) ||
         x?.classDay?.toLowerCase().includes(e?.toLowerCase()) ||
-        x?.uid.toString().toLowerCase().includes(e?.toLowerCase()),
+        x?.jtuid?.toString().toLowerCase().includes(e?.toLowerCase()),
     );
     setFoundName(filteredItems);
   };
@@ -401,7 +409,7 @@ function JobTicket({navigation, route}: any) {
   }
 
   const renderOpenData: any = ({item}: any) => {
-    console.log('====================================',item);
+    // console.log('====================================renderOpenData',item);
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate('OpenDetails', item)}
@@ -423,7 +431,7 @@ function JobTicket({navigation, route}: any) {
             {item?.jtuid}
           </Text>
           <Text style={{color: 'green', fontSize: 16, fontWeight: '600'}}>
-            {item?.cityName}
+            {item?.city}
           </Text>
         </View>
         <Text
@@ -450,7 +458,7 @@ function JobTicket({navigation, route}: any) {
             {item?.quantity} hour(s) of each class.
           </Text>
           <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
-            {item?.studentGender} Student ({item?.studentAge}y/o)
+            {item?.studentGender} Student {item?.student_age} y/o
           </Text>
           <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
             {item?.subject_name} - {item?.session} sessions {item?.quantity}{' '}
@@ -462,9 +470,11 @@ function JobTicket({navigation, route}: any) {
           <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
             - Class Frequency: {item?.classFrequency}
           </Text>
+          {item?.specialRequest ?
           <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
             - Special Request: {item?.specialRequest}
           </Text>
+          :''}
           <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
             - PreferredDay/Time: {item?.classDay}
           </Text>
@@ -494,7 +504,7 @@ function JobTicket({navigation, route}: any) {
             fontWeight: '600',
             marginTop: 10,
           }}>
-          RM {item?.receiving_account}/subject
+          RM {item?.price}/subject
         </Text>
       </TouchableOpacity>
     );

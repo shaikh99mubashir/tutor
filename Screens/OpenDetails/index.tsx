@@ -39,7 +39,7 @@ const OpenDetails = ({ route, navigation }: any) => {
 
     let subjectId = data?.subject_id
     // let ticket_id = data?.ticket_id
-    let ticket_id = data?.id
+    let ticketID = data?.ticketID
     // let id = data?.id
     let tutor_id = tutorData?.tutorID
     let comment = openDetailItem.comment ? openDetailItem.comment : null
@@ -50,12 +50,12 @@ const OpenDetails = ({ route, navigation }: any) => {
     // console.log(comment, "comment")
 
     setLoading(true)
-    axios.get(`${Base_Uri}offerSendByTutor/${subjectId}/${tutor_id}/${ticket_id}/${comment}`).then(({ data }) => {
-
+    axios.get(`${Base_Uri}offerSendByTutor/${subjectId}/${tutor_id}/${ticketID}/${comment}`)
+    .then(({ data }) => {
       if (data?.result?.status == "Applied") {
         setLoading(false)
         ToastAndroid.show("You have successfully applied for this ticket", ToastAndroid.SHORT)
-        navigation.navigate("Job Ticket", ticket_id)
+        navigation.navigate("Job Ticket", ticketID)
       } else {
         console.log(data, "dataaa")
         ToastAndroid.show(data?.result, ToastAndroid.SHORT)
@@ -72,10 +72,10 @@ console.log('data=============>',data);
 
   return (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
-      <Header title={data.uid} backBtn navigation={navigation} />
+      <Header title={data?.jtuid} backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <View style={{ paddingHorizontal: 15 }}>
-          <Text
+          {/* <Text
             style={{
               color: 'green',
               fontSize: 15,
@@ -85,7 +85,7 @@ console.log('data=============>',data);
               borderColor: '#eee',
             }}>
             {data?.studentAddress1} {data?.studentAddress2}
-          </Text>
+          </Text> */}
           <View>
             <Text
               style={{
@@ -97,9 +97,9 @@ console.log('data=============>',data);
               Details
             </Text>
             <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-              {data?.classDay} at {data?.classTime} for {data?.hours} hour(s) of each class.</Text>
+              {data?.classDay} at {data?.classTime} for {data?.quantity} hour(s) of each class.</Text>
             <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-              {data?.studentGender} Student ({data?.studentAge}y/o)</Text>
+              {data?.studentGender} Student {data?.student_age} y/o</Text>
             <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
               {data?.subject_name} - {data?.session} sessions {data?.quantity}
             </Text>
@@ -109,10 +109,10 @@ console.log('data=============>',data);
             {data?.classAddress}
           </Text>
             <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            {data?.classCity}
+            {data?.city}
           </Text>
             <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-            {data?.classState}
+            {data?.state}
           </Text>
             <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
             {data?.classPostalCode}
@@ -161,7 +161,7 @@ console.log('data=============>',data);
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                RM {data.receiving_account}/subject
+                RM {data.price}/subject
               </Text>
             </View>
             {/* Avaiable Subject */}
