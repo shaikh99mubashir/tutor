@@ -18,6 +18,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import StudentContext from '../../context/studentContext';
 import scheduleContext from '../../context/scheduleContext';
+import { useIsFocused } from '@react-navigation/native';
 
 function AddClass({navigation}: any) {
   const [student, setStudent] = useState([]);
@@ -108,12 +109,13 @@ function AddClass({navigation}: any) {
   useEffect(() => {
     getTutorID();
   }, []);
-
+  const focus = useIsFocused()
   useEffect(() => {
     if (tutorId) {
+      // console.log("getStudents==> tutorId==",tutorId);
       getStudents();
     }
-  }, [tutorId]);
+  }, [tutorId,focus]);
 
   useEffect(() => {
     if (selectedStudent) {
@@ -459,15 +461,20 @@ function AddClass({navigation}: any) {
   return loading ? (
     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <ActivityIndicator size="large" color={Theme.black} />
+      
     </View>
   ) : (
     <View style={{flex: 1, backgroundColor: Theme.white}}>
       <View>
         <Header title={'Add Class'} backBtn navigation={navigation} />
       </View>
+     
+      {student && student.length !== 0 ?
+      <>
       <View style={{padding: 20, flex: 1}}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <View>
+     
             <CustomDropDown
               ddTitle={'Student'}
               setSelectedSubject={setSelectedStudent}
@@ -486,6 +493,7 @@ function AddClass({navigation}: any) {
                 fontWeight: '700',
               }}
             />
+        
             {selectedStudent && (
               <CustomDropDown
                 ddTitle={'Subject'}
@@ -509,9 +517,10 @@ function AddClass({navigation}: any) {
               />
             )}
           </View>
-
+          
           <FlatList data={classes} renderItem={renderClasses} />
-
+         
+         
           <View
             style={{
               width: '100%',
@@ -533,7 +542,7 @@ function AddClass({navigation}: any) {
               </Text>
             </TouchableOpacity>
           </View>
-
+         
           {show && (
             <DateTimePicker
               testID="dateTimePicker"
@@ -545,7 +554,7 @@ function AddClass({navigation}: any) {
           )}
         </ScrollView>
       </View>
-
+      
       <View
         style={{
           width: '100%',
@@ -566,6 +575,15 @@ function AddClass({navigation}: any) {
           </Text>
         </TouchableOpacity>
       </View>
+      </>
+      :
+      <View style={{alignItems:'center', justifyContent:'center', flex:1}}>
+      <Text style={{color:'black',}}> You have No Students</Text>
+        </View>
+      }
+       {/* <View style={{alignItems:'center',justifyContent:"center", flex:1}}>
+      {student.length == 0 ? "" : }
+      </View> */}
     </View>
   );
 }

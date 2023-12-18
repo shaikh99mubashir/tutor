@@ -32,17 +32,22 @@ const Notifications = ({ navigation }: any) => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [refresh, setRefresh] = useState(false)
 
-  const context = useContext(notificationContext)
+  const context = useContext(notificationContext);
+  const scheduleNotCont = useContext(scheduleNotificationContext)
+  
   let tutotContext = useContext(TutorDetailsContext)
   let { tutorDetails } = tutotContext
+  let { scheduleNotification = [] , setScheduleNotification } = scheduleNotCont
+  let { notification = [] , setNotification } = context
+  const notificationArray = Array.isArray(notification) ? notification : [];
+  const scheduleNotificationArray = Array.isArray(scheduleNotification) ? scheduleNotification : [];
+  
+  
+  let totalNotifications = [...notificationArray, ...scheduleNotificationArray]
+  // let totalNotifications = [...notification, ...scheduleNotification]
 
-  const scheduleNotCont = useContext(scheduleNotificationContext)
+  // console.log(tutorDetails, "DETAUL")
 
-  let { scheduleNotification, setScheduleNotification } = scheduleNotCont
-
-  console.log(tutorDetails, "DETAUL")
-
-  let { notification, setNotification } = context
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -72,7 +77,7 @@ const Notifications = ({ navigation }: any) => {
         .then(async ({ data }) => {
           let { notifications } = data;
           let tutorNotification =
-            notifications.length > 0 &&
+            notifications?.length > 0 &&
             notifications.filter((e: any, i: number) => {
               return e.status == "new";
             });
@@ -111,7 +116,7 @@ const Notifications = ({ navigation }: any) => {
 
   const navigateToOtherScreen = (item: any) => {
 
-    if (item.notificationType == "Submit Evaluation Report" || item.notificationType == "Submit Progress Report") {
+    if (item?.notificationType == "Submit Evaluation Report" || item?.notificationType == "Submit Progress Report") {
       navigation.navigate("ReportSubmission", item)
       axios.get(`${Base_Uri}api/updateNotificationStatus/${item.notificationID}/old`).then((res) => {
 
@@ -145,7 +150,7 @@ const Notifications = ({ navigation }: any) => {
     } else {
 
       item.status = "attended"
-      item.id = item.class_schedule_id
+      item.id = item?.class_schedule_id
       navigation.navigate("EditAttendedClass", { data: item })
 
 
@@ -168,7 +173,7 @@ const Notifications = ({ navigation }: any) => {
 
   }
 
-  let totalNotifications = [...notification, ...scheduleNotification]
+
 
   return loading ? (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -182,10 +187,10 @@ const Notifications = ({ navigation }: any) => {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        {totalNotifications && totalNotifications.length > 0 ? (
+        {notification && scheduleNotification && totalNotifications?.length > 0 ? (
           <FlatList
 
-            data={totalNotifications}
+            data={totalNotifications || []}
             nestedScrollEnabled={true}
             renderItem={({ item, index }: any) => {
 

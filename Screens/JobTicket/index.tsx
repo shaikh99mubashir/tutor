@@ -179,8 +179,7 @@ function JobTicket({navigation, route}: any) {
         .get(`${Base_Uri}ticketsAPI/${tutorDetails?.tutorId}`)
         .then(({data}) => {
           let {tickets} = data;
-
-          axios
+            axios
             .get(`${Base_Uri}getTutorOffers/${tutorDetails?.tutorId}`)
             .then(({data}) => {
               let {getTutorOffers} = data;

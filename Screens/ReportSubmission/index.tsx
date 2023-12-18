@@ -25,15 +25,33 @@ import DateTimePicker from "@react-native-community/datetimepicker"
 import moment from 'moment';
 
 
-const ReportSubmission = ({ navigation, route }: any) => {
+const ReportSubmission = ({ navigation, route }: any):any => {
 
   let data = route.params
+console.log("data",data);
 
 
-  const [value, setValue] = useState(new Date)
+  const [value, setValue]:any = useState()
+  const date = new Date(value);
   const currentDate = new Date();
+  const firstClass = new Date();
+  // console.log("firstClass",formattedDateFirstClass);
+  let formattedDateFirstClass:any = new Date(firstClass).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
   const options: any = { day: 'numeric', month: 'SHORT', year: 'numeric' };
-  const formattedDate = value.toLocaleDateString('en-US', options);
+  // console.log("value", value);
+  
+  // const formattedDate = value.toLocaleDateString('en-US', options);
+  let formattedDate:any = new Date(value).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  });
+  // console.log('formattedDate',formattedDate);
+  
   const [evaluation, setEvaluationReport] = useState<any>("")
   const [student, setStudent] = useState<any>("")
   const [subject, setSubject] = useState<any>("")
@@ -141,8 +159,6 @@ const ReportSubmission = ({ navigation, route }: any) => {
       subjects &&
       subjects.length > 0 &&
       subjects.map((e: any, i: Number) => {
-
-
         if (e.subject) {
           return {
             option: e.subject,
@@ -356,38 +372,33 @@ const ReportSubmission = ({ navigation, route }: any) => {
         ToastAndroid.show("Failed To Submit Report", ToastAndroid.SHORT)
         console.log(error, "error")
       })
-
-
-
-
       return
     }
-
-
-
     if (!tutorId || !student.studentID || !subject?.id || !evaluation?.option || !knowledgeAnswer?.option || !understandingAnswer?.option || !analysisAnswer?.option) {
       ToastAndroid.show("Required Fields are missing", ToastAndroid.SHORT)
       return
     }
     setLoading(true)
     let date = value
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 since month is zero-based
-    const day = date.getDate().toString().padStart(2, '0');
+    // const year = date.getFullYear();
+    // const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 since month is zero-based
+    // const day = date.getDate().toString().padStart(2, '0');
     let formData = new FormData()
 
     formData.append("tutorID", tutorId)
     formData.append("scheduleID", data.class_schedule_id)
     formData.append("studentID", student.studentID)
     formData.append("subjectID", subject.id)
-    formData.append("currentDate", year + '/' + month + '/' + day)
+    // formData.append("currentDate", year + '/' + month + '/' + day)
+    formData.append("currentDate", formattedDateFirstClass)
     formData.append("reportType", evaluation.option)
     formData.append("knowledge", knowledgeAnswer.option)
     formData.append("understanding", understandingAnswer.option)
     formData.append("analysis", analysisAnswer.option)
     formData.append("additionalAssisment", questions.addationalAssessments)
     formData.append("plan", questions.plan)
-
+    console.log('formData',formData);
+    
     axios.post(`${Base_Uri}api/tutorFirstReport`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -447,8 +458,8 @@ const ReportSubmission = ({ navigation, route }: any) => {
               <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black' }}>
                 First Class Date
               </Text>
-              <TouchableOpacity
-                onPress={() => setShow(true)}
+              <View
+                // onPress={() => setShow(true)}
                 style={{
                   marginTop: 5,
                   flexDirection: 'row',
@@ -469,9 +480,9 @@ const ReportSubmission = ({ navigation, route }: any) => {
                     fontFamily: 'Poppins-SemiBold',
                     fontSize: 16,
                   }}>
-                  {formattedDate}
+                  {formattedDateFirstClass}
                 </Text>
-              </TouchableOpacity>
+              </View>
             </View>}
           {/* Student */}
           <DropDownModalView

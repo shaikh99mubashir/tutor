@@ -496,7 +496,7 @@ function Home({navigation, route}: any) {
   };
 
   const getCancelledHours = () => {
-    console.log(tutorId, 'iddd');
+    // console.log(tutorId, 'iddd');
 
     axios
       .get(`${Base_Uri}getCancelledHours/${tutorId}`)
@@ -537,14 +537,16 @@ function Home({navigation, route}: any) {
           tutorSubjects &&
           tutorSubjects.length > 0 &&
           tutorSubjects.map((e: any, i: Number) => {
-            if (e.name) {
+            if (e?.name) {
+              console.log('E.name',e?.name);
+              
               return {
                 subject: e.name,
                 id: e.id,
               };
             }
           });
-
+          console.log('mySubject=====?>',mySubject);
         updateSubject(mySubject);
       })
       .catch(error => {

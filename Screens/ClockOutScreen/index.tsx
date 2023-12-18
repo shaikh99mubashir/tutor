@@ -77,15 +77,15 @@ function ClockOut({navigation, route}: any) {
 
     console.log(data, 'data');
 
-    formData.append('id', data.classAttendedID);
-    formData.append('class_schedule_id', data.class_schedule_id);
-    formData.append('endMinutes', data.endHour);
-    formData.append('endSeconds', data.endMinutes);
-    formData.append('hasIncentive', data.hasIncentive);
+    formData.append('id', data?.classAttendedID);
+    formData.append('class_schedule_id', data?.class_schedule_id);
+    formData.append('endMinutes', data?.endHour);
+    formData.append('endSeconds', data?.endMinutes);
+    formData.append('hasIncentive', data?.hasIncentive);
     formData.append('endTimeProofImage', {
-      uri: data.uri,
-      type: data.type,
-      name: data.filename,
+      uri: data?.uri,
+      type: data?.type,
+      name: data?.filename,
     });
     setLoading(true);
     axios
