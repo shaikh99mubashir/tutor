@@ -374,7 +374,7 @@ console.log("data",data);
       })
       return
     }
-    if (!tutorId || !student.studentID || !subject?.id || !evaluation?.option || !knowledgeAnswer?.option || !understandingAnswer?.option || !analysisAnswer?.option) {
+    if (!tutorId || !data.studentID || !data.subjectID || !evaluation?.option || !knowledgeAnswer?.option || !understandingAnswer?.option || !analysisAnswer?.option) {
       ToastAndroid.show("Required Fields are missing", ToastAndroid.SHORT)
       return
     }
@@ -387,8 +387,8 @@ console.log("data",data);
 
     formData.append("tutorID", tutorId)
     formData.append("scheduleID", data.class_schedule_id)
-    formData.append("studentID", student.studentID)
-    formData.append("subjectID", subject.id)
+    formData.append("studentID", data.studentID)
+    formData.append("subjectID", data.subjectID)
     // formData.append("currentDate", year + '/' + month + '/' + day)
     formData.append("currentDate", formattedDateFirstClass)
     formData.append("reportType", evaluation.option)
@@ -485,23 +485,83 @@ console.log("data",data);
               </View>
             </View>}
           {/* Student */}
-          <DropDownModalView
+          {/* <DropDownModalView
             title="Student"
             selectedValue={setStudent}
             placeHolder="Select Student.."
             value={student && Object.keys(student).length > 0 ? student.option : ""}
             option={studentData}
             modalHeading="Student"
-          />
+          /> */}
+          <View style={{ marginTop: 8 }}>
+              <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black' }}>
+                Student
+              </Text>
+              <View
+                // onPress={() => setShow(true)}
+                style={{
+                  marginTop: 5,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingVertical: 10,
+                  paddingHorizontal: 15,
+                  borderWidth: 1,
+                  borderTopLeftRadius: 5,
+                  borderTopRightRadius: 5,
+                  borderBottomLeftRadius: 5,
+                  borderBottomRightRadius: 5,
+                  borderColor: Theme.gray,
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: Theme.gray,
+                    fontFamily: 'Poppins-SemiBold',
+                    fontSize: 16,
+                  }}>
+                  {data?.studentName}
+                </Text>
+              </View>
+            </View>
           {/* Subject */}
-          <DropDownModalView
+          {/* <DropDownModalView
             title="Subject"
             placeHolder="Select Subject"
             selectedValue={setSubject}
             value={subject && Object.keys(subject).length > 0 ? subject.option : ""}
             option={subjectData}
             modalHeading="Subject"
-          />
+          /> */}
+          <View style={{ marginTop: 8 }}>
+              <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black' }}>
+                Subject
+              </Text>
+              <View
+                // onPress={() => setShow(true)}
+                style={{
+                  marginTop: 5,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingVertical: 10,
+                  paddingHorizontal: 15,
+                  borderWidth: 1,
+                  borderTopLeftRadius: 5,
+                  borderTopRightRadius: 5,
+                  borderBottomLeftRadius: 5,
+                  borderBottomRightRadius: 5,
+                  borderColor: Theme.gray,
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    color: Theme.gray,
+                    fontFamily: 'Poppins-SemiBold',
+                    fontSize: 16,
+                  }}>
+                  {data?.subjectSubject}
+                </Text>
+              </View>
+            </View>
           {/* Knowledge */}
           {evaluation.option == 'Progress Report' ? (
             <>

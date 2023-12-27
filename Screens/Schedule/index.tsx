@@ -466,7 +466,7 @@ function Schedule({navigation, route}: any) {
                     Cancelled
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   onPress={() => navigateToEditScreen('attended')}
                   style={{width: '100%'}}>
                   <Text
@@ -476,7 +476,7 @@ function Schedule({navigation, route}: any) {
                     ]}>
                     Attended
                   </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
             </View>
           </TouchableWithoutFeedback>

@@ -226,14 +226,15 @@ function JobTicket({navigation, route}: any) {
         .get(`${Base_Uri}ticketsAPI/${tutor_id}`)
         .then(async ({data}) => {
           let {tickets} = data;
-
           axios
             .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
             .then(({data}) => {
               let {getTutorOffers} = data;
+              console.log();
+              
               const filteredTickets = tickets.filter(
                 (ticket: any) =>
-                  !getTutorOffers.some((offer: any) => offer.id === ticket.id),
+                  !getTutorOffers.some((offer: any) => offer.tutor_id !== ticket.tutorOfferTutorID),
               );
               setOpenData(filteredTickets);
               setLoading(false);

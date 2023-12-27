@@ -1,4 +1,4 @@
-import {Image, StyleSheet, Text, View, Dimensions} from 'react-native';
+import {Image, StyleSheet, Text, View, Dimensions, ToastAndroid} from 'react-native';
 import React, {useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
@@ -13,7 +13,7 @@ const Splash = ({navigation}: any) => {
 
       if (authData) {
         let tutorData = JSON.parse(authData);
-        console.log(tutorData);
+        console.log('tutorData',tutorData);
 
         axios
           .get(`${Base_Uri}getTutorDetailByID/${tutorData?.tutorID}`)
@@ -52,7 +52,7 @@ const Splash = ({navigation}: any) => {
             }
           }).catch((error)=>{
             console.log('error',error);
-            
+            ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
           })
         return;
       }

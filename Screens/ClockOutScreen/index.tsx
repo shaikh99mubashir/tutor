@@ -95,6 +95,8 @@ function ClockOut({navigation, route}: any) {
         },
       })
       .then(res => {
+        console.log('res------------>',res?.data);
+        
         axios
           .get(`${Base_Uri}api/tutorFirstReportListing/${tutorID}`)
           .then(({data}) => {
@@ -116,7 +118,7 @@ function ClockOut({navigation, route}: any) {
               );
               setLoading(false);
             } else {
-              navigation.replace('ReportSubmission', items);
+              navigation.replace('ReportSubmission', res?.data);
               setLoading(false);
             }
           });
