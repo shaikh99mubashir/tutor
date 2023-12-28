@@ -54,7 +54,7 @@ function AddClass({ navigation }: any) {
   const [tutorStudents, setTutorStudents] = useState([])
   var focus = useIsFocused()
   const getTutorStudents = () => {
-    console.log('runnning');
+    // console.log('runnning');
     setLoading(true)
     axios
       .get(`${Base_Uri}getTutorStudents/${tutorId}`)
@@ -103,6 +103,8 @@ function AddClass({ navigation }: any) {
             .map((e:any) => ({
               subject: e.name,
               id: e.id,
+              remaining_classes: e.remaining_classes,
+              classFrequency:e.classFrequency,
             }));
         // let mySubject =
         //   studentSubjects &&
@@ -125,6 +127,7 @@ function AddClass({ navigation }: any) {
         console.log(error);
       });
   };
+// console.log("setSubject",subject);
 
   const getTutorID = async () => {
     let data: any = await AsyncStorage.getItem('loginAuth');
@@ -169,16 +172,7 @@ function AddClass({ navigation }: any) {
     }
   }, [selectedStudent]);
 
-  const deleteClass = (index: Number) => {
-    let data: any =
-      classes &&
-      classes.length > 0 &&
-      classes.filter((e: any, i: Number) => {
-        return i !== index;
-      });
-
-    setClasses(data);
-  };
+  
 
   const onChange = (event: any, selectedDate: any) => {
     setShow(false);
@@ -235,8 +229,15 @@ function AddClass({ navigation }: any) {
     setIndexClicked(index);
     setShow(true);
   };
-
+  const [hideMoreClassesButton, setHideMoreClassesButton] = useState(true)
+  const [noOfClasses, setNoOFClasses] = useState(0)
+  const MAX_CLASSES = selectedSubject?.remaining_classes || 0
+  console.log("classes.length,MAX_CLASSES",classes.length,MAX_CLASSES);
+  
   const renderClasses = ({ item, index }: any) => {
+    if (classes.length  <= MAX_CLASSES) {
+      setHideMoreClassesButton(classes.length <= MAX_CLASSES - 1);
+    }
     return (
       <View>
         <View
@@ -244,6 +245,7 @@ function AddClass({ navigation }: any) {
             flexDirection: 'row',
             width: '100%',
             justifyContent: 'space-between',
+            
           }}>
           <Text
             style={{
@@ -352,6 +354,18 @@ function AddClass({ navigation }: any) {
     );
   };
 
+  const deleteClass = (index: Number) => {
+    
+    let data: any =
+      classes &&
+      classes.length > 0 &&
+      classes.filter((e: any, i: Number) => {
+        return i !== index;
+      });
+      
+    setClasses(data);
+  };
+
   const addClass = () => {
     let newClass = {
       tutorID: tutorId,
@@ -427,9 +441,6 @@ function AddClass({ navigation }: any) {
         let endMinutes = e?.endTime?.getMinutes();
         let endSeconds = e?.endTime?.getSeconds();
 
-        console.log(minutes, 'minutes');
-        console.log(seconds, 'seconds');
-
         return {
           tutorID: tutorId,
           studentID: selectedStudent?.studentID,
@@ -504,6 +515,9 @@ function AddClass({ navigation }: any) {
       showToast('Please select the student before you select the subject.');
     }
   };
+
+  console.log('selectedSubject',selectedSubject);
+  
   return loading ? (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator size="large" color={Theme.black} />
@@ -518,7 +532,7 @@ function AddClass({ navigation }: any) {
       {student && student.length !== 0 ?
         <>
           <View style={{ padding: 20, flex: 1 }}>
-            {/* <ScrollView showsVerticalScrollIndicator={false}> */}
+            <ScrollView showsVerticalScrollIndicator={false}>
             <View>
 
               <CustomDropDown
@@ -564,9 +578,19 @@ function AddClass({ navigation }: any) {
               )}
             </View>
 
+              {
+                selectedSubject?.subject &&
+                <Text style={{color:'black'}}>{selectedSubject?.subject} Total classes are {selectedSubject?.classFrequency}. 
+                 you have to schedule remaining classes {selectedSubject?.remaining_classes}
+                </Text>     
+              }
+
+
+              <View style={{marginBottom:100}}>
             <FlatList data={classes} renderItem={renderClasses} />
-
-
+              </View>
+               </ScrollView>
+            {hideMoreClassesButton &&
             <View
               style={{
                 width: '100%',
@@ -582,12 +606,17 @@ function AddClass({ navigation }: any) {
                   borderRadius: 10,
                   width: '100%',
                 }}>
+                  {/* {selectedSubject?.remaining_classes
+                  } */}
+                 
                 <Text
                   style={{ textAlign: 'center', fontSize: 14, color: Theme.white }}>
-                  {classes.length > 0 ? 'Add More Classes' : 'Add Classes'}
+                  {/* {classes.length > 0  ? 'Add More Classes' : 'Add Classes'} */}
+                  {classes.length > 0  ? 'Add More Classes' : 'Add Classes'}
                 </Text>
               </TouchableOpacity>
             </View>
+                }
 
             {show && (
               <DateTimePicker
@@ -598,7 +627,7 @@ function AddClass({ navigation }: any) {
                 onChange={onChange}
               />
             )}
-            {/* </ScrollView> */}
+           
           </View>
 
           <View

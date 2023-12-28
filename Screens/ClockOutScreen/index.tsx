@@ -32,7 +32,7 @@ function ClockOut({navigation, route}: any) {
   const data = route?.params;
   const items = route?.params;
 
-  console.log(data, 'dataa');
+  console.log(items, 'items');
 
   const focus = useIsFocused();
 
@@ -69,13 +69,13 @@ function ClockOut({navigation, route}: any) {
   //     return () => backHandler.remove();
   // }, [])
 
-  console.log(tutorID, 'iddddd');
+  // console.log(tutorID, 'iddddd');
 
   const handleClockOutPress = async () => {
     setLoading(true);
     let formData = new FormData();
 
-    console.log(data, 'data');
+    // console.log(data, 'data');
 
     formData.append('id', data?.classAttendedID);
     formData.append('class_schedule_id', data?.class_schedule_id);
@@ -95,20 +95,24 @@ function ClockOut({navigation, route}: any) {
         },
       })
       .then(res => {
-        console.log('res------------>',res?.data);
+        // console.log('res------------>',res?.data);
         
         axios
           .get(`${Base_Uri}api/tutorFirstReportListing/${tutorID}`)
-          .then(({data}) => {
+          .then(({data}:any) => {
             let {tutorReportListing} = data;
-
+            console.log('tutorReportListing',tutorReportListing);
+            
             let thisClass =
               tutorReportListing &&
               tutorReportListing?.length > 0 &&
               tutorReportListing.filter((e: any, i: number) => {
+                console.log('e========>',e);
+                
                 return items.class_schedule_id == e.scheduleID;
               });
-
+              console.log('thisClass',thisClass);
+              
             if (thisClass && thisClass.length > 0) {
               navigation.dispatch(
                 CommonActions.reset({
@@ -118,7 +122,7 @@ function ClockOut({navigation, route}: any) {
               );
               setLoading(false);
             } else {
-              navigation.replace('ReportSubmission', res?.data);
+              navigation.replace('ReportSubmission', res?.data );
               setLoading(false);
             }
           });

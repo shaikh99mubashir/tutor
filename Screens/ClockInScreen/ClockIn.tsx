@@ -96,12 +96,12 @@ function ClockIn({navigation, route}: any) {
               },
             })
             .then(res => {
-              console.log(res?.data, 'resssss');
+              // console.log(res?.data, 'resssss');
 
               setLoading(false);
               data.data = res?.data;
               data.item = item;
-              console.log('res', res);
+              // console.log('res', res);
 
               let storageData: any = {...data};
               storageData = JSON.stringify(storageData);
