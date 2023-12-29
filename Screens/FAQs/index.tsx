@@ -194,7 +194,7 @@ const FAQs = ({ navigation }: any) => {
                     }}>
                     <View style={{ width: '93%' }}>
                       <Text
-                        style={{ fontSize: 15, fontWeight: '600', color: 'black' }}>
+                        style={{ fontSize: 15, fontWeight: '600', color: 'black',fontFamily: 'Circular Std Black' }}>
                         {item.question}
                       </Text>
                     </View>
@@ -231,7 +231,7 @@ const FAQs = ({ navigation }: any) => {
                         marginBottom: 15,
 
                       }}>
-                      <Text style={{ color: 'black' }}>
+                      <Text style={{ color: 'black',fontFamily: 'Circular Std Black' }}>
                         {item.answer}
                       </Text>
                     </View>

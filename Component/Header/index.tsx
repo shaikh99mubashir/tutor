@@ -89,6 +89,7 @@ const Header = (Props: any) => {
                 color: Theme.darkGray,
                 marginVertical: 0,
                 fontWeight: '600',
+                fontFamily: 'Circular Std Black',
               }}>
               {title}
             </Text>

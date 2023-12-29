@@ -172,5 +172,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '400',
     textAlign: 'center',
+    fontFamily: 'Circular Std Black'
   },
 });

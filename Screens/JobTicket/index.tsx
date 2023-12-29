@@ -427,10 +427,10 @@ function JobTicket({navigation, route}: any) {
             justifyContent: 'space-between',
             width: '100%',
           }}>
-          <Text style={{color: 'green', fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             {item?.jtuid}
           </Text>
-          <Text style={{color: 'green', fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             {item?.city}
           </Text>
         </View>
@@ -440,6 +440,7 @@ function JobTicket({navigation, route}: any) {
             fontSize: 16,
             fontWeight: '600',
             marginTop: 10,
+            fontFamily: 'Circular Std Black'
           }}>
           {item.subject_name}
         </Text>
@@ -450,49 +451,53 @@ function JobTicket({navigation, route}: any) {
               fontSize: 16,
               fontWeight: '600',
               marginTop: 10,
+              fontFamily: 'Circular Std Black'
             }}>
             Details
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             {item?.classDay} at {convertTo12HourFormat(item?.classTime)} for{' '}
             {item?.quantity} hour(s) of each class.
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             {item?.studentGender} Student {item?.student_age} y/o
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             {item?.subject_name} - {item?.session} sessions {item?.quantity}{' '}
             hour(s)
           </Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black' }}>
             - Tutor Preference: {item?.tutorPereference}
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             - Class Frequency: {item?.classFrequency}
           </Text>
           {item?.specialRequest ?
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             - Special Request: {item?.specialRequest}
           </Text>
           :''}
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             - PreferredDay/Time: {item?.classDay}
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             - Mode: {item?.mode}
           </Text>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+            - Level: {item?.categoryName}
+          </Text>
           {item?.remarks && (
-            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
               - Remarks: {item?.remarks}
             </Text>
           )}
           {item?.first8Hour && (
-            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
               {item?.first8Hour}
             </Text>
           )}
           {item?.above9Hour && (
-            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
               {item?.above9Hour}
             </Text>
           )}
@@ -503,6 +508,7 @@ function JobTicket({navigation, route}: any) {
             fontSize: 18,
             fontWeight: '600',
             marginTop: 10,
+            fontFamily: 'Circular Std Black'
           }}>
           RM {item?.price}/subject
         </Text>
@@ -526,10 +532,10 @@ function JobTicket({navigation, route}: any) {
             justifyContent: 'space-between',
             width: '100%',
           }}>
-          <Text style={{color: 'green', fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             {item.jtuid}
           </Text>
-          <Text style={{color: 'green', fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             {item.status}
           </Text>
         </View>
@@ -539,6 +545,7 @@ function JobTicket({navigation, route}: any) {
             fontSize: 15,
             fontWeight: '600',
             marginTop: 10,
+            fontFamily: 'Circular Std Black'
           }}>
           {item.subject_name}
         </Text>
@@ -549,47 +556,48 @@ function JobTicket({navigation, route}: any) {
               fontSize: 16,
               fontWeight: '600',
               marginTop: 10,
+              fontFamily: 'Circular Std Black'
             }}>
             Details
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             {item?.classDay} at {convertTo12HourFormat(item?.classTime)} for{' '}
             {item?.quantity} hour(s) of each class.
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             {item?.studentGender} Student ({item?.studentAge}y/o)
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             {item?.subject_name} - {item?.session} sessions {item?.quantity}
             hour(s)
           </Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black' }}>
             - Tutor Pereference: {item?.tutorPereference}
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             - Class Frequency: {item?.classFrequency}
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             - Special Request: {item?.specialRequest}
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             - classDay/Time: {item?.classDay}
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             - Mode: {item?.mode}
           </Text>
           {item?.remarks && (
-            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
               - Remarks: {item?.remarks}
             </Text>
           )}
           {item?.first8Hour && (
-            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
               {item?.first8Hour}
             </Text>
           )}
           {item?.above9Hour && (
-            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
               {item?.above9Hour}
             </Text>
           )}
@@ -601,8 +609,9 @@ function JobTicket({navigation, route}: any) {
             fontSize: 18,
             fontWeight: '600',
             marginTop: 10,
+            fontFamily: 'Circular Std Black'
           }}>
-          RM {item.receiving_account}/subject
+          RM {item?.price}/subject
         </Text>
       </TouchableOpacity>
     );
@@ -626,10 +635,10 @@ function JobTicket({navigation, route}: any) {
             justifyContent: 'space-between',
             width: '100%',
           }}>
-          <Text style={{color: 'green', fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             {item.jtuid}
           </Text>
-          <Text style={{color: 'green', fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             {item.status}
           </Text>
         </View>
@@ -639,6 +648,7 @@ function JobTicket({navigation, route}: any) {
             fontSize: 15,
             fontWeight: '600',
             marginTop: 10,
+            fontFamily: 'Circular Std Black'
           }}>
           {item.subject_name}
         </Text>
@@ -649,47 +659,48 @@ function JobTicket({navigation, route}: any) {
               fontSize: 16,
               fontWeight: '600',
               marginTop: 10,
+              fontFamily: 'Circular Std Black'
             }}>
             Details
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             {item?.classDay} at {convertTo12HourFormat(item?.classTime)} for{' '}
             {item?.quantity} hour(s) of each class.
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             {item?.studentGender} Student ({item?.studentAge}y/o)
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             {item?.subject_name} - {item?.session} sessions {item?.quantity}
             hour(s)
           </Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
+          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black' }}>
             - Tutor Pereference: {item?.tutorPereference}
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             - Class Frequency: {item?.classFrequency}
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             - Special Request: {item?.specialRequest}
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             - classDay/Time: {item?.classDay}
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             - Mode: {item?.mode}
           </Text>
           {item?.remarks && (
-            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
               - Remarks: {item?.remarks}
             </Text>
           )}
           {item?.first8Hour && (
-            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
               {item?.first8Hour}
             </Text>
           )}
           {item?.above9Hour && (
-            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600'}}>
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
               {item?.above9Hour}
             </Text>
           )}
@@ -701,8 +712,9 @@ function JobTicket({navigation, route}: any) {
             fontSize: 18,
             fontWeight: '600',
             marginTop: 10,
+            fontFamily: 'Circular Std Black'
           }}>
-          RM {item.receiving_account}/subject
+          RM {item?.price}/subject
         </Text>
       </TouchableOpacity>
     );
@@ -728,7 +740,7 @@ function JobTicket({navigation, route}: any) {
               placeholder="Search"
               placeholderTextColor="black"
               onChangeText={e => searchOpen(e)}
-              style={{width: '90%', padding: 8, color: 'black'}}
+              style={{width: '90%', padding: 8, color: 'black',fontFamily: 'Circular Std Black'}}
             />
             <TouchableOpacity onPress={() => navigation}>
               <Image
@@ -754,8 +766,9 @@ function JobTicket({navigation, route}: any) {
               fontSize: 16,
               color: Theme.black,
               textAlign: 'center',
+              fontFamily: 'Circular Std Black'
             }}>
-            no data found
+            No Data Found
           </Text>
         )}
       </View>
@@ -809,7 +822,7 @@ function JobTicket({navigation, route}: any) {
                 color: Theme.black,
                 textAlign: 'center',
               }}>
-              no data found
+             No Data Found
             </Text>
           </View>
         )}
@@ -838,7 +851,7 @@ function JobTicket({navigation, route}: any) {
               placeholder="Search"
               placeholderTextColor="black"
               onChangeText={e => searchApplied(e)}
-              style={{width: '90%', padding: 8, color: 'black'}}
+              style={{width: '90%', padding: 8, color: 'black',fontFamily: 'Circular Std Black'}}
             />
             <TouchableOpacity onPress={() => navigation}>
               <Image
@@ -863,8 +876,9 @@ function JobTicket({navigation, route}: any) {
                 fontSize: 16,
                 color: Theme.black,
                 textAlign: 'center',
+                fontFamily: 'Circular Std Black'
               }}>
-              no data found
+              No Data Found
             </Text>
           </View>
         )}

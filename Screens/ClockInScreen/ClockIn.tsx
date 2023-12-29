@@ -19,7 +19,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function ClockIn({navigation, route}: any) {
   let item = route.params;
-
+  console.log('item setUpcomingClass',item);
+  
   const [loading, setLoading] = useState(false);
 
   const [currentLocation, setCurrentLocation] = useState<any>({
@@ -101,7 +102,7 @@ function ClockIn({navigation, route}: any) {
               setLoading(false);
               data.data = res?.data;
               data.item = item;
-              // console.log('res', res);
+              console.log('res data', data);
 
               let storageData: any = {...data};
               storageData = JSON.stringify(storageData);
@@ -167,7 +168,7 @@ function ClockIn({navigation, route}: any) {
             }}>
             <Image source={item.imageUrl} style={{width: 45, height: 45}} />
           </View>
-          <Text style={{fontSize: 14, color: Theme.gray, marginLeft: 10}}>
+          <Text style={{fontSize: 14, color: Theme.gray, marginLeft: 10,fontFamily: 'Circular Std Black'}}>
             {item.studentName}
           </Text>
         </View>
@@ -179,17 +180,18 @@ function ClockIn({navigation, route}: any) {
               color: Theme.black,
               fontWeight: '600',
               textTransform: 'uppercase',
+              fontFamily: 'Circular Std Black'
             }}>
             {item.subjectName}
           </Text>
         </View>
 
         <View style={{flexDirection: 'row'}}>
-          <Text style={{color: Theme.gray}}>
+          <Text style={{color: Theme.gray,fontFamily: 'Circular Std Black'}}>
             {item.startTime.toString()} - {item.endTime.toString()} |{' '}
           </Text>
 
-          <Text style={{color: Theme.gray}}>
+          <Text style={{color: Theme.gray,fontFamily: 'Circular Std Black'}}>
             {item.date.slice(0, 10).toString()}
           </Text>
         </View>
@@ -202,7 +204,7 @@ function ClockIn({navigation, route}: any) {
             borderRadius: 10,
             marginTop: 10,
           }}>
-          <Text style={{textAlign: 'center', fontSize: 16, color: 'white'}}>
+          <Text style={{textAlign: 'center', fontSize: 16, color: 'white',fontFamily: 'Circular Std Black'}}>
             Clock In
           </Text>
         </TouchableOpacity>

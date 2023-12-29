@@ -318,8 +318,13 @@ console.log("data",data);
 
   }, [navigation, subjectData, studentData])
 
-
-  console.log(perQ1, "months")
+  // formData.append("scheduleID", data.class_schedule_id)
+    // formData.append("studentID", data.studentID)
+    // formData.append("studentID", student.studentID)
+    // formData.append("subjectID", data.subjectID)
+  console.log(data.class_schedule_id, "data.class_schedule_id")
+  // console.log(data.studentID, "data.studentID")
+  // console.log(student.studentID, "student.studentID")
 
   const submitReport = () => {
 
@@ -388,7 +393,9 @@ console.log("data",data);
     formData.append("tutorID", tutorId)
     formData.append("scheduleID", data.class_schedule_id)
     formData.append("studentID", data.studentID)
+    // formData.append("studentID", student.studentID)
     formData.append("subjectID", data.subjectID)
+    // formData.append("subjectID", subject.id)
     // formData.append("currentDate", year + '/' + month + '/' + day)
     formData.append("currentDate", formattedDateFirstClass)
     formData.append("reportType", evaluation.option)
@@ -455,7 +462,7 @@ console.log("data",data);
             </View>
             :
             <View style={{ marginTop: 8 }}>
-              <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black' }}>
+              <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black',fontFamily: 'Circular Std Black' }}>
                 First Class Date
               </Text>
               <View
@@ -477,7 +484,7 @@ console.log("data",data);
                 <Text
                   style={{
                     color: Theme.gray,
-                    fontFamily: 'Poppins-SemiBold',
+                    fontFamily: 'Circular Std Black',
                     fontSize: 16,
                   }}>
                   {formattedDateFirstClass}
@@ -494,7 +501,7 @@ console.log("data",data);
             modalHeading="Student"
           /> */}
           <View style={{ marginTop: 8 }}>
-              <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black' }}>
+              <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black',fontFamily: 'Circular Std Black' }}>
                 Student
               </Text>
               <View
@@ -516,7 +523,7 @@ console.log("data",data);
                 <Text
                   style={{
                     color: Theme.gray,
-                    fontFamily: 'Poppins-SemiBold',
+                    fontFamily: 'Circular Std Black',
                     fontSize: 16,
                   }}>
                   {data?.studentName}
@@ -533,7 +540,7 @@ console.log("data",data);
             modalHeading="Subject"
           /> */}
           <View style={{ marginTop: 8 }}>
-              <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black' }}>
+              <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black',fontFamily: 'Circular Std Black' }}>
                 Subject
               </Text>
               <View
@@ -555,10 +562,10 @@ console.log("data",data);
                 <Text
                   style={{
                     color: Theme.gray,
-                    fontFamily: 'Poppins-SemiBold',
+                    fontFamily: 'Circular Std Black',
                     fontSize: 16,
                   }}>
-                  {data?.subjectSubject}
+                  {data?.subjectName}
                 </Text>
               </View>
             </View>
@@ -700,13 +707,14 @@ console.log("data",data);
                   fontWeight: 'bold',
                   color: 'black',
                   marginTop: 8,
+                  fontFamily: 'Circular Std Black'
                 }}>
                 4. Observation
               </Text>
               <Text
                 style={{
                   color: Theme.gray,
-                  fontFamily: 'Poppins-SemiBold',
+                  fontFamily: 'Circular Std Black',
                   fontSize: 12,
                 }}>
                 Did you (tutor) hold or carried out any form of eximination/test/quiz for student within this 3 months?
@@ -732,6 +740,7 @@ console.log("data",data);
                       height: 80,
                       padding: 8,
                       color: 'black',
+                      fontFamily: 'Circular Std Black'
                     },
                   ]}
                   underlineColorAndroid="transparent"
@@ -741,7 +750,7 @@ console.log("data",data);
               <Text
                 style={{
                   color: Theme.gray,
-                  fontFamily: 'Poppins-SemiBold',
+                  fontFamily: 'Circular Std Black',
                   fontSize: 12,
                   marginTop: 8,
                 }}>
@@ -768,6 +777,7 @@ console.log("data",data);
                       height: 80,
                       padding: 8,
                       color: 'black',
+                      fontFamily: 'Circular Std Black'
                     },
                   ]}
                   underlineColorAndroid="transparent"
@@ -777,7 +787,7 @@ console.log("data",data);
               <Text
                 style={{
                   color: Theme.gray,
-                  fontFamily: 'Poppins-SemiBold',
+                  fontFamily: 'Circular Std Black',
                   fontSize: 12,
                   marginTop: 8,
                 }}>
@@ -804,6 +814,7 @@ console.log("data",data);
                       height: 80,
                       padding: 8,
                       color: 'black',
+                      fontFamily: 'Circular Std Black'
                     },
                   ]}
                   underlineColorAndroid="transparent"
@@ -813,7 +824,7 @@ console.log("data",data);
               <Text
                 style={{
                   color: Theme.gray,
-                  fontFamily: 'Poppins-SemiBold',
+                  fontFamily: 'Circular Std Black',
                   fontSize: 12,
                   marginTop: 8,
                 }}>
@@ -840,6 +851,7 @@ console.log("data",data);
                       height: 80,
                       padding: 8,
                       color: 'black',
+                      fontFamily: 'Circular Std Black'
                     },
                   ]}
                   underlineColorAndroid="transparent"
@@ -855,13 +867,14 @@ console.log("data",data);
                   fontWeight: 'bold',
                   color: 'black',
                   marginTop: 8,
+                  fontFamily: 'Circular Std Black'
                 }}>
                 4. Additional Assessment
               </Text>
               <Text
                 style={{
                   color: Theme.gray,
-                  fontFamily: 'Poppins-SemiBold',
+                  fontFamily: 'Circular Std Black',
                   fontSize: 12,
                 }}>
                 What is the current score for the subject?
@@ -889,6 +902,7 @@ console.log("data",data);
                       width: Dimensions.get('window').width,
                       padding: 8,
                       color: 'black',
+                      fontFamily: 'Circular Std Black'
                     },
                   ]}
                   underlineColorAndroid="transparent"
@@ -898,7 +912,7 @@ console.log("data",data);
               <Text
                 style={{
                   color: Theme.gray,
-                  fontFamily: 'Poppins-SemiBold',
+                  fontFamily: 'Circular Std Black',
                   fontSize: 12,
                   marginTop: 8,
                 }}>
@@ -925,6 +939,7 @@ console.log("data",data);
                       height: 80,
                       padding: 8,
                       color: 'black',
+                      fontFamily: 'Circular Std Black'
                     },
                   ]}
                   underlineColorAndroid="transparent"
@@ -964,7 +979,7 @@ console.log("data",data);
               style={{
                 color: 'white',
                 fontSize: 16,
-                fontFamily: 'Poppins-Regular',
+                fontFamily: 'Circular Std Black',
               }}>
               Submit
             </Text>

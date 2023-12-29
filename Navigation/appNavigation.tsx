@@ -47,61 +47,15 @@ function BottomNavigation({ route }: any) {
 
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
+    initialRouteName="Home"
+    screenOptions={({ route }) => ({
         headerShown: false,
-        // tabBarShowLabel: false,
-        tabBarInactiveTintColor: Theme.darkGray,
-        // tabBarStyle: styles.tabBarStyle,
+        tabBarShowLabel: false,
+        tabBarInactiveTintColor: 'grey',
+        tabBarStyle: styles.tabBarStyle,
         tabBarActiveTintColor: 'black',
-      })}
-      initialRouteName="home">
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          tabBarIcon: ({ focused, color }) => (
-            <View>
-              {focused == true ? (
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                    padding: 5,
-                    borderRadius: 5,
-                  }}>
-                  <Image
-                    source={require('../Assets/Images/home.png')}
-                    resizeMode="contain"
-                    style={{
-                      height: 30,
-                      width: 30,
-                      tintColor: focused ? Theme.darkGray : Theme.lightGray,
-                    }}
-                  />
-                </View>
-              ) : (
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                  }}>
-                  <Image
-                    source={require('../Assets/Images/home.png')}
-                    resizeMode="contain"
-                    style={{
-                      height: 25,
-                      width: 25,
-                      tintColor: focused ? Theme.darkGray : Theme.lightGray,
-                    }}
-                  />
-                </View>
-              )}
-            </View>
-          ),
-        }}
-      />
+      })}>
+
       <Tab.Screen
         name="Job Ticket"
         component={JobTicket}
@@ -118,12 +72,12 @@ function BottomNavigation({ route }: any) {
                     borderRadius: 5,
                   }}>
                   <Image
-                    source={require('../Assets/Images/ticket.png')}
+                    source={require('../Assets/Images/Job.png')}
                     resizeMode="contain"
                     style={{
-                      height: 30,
-                      width: 30,
-                      tintColor: focused ? Theme.darkGray : Theme.lightGray,
+                      height: 50,
+                      width: 50,
+                      tintColor: focused ? 'black' : 'grey',
                     }}
                   />
                 </View>
@@ -135,12 +89,12 @@ function BottomNavigation({ route }: any) {
                     flexDirection: 'row',
                   }}>
                   <Image
-                    source={require('../Assets/Images/ticket.png')}
+                    source={require('../Assets/Images/Job.png')}
                     resizeMode="contain"
                     style={{
-                      height: 25,
-                      width: 25,
-                      tintColor: focused ? Theme.darkGray : Theme.lightGray,
+                      height: 50,
+                      width: 50,
+                      tintColor: focused ? 'black' : 'grey',
                     }}
                   />
                 </View>
@@ -149,11 +103,11 @@ function BottomNavigation({ route }: any) {
           ),
         }}
       />
+
       <Tab.Screen
         name="Schedule"
         component={Schedule}
         options={{
-
           tabBarIcon: ({ focused, color }) => (
             <View>
               {focused == true ? (
@@ -166,12 +120,12 @@ function BottomNavigation({ route }: any) {
                     borderRadius: 5,
                   }}>
                   <Image
-                    source={require('../Assets/Images/schedule.png')}
+                    source={require('../Assets/Images/schedule1.png')}
                     resizeMode="contain"
                     style={{
-                      height: 30,
-                      width: 30,
-                      tintColor: focused ? Theme.darkGray : Theme.lightGray,
+                      height: 50,
+                      width: 50,
+                      tintColor: focused ? 'black' : 'grey',
                     }}
                   />
                 </View>
@@ -183,12 +137,12 @@ function BottomNavigation({ route }: any) {
                     flexDirection: 'row',
                   }}>
                   <Image
-                    source={require('../Assets/Images/schedule.png')}
+                    source={require('../Assets/Images/schedule1.png')}
                     resizeMode="contain"
                     style={{
-                      height: 25,
-                      width: 25,
-                      tintColor: focused ? Theme.darkGray : Theme.lightGray,
+                      height: 50,
+                      width: 50,
+                      tintColor: focused ? 'black' : 'grey',
                     }}
                   />
                 </View>
@@ -197,6 +151,53 @@ function BottomNavigation({ route }: any) {
           ),
         }}
       />
+
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          tabBarIcon: ({ focused, color }) => (
+            <View>
+              {focused == true ? (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    // backgroundColor:'#1FC07D',
+                  }}>
+                  <Image
+                    source={require('../Assets/Images/HomeBlue.png')}
+                    resizeMode="contain"
+                    style={{
+                      height: 100,
+                      width: 100,
+
+                    }}
+                  />
+                </View>
+              ) : (
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                  }}>
+                  <Image
+                     source={require('../Assets/Images/HomeBlue.png')}
+                    resizeMode="contain"
+                    style={{
+                      height: 100,
+                      width: 100,
+                    }}
+                  />
+                </View>
+              )}
+            </View>
+          ),
+        }}
+      />
+
       <Tab.Screen
         name="inbox"
         component={Index}
@@ -213,12 +214,12 @@ function BottomNavigation({ route }: any) {
                     borderRadius: 5,
                   }}>
                   <Image
-                    source={require('../Assets/Images/inbox.png')}
+                    source={require('../Assets/Images/Chat_1.png')}
                     resizeMode="contain"
                     style={{
-                      height: 30,
-                      width: 30,
-                      tintColor: focused ? Theme.darkGray : Theme.lightGray,
+                      height: 40,
+                      width: 40,
+                      tintColor: focused ? 'black' : 'grey',
                     }}
                   />
                 </View>
@@ -230,12 +231,12 @@ function BottomNavigation({ route }: any) {
                     flexDirection: 'row',
                   }}>
                   <Image
-                    source={require('../Assets/Images/inbox.png')}
+                    source={require('../Assets/Images/Chat_1.png')}
                     resizeMode="contain"
                     style={{
-                      height: 25,
-                      width: 25,
-                      tintColor: focused ? Theme.darkGray : Theme.lightGray,
+                      height: 40,
+                      width: 40,
+                      tintColor: focused ? 'black' : 'grey',
                     }}
                   />
                 </View>
@@ -260,12 +261,12 @@ function BottomNavigation({ route }: any) {
                     borderRadius: 5,
                   }}>
                   <Image
-                    source={require('../Assets/Images/settings.png')}
+                    source={require('../Assets/Images/Profile_1.png')}
                     resizeMode="contain"
                     style={{
-                      height: 30,
-                      width: 30,
-                      tintColor: focused ? Theme.darkGray : Theme.lightGray,
+                      height: 40,
+                      width: 40,
+                      tintColor: focused ? 'black' : 'grey',
                     }}
                   />
                 </View>
@@ -277,12 +278,12 @@ function BottomNavigation({ route }: any) {
                     flexDirection: 'row',
                   }}>
                   <Image
-                    source={require('../Assets/Images/settings.png')}
+                    source={require('../Assets/Images/Profile_1.png')}
                     resizeMode="contain"
                     style={{
-                      height: 25,
-                      width: 25,
-                      tintColor: focused ? Theme.darkGray : Theme.lightGray,
+                      height: 40,
+                      width: 40,
+                      tintColor: focused ? 'black' : 'grey',
                     }}
                   />
                 </View>
@@ -292,6 +293,255 @@ function BottomNavigation({ route }: any) {
         }}
       />
     </Tab.Navigator>
+    // <Tab.Navigator
+    //   screenOptions={({ route }) => ({
+    //     headerShown: false,
+    //     // tabBarShowLabel: false,
+    //     tabBarInactiveTintColor: Theme.lightGray,
+    //     // tabBarStyle: styles.tabBarStyle,
+    //     tabBarActiveTintColor: Theme.darkGray,
+        
+    //   })}
+    //   initialRouteName="home">
+    //   <Tab.Screen
+    //     name="Home"
+    //     component={Home}
+      
+    //     options={{
+    //       tabBarIcon: ({ focused, color }) => (
+    //         <View>
+    //           {focused == true ? (
+    //             <View
+    //               style={{
+    //                 alignItems: 'center',
+    //                 justifyContent: 'center',
+    //                 flexDirection: 'row',
+    //                 padding: 5,
+    //                 borderRadius: 5,
+                    
+    //               }}>
+    //               <Image
+    //                 source={require('../Assets/Images/home.png')}
+    //                 resizeMode="contain"
+    //                 style={{
+    //                   height: 30,
+    //                   width: 30,
+    //                   tintColor: focused ? Theme.darkGray : Theme.lightGray,
+    //                 }}
+    //               />
+    //             </View>
+    //           ) : (
+    //             <View
+    //               style={{
+    //                 alignItems: 'center',
+    //                 justifyContent: 'center',
+    //                 flexDirection: 'row',
+    //               }}>
+    //               <Image
+    //                 source={require('../Assets/Images/home.png')}
+    //                 resizeMode="contain"
+    //                 style={{
+    //                   height: 25,
+    //                   width: 25,
+    //                   tintColor: focused ? Theme.darkGray : Theme.lightGray,
+    //                 }}
+    //               />
+    //             </View>
+    //           )}
+    //         </View>
+    //       ),
+    //     }}
+    //   />
+    //   <Tab.Screen
+    //     name="Job Ticket"
+    //     component={JobTicket}
+    //     options={{
+    //       tabBarIcon: ({ focused, color }) => (
+    //         <View>
+    //           {focused == true ? (
+    //             <View
+    //               style={{
+    //                 alignItems: 'center',
+    //                 justifyContent: 'center',
+    //                 flexDirection: 'row',
+    //                 padding: 5,
+    //                 borderRadius: 5,
+    //               }}>
+    //               <Image
+    //                 source={require('../Assets/Images/ticket.png')}
+    //                 resizeMode="contain"
+    //                 style={{
+    //                   height: 30,
+    //                   width: 30,
+    //                   tintColor: focused ? Theme.darkGray : Theme.lightGray,
+    //                 }}
+    //               />
+    //             </View>
+    //           ) : (
+    //             <View
+    //               style={{
+    //                 alignItems: 'center',
+    //                 justifyContent: 'center',
+    //                 flexDirection: 'row',
+    //               }}>
+    //               <Image
+    //                 source={require('../Assets/Images/ticket.png')}
+    //                 resizeMode="contain"
+    //                 style={{
+    //                   height: 25,
+    //                   width: 25,
+    //                   tintColor: focused ? Theme.darkGray : Theme.lightGray,
+    //                 }}
+    //               />
+    //             </View>
+    //           )}
+    //         </View>
+    //       ),
+    //     }}
+    //   />
+    //   <Tab.Screen
+    //     name="Schedule"
+    //     component={Schedule}
+    //     options={{
+
+    //       tabBarIcon: ({ focused, color }) => (
+    //         <View>
+    //           {focused == true ? (
+    //             <View
+    //               style={{
+    //                 alignItems: 'center',
+    //                 justifyContent: 'center',
+    //                 flexDirection: 'row',
+    //                 padding: 5,
+    //                 borderRadius: 5,
+    //               }}>
+    //               <Image
+    //                 source={require('../Assets/Images/schedule.png')}
+    //                 resizeMode="contain"
+    //                 style={{
+    //                   height: 30,
+    //                   width: 30,
+    //                   tintColor: focused ? Theme.darkGray : Theme.lightGray,
+    //                 }}
+    //               />
+    //             </View>
+    //           ) : (
+    //             <View
+    //               style={{
+    //                 alignItems: 'center',
+    //                 justifyContent: 'center',
+    //                 flexDirection: 'row',
+    //               }}>
+    //               <Image
+    //                 source={require('../Assets/Images/schedule.png')}
+    //                 resizeMode="contain"
+    //                 style={{
+    //                   height: 25,
+    //                   width: 25,
+    //                   tintColor: focused ? Theme.darkGray : Theme.lightGray,
+    //                 }}
+    //               />
+    //             </View>
+    //           )}
+    //         </View>
+    //       ),
+    //     }}
+    //   />
+    //   <Tab.Screen
+    //     name="inbox"
+    //     component={Index}
+    //     options={{
+    //       tabBarIcon: ({ focused, color }) => (
+    //         <View>
+    //           {focused == true ? (
+    //             <View
+    //               style={{
+    //                 alignItems: 'center',
+    //                 justifyContent: 'center',
+    //                 flexDirection: 'row',
+    //                 padding: 5,
+    //                 borderRadius: 5,
+    //               }}>
+    //               <Image
+    //                 source={require('../Assets/Images/inbox.png')}
+    //                 resizeMode="contain"
+    //                 style={{
+    //                   height: 30,
+    //                   width: 30,
+    //                   tintColor: focused ? Theme.darkGray : Theme.lightGray,
+    //                 }}
+    //               />
+    //             </View>
+    //           ) : (
+    //             <View
+    //               style={{
+    //                 alignItems: 'center',
+    //                 justifyContent: 'center',
+    //                 flexDirection: 'row',
+    //               }}>
+    //               <Image
+    //                 source={require('../Assets/Images/inbox.png')}
+    //                 resizeMode="contain"
+    //                 style={{
+    //                   height: 25,
+    //                   width: 25,
+    //                   tintColor: focused ? Theme.darkGray : Theme.lightGray,
+    //                 }}
+    //               />
+    //             </View>
+    //           )}
+    //         </View>
+    //       ),
+    //     }}
+    //   />
+    //   <Tab.Screen
+    //     name="More"
+    //     component={More}
+    //     options={{
+    //       tabBarIcon: ({ focused, color }) => (
+    //         <View>
+    //           {focused == true ? (
+    //             <View
+    //               style={{
+    //                 alignItems: 'center',
+    //                 justifyContent: 'center',
+    //                 flexDirection: 'row',
+    //                 padding: 5,
+    //                 borderRadius: 5,
+    //               }}>
+    //               <Image
+    //                 source={require('../Assets/Images/settings.png')}
+    //                 resizeMode="contain"
+    //                 style={{
+    //                   height: 30,
+    //                   width: 30,
+    //                   tintColor: focused ? Theme.darkGray : Theme.lightGray,
+    //                 }}
+    //               />
+    //             </View>
+    //           ) : (
+    //             <View
+    //               style={{
+    //                 alignItems: 'center',
+    //                 justifyContent: 'center',
+    //                 flexDirection: 'row',
+    //               }}>
+    //               <Image
+    //                 source={require('../Assets/Images/settings.png')}
+    //                 resizeMode="contain"
+    //                 style={{
+    //                   height: 25,
+    //                   width: 25,
+    //                   tintColor: focused ? Theme.darkGray : Theme.lightGray,
+    //                 }}
+    //               />
+    //             </View>
+    //           )}
+    //         </View>
+    //       ),
+    //     }}
+    //   />
+    // </Tab.Navigator>
   );
 }
 
@@ -457,3 +707,18 @@ function AppNavigation() {
 }
 
 export default AppNavigation;
+const styles = StyleSheet.create({
+  // Define your custom font family
+  customFont: {
+    fontFamily: 'Circular Std Black', // Use the actual font name here
+  },
+  
+  tabBarStyle: {
+    // position: 'absolute',
+    borderTopWidth: 0,
+    height: 80,
+    // borderTopLeftRadius: 50,
+    // borderTopRightRadius: 50,
+    backgroundColor: Theme.white,
+  },
+});

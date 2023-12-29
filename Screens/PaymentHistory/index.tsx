@@ -221,39 +221,39 @@ const PaymentHistory = ({ navigation }: any) => {
     <View style={styles.itemContainer}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
         <View style={{ flexDirection: 'column' }}>
-          <Text style={{ color: 'black', fontWeight: '600' }}>
+          <Text style={{ color: 'black', fontWeight: '600' ,fontFamily: 'Circular Std Black'}}>
             Comission Month
           </Text>
-          <Text style={{ color: 'grey', }}>
+          <Text style={{ color: 'grey', fontFamily: 'Circular Std Black'}}>
             {item.comissionMonth} {item.comissionYear}
           </Text>
         </View>
         <View style={{ flexDirection: 'column' }}>
-          <Text style={{ color: 'black', fontWeight: '600' }}>
+          <Text style={{ color: 'black', fontWeight: '600',fontFamily: 'Circular Std Black' }}>
             Payment Date
           </Text>
-          <Text style={{ color: 'grey', }}>
+          <Text style={{ color: 'grey',fontFamily: 'Circular Std Black' }}>
             {convertDateFormat(item.paymentDate)}
           </Text>
         </View>
 
       </View>
-      <Text style={{ marginTop: 5, color: 'black', fontWeight: '600' }}>
-        Payment Amount : <Text style={{ color: 'grey', }}>{item.payAmount}</Text>
+      <Text style={{ marginTop: 5, color: 'black', fontWeight: '600',fontFamily: 'Circular Std Black' }}>
+        Payment Amount : <Text style={{ color: 'grey',fontFamily: 'Circular Std Black' }}>{item.payAmount}</Text>
       </Text>
-      <Text style={{ marginTop: 5, color: 'black', fontWeight: '600' }}>
-        Paying Account :<Text style={{ color: 'grey', }}> {item.payingAccount}</Text>
+      <Text style={{ marginTop: 5, color: 'black', fontWeight: '600',fontFamily: 'Circular Std Black' }}>
+        Paying Account :<Text style={{ color: 'grey', fontFamily: 'Circular Std Black'}}> {item.payingAccount}</Text>
       </Text>
       <View style={{ flexDirection: 'row', marginTop: 5 }}>
-        <Text style={{ color: 'black', fontWeight: '600' }}>
-          Deduction: <Text style={{ color: 'grey', }}>{item.deduction} |{' '}</Text>
+        <Text style={{ color: 'black', fontWeight: '600',fontFamily: 'Circular Std Black' }}>
+          Deduction: <Text style={{ color: 'grey',fontFamily: 'Circular Std Black' }}>{item.deduction} |{' '}</Text>
         </Text>
-        <Text style={{ color: 'black', fontWeight: '600' }}>
-          Addition: <Text style={{ color: 'grey', }}>{item.addition}</Text>
+        <Text style={{ color: 'black', fontWeight: '600',fontFamily: 'Circular Std Black' }}>
+          Addition: <Text style={{ color: 'grey',fontFamily: 'Circular Std Black' }}>{item.addition}</Text>
         </Text>
       </View>
-      <Text style={{ marginTop: 5, color: 'black', fontWeight: '600' }}>
-        Remarks: <Text style={{ color: 'grey', }}>{item.remark ? item.remark : "No Remarks"}</Text>
+      <Text style={{ marginTop: 5, color: 'black', fontWeight: '600',fontFamily: 'Circular Std Black' }}>
+        Remarks: <Text style={{ color: 'grey',fontFamily: 'Circular Std Black' }}>{item.remark ? item.remark : "No Remarks"}</Text>
       </Text>
     </View>
   );
@@ -307,7 +307,7 @@ const PaymentHistory = ({ navigation }: any) => {
             source={require('../../Assets/Images/payment.png')}
             style={{ height: 25, width: 25 }}
           />
-          <Text style={{ color: 'black', fontSize: 14 }}>No payment history at this moment...</Text>
+          <Text style={{ color: 'black', fontSize: 14,fontFamily: 'Circular Std Black' }}>No payment history at this moment...</Text>
         </View>
       )}
       {Object.keys(paymentHistoryBanner).length > 0 && (paymentHistoryBanner.tutorStatusCriteria == "All" || tutorDetails.status == "verified") && <View style={{ flex: 1 }}>

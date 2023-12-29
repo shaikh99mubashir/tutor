@@ -120,14 +120,14 @@ function InboxDetail({navigation, route}: any) {
         />
       )} */}
         <View style={{flexDirection: 'row', marginTop: 5}}>
-          <Text style={{fontSize: 14, color: Theme.black, fontWeight: '500'}}>
+          <Text style={{fontSize: 14, color: Theme.black, fontWeight: '500',fontFamily: 'Circular Std Black'}}>
             {newsData?.created_at?.slice(0, 10)}
           </Text>
-          <Text style={{fontSize: 14, color: Theme.black, fontWeight: '500'}}>
+          <Text style={{fontSize: 14, color: Theme.black, fontWeight: '500',fontFamily: 'Circular Std Black'}}>
             {' '}
             -{' '}
           </Text>
-          <Text style={{fontSize: 14, color: Theme.black, fontWeight: '500'}}>
+          <Text style={{fontSize: 14, color: Theme.black, fontWeight: '500',fontFamily: 'Circular Std Black'}}>
             {newsData?.created_at?.slice(11, 19)}
           </Text>
         </View>
@@ -139,6 +139,7 @@ function InboxDetail({navigation, route}: any) {
               color: Theme.black,
               fontWeight: '500',
               marginTop: 10,
+              fontFamily: 'Circular Std Black'
             }}>
             {newsData.preheader}
           </Text>
@@ -150,6 +151,7 @@ function InboxDetail({navigation, route}: any) {
             color: Theme.black,
             // fontWeight: '700',
             marginTop: 10,
+            fontFamily: 'Circular Std Black'
           }}>
           {newsData.content}
         </Text>

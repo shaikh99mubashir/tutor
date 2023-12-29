@@ -449,7 +449,7 @@ function Schedule({navigation, route}: any) {
                     Postponed
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity
+                {/* <TouchableOpacity
                   onPress={() => navigateToEditScreen('cancelled')}
                   style={{width: '100%'}}>
                   <Text
@@ -465,7 +465,7 @@ function Schedule({navigation, route}: any) {
                     ]}>
                     Cancelled
                   </Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
                 {/* <TouchableOpacity
                   onPress={() => navigateToEditScreen('attended')}
                   style={{width: '100%'}}>
@@ -491,6 +491,8 @@ function Schedule({navigation, route}: any) {
   };
 
   const routeToClockIn = async (item: any) => {
+    console.log("item",item);
+    
     const currentTime: any = new Date();
 
     const startTimeStr = item.startTime;
@@ -808,7 +810,7 @@ function Schedule({navigation, route}: any) {
               alignItems: 'center',
               gap: 5,
             }}>
-            <Text style={{fontSize: 18, color: Theme.black, fontWeight: '700'}}>
+            <Text style={{fontSize: 18, color: Theme.black, fontWeight: '700',fontFamily: 'Circular Std Black'}}>
               {/* {selectedDate.toString().slice(4, 15)} */}
               {convertDateFormat(selectedDate)}
             </Text>
@@ -833,8 +835,8 @@ function Schedule({navigation, route}: any) {
                 alignItems: 'center',
               }}>
               <Text
-                style={{fontSize: 18, fontWeight: 'bold', color: Theme.black}}>
-                No class, Yet
+                style={{fontSize: 18, fontWeight: 'bold', color: Theme.black,fontFamily: 'Circular Std Black'}}>
+                No Class, Yet
               </Text>
               <Text
                 style={{
@@ -842,8 +844,9 @@ function Schedule({navigation, route}: any) {
                   color: Theme.gray,
                   textAlign: 'center',
                   marginTop: 10,
+                  fontFamily: 'Circular Std Black'
                 }}>
-                Look like you haven't{'\n'} added any class
+                Look like you haven't{'\n'} added any class.
               </Text>
               <View
                 style={{
@@ -865,7 +868,7 @@ function Schedule({navigation, route}: any) {
                     style={{
                       color: 'white',
                       fontSize: 18,
-                      fontFamily: 'Poppins-Regular',
+                      fontFamily: 'Circular Std Black'
                     }}>
                     Add Class
                   </Text>

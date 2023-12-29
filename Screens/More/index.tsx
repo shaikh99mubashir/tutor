@@ -53,7 +53,7 @@ function More({ navigation }: any) {
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <View style={{ paddingHorizontal: 15 }}>
           {/* Profile */}
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => navigation.navigate('Profile')}
             activeOpacity={0.8}
             style={{
@@ -91,7 +91,7 @@ function More({ navigation }: any) {
               style={{ width: 20, height: 20 }}
               resizeMode="contain"
             />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           {/* notification */}
           <TouchableOpacity
             onPress={() => navigation.navigate('Notifications')}
@@ -124,7 +124,7 @@ function More({ navigation }: any) {
                 />
               </View>
               <Text
-                style={{ fontSize: 16, fontWeight: '600', color: Theme.black }}>
+                style={{ fontSize: 16, fontWeight: '600', color: Theme.black,fontFamily: 'Circular Std Black' }}>
                 Notification
               </Text>
             </View>
@@ -165,7 +165,7 @@ function More({ navigation }: any) {
                 />
               </View>
               <Text
-                style={{ fontSize: 16, fontWeight: '600', color: Theme.black }}>
+                style={{ fontSize: 16, fontWeight: '600', color: Theme.black,fontFamily: 'Circular Std Black' }}>
                 Students
               </Text>
             </View>
@@ -206,7 +206,7 @@ function More({ navigation }: any) {
                 />
               </View>
               <Text
-                style={{ fontSize: 16, fontWeight: '600', color: Theme.black }}>
+                style={{ fontSize: 16, fontWeight: '600', color: Theme.black,fontFamily: 'Circular Std Black' }}>
                 Payment
               </Text>
             </View>
@@ -247,7 +247,7 @@ function More({ navigation }: any) {
                 />
               </View>
               <Text
-                style={{ fontSize: 16, fontWeight: '600', color: Theme.black }}>
+                style={{ fontSize: 16, fontWeight: '600', color: Theme.black,fontFamily: 'Circular Std Black' }}>
                 Report Submission History
               </Text>
             </View>
@@ -288,7 +288,7 @@ function More({ navigation }: any) {
                 />
               </View>
               <Text
-                style={{ fontSize: 16, fontWeight: '600', color: Theme.black }}>
+                style={{ fontSize: 16, fontWeight: '600', color: Theme.black,fontFamily: 'Circular Std Black' }}>
                 FAQs
               </Text>
             </View>
@@ -370,7 +370,7 @@ function More({ navigation }: any) {
                 />
               </View>
               <Text
-                style={{ fontSize: 16, fontWeight: '600', color: Theme.black }}>
+                style={{ fontSize: 16, fontWeight: '600', color: Theme.black,fontFamily: 'Circular Std Black' }}>
                 Log Out
               </Text>
             </View>
@@ -396,6 +396,7 @@ function More({ navigation }: any) {
                 color: Theme.darkGray,
                 fontSize: 14,
                 fontWeight: 'bold',
+                fontFamily: 'Circular Std Black'
               }}>
               Are you sure you want to Quit ?
             </Text>
@@ -425,8 +426,9 @@ function More({ navigation }: any) {
                 <Text
                   style={{
                     fontSize: 14,
-                    fontFamily: 'Poppins-SemiBold',
+                    fontFamily: 'Circular Std Black',
                     color: cancel ? 'white' : Theme.darkGray,
+                    
                   }}>
                   No
                 </Text>
@@ -450,7 +452,7 @@ function More({ navigation }: any) {
                     color: apply ? Theme.darkGray : 'white',
 
                     fontSize: 14,
-                    fontFamily: 'Poppins-SemiBold',
+                    fontFamily: 'Circular Std Black'
                   }}>
                   Yes
                 </Text>

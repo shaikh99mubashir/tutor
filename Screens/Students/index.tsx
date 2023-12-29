@@ -202,7 +202,7 @@ const Students = ({ navigation }: any) => {
                 placeholder="Search"
                 placeholderTextColor="black"
                 onChangeText={e => searchStudent(e)}
-                style={{ width: '90%', padding: 8, color: 'black' }}
+                style={{ width: '90%', padding: 8, color: 'black',fontFamily: 'Circular Std Black' }}
               />
               <TouchableOpacity onPress={() => navigation}>
                 <Image
@@ -249,10 +249,10 @@ const Students = ({ navigation }: any) => {
                         }}
                       />
                       <View>
-                        <Text style={{ color: Theme.gray, fontSize: 16 }}>
+                        <Text style={{ color: Theme.gray, fontSize: 16,fontFamily: 'Circular Std Black', }}>
                           {item.studentID}
                         </Text>
-                        <Text style={{ color: Theme.black, fontSize: 14 }}>
+                        <Text style={{ color: Theme.black, fontSize: 14,fontFamily: 'Circular Std Black' }}>
                           {item.studentName}
                         </Text>
                       </View>
@@ -264,7 +264,7 @@ const Students = ({ navigation }: any) => {
           ) : (
             <View style={{ marginTop: 35 }}>
               <Text
-                style={{ color: Theme.black, fontSize: 14, textAlign: 'center' }}>
+                style={{ color: Theme.black, fontSize: 14, textAlign: 'center',fontFamily: 'Circular Std Black' }}>
                 No Student Found...
               </Text>
             </View>

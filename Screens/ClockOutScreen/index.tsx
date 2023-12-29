@@ -32,7 +32,8 @@ function ClockOut({navigation, route}: any) {
   const data = route?.params;
   const items = route?.params;
 
-  console.log(items, 'items');
+  console.log(items, 'items check');
+  console.log(data, 'data check scheduleData');
 
   const focus = useIsFocused();
 
@@ -70,12 +71,14 @@ function ClockOut({navigation, route}: any) {
   // }, [])
 
   // console.log(tutorID, 'iddddd');
-
+  console.log(items?.studentName, 'items?.class_schedule_id');
+  console.log(items?.studentID, 'items?.class_schedule_id');
+  console.log(items?.subjectID, 'items?.class_schedule_id');
   const handleClockOutPress = async () => {
     setLoading(true);
     let formData = new FormData();
 
-    // console.log(data, 'data');
+    console.log(data?.class_schedule_id, 'data?.class_schedule_id');
 
     formData.append('id', data?.classAttendedID);
     formData.append('class_schedule_id', data?.class_schedule_id);
@@ -95,7 +98,7 @@ function ClockOut({navigation, route}: any) {
         },
       })
       .then(res => {
-        // console.log('res------------>',res?.data);
+        console.log('res------------>',res?.data);
         
         axios
           .get(`${Base_Uri}api/tutorFirstReportListing/${tutorID}`)
@@ -122,7 +125,7 @@ function ClockOut({navigation, route}: any) {
               );
               setLoading(false);
             } else {
-              navigation.replace('ReportSubmission', res?.data );
+              navigation.replace('ReportSubmission', items );
               setLoading(false);
             }
           });
@@ -198,7 +201,7 @@ function ClockOut({navigation, route}: any) {
           width: '90%',
         }}>
         <View style={{marginTop: 10, flexDirection: 'row'}}>
-          <Text style={{color: Theme.gray, textTransform: 'uppercase'}}>
+          <Text style={{color: Theme.gray, textTransform: 'uppercase',fontFamily: 'Circular Std Black'}}>
             Time:
           </Text>
           <Text
@@ -206,6 +209,7 @@ function ClockOut({navigation, route}: any) {
               color: Theme.black,
               fontWeight: '600',
               textTransform: 'uppercase',
+              fontFamily: 'Circular Std Black'
             }}>
             {' '}
             {data.startHour.toString().length == 1
@@ -228,8 +232,8 @@ function ClockOut({navigation, route}: any) {
         </View>
 
         <View style={{flexDirection: 'row'}}>
-          <Text style={{color: Theme.gray}}> Duration:</Text>
-          <Text style={{color: Theme.black, fontWeight: '600'}}>
+          <Text style={{color: Theme.gray,fontFamily: 'Circular Std Black'}}> Duration:</Text>
+          <Text style={{color: Theme.black, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
             {' '}
             {data.hour} hours {data.minutes} minutes
           </Text>
@@ -243,7 +247,7 @@ function ClockOut({navigation, route}: any) {
             borderRadius: 10,
             marginTop: 10,
           }}>
-          <Text style={{textAlign: 'center', fontSize: 16, color: 'white'}}>
+          <Text style={{textAlign: 'center', fontSize: 16, color: 'white',fontFamily: 'Circular Std Black'}}>
             Clock Out
           </Text>
         </TouchableOpacity>
