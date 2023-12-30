@@ -411,6 +411,32 @@ function JobTicket({navigation, route}: any) {
   const renderOpenData: any = ({item}: any) => {
     // console.log('====================================renderOpenData',item);
     return (
+      <>
+      <TouchableOpacity
+      style={{
+        borderWidth: 1,
+        borderRadius: 5,
+        marginBottom: 10,
+        padding: 10,
+        borderColor: Theme.lightGray,
+        backgroundColor:Theme.white
+      }}
+      >
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '100%',
+          }}>
+          <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+            {item?.jtuid}
+          </Text>
+          <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+            {item?.city}
+          </Text>
+        </View>
+
+      </TouchableOpacity>
       <TouchableOpacity
         onPress={() => navigation.navigate('OpenDetails', item)}
         activeOpacity={0.8}
@@ -513,6 +539,7 @@ function JobTicket({navigation, route}: any) {
           RM {item?.price}/subject
         </Text>
       </TouchableOpacity>
+      </>
     );
   };
   const renderCloseData = ({item}: any) => {
@@ -958,6 +985,7 @@ function JobTicket({navigation, route}: any) {
         }
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled>
+          
         <View style={{paddingHorizontal: 15, marginTop: 20}}>
           <CustomTabView
             currentTab={currentTab}
