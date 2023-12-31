@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect, useContext} from 'react';
+import React, { useState, useCallback, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -14,16 +14,16 @@ import {
   Linking,
   TouchableWithoutFeedback,
 } from 'react-native';
-import {Theme} from '../../constant/theme';
+import { Theme } from '../../constant/theme';
 import AntDesign from 'react-native-vector-icons/EvilIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import CustomHeader from '../../Component/Header';
-import {Base_Uri} from '../../constant/BaseUri';
+import { Base_Uri } from '../../constant/BaseUri';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {ToastAndroid} from 'react-native';
-import {useIsFocused, useRoute} from '@react-navigation/native';
+import { ToastAndroid } from 'react-native';
+import { useIsFocused, useRoute } from '@react-navigation/native';
 import upcomingClassContext from '../../context/upcomingClassContext';
 import moment from 'moment';
 import scheduleContext from '../../context/scheduleContext';
@@ -33,7 +33,7 @@ import TutorDetailsContext from '../../context/tutorDetailsContext';
 
 // import { ScrollView } from "react-native-gesture-handler"
 
-function Schedule({navigation, route}: any) {
+function Schedule({ navigation, route }: any) {
   // type ISchedule = {
   //   imageUrl: any;
   //   name: String;
@@ -57,12 +57,12 @@ function Schedule({navigation, route}: any) {
   let bannerCont = useContext(bannerContext);
   const tutorDetailsContext = useContext(TutorDetailsContext);
 
-  let {tutorDetails} = tutorDetailsContext;
+  let { tutorDetails } = tutorDetailsContext;
 
-  let {schedulePageBannner, setSchedulePageBanner} = bannerCont;
+  let { schedulePageBannner, setSchedulePageBanner } = bannerCont;
 
-  let {scheduleData, setScheduleData} = context;
-  let {upcomingClass, setUpcomingClass} = context;
+  let { scheduleData, setScheduleData } = context;
+  let { upcomingClass, setUpcomingClass } = context;
 
   const [loading, setLoading] = useState(false);
   // const [scheduleData, setScheduleData] = useState<any>([]);
@@ -133,7 +133,7 @@ function Schedule({navigation, route}: any) {
     setOpenPPModal(true);
     axios
       .get(`${Base_Uri}api/bannerAds`)
-      .then(({data}) => {
+      .then(({ data }) => {
         console.log('res', data.bannerAds);
       })
       .catch(error => {
@@ -154,7 +154,7 @@ function Schedule({navigation, route}: any) {
     }
     const login: any = await AsyncStorage.getItem('loginAuth');
     let loginData: LoginAuth = JSON.parse(login);
-    let {tutorID} = loginData;
+    let { tutorID } = loginData;
 
     if (upcomingClass && Object.keys(upcomingClass).length > 0) {
       axios
@@ -162,7 +162,7 @@ function Schedule({navigation, route}: any) {
         .then(res => {
           let scheduledClasses = res.data;
 
-          let {classSchedulesTime} = scheduledClasses;
+          let { classSchedulesTime } = scheduledClasses;
           let checkRouteClass =
             classSchedulesTime &&
             classSchedulesTime.length > 0 &&
@@ -193,8 +193,8 @@ function Schedule({navigation, route}: any) {
     }
     axios
       .get(`${Base_Uri}getClassSchedulesTime/${tutorID}`)
-      .then(({data}) => {
-        let {classSchedulesTime} = data;
+      .then(({ data }) => {
+        let { classSchedulesTime } = data;
 
         let Date = selectedDate.getDate();
         let month = selectedDate.getMonth();
@@ -203,34 +203,34 @@ function Schedule({navigation, route}: any) {
         classSchedulesTime =
           classSchedulesTime && classSchedulesTime.length > 0
             ? classSchedulesTime
-                .map((e: any, i: number) => {
-                  let getDate: any = moment(e.date);
+              .map((e: any, i: number) => {
+                let getDate: any = moment(e.date);
 
-                  let convertDate = getDate.toDate();
-                  let scheduleDate = convertDate.getDate();
-                  let scheduleMonth = convertDate.getMonth();
-                  let scheduleYear = convertDate.getFullYear();
+                let convertDate = getDate.toDate();
+                let scheduleDate = convertDate.getDate();
+                let scheduleMonth = convertDate.getMonth();
+                let scheduleYear = convertDate.getFullYear();
 
-                  if (
-                    Date == scheduleDate &&
-                    month == scheduleMonth &&
-                    year == scheduleYear
-                  ) {
-                    return {
-                      ...e,
-                      imageUrl: require('../../Assets/Images/student.png'),
-                    };
-                  } else {
-                    return false;
-                  }
-                })
-                .filter(Boolean)
+                if (
+                  Date == scheduleDate &&
+                  month == scheduleMonth &&
+                  year == scheduleYear
+                ) {
+                  return {
+                    ...e,
+                    imageUrl: require('../../Assets/Images/student.png'),
+                  };
+                } else {
+                  return false;
+                }
+              })
+              .filter(Boolean)
             : [];
 
         axios
           .get(`${Base_Uri}getClassAttendedTime/${tutorID}`)
-          .then(({data}) => {
-            let {classAttendedTime} = data;
+          .then(({ data }) => {
+            let { classAttendedTime } = data;
 
             let Date = selectedDate.getDate();
             let month = selectedDate.getMonth();
@@ -239,29 +239,29 @@ function Schedule({navigation, route}: any) {
             classAttendedTime =
               classAttendedTime && classAttendedTime.length > 0
                 ? classAttendedTime
-                    .map((e: any, i: number) => {
-                      let getDate: any = moment(e.date);
+                  .map((e: any, i: number) => {
+                    let getDate: any = moment(e.date);
 
-                      let convertDate = getDate.toDate();
+                    let convertDate = getDate.toDate();
 
-                      let scheduleDate = convertDate.getDate();
-                      let scheduleMonth = convertDate.getMonth();
-                      let scheduleYear = convertDate.getFullYear();
+                    let scheduleDate = convertDate.getDate();
+                    let scheduleMonth = convertDate.getMonth();
+                    let scheduleYear = convertDate.getFullYear();
 
-                      if (
-                        Date == scheduleDate &&
-                        month == scheduleMonth &&
-                        year == scheduleYear
-                      ) {
-                        return {
-                          ...e,
-                          imageUrl: require('../../Assets/Images/student.png'),
-                        };
-                      } else {
-                        return false;
-                      }
-                    })
-                    .filter(Boolean)
+                    if (
+                      Date == scheduleDate &&
+                      month == scheduleMonth &&
+                      year == scheduleYear
+                    ) {
+                      return {
+                        ...e,
+                        imageUrl: require('../../Assets/Images/student.png'),
+                      };
+                    } else {
+                      return false;
+                    }
+                  })
+                  .filter(Boolean)
                 : [];
             setLoading(false);
             let dataToSend = [...classSchedulesTime, ...classAttendedTime];
@@ -367,7 +367,7 @@ function Schedule({navigation, route}: any) {
 
   const closeBannerModal = async () => {
     if (schedulePageBannner.displayOnce == 'on') {
-      let bannerData = {...schedulePageBannner};
+      let bannerData = { ...schedulePageBannner };
 
       let stringData = JSON.stringify(bannerData);
 
@@ -434,7 +434,7 @@ function Schedule({navigation, route}: any) {
 
                 <TouchableOpacity
                   onPress={() => navigateToEditScreen('postponed')}
-                  style={{width: '100%'}}>
+                  style={{ width: '100%' }}>
                   <Text
                     style={[
                       styles.text,
@@ -449,9 +449,9 @@ function Schedule({navigation, route}: any) {
                     Postponed
                   </Text>
                 </TouchableOpacity>
-                {/* <TouchableOpacity
+                <TouchableOpacity
                   onPress={() => navigateToEditScreen('cancelled')}
-                  style={{width: '100%'}}>
+                  style={{ width: '100%' }}>
                   <Text
                     style={[
                       styles.text,
@@ -465,7 +465,7 @@ function Schedule({navigation, route}: any) {
                     ]}>
                     Cancelled
                   </Text>
-                </TouchableOpacity> */}
+                </TouchableOpacity>
                 {/* <TouchableOpacity
                   onPress={() => navigateToEditScreen('attended')}
                   style={{width: '100%'}}>
@@ -491,8 +491,8 @@ function Schedule({navigation, route}: any) {
   };
 
   const routeToClockIn = async (item: any) => {
-    console.log("item",item);
-    
+    console.log("item", item);
+
     const currentTime: any = new Date();
 
     const startTimeStr = item.startTime;
@@ -576,7 +576,7 @@ function Schedule({navigation, route}: any) {
     return `${twelveHour}:${minuteStr} ${period}`;
   }
 
-  const renderScheduleData = ({item, index}: any): any => {
+  const renderScheduleData = ({ item, index }: any): any => {
     let nowDate: Date = new Date();
     let date = nowDate.getDate();
     let month = nowDate.getMonth();
@@ -602,31 +602,94 @@ function Schedule({navigation, route}: any) {
           borderWidth: 1,
           borderColor: item.selected ? Theme.darkGray : 'silver',
           // borderColor:  'silver',
-          padding: 20,
+          paddingHorizontal: 15,
+          paddingVertical:10,
           // backgroundColor: item.selected ? 'silver' : 'silver',
           marginTop: 20,
           borderRadius: 10,
         }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View
             style={{
-              borderWidth: 1,
-              borderColor: Theme.lightGray,
-              borderRadius: 100,
-              width: 50,
-              height: 50,
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: Theme.darkGray,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: '100%',
+              borderBottomWidth: 2,
+              paddingBottom: 20,
+              borderBottomColor: Theme.lightGray,
             }}>
-            <Image source={item.imageUrl} style={{width: 35, height: 35}} />
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+              <View
+                style={{
+                  borderWidth: 1,
+                  borderColor: Theme.lightGray,
+                  borderRadius: 100,
+                  width: 50,
+                  height: 50,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: Theme.darkGray,
+                }}>
+                <Image source={item.imageUrl} style={{ width: 35, height: 35 }} />
+              </View>
+              <View>
+                <Text style={styles.textType3}>
+                  {item?.jtuid}
+                </Text>
+                <Text style={[styles.textType1, { lineHeight: 30 }]}>
+                  {item?.studentName}
+                </Text>
+                <View style={{ flexDirection: 'row', gap: 10, alignItems: "center" }}>
+                  <Image source={require('../../Assets/Images/mapicon.png')} />
+                  <Text style={[styles.textType3, { color: '#003E9C' }]}>
+                    {item?.city}
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+              <Text style={[styles.textType3, { color: '#003E9C', backgroundColor: '#298CFF33', paddingVertical: 5, paddingHorizontal: 30, borderRadius: 30 }]}>
+                {item?.mode}
+              </Text>
+            </View>
           </View>
-          <Text style={{fontSize: 16, color: Theme.gray, marginLeft: 10}}>
-            {item?.studentName}
-          </Text>
+
         </View>
 
-        <View style={{marginTop: 10, flexDirection: 'row'}}>
+        <View style={{ paddingVertical: 20, }}>
+          <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 10 }}>
+              <Image source={require('../../Assets/Images/subIcon.png')} />
+              <Text style={styles.textType3}>Subject</Text>
+            </View>
+            <Text style={[styles.textType1, { fontSize: 18 }]}> {item.subjectName ?? item?.subject_name}</Text>
+          </View>
+          <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+            <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 10 }}>
+              <Image source={require('../../Assets/Images/scheduleicccon.png')} />
+              <Text style={styles.textType3}>Day</Text>
+            </View>
+            <Text style={[styles.textType1, { fontSize: 18 }]}>{convertDateDayFormat(item.date)}</Text>
+          </View>
+          <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+            <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 10 }}>
+              <Image source={require('../../Assets/Images/timeee.png')} />
+              <Text style={styles.textType3}>Time</Text>
+            </View>
+            <Text style={[styles.textType1, { fontSize: 18 }]}>{startTime12Hour} - {endTime12Hour}
+            </Text>
+          </View>
+          <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
+            <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 10 }}>
+              <Image source={require('../../Assets/Images/level.png')} />
+              <Text style={styles.textType3}>Status</Text>
+            </View>
+            <Text style={[styles.textType1, { fontSize: 18 }]}>{item.status}
+            </Text>
+          </View>
+        </View>
+
+        {/* <View style={{ marginTop: 10, flexDirection: 'row' }}>
           <Text
             style={{
               fontSize: 14,
@@ -638,24 +701,24 @@ function Schedule({navigation, route}: any) {
           </Text>
         </View>
 
-        <Text style={{color: Theme.gray, marginTop: 10}}>
+        <Text style={{ color: Theme.gray, marginTop: 10 }}>
           {convertDateDayFormat(item.date)}
         </Text>
-        <Text style={{color: Theme.gray}}>
+        <Text style={{ color: Theme.gray }}>
           {startTime12Hour} to {endTime12Hour}
-        </Text>
+        </Text> */}
         <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          <Text style={{color: Theme.gray, marginTop: 10}}>{item.status}</Text>
+          {/* <Text style={{ color: Theme.gray, marginTop: 10 }}>{item.status}</Text> */}
           {item.status == 'Attended' ? (
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => navigation.navigate('AttendedDetails')}>
-              <Text style={{color: Theme.gray, marginTop: 10}}>
+              <Text style={{ color: Theme.gray, marginTop: 10 }}>
                 View Details
               </Text>
             </TouchableOpacity>
@@ -680,7 +743,7 @@ function Schedule({navigation, route}: any) {
                 padding: 10,
                 borderRadius: 10,
               }}>
-              <Text style={{textAlign: 'center', fontSize: 14, color: 'white'}}>
+              <Text style={{ textAlign: 'center', fontSize: 14, color: 'white' }}>
                 Edit
               </Text>
             </TouchableOpacity>
@@ -694,7 +757,7 @@ function Schedule({navigation, route}: any) {
                   borderRadius: 10,
                 }}>
                 <Text
-                  style={{textAlign: 'center', fontSize: 14, color: 'white'}}>
+                  style={{ textAlign: 'center', fontSize: 14, color: 'white' }}>
                   Attend
                 </Text>
               </TouchableOpacity>
@@ -785,11 +848,11 @@ function Schedule({navigation, route}: any) {
   }
 
   return loading ? (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator size={'large'} color={Theme.black} />
     </View>
   ) : (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
       <CustomHeader
         title="Schedule"
         plus={scheduleData.length !== 0}
@@ -801,7 +864,7 @@ function Schedule({navigation, route}: any) {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         nestedScrollEnabled={true}>
-        <View style={{padding: 20}}>
+        <View style={{ padding: 20 }}>
           <TouchableOpacity
             onPress={() => setShow(true)}
             style={{
@@ -810,7 +873,7 @@ function Schedule({navigation, route}: any) {
               alignItems: 'center',
               gap: 5,
             }}>
-            <Text style={{fontSize: 18, color: Theme.black, fontWeight: '700',fontFamily: 'Circular Std Black'}}>
+            <Text style={{ fontSize: 18, color: Theme.black, fontWeight: '700', fontFamily: 'Circular Std Black' }}>
               {/* {selectedDate.toString().slice(4, 15)} */}
               {convertDateFormat(selectedDate)}
             </Text>
@@ -827,7 +890,7 @@ function Schedule({navigation, route}: any) {
           )}
 
           {scheduleData.length == 0 &&
-          Object.keys(upcomingClass).length == 0 ? (
+            Object.keys(upcomingClass).length == 0 ? (
             <View
               style={{
                 height: Dimensions.get('window').height - 180,
@@ -835,7 +898,7 @@ function Schedule({navigation, route}: any) {
                 alignItems: 'center',
               }}>
               <Text
-                style={{fontSize: 18, fontWeight: 'bold', color: Theme.black,fontFamily: 'Circular Std Black'}}>
+                style={{ fontSize: 18, fontWeight: 'bold', color: Theme.black, fontFamily: 'Circular Std Black' }}>
                 No Class, Yet
               </Text>
               <Text
@@ -890,7 +953,7 @@ function Schedule({navigation, route}: any) {
       {Object.keys(schedulePageBannner).length > 0 &&
         (schedulePageBannner.tutorStatusCriteria == 'All' ||
           tutorDetails.status == 'verified') && (
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             <Modal
               visible={openPPModal}
               animationType="fade"
@@ -922,7 +985,7 @@ function Schedule({navigation, route}: any) {
                   </TouchableOpacity>
                   {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
                   <Image
-                    source={{uri: schedulePageBannner.bannerImage}}
+                    source={{ uri: schedulePageBannner.bannerImage }}
                     style={{
                       width: Dimensions.get('screen').width / 1.1,
                       height: '80%',
@@ -1018,5 +1081,14 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     color: Theme.black,
+  },
+  textType1: {
+    fontWeight: '500', fontSize: 24, color: Theme.Dune, fontFamily: 'Circular Std Black', lineHeight: 24,
+    fontStyle: 'normal'
+  },
+  textType3: {
+    color: Theme.Dune, fontWeight: '500', fontSize: 16,
+    fontFamily: 'Circular Std',
+    fontStyle: 'normal',
   },
 });

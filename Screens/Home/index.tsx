@@ -103,7 +103,7 @@ function Home({ navigation, route }: any) {
   const [upCommingClasses, setUpCommingClasses] = useState([
     // {
     //   id: 1,
-    //   image: require('../../Assets/Images/woman.png'),
+    //   image: require('../../Assets/Images/mapicon.png'),
     //   name: 'testing1',
     //   title: 'Add Math (DEGREE) Online',
     //   time: '12:00 PM to 7:00 PM',
@@ -121,7 +121,7 @@ function Home({ navigation, route }: any) {
   const [notificationLenght, setNotificationLength] = useState(0);
   const [tutorId, setTutorId] = useState<Number | null>(null);
   const [classInProcess, setClassInProcess] = useState({});
-  console.log("</ class ", classInProcess?.item?.studentName);
+  // console.log("</ class ", classInProcess?.item?.studentName);
 
   const [tutorData, setTutorData] = useState({
     cummulativeCommission: '',

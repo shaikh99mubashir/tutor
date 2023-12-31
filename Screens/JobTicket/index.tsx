@@ -13,6 +13,7 @@ import {
   Linking,
   Dimensions,
   Modal,
+  StyleSheet,
 } from 'react-native';
 import Header from '../../Component/Header';
 import {Theme} from '../../constant/theme';
@@ -409,15 +410,17 @@ function JobTicket({navigation, route}: any) {
   }
 
   const renderOpenData: any = ({item}: any) => {
-    // console.log('====================================renderOpenData',item);
+    console.log('====================================renderOpenData',item);
     return (
       <>
       <TouchableOpacity
+      onPress={() => navigation.navigate('OpenDetails', item)}
+      activeOpacity={0.8}
       style={{
         borderWidth: 1,
-        borderRadius: 5,
+        borderRadius: 20,
         marginBottom: 10,
-        padding: 10,
+        padding: 20,
         borderColor: Theme.lightGray,
         backgroundColor:Theme.white
       }}
@@ -427,17 +430,73 @@ function JobTicket({navigation, route}: any) {
             flexDirection: 'row',
             justifyContent: 'space-between',
             width: '100%',
+            borderBottomWidth:2,
+            paddingBottom:20,
+            borderBottomColor:Theme.lightGray,
           }}>
-          <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+            <View>
+          <Text style={styles.textType3}>
             {item?.jtuid}
           </Text>
-          <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+          <Text style={[styles.textType1,{lineHeight:30}]}>
+          RM {item?.price}
+          </Text>
+          <View style={{flexDirection:'row',gap:10, alignItems:"center"}}>
+            <Image source={require('../../Assets/Images/mapicon.png')}/>
+          <Text style={[styles.textType3,{color:'#003E9C'}]}>
             {item?.city}
           </Text>
+          </View>
+            </View>
+            <View style={{ alignItems:'center', justifyContent:'center'}}>
+          <Text style={[styles.textType3,{color:'#003E9C',backgroundColor:'#298CFF33', paddingVertical:5, paddingHorizontal:30, borderRadius:30}]}>
+          {item?.mode}
+          </Text>
+            </View>
+        </View>
+
+        <View style={{paddingVertical:20,borderBottomWidth:2,borderBottomColor:Theme.lightGray,}}>
+          <View style={{justifyContent:'space-between',flexDirection:'row',alignItems:'center'}}>
+            <View style={{alignItems:'center',justifyContent:'center', flexDirection:'row', gap:10}}>
+          <Image source={require('../../Assets/Images/subIcon.png')}/>
+          <Text style={styles.textType3}>Subject</Text>
+            </View>
+          <Text style={[styles.textType1,{fontSize:18}]}>{item?.subject_name}</Text>
+          </View>
+          <View style={{justifyContent:'space-between',flexDirection:'row',alignItems:'center', marginTop:10}}>
+            <View style={{alignItems:'center',justifyContent:'center', flexDirection:'row', gap:10}}>
+          <Image source={require('../../Assets/Images/preftutor.png')}/>
+          <Text style={styles.textType3}>Pref. Tutor</Text>
+            </View>
+          <Text style={[styles.textType1,{fontSize:18}]}>{item?.tutorPereference}</Text>
+          </View>
+          <View style={{justifyContent:'space-between',flexDirection:'row',alignItems:'center', marginTop:10}}>
+            <View style={{alignItems:'center',justifyContent:'center', flexDirection:'row', gap:10}}>
+          <Image source={require('../../Assets/Images/level.png')}/>
+          <Text style={styles.textType3}>Level</Text>
+            </View>
+          <Text style={[styles.textType1,{fontSize:18}]}>{item?.categoryName}</Text>
+          </View>
+        </View>
+
+        <View style={{flexDirection:'row', gap:10, marginTop:15}}>
+          <View style={{backgroundColor:"#E6F2FF", paddingVertical:10, borderRadius:10}}>
+          <View style={{alignItems:'center',justifyContent:'center', flexDirection:'row', gap:10,paddingHorizontal:10}}>
+          <Image source={require('../../Assets/Images/scheduleicccon.png')}/>
+          <Text style={[styles.textType3,{color:'#298CFF'}]}>{item?.classDayType}</Text>
+            </View>
+          </View>
+          <View style={{backgroundColor:"#E6F2FF", paddingVertical:10, borderRadius:10, paddingHorizontal:10}}>
+          <View style={{alignItems:'center',justifyContent:'center', flexDirection:'row', gap:10}}>
+          <Image source={require('../../Assets/Images/timeee.png')}/>
+          <Text style={[styles.textType3,{color:'#298CFF'}]}>{item?.classTime}</Text>
+            </View>
+          </View>
+
         </View>
 
       </TouchableOpacity>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => navigation.navigate('OpenDetails', item)}
         activeOpacity={0.8}
         style={{
@@ -538,109 +597,197 @@ function JobTicket({navigation, route}: any) {
           }}>
           RM {item?.price}/subject
         </Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       </>
     );
   };
   const renderCloseData = ({item}: any) => {
+    console.log('item',item);
+    
     return (
+      <>
+      <Text style={[styles.textType3,{color:'#003E9C',backgroundColor:'#298CFF33', paddingVertical:5, paddingHorizontal:15, borderTopLeftRadius:16,borderTopRightRadius:16,marginLeft:20,width:100, textAlign:"center"}]}>{item.tutor_status}</Text>
       <TouchableOpacity
-        activeOpacity={0.8}
-        style={{
-          borderWidth: 1,
-          borderRadius: 5,
-          marginBottom: 10,
-          padding: 10,
-          borderColor: Theme.lightGray,
-        }}>
+      activeOpacity={0.8}
+      style={{
+        borderWidth: 1,
+        borderRadius: 20,
+        marginBottom: 10,
+        padding: 20,
+        borderColor: Theme.lightGray,
+        backgroundColor:Theme.white
+      }}
+      >
+        
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
             width: '100%',
+            borderBottomWidth:2,
+            paddingBottom:20,
+            borderBottomColor:Theme.lightGray,
           }}>
-          <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            {item.jtuid}
+            <View>
+          <Text style={styles.textType3}>
+            {item?.jtuid}
           </Text>
-          <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            {item.status}
+          <Text style={[styles.textType1,{lineHeight:30}]}>
+          RM {item?.price}
           </Text>
-        </View>
-        <Text
-          style={{
-            color: Theme.black,
-            fontSize: 15,
-            fontWeight: '600',
-            marginTop: 10,
-            fontFamily: 'Circular Std Black'
-          }}>
-          {item.subject_name}
-        </Text>
-        <View>
-          <Text
-            style={{
-              color: Theme.black,
-              fontSize: 16,
-              fontWeight: '600',
-              marginTop: 10,
-              fontFamily: 'Circular Std Black'
-            }}>
-            Details
+          <View style={{flexDirection:'row',gap:10, alignItems:"center"}}>
+            <Image source={require('../../Assets/Images/mapicon.png')}/>
+          <Text style={[styles.textType3,{color:'#003E9C'}]}>
+            {item?.city}
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            {item?.classDay} at {convertTo12HourFormat(item?.classTime)} for{' '}
-            {item?.quantity} hour(s) of each class.
+          </View>
+            </View>
+            <View style={{ alignItems:'center', justifyContent:'center'}}>
+          <Text style={[styles.textType3,{color:'#003E9C',backgroundColor:'#298CFF33', paddingVertical:5, paddingHorizontal:30, borderRadius:30}]}>
+          {item?.mode}
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            {item?.studentGender} Student ({item?.studentAge}y/o)
-          </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            {item?.subject_name} - {item?.session} sessions {item?.quantity}
-            hour(s)
-          </Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black' }}>
-            - Tutor Pereference: {item?.tutorPereference}
-          </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            - Class Frequency: {item?.classFrequency}
-          </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            - Special Request: {item?.specialRequest}
-          </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            - classDay/Time: {item?.classDay}
-          </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            - Mode: {item?.mode}
-          </Text>
-          {item?.remarks && (
-            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-              - Remarks: {item?.remarks}
-            </Text>
-          )}
-          {item?.first8Hour && (
-            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-              {item?.first8Hour}
-            </Text>
-          )}
-          {item?.above9Hour && (
-            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-              {item?.above9Hour}
-            </Text>
-          )}
+            </View>
         </View>
 
-        <Text
-          style={{
-            color: Theme.black,
-            fontSize: 18,
-            fontWeight: '600',
-            marginTop: 10,
-            fontFamily: 'Circular Std Black'
-          }}>
-          RM {item?.price}/subject
-        </Text>
+        <View style={{paddingVertical:20,borderBottomWidth:2,borderBottomColor:Theme.lightGray,}}>
+          <View style={{justifyContent:'space-between',flexDirection:'row',alignItems:'center'}}>
+            <View style={{alignItems:'center',justifyContent:'center', flexDirection:'row', gap:10}}>
+          <Image source={require('../../Assets/Images/subIcon.png')}/>
+          <Text style={styles.textType3}>Subject</Text>
+            </View>
+          <Text style={[styles.textType1,{fontSize:18}]}>{item?.subject_name}</Text>
+          </View>
+          <View style={{justifyContent:'space-between',flexDirection:'row',alignItems:'center', marginTop:10}}>
+            <View style={{alignItems:'center',justifyContent:'center', flexDirection:'row', gap:10}}>
+          <Image source={require('../../Assets/Images/preftutor.png')}/>
+          <Text style={styles.textType3}>Pref. Tutor</Text>
+            </View>
+          <Text style={[styles.textType1,{fontSize:18}]}>{item?.tutorPereference}</Text>
+          </View>
+          <View style={{justifyContent:'space-between',flexDirection:'row',alignItems:'center', marginTop:10}}>
+            <View style={{alignItems:'center',justifyContent:'center', flexDirection:'row', gap:10}}>
+          <Image source={require('../../Assets/Images/level.png')}/>
+          <Text style={styles.textType3}>Level</Text>
+            </View>
+          <Text style={[styles.textType1,{fontSize:18}]}>{item?.categoryName}</Text>
+          </View>
+        </View>
+
+        <View style={{flexDirection:'row', gap:10, marginTop:15}}>
+          <View style={{backgroundColor:"#E6F2FF", paddingVertical:10, borderRadius:10}}>
+          <View style={{alignItems:'center',justifyContent:'center', flexDirection:'row', gap:10,paddingHorizontal:10}}>
+          <Image source={require('../../Assets/Images/scheduleicccon.png')}/>
+          <Text style={[styles.textType3,{color:'#298CFF'}]}>{item?.classDayType}</Text>
+            </View>
+          </View>
+          <View style={{backgroundColor:"#E6F2FF", paddingVertical:10, borderRadius:10, paddingHorizontal:10}}>
+          <View style={{alignItems:'center',justifyContent:'center', flexDirection:'row', gap:10}}>
+          <Image source={require('../../Assets/Images/timeee.png')}/>
+          <Text style={[styles.textType3,{color:'#298CFF'}]}>{item?.classTime}</Text>
+            </View>
+          </View>
+
+        </View>
+
       </TouchableOpacity>
+      </>
+      // <TouchableOpacity
+      //   activeOpacity={0.8}
+      //   style={{
+      //     borderWidth: 1,
+      //     borderRadius: 5,
+      //     marginBottom: 10,
+      //     padding: 10,
+      //     borderColor: Theme.lightGray,
+      //   }}>
+      //   <View
+      //     style={{
+      //       flexDirection: 'row',
+      //       justifyContent: 'space-between',
+      //       width: '100%',
+      //     }}>
+      //     <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //       {item.jtuid}
+      //     </Text>
+      //     <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //       {item.status}
+      //     </Text>
+      //   </View>
+      //   <Text
+      //     style={{
+      //       color: Theme.black,
+      //       fontSize: 15,
+      //       fontWeight: '600',
+      //       marginTop: 10,
+      //       fontFamily: 'Circular Std Black'
+      //     }}>
+      //     {item.subject_name}
+      //   </Text>
+      //   <View>
+      //     <Text
+      //       style={{
+      //         color: Theme.black,
+      //         fontSize: 16,
+      //         fontWeight: '600',
+      //         marginTop: 10,
+      //         fontFamily: 'Circular Std Black'
+      //       }}>
+      //       Details
+      //     </Text>
+      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //       {item?.classDay} at {convertTo12HourFormat(item?.classTime)} for{' '}
+      //       {item?.quantity} hour(s) of each class.
+      //     </Text>
+      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //       {item?.studentGender} Student ({item?.studentAge}y/o)
+      //     </Text>
+      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //       {item?.subject_name} - {item?.session} sessions {item?.quantity}
+      //       hour(s)
+      //     </Text>
+      //     <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black' }}>
+      //       - Tutor Pereference: {item?.tutorPereference}
+      //     </Text>
+      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //       - Class Frequency: {item?.classFrequency}
+      //     </Text>
+      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //       - Special Request: {item?.specialRequest}
+      //     </Text>
+      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //       - classDay/Time: {item?.classDay}
+      //     </Text>
+      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //       - Mode: {item?.mode}
+      //     </Text>
+      //     {item?.remarks && (
+      //       <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //         - Remarks: {item?.remarks}
+      //       </Text>
+      //     )}
+      //     {item?.first8Hour && (
+      //       <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //         {item?.first8Hour}
+      //       </Text>
+      //     )}
+      //     {item?.above9Hour && (
+      //       <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //         {item?.above9Hour}
+      //       </Text>
+      //     )}
+      //   </View>
+
+      //   <Text
+      //     style={{
+      //       color: Theme.black,
+      //       fontSize: 18,
+      //       fontWeight: '600',
+      //       marginTop: 10,
+      //       fontFamily: 'Circular Std Black'
+      //     }}>
+      //     RM {item?.price}/subject
+      //   </Text>
+      // </TouchableOpacity>
     );
   };
 
@@ -648,102 +795,184 @@ function JobTicket({navigation, route}: any) {
     // console.log('====================================item',item);
     return (
       <TouchableOpacity
-        activeOpacity={0.8}
-        style={{
-          borderWidth: 1,
-          borderRadius: 5,
-          marginBottom: 10,
-          padding: 10,
-          borderColor: Theme.lightGray,
-        }}>
+      activeOpacity={0.8}
+      style={{
+        borderWidth: 1,
+        borderRadius: 20,
+        marginBottom: 10,
+        padding: 20,
+        borderColor: Theme.lightGray,
+        backgroundColor:Theme.white
+      }}
+      >
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
             width: '100%',
+            borderBottomWidth:2,
+            paddingBottom:20,
+            borderBottomColor:Theme.lightGray,
           }}>
-          <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            {item.jtuid}
+            <View>
+          <Text style={styles.textType3}>
+            {item?.jtuid}
           </Text>
-          <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            {item.status}
+          <Text style={[styles.textType1,{lineHeight:30}]}>
+          RM {item?.price}
           </Text>
-        </View>
-        <Text
-          style={{
-            color: Theme.black,
-            fontSize: 15,
-            fontWeight: '600',
-            marginTop: 10,
-            fontFamily: 'Circular Std Black'
-          }}>
-          {item.subject_name}
-        </Text>
-        <View>
-          <Text
-            style={{
-              color: Theme.black,
-              fontSize: 16,
-              fontWeight: '600',
-              marginTop: 10,
-              fontFamily: 'Circular Std Black'
-            }}>
-            Details
+          <View style={{flexDirection:'row',gap:10, alignItems:"center"}}>
+            <Image source={require('../../Assets/Images/mapicon.png')}/>
+          <Text style={[styles.textType3,{color:'#003E9C'}]}>
+            {item?.city}
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            {item?.classDay} at {convertTo12HourFormat(item?.classTime)} for{' '}
-            {item?.quantity} hour(s) of each class.
+          </View>
+            </View>
+            <View style={{ alignItems:'center', justifyContent:'center'}}>
+          <Text style={[styles.textType3,{color:'#003E9C',backgroundColor:'#298CFF33', paddingVertical:5, paddingHorizontal:30, borderRadius:30}]}>
+          {item?.mode}
           </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            {item?.studentGender} Student ({item?.studentAge}y/o)
-          </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            {item?.subject_name} - {item?.session} sessions {item?.quantity}
-            hour(s)
-          </Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black' }}>
-            - Tutor Pereference: {item?.tutorPereference}
-          </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            - Class Frequency: {item?.classFrequency}
-          </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            - Special Request: {item?.specialRequest}
-          </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            - classDay/Time: {item?.classDay}
-          </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            - Mode: {item?.mode}
-          </Text>
-          {item?.remarks && (
-            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-              - Remarks: {item?.remarks}
-            </Text>
-          )}
-          {item?.first8Hour && (
-            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-              {item?.first8Hour}
-            </Text>
-          )}
-          {item?.above9Hour && (
-            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-              {item?.above9Hour}
-            </Text>
-          )}
+            </View>
         </View>
 
-        <Text
-          style={{
-            color: Theme.black,
-            fontSize: 18,
-            fontWeight: '600',
-            marginTop: 10,
-            fontFamily: 'Circular Std Black'
-          }}>
-          RM {item?.price}/subject
-        </Text>
+        <View style={{paddingVertical:20,borderBottomWidth:2,borderBottomColor:Theme.lightGray,}}>
+          <View style={{justifyContent:'space-between',flexDirection:'row',alignItems:'center'}}>
+            <View style={{alignItems:'center',justifyContent:'center', flexDirection:'row', gap:10}}>
+          <Image source={require('../../Assets/Images/subIcon.png')}/>
+          <Text style={styles.textType3}>Subject</Text>
+            </View>
+          <Text style={[styles.textType1,{fontSize:18}]}>{item?.subject_name}</Text>
+          </View>
+          <View style={{justifyContent:'space-between',flexDirection:'row',alignItems:'center', marginTop:10}}>
+            <View style={{alignItems:'center',justifyContent:'center', flexDirection:'row', gap:10}}>
+          <Image source={require('../../Assets/Images/preftutor.png')}/>
+          <Text style={styles.textType3}>Pref. Tutor</Text>
+            </View>
+          <Text style={[styles.textType1,{fontSize:18}]}>{item?.tutorPereference}</Text>
+          </View>
+          <View style={{justifyContent:'space-between',flexDirection:'row',alignItems:'center', marginTop:10}}>
+            <View style={{alignItems:'center',justifyContent:'center', flexDirection:'row', gap:10}}>
+          <Image source={require('../../Assets/Images/level.png')}/>
+          <Text style={styles.textType3}>Level</Text>
+            </View>
+          <Text style={[styles.textType1,{fontSize:18}]}>{item?.categoryName}</Text>
+          </View>
+        </View>
+
+        <View style={{flexDirection:'row', gap:10, marginTop:15}}>
+          <View style={{backgroundColor:"#E6F2FF", paddingVertical:10, borderRadius:10}}>
+          <View style={{alignItems:'center',justifyContent:'center', flexDirection:'row', gap:10,paddingHorizontal:10}}>
+          <Image source={require('../../Assets/Images/scheduleicccon.png')}/>
+          <Text style={[styles.textType3,{color:'#298CFF'}]}>{item?.classDayType}</Text>
+            </View>
+          </View>
+          <View style={{backgroundColor:"#E6F2FF", paddingVertical:10, borderRadius:10, paddingHorizontal:10}}>
+          <View style={{alignItems:'center',justifyContent:'center', flexDirection:'row', gap:10}}>
+          <Image source={require('../../Assets/Images/timeee.png')}/>
+          <Text style={[styles.textType3,{color:'#298CFF'}]}>{item?.classTime}</Text>
+            </View>
+          </View>
+
+        </View>
+
       </TouchableOpacity>
+      // <TouchableOpacity
+      //   activeOpacity={0.8}
+      //   style={{
+      //     borderWidth: 1,
+      //     borderRadius: 5,
+      //     marginBottom: 10,
+      //     padding: 10,
+      //     borderColor: Theme.lightGray,
+      //   }}>
+      //   <View
+      //     style={{
+      //       flexDirection: 'row',
+      //       justifyContent: 'space-between',
+      //       width: '100%',
+      //     }}>
+      //     <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //       {item.jtuid}
+      //     </Text>
+      //     <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //       {item.status}
+      //     </Text>
+      //   </View>
+      //   <Text
+      //     style={{
+      //       color: Theme.black,
+      //       fontSize: 15,
+      //       fontWeight: '600',
+      //       marginTop: 10,
+      //       fontFamily: 'Circular Std Black'
+      //     }}>
+      //     {item.subject_name}
+      //   </Text>
+      //   <View>
+      //     <Text
+      //       style={{
+      //         color: Theme.black,
+      //         fontSize: 16,
+      //         fontWeight: '600',
+      //         marginTop: 10,
+      //         fontFamily: 'Circular Std Black'
+      //       }}>
+      //       Details
+      //     </Text>
+      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //       {item?.classDay} at {convertTo12HourFormat(item?.classTime)} for{' '}
+      //       {item?.quantity} hour(s) of each class.
+      //     </Text>
+      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //       {item?.studentGender} Student ({item?.studentAge}y/o)
+      //     </Text>
+      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //       {item?.subject_name} - {item?.session} sessions {item?.quantity}
+      //       hour(s)
+      //     </Text>
+      //     <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black' }}>
+      //       - Tutor Pereference: {item?.tutorPereference}
+      //     </Text>
+      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //       - Class Frequency: {item?.classFrequency}
+      //     </Text>
+      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //       - Special Request: {item?.specialRequest}
+      //     </Text>
+      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //       - classDay/Time: {item?.classDay}
+      //     </Text>
+      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //       - Mode: {item?.mode}
+      //     </Text>
+      //     {item?.remarks && (
+      //       <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //         - Remarks: {item?.remarks}
+      //       </Text>
+      //     )}
+      //     {item?.first8Hour && (
+      //       <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //         {item?.first8Hour}
+      //       </Text>
+      //     )}
+      //     {item?.above9Hour && (
+      //       <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+      //         {item?.above9Hour}
+      //       </Text>
+      //     )}
+      //   </View>
+
+      //   <Text
+      //     style={{
+      //       color: Theme.black,
+      //       fontSize: 18,
+      //       fontWeight: '600',
+      //       marginTop: 10,
+      //       fontFamily: 'Circular Std Black'
+      //     }}>
+      //     RM {item?.price}/subject
+      //   </Text>
+      // </TouchableOpacity>
     );
   };
   const firstRoute = useCallback(() => {
@@ -1056,3 +1285,17 @@ function JobTicket({navigation, route}: any) {
 }
 
 export default JobTicket;
+
+
+const styles = StyleSheet.create({
+ 
+  textType1: {
+    fontWeight: '500', fontSize: 24, color: Theme.Dune, fontFamily: 'Circular Std Black', lineHeight: 24,
+    fontStyle: 'normal'
+  },
+  textType3: {
+    color: Theme.Dune, fontWeight: '500', fontSize: 16,
+    fontFamily: 'Circular Std',
+    fontStyle: 'normal',
+  },
+});
