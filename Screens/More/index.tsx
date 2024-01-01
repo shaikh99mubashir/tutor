@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,17 +7,19 @@ import {
   TouchableOpacity,
   Modal,
   StyleSheet,
+  ToastAndroid,
 } from 'react-native';
 import Header from '../../Component/Header';
 import {Theme} from '../../constant/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import {Base_Uri} from '../../constant/BaseUri';
+import axios from 'axios';
 
 function More({navigation}: any) {
   const context = useContext(TutorDetailsContext);
 
-  const {tutorDetails} = context;
+  const {tutorDetails, setTutorDetail} = context;
 
   const [modalVisible, setModalVisible] = useState(false);
   const handleFilterPress = () => {
@@ -29,6 +31,55 @@ function More({navigation}: any) {
 
   const [apply, setApply] = useState(false);
   const [cancel, setCancel] = useState(false);
+
+  const getTutorDetails = async () => {
+    interface LoginAuth {
+      status: Number;
+      tutorID: Number;
+      token: string;
+    }
+    const data: any = await AsyncStorage.getItem('loginAuth');
+    let loginData: LoginAuth = JSON.parse(data);
+
+    let {tutorID} = loginData;
+
+    axios
+      .get(`${Base_Uri}getTutorDetailByID/${tutorID}`)
+      .then(({data}) => {
+        let {tutorDetailById} = data;
+
+        console.log(tutorDetailById, 'iddd');
+
+        let tutorDetails = tutorDetailById[0];
+
+        // console.log(tutorDetails,"detailsss")
+
+        let details = {
+          full_name: tutorDetails?.full_name,
+          email: tutorDetails?.email,
+          displayName: tutorDetails?.displayName,
+          gender: tutorDetails?.gender,
+          phoneNumber: tutorDetails.phoneNumber,
+          age: tutorDetails.age,
+          nric: tutorDetails.nric,
+          tutorImage: tutorDetails.tutorImage,
+          tutorId: tutorDetails?.id,
+          status: tutorDetails?.status,
+        };
+
+        console.log(details, 'details');
+        setTutorDetail(details);
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+      });
+  };
+
+  useEffect(() => {
+    if (!tutorDetails) {
+      getTutorDetails();
+    }
+  }, []);
 
   const ApplyButton = async () => {
     handleCloseModal();
@@ -100,7 +151,7 @@ function More({navigation}: any) {
             />
           </TouchableOpacity>
           {/* notification */}
-          {tutorDetails?.status == 'verified' && (
+          {tutorDetails?.status == 'Verified' && (
             <TouchableOpacity
               onPress={() => navigation.navigate('Notifications')}
               activeOpacity={0.8}
@@ -149,7 +200,7 @@ function More({navigation}: any) {
             </TouchableOpacity>
           )}
           {/* Students */}
-          {tutorDetails?.status == 'verified' && (
+          {tutorDetails?.status == 'Verified' && (
             <TouchableOpacity
               onPress={() => navigation.navigate('Students')}
               activeOpacity={0.8}
@@ -197,7 +248,7 @@ function More({navigation}: any) {
             </TouchableOpacity>
           )}
           {/* Payment History */}
-          {tutorDetails?.status == 'verified' && (
+          {tutorDetails?.status == 'Verified' && (
             <TouchableOpacity
               onPress={() => navigation.navigate('PaymentHistory')}
               activeOpacity={0.8}
@@ -245,7 +296,7 @@ function More({navigation}: any) {
             </TouchableOpacity>
           )}
           {/*Report Submission History */}
-          {tutorDetails?.status == 'verified' && (
+          {tutorDetails?.status == 'Verified' && (
             <TouchableOpacity
               onPress={() => navigation.navigate('ReportSubmissionHistory')}
               activeOpacity={0.8}

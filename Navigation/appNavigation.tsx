@@ -130,8 +130,8 @@ function BottomNavigation({route}: any) {
             ),
           }}
         />
-        {(hideTabs.includes('Schedule') ||
-        tutorDetails?.status !== 'verified') ? null : (
+        {hideTabs.includes('Schedule') ||
+        tutorDetails?.status !== 'Verified' ? null : (
           <Tab.Screen
             name="Schedule"
             component={Schedule}
@@ -180,7 +180,8 @@ function BottomNavigation({route}: any) {
             }}
           />
         )}
-        {hideTabs.includes('Home') ? null : (
+        {hideTabs.includes('Home') ||
+        tutorDetails?.status !== 'Verified' ? null : (
           <Tab.Screen
             name="Home"
             component={Home}
@@ -227,7 +228,7 @@ function BottomNavigation({route}: any) {
           />
         )}
         {hideTabs.includes('inbox') ||
-        tutorDetails?.status !== 'verified' ? null : (
+        tutorDetails?.status !== 'Verified' ? null : (
           <Tab.Screen
             name="inbox"
             component={Index}

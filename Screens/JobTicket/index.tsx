@@ -231,7 +231,7 @@ function JobTicket({navigation, route}: any) {
             .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
             .then(({data}) => {
               let {getTutorOffers} = data;
-              console.log();
+              console.log(tickets,"tickets");
               
               const filteredTickets = tickets.filter(
                 (ticket: any) =>
