@@ -1,15 +1,15 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 // import FontAwesome5 from 'react-native-vector-icons/FontAwesome';
 // import IonIcons from  'react-native-vector-icons/Ionicons'
-import { Theme } from '../constant/theme';
+import {Theme} from '../constant/theme';
 import Home from '../Screens/Home';
 import JobTicket from '../Screens/JobTicket';
 import Schedule from '../Screens/Schedule';
 import Index from '../Screens/Index';
 import More from '../Screens/More';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 import OpenDetails from '../Screens/OpenDetails';
 import Notifications from '../Screens/Notifications';
 import AppliedDetails from '../Screens/AppliedDetails';
@@ -27,7 +27,7 @@ import Splash from '../Screens/Splash';
 import EditScheduleClass from '../Screens/EditScheduleClass.tsx';
 import EditAttendedClass from '../Screens/EditAttendedClass/EditAttendedClass';
 import EditPostpondClass from '../Screens/EditPostpondClass';
-import EditCancelledClass from "../Screens/EditCancelledClass"
+import EditCancelledClass from '../Screens/EditCancelledClass';
 import InboxDetail from '../Screens/InboxDetailScreen';
 import AddClass from '../Screens/AddClass';
 import BackToDashboard from '../Screens/BackToDashboardScreen';
@@ -40,275 +40,290 @@ import PaymentHistory from '../Screens/PaymentHistory';
 import Signup from '../Screens/TutorRegister';
 import TutorDetailForm from '../Screens/TutorDetailForm';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useEffect, useState } from 'react';
+import {useContext, useEffect, useState} from 'react';
+import TutorDetailsContext from '../context/tutorDetailsContext';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-function BottomNavigation({ route }: any) {
-  const [tutorDetail, setTutorDetail] = useState<any>()
-  useEffect(()=>{
+function BottomNavigation({route}: any) {
+  const [tutorDetail, setTutorDetail] = useState<any>();
+
+  const tutorDetailsCont = useContext(TutorDetailsContext);
+  const {tutorDetails} = tutorDetailsCont;
+
+  console.log(tutorDetails, 'myDetails');
+
+  useEffect(() => {
     try {
-      let tutorData :any =  AsyncStorage.getItem('tutorData');
+      let tutorData: any = AsyncStorage.getItem('tutorData');
       tutorData = JSON.parse(tutorData);
-      setTutorDetail(tutorData)
+      setTutorDetail(tutorData);
       console.log('Bottom Navigation tutor data', tutorData);
     } catch (error) {
       console.error('Error retrieving or parsing tutor data:', error);
     }
-  },[])
-  
-  const initialRoute = tutorDetail?.tutorDetailById[0]?.status === 'unverified' ? 'JobTicket' : 'Home';
-  const hideTabs = tutorDetail?.tutorDetailById[0]?.status === 'unverified' ? ['Schedule', 'Home','inbox'] : [];
+  }, []);
+
+  const initialRoute =
+    tutorDetail?.tutorDetailById[0]?.status === 'unverified'
+      ? 'JobTicket'
+      : 'Home';
+  const hideTabs =
+    tutorDetail?.tutorDetailById[0]?.status === 'unverified'
+      ? ['Schedule', 'Home', 'inbox']
+      : [];
   return (
     <Tab.Navigator
-    initialRouteName={initialRoute}
-    screenOptions={({ route }) => ({
+      initialRouteName={initialRoute}
+      screenOptions={({route}) => ({
         headerShown: false,
         tabBarShowLabel: false,
         tabBarInactiveTintColor: 'grey',
         tabBarStyle: styles.tabBarStyle,
         tabBarActiveTintColor: 'black',
       })}>
-      
       <>
-     
-      <Tab.Screen
-        name="Job Ticket"
-        component={JobTicket}
-        options={{
-          tabBarIcon: ({ focused, color }) => (
-            <View>
-              {focused == true ? (
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                    padding: 5,
-                    borderRadius: 5,
-                  }}>
-                  <Image
-                    source={require('../Assets/Images/Job.png')}
-                    resizeMode="contain"
+        <Tab.Screen
+          name="Job Ticket"
+          component={JobTicket}
+          options={{
+            tabBarIcon: ({focused, color}) => (
+              <View>
+                {focused == true ? (
+                  <View
                     style={{
-                      height: 50,
-                      width: 50,
-                      tintColor: focused ? 'black' : 'grey',
-                    }}
-                  />
-                </View>
-              ) : (
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                  }}>
-                  <Image
-                    source={require('../Assets/Images/Job.png')}
-                    resizeMode="contain"
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'row',
+                      padding: 5,
+                      borderRadius: 5,
+                    }}>
+                    <Image
+                      source={require('../Assets/Images/Job.png')}
+                      resizeMode="contain"
+                      style={{
+                        height: 50,
+                        width: 50,
+                        tintColor: focused ? 'black' : 'grey',
+                      }}
+                    />
+                  </View>
+                ) : (
+                  <View
                     style={{
-                      height: 50,
-                      width: 50,
-                      tintColor: focused ? 'black' : 'grey',
-                    }}
-                  />
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'row',
+                    }}>
+                    <Image
+                      source={require('../Assets/Images/Job.png')}
+                      resizeMode="contain"
+                      style={{
+                        height: 50,
+                        width: 50,
+                        tintColor: focused ? 'black' : 'grey',
+                      }}
+                    />
+                  </View>
+                )}
+              </View>
+            ),
+          }}
+        />
+        {(hideTabs.includes('Schedule') ||
+        tutorDetails?.status !== 'verified') ? null : (
+          <Tab.Screen
+            name="Schedule"
+            component={Schedule}
+            options={{
+              tabBarIcon: ({focused, color}) => (
+                <View>
+                  {focused == true ? (
+                    <View
+                      style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexDirection: 'row',
+                        padding: 5,
+                        borderRadius: 5,
+                      }}>
+                      <Image
+                        source={require('../Assets/Images/schedule1.png')}
+                        resizeMode="contain"
+                        style={{
+                          height: 50,
+                          width: 50,
+                          tintColor: focused ? 'black' : 'grey',
+                        }}
+                      />
+                    </View>
+                  ) : (
+                    <View
+                      style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexDirection: 'row',
+                      }}>
+                      <Image
+                        source={require('../Assets/Images/schedule1.png')}
+                        resizeMode="contain"
+                        style={{
+                          height: 50,
+                          width: 50,
+                          tintColor: focused ? 'black' : 'grey',
+                        }}
+                      />
+                    </View>
+                  )}
                 </View>
-              )}
-            </View>
-          ),
-        }}
-      />
- {hideTabs.includes('Schedule') ? null : (
-      <Tab.Screen
-        name="Schedule"
-        component={Schedule}
-        options={{
-          tabBarIcon: ({ focused, color }) => (
-            <View>
-              {focused == true ? (
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                    padding: 5,
-                    borderRadius: 5,
-                  }}>
-                  <Image
-                    source={require('../Assets/Images/schedule1.png')}
-                    resizeMode="contain"
+              ),
+            }}
+          />
+        )}
+        {hideTabs.includes('Home') ? null : (
+          <Tab.Screen
+            name="Home"
+            component={Home}
+            options={{
+              tabBarIcon: ({focused, color}) => (
+                <View>
+                  {focused == true ? (
+                    <View
+                      style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexDirection: 'row',
+                        // backgroundColor:'#1FC07D',
+                      }}>
+                      <Image
+                        source={require('../Assets/Images/HomeBlue.png')}
+                        resizeMode="contain"
+                        style={{
+                          height: 100,
+                          width: 100,
+                        }}
+                      />
+                    </View>
+                  ) : (
+                    <View
+                      style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexDirection: 'row',
+                      }}>
+                      <Image
+                        source={require('../Assets/Images/HomeBlue.png')}
+                        resizeMode="contain"
+                        style={{
+                          height: 100,
+                          width: 100,
+                        }}
+                      />
+                    </View>
+                  )}
+                </View>
+              ),
+            }}
+          />
+        )}
+        {hideTabs.includes('inbox') ||
+        tutorDetails?.status !== 'verified' ? null : (
+          <Tab.Screen
+            name="inbox"
+            component={Index}
+            options={{
+              tabBarIcon: ({focused, color}) => (
+                <View>
+                  {focused == true ? (
+                    <View
+                      style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexDirection: 'row',
+                        padding: 5,
+                        borderRadius: 5,
+                      }}>
+                      <Image
+                        source={require('../Assets/Images/Chat_1.png')}
+                        resizeMode="contain"
+                        style={{
+                          height: 40,
+                          width: 40,
+                          tintColor: focused ? 'black' : 'grey',
+                        }}
+                      />
+                    </View>
+                  ) : (
+                    <View
+                      style={{
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexDirection: 'row',
+                      }}>
+                      <Image
+                        source={require('../Assets/Images/Chat_1.png')}
+                        resizeMode="contain"
+                        style={{
+                          height: 40,
+                          width: 40,
+                          tintColor: focused ? 'black' : 'grey',
+                        }}
+                      />
+                    </View>
+                  )}
+                </View>
+              ),
+            }}
+          />
+        )}
+        <Tab.Screen
+          name="More"
+          component={More}
+          options={{
+            tabBarIcon: ({focused, color}) => (
+              <View>
+                {focused == true ? (
+                  <View
                     style={{
-                      height: 50,
-                      width: 50,
-                      tintColor: focused ? 'black' : 'grey',
-                    }}
-                  />
-                </View>
-              ) : (
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                  }}>
-                  <Image
-                    source={require('../Assets/Images/schedule1.png')}
-                    resizeMode="contain"
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'row',
+                      padding: 5,
+                      borderRadius: 5,
+                    }}>
+                    <Image
+                      source={require('../Assets/Images/Profile_1.png')}
+                      resizeMode="contain"
+                      style={{
+                        height: 40,
+                        width: 40,
+                        tintColor: focused ? 'black' : 'grey',
+                      }}
+                    />
+                  </View>
+                ) : (
+                  <View
                     style={{
-                      height: 50,
-                      width: 50,
-                      tintColor: focused ? 'black' : 'grey',
-                    }}
-                  />
-                </View>
-              )}
-            </View>
-          ),
-        }}
-      />)}
-       {hideTabs.includes('Home') ? null : (
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          tabBarIcon: ({ focused, color }) => (
-            <View>
-              {focused == true ? (
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                    // backgroundColor:'#1FC07D',
-                  }}>
-                  <Image
-                    source={require('../Assets/Images/HomeBlue.png')}
-                    resizeMode="contain"
-                    style={{
-                      height: 100,
-                      width: 100,
-
-                    }}
-                  />
-                </View>
-              ) : (
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                  }}>
-                  <Image
-                     source={require('../Assets/Images/HomeBlue.png')}
-                    resizeMode="contain"
-                    style={{
-                      height: 100,
-                      width: 100,
-                    }}
-                  />
-                </View>
-              )}
-            </View>
-          ),
-        }}
-      />)}
-       {hideTabs.includes('inbox') ? null : (
-      <Tab.Screen
-        name="inbox"
-        component={Index}
-        options={{
-          tabBarIcon: ({ focused, color }) => (
-            <View>
-              {focused == true ? (
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                    padding: 5,
-                    borderRadius: 5,
-                  }}>
-                  <Image
-                    source={require('../Assets/Images/Chat_1.png')}
-                    resizeMode="contain"
-                    style={{
-                      height: 40,
-                      width: 40,
-                      tintColor: focused ? 'black' : 'grey',
-                    }}
-                  />
-                </View>
-              ) : (
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                  }}>
-                  <Image
-                    source={require('../Assets/Images/Chat_1.png')}
-                    resizeMode="contain"
-                    style={{
-                      height: 40,
-                      width: 40,
-                      tintColor: focused ? 'black' : 'grey',
-                    }}
-                  />
-                </View>
-              )}
-            </View>
-          ),
-        }}
-      />)}
-      <Tab.Screen
-        name="More"
-        component={More}
-        options={{
-          tabBarIcon: ({ focused, color }) => (
-            <View>
-              {focused == true ? (
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                    padding: 5,
-                    borderRadius: 5,
-                  }}>
-                  <Image
-                    source={require('../Assets/Images/Profile_1.png')}
-                    resizeMode="contain"
-                    style={{
-                      height: 40,
-                      width: 40,
-                      tintColor: focused ? 'black' : 'grey',
-                    }}
-                  />
-                </View>
-              ) : (
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                  }}>
-                  <Image
-                    source={require('../Assets/Images/Profile_1.png')}
-                    resizeMode="contain"
-                    style={{
-                      height: 40,
-                      width: 40,
-                      tintColor: focused ? 'black' : 'grey',
-                    }}
-                  />
-                </View>
-              )}
-            </View>
-          ),
-        }}
-      />
-      {/* {tutorDetail.tutorDetailById.status === 'unverified' ? (
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'row',
+                    }}>
+                    <Image
+                      source={require('../Assets/Images/Profile_1.png')}
+                      resizeMode="contain"
+                      style={{
+                        height: 40,
+                        width: 40,
+                        tintColor: focused ? 'black' : 'grey',
+                      }}
+                    />
+                  </View>
+                )}
+              </View>
+            ),
+          }}
+        />
+        {/* {tutorDetail.tutorDetailById.status === 'unverified' ? (
         <>
       <Tab.Screen
         name="Job Ticket"
@@ -647,9 +662,7 @@ function BottomNavigation({ route }: any) {
       />
         </>
       )} */}
-</>
-
-
+      </>
     </Tab.Navigator>
     // <Tab.Navigator
     //   screenOptions={({ route }) => ({
@@ -658,13 +671,13 @@ function BottomNavigation({ route }: any) {
     //     tabBarInactiveTintColor: Theme.lightGray,
     //     // tabBarStyle: styles.tabBarStyle,
     //     tabBarActiveTintColor: Theme.darkGray,
-        
+
     //   })}
     //   initialRouteName="home">
     //   <Tab.Screen
     //     name="Home"
     //     component={Home}
-      
+
     //     options={{
     //       tabBarIcon: ({ focused, color }) => (
     //         <View>
@@ -676,7 +689,7 @@ function BottomNavigation({ route }: any) {
     //                 flexDirection: 'row',
     //                 padding: 5,
     //                 borderRadius: 5,
-                    
+
     //               }}>
     //               <Image
     //                 source={require('../Assets/Images/home.png')}
@@ -906,159 +919,157 @@ function BottomNavigation({ route }: any) {
 function AppNavigation() {
   return (
     <NavigationContainer>
-      <Stack.Navigator  >
+      <Stack.Navigator>
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="Splash"
           component={Splash}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="OnBoarding"
           component={OnBoarding}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="Login"
           component={Login}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="ReportSubmission"
           component={ReportSubmission}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="ReportSubmissionHistory"
           component={ReportSubmissionHistory}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="Verification"
           component={Verification}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="Main"
           component={BottomNavigation}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="OpenDetails"
           component={OpenDetails}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="Notifications"
           component={Notifications}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="AppliedDetails"
           component={AppliedDetails}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="Filter"
           component={Filter}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="Profile"
           component={Profile}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="Students"
           component={Students}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="StudentsDetails"
           component={StudentsDetails}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="Status"
           component={Status}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="FAQs"
           component={FAQs}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="EditScheduleClass"
           component={EditScheduleClass}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="EditAttendedClass"
           component={EditAttendedClass}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="EditPostpondClass"
           component={EditPostpondClass}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="EditCancelledClass"
           component={EditCancelledClass}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="InboxDetail"
           component={InboxDetail}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="AddClass"
           component={AddClass}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="BackToDashboard"
           component={BackToDashboard}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="ClockIn"
           component={ClockIn}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="ClassTimerCount"
           component={ClassTimerCount}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="ClockOut"
           component={ClockOut}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="AttendedDetails"
           component={AttendedDetails}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="PaymentHistory"
           component={PaymentHistory}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="Signup"
           component={Signup}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{headerShown: false}}
           name="TutorDetails"
           component={TutorDetailForm}
         />
-
-
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -1070,7 +1081,7 @@ const styles = StyleSheet.create({
   customFont: {
     fontFamily: 'Circular Std Black', // Use the actual font name here
   },
-  
+
   tabBarStyle: {
     // position: 'absolute',
     borderTopWidth: 0,

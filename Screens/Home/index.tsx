@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {
   View,
   Text,
@@ -14,11 +14,11 @@ import {
   Modal,
   Linking,
 } from 'react-native';
-import { Theme } from '../../constant/theme';
+import {Theme} from '../../constant/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { Base_Uri } from '../../constant/BaseUri';
-import { useIsFocused } from '@react-navigation/native';
+import {Base_Uri} from '../../constant/BaseUri';
+import {useIsFocused} from '@react-navigation/native';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import StudentContext from '../../context/studentContext';
 import filterContext from '../../context/filterContext';
@@ -32,19 +32,19 @@ import bannerContext from '../../context/bannerContext';
 import messaging from '@react-native-firebase/messaging';
 import scheduleNotificationContext from '../../context/scheduleNotificationContext';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-function Home({ navigation, route }: any) {
+function Home({navigation, route}: any) {
   let key = route.key;
 
   const scheduleNotCont = useContext(scheduleNotificationContext);
 
-  let { scheduleNotification, setScheduleNotification } = scheduleNotCont;
+  let {scheduleNotification, setScheduleNotification} = scheduleNotCont;
 
   const context = useContext(TutorDetailsContext);
   const filter = useContext(filterContext);
   const studentAndSubjectContext = useContext(StudentContext);
   const notContext = useContext(notificationContext);
-  let { notification, setNotification } = notContext;
-  const { setCategory, setSubjects, setState, setCity } = filter;
+  let {notification, setNotification} = notContext;
+  const {setCategory, setSubjects, setState, setCity} = filter;
   const [refreshing, setRefreshing] = useState(false);
   const upcomingClassCont = useContext(upcomingClassContext);
   const paymentHistory = useContext(paymentContext);
@@ -73,12 +73,12 @@ function Home({ navigation, route }: any) {
 
   const upcomingContext = useContext(scheduleContext);
 
-  let { commissionData, setCommissionData } = paymentHistory;
-  let { upcomingClass, setUpcomingClass, scheduleData, setScheduleData } =
+  let {commissionData, setCommissionData} = paymentHistory;
+  let {upcomingClass, setUpcomingClass, scheduleData, setScheduleData} =
     upcomingContext;
 
-  const { tutorDetails, updateTutorDetails } = context;
-  const { students, subjects, updateStudent, updateSubject } =
+  const {tutorDetails, updateTutorDetails} = context;
+  const {students, subjects, updateStudent, updateSubject} =
     studentAndSubjectContext;
   let reportContext = useContext(reportSubmissionContext);
 
@@ -157,19 +157,19 @@ function Home({ navigation, route }: any) {
     const data: any = await AsyncStorage.getItem('loginAuth');
     let loginData: LoginAuth = JSON.parse(data);
 
-    let { tutorID } = loginData;
+    let {tutorID} = loginData;
     setTutorId(tutorID);
   };
 
   const getPaymentHistory = async () => {
     let data: any = await AsyncStorage.getItem('loginAuth');
     data = JSON.parse(data);
-    let { tutorID } = data;
+    let {tutorID} = data;
 
     axios
       .get(`${Base_Uri}tutorPayments/${tutorID}`)
-      .then(({ data }) => {
-        let { response } = data;
+      .then(({data}) => {
+        let {response} = data;
 
         setCommissionData(response);
       })
@@ -181,9 +181,9 @@ function Home({ navigation, route }: any) {
   const getNotificationLength = async () => {
     axios
       .get(`${Base_Uri}api/notifications/${tutorId}`)
-      .then(({ data }) => {
+      .then(({data}) => {
         let length = 0;
-        let { notifications } = data;
+        let {notifications} = data;
         let tutorNotification =
           notifications.length > 0 &&
           notifications.filter((e: any, i: number) => {
@@ -257,6 +257,8 @@ function Home({ navigation, route }: any) {
     }
   }, [tutorId]);
 
+  console.log(tutorDetails, 'details');
+
   useEffect(() => {
     getTutorId();
     getClassInProcess();
@@ -265,8 +267,8 @@ function Home({ navigation, route }: any) {
   const getCategory = () => {
     axios
       .get(`${Base_Uri}getCategories`)
-      .then(({ data }) => {
-        let { categories } = data;
+      .then(({data}) => {
+        let {categories} = data;
 
         let myCategories =
           categories &&
@@ -289,8 +291,8 @@ function Home({ navigation, route }: any) {
   const getSubject = () => {
     axios
       .get(`${Base_Uri}getSubjects`)
-      .then(({ data }) => {
-        let { subjects } = data;
+      .then(({data}) => {
+        let {subjects} = data;
 
         let mySubject =
           subjects &&
@@ -314,8 +316,8 @@ function Home({ navigation, route }: any) {
   const getStates = () => {
     axios
       .get(`${Base_Uri}getStates`)
-      .then(({ data }) => {
-        let { states } = data;
+      .then(({data}) => {
+        let {states} = data;
 
         let myStates =
           states &&
@@ -328,7 +330,6 @@ function Home({ navigation, route }: any) {
               };
             }
           });
-
         setState(myStates);
       })
       .catch(error => {
@@ -339,8 +340,8 @@ function Home({ navigation, route }: any) {
   const getCities = () => {
     axios
       .get(`${Base_Uri}getCities`)
-      .then(({ data }) => {
-        let { cities } = data;
+      .then(({data}) => {
+        let {cities} = data;
         let myCities =
           cities &&
           cities.length > 0 &&
@@ -364,12 +365,12 @@ function Home({ navigation, route }: any) {
 
     data = JSON.parse(data);
 
-    let { tutorID } = data;
+    let {tutorID} = data;
 
     axios
       .get(`${Base_Uri}api/tutorFirstReportListing/${tutorID}`)
-      .then(({ data }) => {
-        let { tutorReportListing } = data;
+      .then(({data}) => {
+        let {tutorReportListing} = data;
         setreportSubmission(tutorReportListing);
       })
       .catch(error => {
@@ -382,12 +383,12 @@ function Home({ navigation, route }: any) {
 
     data = JSON.parse(data);
 
-    let { tutorID } = data;
+    let {tutorID} = data;
 
     axios
       .get(`${Base_Uri}api/progressReportListing`)
-      .then(({ data }) => {
-        let { progressReportListing } = data;
+      .then(({data}) => {
+        let {progressReportListing} = data;
 
         let tutorReport =
           progressReportListing &&
@@ -419,9 +420,15 @@ function Home({ navigation, route }: any) {
   const getTutorDetails = async () => {
     axios
       .get(`${Base_Uri}getTutorDetailByID/${tutorId}`)
-      .then(({ data }) => {
-        let { tutorDetailById } = data;
+      .then(({data}) => {
+        let {tutorDetailById} = data;
+
+        console.log(tutorDetailById, 'iddd');
+
         let tutorDetails = tutorDetailById[0];
+
+        // console.log(tutorDetails,"detailsss")
+
         let details = {
           full_name: tutorDetails?.full_name,
           email: tutorDetails?.email,
@@ -446,7 +453,7 @@ function Home({ navigation, route }: any) {
     axios
       .get(`${Base_Uri}api/classScheduleStatusNotifications/${tutorId}`)
       .then(res => {
-        let { data } = res;
+        let {data} = res;
 
         setScheduleNotification(data.record);
       })
@@ -464,7 +471,7 @@ function Home({ navigation, route }: any) {
   const getCummulativeCommission = () => {
     axios
       .get(`${Base_Uri}getCommulativeCommission/${tutorId}`)
-      .then(({ data }) => {
+      .then(({data}) => {
         setCumulativeCommission(data.commulativeCommission);
       })
       .catch(error => {
@@ -475,7 +482,7 @@ function Home({ navigation, route }: any) {
   const getAttendedHours = () => {
     axios
       .get(`${Base_Uri}getAttendedHours/${tutorId}`)
-      .then(({ data }) => {
+      .then(({data}) => {
         // setTutorData({ ...tutorData, attendedHours: data.attendedHours });
         setAttendedHours(data.attendedHours);
       })
@@ -487,7 +494,7 @@ function Home({ navigation, route }: any) {
   const getScheduledHours = () => {
     axios
       .get(`${Base_Uri}getScheduledHours/${tutorId}`)
-      .then(({ data }) => {
+      .then(({data}) => {
         setScheduledHours(data.scheduledHours);
         // setTutorData({ ...tutorData, scheduledHours: data.scheduledHours });
       })
@@ -501,7 +508,7 @@ function Home({ navigation, route }: any) {
 
     axios
       .get(`${Base_Uri}getCancelledHours/${tutorId}`)
-      .then(({ data }) => {
+      .then(({data}) => {
         // console.log(cancelledHours, 'hoursss');
 
         setCancelledHours(data.cancelledHours);
@@ -512,15 +519,15 @@ function Home({ navigation, route }: any) {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
-  const [assignedTickets, setAssignedTickets] = useState()
+  const [assignedTickets, setAssignedTickets] = useState();
   const getAssignedTicket = () => {
     // console.log(tutorId, 'iddd');
 
     axios
       .get(`${Base_Uri}getAssignedTickets/${tutorId}`)
-      .then(({ data }) => {
+      .then(({data}) => {
         // console.log(data, 'getAssignedTicket');
-        setAssignedTickets(data.assignedTickets)
+        setAssignedTickets(data.assignedTickets);
         // setCancelledHours(data.cancelledHours);
         // setTutorData({ ...tutorData, cancelledHours: data.cancelledHours });
       })
@@ -533,8 +540,8 @@ function Home({ navigation, route }: any) {
   const getTutorStudents = () => {
     axios
       .get(`${Base_Uri}getTutorStudents/${tutorId}`)
-      .then(({ data }) => {
-        const { tutorStudents } = data;
+      .then(({data}) => {
+        const {tutorStudents} = data;
         console.log(tutorStudents);
 
         setTutorStudents(tutorStudents);
@@ -548,8 +555,8 @@ function Home({ navigation, route }: any) {
   const getTutorSubjects = () => {
     axios
       .get(`${Base_Uri}getTutorSubjects/${tutorId}`)
-      .then(({ data }) => {
-        let { tutorSubjects } = data;
+      .then(({data}) => {
+        let {tutorSubjects} = data;
 
         let mySubject =
           tutorSubjects &&
@@ -575,8 +582,8 @@ function Home({ navigation, route }: any) {
   const getUpcomingClasses = () => {
     axios
       .get(`${Base_Uri}getUpcomingClassesByTutorID/${tutorId}`)
-      .then(({ data }) => {
-        const { classSchedules } = data;
+      .then(({data}) => {
+        const {classSchedules} = data;
         setUpCommingClasses(classSchedules);
       })
       .catch(error => {
@@ -636,13 +643,13 @@ function Home({ navigation, route }: any) {
     }
     const login: any = await AsyncStorage.getItem('loginAuth');
     let loginData: LoginAuth = JSON.parse(login);
-    let { tutorID } = loginData;
+    let {tutorID} = loginData;
     axios
       .get(`${Base_Uri}getClassSchedulesTime/${tutorID}`)
       .then(res => {
         let scheduledClasses = res.data;
 
-        let { classSchedulesTime } = scheduledClasses;
+        let {classSchedulesTime} = scheduledClasses;
         let checkRouteClass =
           classSchedulesTime &&
           classSchedulesTime.length > 0 &&
@@ -672,7 +679,7 @@ function Home({ navigation, route }: any) {
     setOpenPPModal(true);
     axios
       .get(`${Base_Uri}api/bannerAds`)
-      .then(async ({ data }) => {
+      .then(async ({data}) => {
         let myHomeBanners: any = [];
         let myFaqBanners: any = [];
         let myScheduleBanners: any = [];
@@ -913,7 +920,7 @@ function Home({ navigation, route }: any) {
 
   const closeBannerModal = async () => {
     if (homePageBanner.displayOnce == 'on') {
-      let bannerData = { ...homePageBanner };
+      let bannerData = {...homePageBanner};
 
       let stringData = JSON.stringify(bannerData);
 
@@ -981,11 +988,11 @@ function Home({ navigation, route }: any) {
   }
 
   return !cancelledHours ? (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <ActivityIndicator size={'large'} color={Theme.black} />
     </View>
   ) : (
-    <View style={{ flex: 1, backgroundColor: Theme.GhostWhite }}>
+    <View style={{flex: 1, backgroundColor: Theme.GhostWhite}}>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -1000,7 +1007,7 @@ function Home({ navigation, route }: any) {
             </Text>
           </View> */}
 
-          <View style={{ paddingTop: 15 }}>
+          <View style={{paddingTop: 15}}>
             <View
               style={{
                 flexDirection: 'row',
@@ -1008,18 +1015,25 @@ function Home({ navigation, route }: any) {
                 justifyContent: 'space-between',
               }}>
               <View style={{}}>
+                <Text style={styles.textType3}>Welcome Back!</Text>
                 <Text
-                  style={styles.textType3}>
-                  Welcome Back!
-                </Text>
-                <Text style={[styles.textType1, { fontWeight: '700', lineHeight:30 }]}>
+                  style={[
+                    styles.textType1,
+                    {fontWeight: '700', lineHeight: 30},
+                  ]}>
                   {tutorDetails?.displayName ?? tutorDetails?.full_name}
                 </Text>
               </View>
-              <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15 }}>
-                <TouchableOpacity activeOpacity={0.8}
+              <View
+                style={{flexDirection: 'row', alignItems: 'center', gap: 15}}>
+                <TouchableOpacity
+                  activeOpacity={0.8}
                   onPress={() => navigation.navigate('Notifications')}>
-                  <MaterialCommunityIcons name="bell-outline" size={30} color={'black'} />
+                  <MaterialCommunityIcons
+                    name="bell-outline"
+                    size={30}
+                    color={'black'}
+                  />
                   <View
                     style={{
                       borderRadius: 100,
@@ -1030,9 +1044,10 @@ function Home({ navigation, route }: any) {
                       justifyContent: 'center',
                       position: 'relative',
                       left: 15,
-                      top: -28
+                      top: -28,
                     }}>
-                    <Text style={[styles.text, { fontSize: 10, color: Theme.white }]}>
+                    <Text
+                      style={[styles.text, {fontSize: 10, color: Theme.white}]}>
                       {notification.length + scheduleNotification.length > 0
                         ? notification.length + scheduleNotification.length
                         : 0}
@@ -1045,18 +1060,27 @@ function Home({ navigation, route }: any) {
                   resizeMode="contain"
                   style={{ width: 25, height: 25, }}
                 /> */}
-                <TouchableOpacity onPress={() => navigation.navigate('Profile')} style={{ borderWidth: 2, borderRadius: 50, borderColor: Theme.Dune }}
+                <TouchableOpacity
+                  onPress={() => navigation.navigate('Profile')}
+                  style={{
+                    borderWidth: 2,
+                    borderRadius: 50,
+                    borderColor: Theme.Dune,
+                  }}
                   activeOpacity={0.8}>
                   <Image
-                    source={tutorDetails.tutorImage ? { uri: imageUrl } : require('../../Assets/Images/avatar.png')}
+                    source={
+                      tutorDetails.tutorImage
+                        ? {uri: imageUrl}
+                        : require('../../Assets/Images/avatar.png')
+                    }
                     resizeMode="contain"
-                    style={{ width: 60, height: 60, borderRadius: 50, }}
+                    style={{width: 60, height: 60, borderRadius: 50}}
                   />
                 </TouchableOpacity>
               </View>
             </View>
           </View>
-
 
           {/* <View style={styles.firstBox}>
             <Text style={[styles.text, { color: Theme.white, fontSize: 12 }]}>
@@ -1071,31 +1095,55 @@ function Home({ navigation, route }: any) {
             </Text>
           </View> */}
 
-
-
-
           {classInProcess && Object.keys(classInProcess).length > 0 ? (
             <>
               <TouchableOpacity
-                onPress={() => navigation.navigate('ClassTimerCount', classInProcess)}
-                activeOpacity={0.8} style={{ backgroundColor: Theme.black, paddingVertical: 30, paddingHorizontal: 20, borderRadius: 30, marginVertical: 30 }}>
-                <View style={{ flexDirection: 'row', gap: 15 }}>
-                  <Text style={[styles.textType1, { color: Theme.white, }]}>Ongoing Classes</Text>
-                  <Text style={[styles.text, { fontSize: 10, color: Theme.white }]}>
+                onPress={() =>
+                  navigation.navigate('ClassTimerCount', classInProcess)
+                }
+                activeOpacity={0.8}
+                style={{
+                  backgroundColor: Theme.black,
+                  paddingVertical: 30,
+                  paddingHorizontal: 20,
+                  borderRadius: 30,
+                  marginVertical: 30,
+                }}>
+                <View style={{flexDirection: 'row', gap: 15}}>
+                  <Text style={[styles.textType1, {color: Theme.white}]}>
+                    Ongoing Classes
+                  </Text>
+                  <Text
+                    style={[styles.text, {fontSize: 10, color: Theme.white}]}>
                     <ActivityIndicator color={'white'} size="small" />
                   </Text>
                 </View>
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 25 }}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    marginTop: 25,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      gap: 10,
+                    }}>
                     <Image
                       source={require('../../Assets/Images/woman.png')}
                       resizeMode="contain"
-                      style={{ width: 60, height: 60, }}
+                      style={{width: 60, height: 60}}
                     />
-                    <View style={{ gap: 5 }}>
+                    <View style={{gap: 5}}>
                       {/* <Text style={[styles.textType3, { color: Theme.white, }]}>J9003560</Text> */}
-                      <Text style={[styles.textType1, { color: Theme.white, }]}>{classInProcess?.item?.studentName}</Text>
-                      <Text style={[styles.textType3, { color: Theme.white, }]}>{classInProcess?.item?.subjectName}</Text>
+                      <Text style={[styles.textType1, {color: Theme.white}]}>
+                        {classInProcess?.item?.studentName}
+                      </Text>
+                      <Text style={[styles.textType3, {color: Theme.white}]}>
+                        {classInProcess?.item?.subjectName}
+                      </Text>
                     </View>
                   </View>
 
@@ -1103,10 +1151,9 @@ function Home({ navigation, route }: any) {
                     <Image
                       source={require('../../Assets/Images/RightArrow.png')}
                       resizeMode="contain"
-                      style={{ width: 25, height: 25, }}
+                      style={{width: 25, height: 25}}
                     />
                   </View>
-
                 </View>
               </TouchableOpacity>
               {/* <TouchableOpacity
@@ -1177,41 +1224,97 @@ function Home({ navigation, route }: any) {
             // </TouchableOpacity>
           )}
 
-
-          <View style={{ marginVertical: 15, }}>
+          <View style={{marginVertical: 15}}>
             <Text style={styles.textType1}>Monthly Summary</Text>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
-              <View style={{ width: '49%', }}>
-                <View style={{ backgroundColor: Theme.darkGray, paddingHorizontal: 15, borderTopStartRadius: 15, borderTopEndRadius: 15, borderBottomStartRadius: 15, borderBottomEndRadius: 45 }}>
-                  <View style={{ flexDirection: "row", justifyContent: 'space-between', marginVertical: 20 }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginTop: 10,
+              }}>
+              <View style={{width: '49%'}}>
+                <View
+                  style={{
+                    backgroundColor: Theme.darkGray,
+                    paddingHorizontal: 15,
+                    borderTopStartRadius: 15,
+                    borderTopEndRadius: 15,
+                    borderBottomStartRadius: 15,
+                    borderBottomEndRadius: 45,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      marginVertical: 20,
+                    }}>
                     <Image
                       source={require('../../Assets/Images/money.png')}
                       resizeMode="contain"
-                      style={{ marginTop: 10, }}
+                      style={{marginTop: 10}}
                     />
                     <Image
                       source={require('../../Assets/Images/DiagonalRightUparrow.png')}
                       resizeMode="contain"
                     />
                   </View>
-                  <View style={{ paddingBottom: 20, }}>
-                    <Text style={[styles.textType3, { color: 'white' }]}>Estimate Commission</Text>
-                    <Text style={[styles.textType1, { color: 'white', fontSize: 30, lineHeight: 40 }]}>RM {cummulativeCommission}</Text>
-                    <Text style={[styles.textType3, { color: Theme.white, fontSize: 12 }]}>
+                  <View style={{paddingBottom: 20}}>
+                    <Text style={[styles.textType3, {color: 'white'}]}>
+                      Estimate Commission
+                    </Text>
+                    <Text
+                      style={[
+                        styles.textType1,
+                        {color: 'white', fontSize: 30, lineHeight: 40},
+                      ]}>
+                      RM {cummulativeCommission}
+                    </Text>
+                    <Text
+                      style={[
+                        styles.textType3,
+                        {color: Theme.white, fontSize: 12},
+                      ]}>
                       {currentDate}
                     </Text>
                   </View>
                 </View>
-                <View style={{ backgroundColor: Theme.lightGray, paddingHorizontal: 15, marginTop: 10, borderTopStartRadius: 15, borderTopEndRadius: 15, borderBottomStartRadius: 30, borderBottomEndRadius: 15 }}>
-                  <View style={{ flexDirection: "row", justifyContent: 'space-between', marginBottom: 5, marginTop: 15 }}>
+                <View
+                  style={{
+                    backgroundColor: Theme.lightGray,
+                    paddingHorizontal: 15,
+                    marginTop: 10,
+                    borderTopStartRadius: 15,
+                    borderTopEndRadius: 15,
+                    borderBottomStartRadius: 30,
+                    borderBottomEndRadius: 15,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      marginBottom: 5,
+                      marginTop: 15,
+                    }}>
                     <Text style={styles.textType3}>Active Student</Text>
                     <Image
                       source={require('../../Assets/Images/DiagonalRightUparrowblack.png')}
                       resizeMode="contain"
                     />
                   </View>
-                  <View style={{ paddingBottom: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Text style={[styles.textType1, { fontSize: 30, lineHeight: 38 }]}>{students?.length}</Text>
+                  <View
+                    style={{
+                      paddingBottom: 20,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}>
+                    <Text
+                      style={[
+                        styles.textType1,
+                        {fontSize: 30, lineHeight: 38},
+                      ]}>
+                      {students?.length}
+                    </Text>
                     <Image
                       source={require('../../Assets/Images/studenticonCopy.png')}
                       resizeMode="contain"
@@ -1219,9 +1322,22 @@ function Home({ navigation, route }: any) {
                   </View>
                 </View>
               </View>
-              <View style={{ width: '49%' }}>
-                <View style={{ backgroundColor: Theme.lightGray, paddingHorizontal: 15, borderTopStartRadius: 15, borderTopEndRadius: 15, borderBottomStartRadius: 45, borderBottomEndRadius: 15 }}>
-                  <View style={{ flexDirection: "row", justifyContent: 'space-between', marginVertical: 20 }}>
+              <View style={{width: '49%'}}>
+                <View
+                  style={{
+                    backgroundColor: Theme.lightGray,
+                    paddingHorizontal: 15,
+                    borderTopStartRadius: 15,
+                    borderTopEndRadius: 15,
+                    borderBottomStartRadius: 45,
+                    borderBottomEndRadius: 15,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      marginVertical: 20,
+                    }}>
                     <Image
                       source={require('../../Assets/Images/ClockiconCopy.png')}
                       resizeMode="contain"
@@ -1231,13 +1347,33 @@ function Home({ navigation, route }: any) {
                       resizeMode="contain"
                     />
                   </View>
-                  <View style={{ paddingBottom: 20 }}>
+                  <View style={{paddingBottom: 20}}>
                     <Text style={[styles.textType3]}>Attended Hours</Text>
-                    <Text style={[styles.textType1, { fontSize: 30, lineHeight: 40 }]}>{attendedHours}</Text>
+                    <Text
+                      style={[
+                        styles.textType1,
+                        {fontSize: 30, lineHeight: 40},
+                      ]}>
+                      {attendedHours}
+                    </Text>
                   </View>
                 </View>
-                <View style={{ backgroundColor: Theme.lightGray, paddingHorizontal: 15, marginTop: 10, borderTopStartRadius: 15, borderTopEndRadius: 15, borderBottomStartRadius: 30, borderBottomEndRadius: 15 }}>
-                  <View style={{ flexDirection: "row", justifyContent: 'space-between', marginVertical: 16 }}>
+                <View
+                  style={{
+                    backgroundColor: Theme.lightGray,
+                    paddingHorizontal: 15,
+                    marginTop: 10,
+                    borderTopStartRadius: 15,
+                    borderTopEndRadius: 15,
+                    borderBottomStartRadius: 30,
+                    borderBottomEndRadius: 15,
+                  }}>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      marginVertical: 16,
+                    }}>
                     <Image
                       source={require('../../Assets/Images/ScheduleIcon.png')}
                       resizeMode="contain"
@@ -1247,12 +1383,17 @@ function Home({ navigation, route }: any) {
                       resizeMode="contain"
                     />
                   </View>
-                  <View style={{ paddingBottom: 20, }}>
+                  <View style={{paddingBottom: 20}}>
                     <Text style={[styles.textType3]}>Scheduled Hours</Text>
-                    <Text style={[styles.textType1, { fontSize: 30, lineHeight: 40 }]}>{schedulesHours}</Text>
+                    <Text
+                      style={[
+                        styles.textType1,
+                        {fontSize: 30, lineHeight: 40},
+                      ]}>
+                      {schedulesHours}
+                    </Text>
                   </View>
                 </View>
-
               </View>
             </View>
           </View>
@@ -1412,7 +1553,7 @@ function Home({ navigation, route }: any) {
           <Text
             style={[
               styles.textType3,
-              { marginTop: 20, fontWeight: '500', fontSize: 16 },
+              {marginTop: 20, fontWeight: '500', fontSize: 16},
             ]}>
             Upcoming Classes
           </Text>
@@ -1423,7 +1564,7 @@ function Home({ navigation, route }: any) {
                 horizontal
                 nestedScrollEnabled
                 showsHorizontalScrollIndicator={false}
-                renderItem={({ item, index }: any) => {
+                renderItem={({item, index}: any) => {
                   const startTime12Hour = convertTo12HourFormat(item.startTime);
                   const endTime12Hour = convertTo12HourFormat(item.endTime);
                   // const formattedDate = convertDateFormat(item.date);
@@ -1443,7 +1584,7 @@ function Home({ navigation, route }: any) {
                         borderColor: '#eee',
                         marginBottom: 40,
                       }}
-                    // onPress={() => routeToScheduleScreen(item)}
+                      // onPress={() => routeToScheduleScreen(item)}
                     >
                       <View
                         style={{
@@ -1460,7 +1601,7 @@ function Home({ navigation, route }: any) {
                             borderRadius: 50,
                           }}
                         />
-                        <Text style={{ color: Theme.black, fontSize: 16 }}>
+                        <Text style={{color: Theme.black, fontSize: 16}}>
                           {item?.studentName}
                         </Text>
                       </View>
@@ -1473,7 +1614,7 @@ function Home({ navigation, route }: any) {
                         {item?.subject_name}
                       </Text>
                       <View>
-                        <Text style={{ color: Theme.gray, fontSize: 14 }}>
+                        <Text style={{color: Theme.gray, fontSize: 14}}>
                           Time - {startTime12Hour} to {endTime12Hour}{' '}
                         </Text>
                         <Text
@@ -1492,9 +1633,8 @@ function Home({ navigation, route }: any) {
               />
             </>
           ) : (
-            <View style={{ marginTop: 35 }}>
-              <Text
-                style={[styles.textType3,{textAlign:'center'}]}>
+            <View style={{marginTop: 35}}>
+              <Text style={[styles.textType3, {textAlign: 'center'}]}>
                 No UpComming Classes...
               </Text>
             </View>
@@ -1505,10 +1645,10 @@ function Home({ navigation, route }: any) {
         Object.keys(homePageBanner).length > 0 &&
         (homePageBanner.tutorStatusCriteria == 'All' ||
           tutorDetails.status == 'verified') && (
-          <View style={{ flex: 1 }}>
+          <View style={{flex: 1}}>
             <Modal
               visible={openPPModal}
-              style={{ flex: 1 }}
+              style={{flex: 1}}
               animationType="fade"
               transparent={true}
               onRequestClose={() => closeBannerModal()}>
@@ -1543,7 +1683,7 @@ function Home({ navigation, route }: any) {
                   </TouchableOpacity>
                   {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
                   <Image
-                    source={{ uri: homePageBanner.bannerImage }}
+                    source={{uri: homePageBanner.bannerImage}}
                     style={{
                       width: Dimensions.get('screen').width / 1,
                       height: '90%',
@@ -1584,11 +1724,17 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   textType1: {
-    fontWeight: '500', fontSize: 24, color: Theme.Dune, fontFamily: 'Circular Std Black', lineHeight: 24,
-    fontStyle: 'normal'
+    fontWeight: '500',
+    fontSize: 24,
+    color: Theme.Dune,
+    fontFamily: 'Circular Std Black',
+    lineHeight: 24,
+    fontStyle: 'normal',
   },
   textType3: {
-    color: Theme.Dune, fontWeight: '500', fontSize: 16,
+    color: Theme.Dune,
+    fontWeight: '500',
+    fontSize: 16,
     fontFamily: 'Circular Std',
     fontStyle: 'normal',
   },

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   View,
   Text,
@@ -9,20 +9,20 @@ import {
   ToastAndroid,
   ActivityIndicator,
 } from 'react-native';
-import { Theme } from '../../constant/theme';
+import {Theme} from '../../constant/theme';
 import CustomDropDown from '../../Component/CustomDropDown';
 import Header from '../../Component/Header';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Base_Uri } from '../../constant/BaseUri';
+import {Base_Uri} from '../../constant/BaseUri';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import StudentContext from '../../context/studentContext';
 import scheduleContext from '../../context/scheduleContext';
-import { useIsFocused } from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
+import TutorDetailsContext from '../../context/tutorDetailsContext';
 
-function AddClass({ navigation }: any) {
+function AddClass({navigation}: any) {
   const [student, setStudent] = useState([]);
-
   const [subject, setSubject] = useState([]);
 
   const [tutorId, setTutorId] = useState(null);
@@ -38,8 +38,8 @@ function AddClass({ navigation }: any) {
   const [scheduledClasses, setScheduledClasses] = useState([]);
   const studentAndSubjectContext = useContext(StudentContext);
   const context = useContext(StudentContext);
-  const { students, subjects } = context;
-  const { updateStudent, } = studentAndSubjectContext;
+  const {students, subjects} = context;
+  const {updateStudent} = studentAndSubjectContext;
   const [classes, setClasses] = useState<any>([
     {
       tutorID: tutorId,
@@ -51,17 +51,22 @@ function AddClass({ navigation }: any) {
       date: new Date(),
     },
   ]);
-  const [tutorStudents, setTutorStudents] = useState([])
-  var focus = useIsFocused()
+
+  const tutorDetailCont = useContext(TutorDetailsContext);
+  const {tutorDetails} = tutorDetailCont;
+
+  console.log(tutorDetails, 'tutorDetails');
+
+  const [tutorStudents, setTutorStudents] = useState([]);
+  var focus = useIsFocused();
   const getTutorStudents = () => {
     // console.log('runnning');
-    setLoading(true)
+    setLoading(true);
     axios
-      .get(`${Base_Uri}getTutorStudents/${tutorId}`)
-      .then(({ data }) => {
-        setLoading(false)
-        const { tutorStudents } = data;
-        console.log(tutorStudents);
+      .get(`${Base_Uri}getTutorStudents/${tutorDetails?.tutorId}`)
+      .then(({data}) => {
+        const {tutorStudents} = data;
+        console.log(tutorStudents, 'tutorsStudents');
         let myStudents =
           tutorStudents &&
           tutorStudents.length > 0 &&
@@ -73,18 +78,24 @@ function AddClass({ navigation }: any) {
               };
             }
           });
+
+        console.log(myStudents, 'staudents');
+
         setStudent(myStudents);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
       })
       .catch(error => {
         console.log('error', error);
-        setLoading(false)
+        setLoading(false);
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
   useEffect(() => {
-    getTutorStudents()
-  }, [focus, tutorId])
+    getTutorStudents();
+  }, [focus, tutorId]);
 
   const getSubject = () => {
     setSelectedSubject('');
@@ -92,19 +103,19 @@ function AddClass({ navigation }: any) {
 
     axios
       .get(`${Base_Uri}api/getStudentSubjects/${selectedStudent?.studentID}`)
-      .then(({ data }) => {
-        let { studentSubjects } = data;
+      .then(({data}) => {
+        let {studentSubjects} = data;
         console.log('studentSubjects', studentSubjects);
         let mySubject =
           studentSubjects &&
           studentSubjects.length > 0 &&
           studentSubjects
-            .filter((e:any) => tutorId === e.tutor_id && e.subject)
-            .map((e:any) => ({
+            .filter((e: any) => tutorId === e.tutor_id && e.subject)
+            .map((e: any) => ({
               subject: e.name,
               id: e.id,
               remaining_classes: e.remaining_classes,
-              classFrequency:e.classFrequency,
+              classFrequency: e.classFrequency,
             }));
         // let mySubject =
         //   studentSubjects &&
@@ -127,18 +138,17 @@ function AddClass({ navigation }: any) {
         console.log(error);
       });
   };
-// console.log("setSubject",subject);
+  // console.log("setSubject",subject);
 
   const getTutorID = async () => {
     let data: any = await AsyncStorage.getItem('loginAuth');
 
     data = JSON.parse(data);
 
-    let { tutorID } = data;
+    let {tutorID} = data;
 
     setTutorId(tutorID);
   };
-
 
   const getStudents = async () => {
     let myStudents =
@@ -171,8 +181,6 @@ function AddClass({ navigation }: any) {
       getSubject();
     }
   }, [selectedStudent]);
-
-  
 
   const onChange = (event: any, selectedDate: any) => {
     setShow(false);
@@ -229,13 +237,12 @@ function AddClass({ navigation }: any) {
     setIndexClicked(index);
     setShow(true);
   };
-  const [hideMoreClassesButton, setHideMoreClassesButton] = useState(true)
-  const [noOfClasses, setNoOFClasses] = useState(0)
-  const MAX_CLASSES = selectedSubject?.remaining_classes || 0
-  console.log("classes.length,MAX_CLASSES",classes.length,MAX_CLASSES);
-  
-  const renderClasses = ({ item, index }: any) => {
-    if (classes.length  <= MAX_CLASSES) {
+  const [hideMoreClassesButton, setHideMoreClassesButton] = useState(true);
+  const [noOfClasses, setNoOFClasses] = useState(0);
+  const MAX_CLASSES = selectedSubject?.remaining_classes || 0;
+
+  const renderClasses = ({item, index}: any) => {
+    if (classes.length <= MAX_CLASSES) {
       setHideMoreClassesButton(classes.length <= MAX_CLASSES - 1);
     }
     return (
@@ -245,7 +252,6 @@ function AddClass({ navigation }: any) {
             flexDirection: 'row',
             width: '100%',
             justifyContent: 'space-between',
-            
           }}>
           <Text
             style={{
@@ -280,7 +286,7 @@ function AddClass({ navigation }: any) {
           }}>
           <TouchableOpacity
             activeOpacity={0.8}
-            style={{ paddingVertical: 5 }}
+            style={{paddingVertical: 5}}
             onPress={() => setClassDate('date', index)}>
             <View
               style={{
@@ -289,11 +295,11 @@ function AddClass({ navigation }: any) {
                 alignItems: 'center',
               }}>
               <Text
-                style={{ color: Theme.gray, fontSize: 14, fontWeight: '500' }}>
+                style={{color: Theme.gray, fontSize: 14, fontWeight: '500'}}>
                 Date
               </Text>
               <Text
-                style={{ color: Theme.black, fontSize: 12, fontWeight: '500' }}>
+                style={{color: Theme.black, fontSize: 12, fontWeight: '500'}}>
                 {item?.date !== '-' ? item?.date?.toString().slice(0, 15) : '-'}
               </Text>
             </View>
@@ -306,20 +312,20 @@ function AddClass({ navigation }: any) {
               marginTop: 10,
               width: '100%',
             }}>
-            <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '500' }}>
+            <Text style={{color: Theme.gray, fontSize: 14, fontWeight: '500'}}>
               Start Time
             </Text>
 
             <TouchableOpacity
               onPress={() => setClassDate('time', index, true)}
-              style={{ minWidth: 50, alignItems: 'flex-end' }}>
+              style={{minWidth: 50, alignItems: 'flex-end'}}>
               <Text
-                style={{ color: Theme.black, fontSize: 12, fontWeight: '500' }}>
+                style={{color: Theme.black, fontSize: 12, fontWeight: '500'}}>
                 {item?.startTime !== '-'
                   ? new Date(item?.startTime).toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })
                   : '-'}
               </Text>
             </TouchableOpacity>
@@ -331,20 +337,20 @@ function AddClass({ navigation }: any) {
               alignItems: 'center',
               marginTop: 10,
             }}>
-            <Text style={{ color: Theme.gray, fontSize: 14, fontWeight: '500' }}>
+            <Text style={{color: Theme.gray, fontSize: 14, fontWeight: '500'}}>
               End Time
             </Text>
 
             <TouchableOpacity
               onPress={() => setClassDate('time', index)}
-              style={{ minWidth: 50, alignItems: 'flex-end' }}>
+              style={{minWidth: 50, alignItems: 'flex-end'}}>
               <Text
-                style={{ color: Theme.black, fontSize: 12, fontWeight: '500' }}>
+                style={{color: Theme.black, fontSize: 12, fontWeight: '500'}}>
                 {item?.endTime !== '-'
                   ? new Date(item?.endTime).toLocaleTimeString([], {
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })
                   : '-'}
               </Text>
             </TouchableOpacity>
@@ -355,14 +361,13 @@ function AddClass({ navigation }: any) {
   };
 
   const deleteClass = (index: Number) => {
-    
     let data: any =
       classes &&
       classes.length > 0 &&
       classes.filter((e: any, i: Number) => {
         return i !== index;
       });
-      
+
     setClasses(data);
   };
 
@@ -468,7 +473,7 @@ function AddClass({ navigation }: any) {
             ':' +
             '00' +
             ':' +
-            '00'
+            '00',
         };
       });
 
@@ -516,107 +521,109 @@ function AddClass({ navigation }: any) {
     }
   };
 
-  console.log('selectedSubject',selectedSubject);
-  
-  return loading ? (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <ActivityIndicator size="large" color={Theme.black} />
+  console.log(student, 'student');
 
+  return loading ? (
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <ActivityIndicator size="large" color={Theme.black} />
     </View>
   ) : (
-    <View style={{ flex: 1, backgroundColor: Theme.white }}>
+    <View style={{flex: 1, backgroundColor: Theme.white}}>
       <View>
         <Header title={'Add Class'} backBtn navigation={navigation} />
       </View>
 
-      {student && student.length !== 0 ?
+      {student && student.length !== 0 ? (
         <>
-          <View style={{ padding: 20, flex: 1 }}>
+          <View style={{padding: 20, flex: 1}}>
             <ScrollView showsVerticalScrollIndicator={false}>
-            <View>
-
-              <CustomDropDown
-                ddTitle={'Student'}
-                setSelectedSubject={setSelectedStudent}
-                selectedSubject={selectedStudent}
-                dropdownContainerStyle={{
-                  // backgroundColor: Theme.lightGray,
-                  paddingVertical: 17,
-                  borderColor: Theme.gray,
-                  borderWidth: 1,
-                }}
-                dropdownPlace={'Select Student'}
-                subject={student}
-                headingStyle={{
-                  color: Theme.black,
-                  fontSize: 14,
-                  fontWeight: '700',
-                }}
-              />
-
-              {selectedStudent && (
+              <View>
                 <CustomDropDown
-                  ddTitle={'Subject'}
-                  selectedSubject={selectedSubject}
-                  setSelectedSubject={setSelectedSubject}
-                  // setSelectedSubject={handleSubjectDropdownOpen}
+                  ddTitle={'Student'}
+                  setSelectedSubject={setSelectedStudent}
+                  selectedSubject={selectedStudent}
                   dropdownContainerStyle={{
                     // backgroundColor: Theme.lightGray,
                     paddingVertical: 17,
                     borderColor: Theme.gray,
                     borderWidth: 1,
-                    // borderBottomWidth: 0,
                   }}
-                  dropdownPlace={'Select Subject '}
-                  subject={subject}
+                  dropdownPlace={'Select Student'}
+                  subject={student}
                   headingStyle={{
                     color: Theme.black,
                     fontSize: 14,
                     fontWeight: '700',
                   }}
                 />
-              )}
-            </View>
 
-              {
-                selectedSubject?.subject &&
-                <Text style={{color:'black'}}>{selectedSubject?.subject} Total classes are {selectedSubject?.classFrequency}. 
-                 you have to schedule remaining classes {selectedSubject?.remaining_classes}
-                </Text>     
-              }
-
-
-              <View style={{marginBottom:100}}>
-            <FlatList data={classes} renderItem={renderClasses} />
+                {selectedStudent && (
+                  <CustomDropDown
+                    ddTitle={'Subject'}
+                    selectedSubject={selectedSubject}
+                    setSelectedSubject={setSelectedSubject}
+                    // setSelectedSubject={handleSubjectDropdownOpen}
+                    dropdownContainerStyle={{
+                      // backgroundColor: Theme.lightGray,
+                      paddingVertical: 17,
+                      borderColor: Theme.gray,
+                      borderWidth: 1,
+                      // borderBottomWidth: 0,
+                    }}
+                    dropdownPlace={'Select Subject '}
+                    subject={subject}
+                    headingStyle={{
+                      color: Theme.black,
+                      fontSize: 14,
+                      fontWeight: '700',
+                    }}
+                  />
+                )}
               </View>
-               </ScrollView>
-            {hideMoreClassesButton &&
-            <View
-              style={{
-                width: '100%',
-                alignItems: 'center',
-                marginTop: 20,
-                marginBottom: 60,
-              }}>
-              <TouchableOpacity
-                onPress={() => addClass()}
+
+              {selectedSubject?.subject && (
+                <Text style={{color: 'black'}}>
+                  {selectedSubject?.subject} Total classes are{' '}
+                  {selectedSubject?.classFrequency}. you have to schedule
+                  remaining classes {selectedSubject?.remaining_classes}
+                </Text>
+              )}
+
+              <View style={{marginBottom: 100}}>
+                <FlatList data={classes} renderItem={renderClasses} />
+              </View>
+            </ScrollView>
+            {hideMoreClassesButton && (
+              <View
                 style={{
-                  backgroundColor: Theme.gray,
-                  padding: 15,
-                  borderRadius: 10,
                   width: '100%',
+                  alignItems: 'center',
+                  marginTop: 20,
+                  marginBottom: 60,
                 }}>
+                <TouchableOpacity
+                  onPress={() => addClass()}
+                  style={{
+                    backgroundColor: Theme.gray,
+                    padding: 15,
+                    borderRadius: 10,
+                    width: '100%',
+                  }}>
                   {/* {selectedSubject?.remaining_classes
                   } */}
-                 
-                <Text
-                  style={{ textAlign: 'center', fontSize: 14, color: Theme.white }}>
-                  {/* {classes.length > 0  ? 'Add More Classes' : 'Add Classes'} */}
-                  {classes.length > 0  ? 'Add More Classes' : 'Add Classes'}
-                </Text>
-              </TouchableOpacity>
-            </View>
-                }
+
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontSize: 14,
+                      color: Theme.white,
+                    }}>
+                    {/* {classes.length > 0  ? 'Add More Classes' : 'Add Classes'} */}
+                    {classes.length > 0 ? 'Add More Classes' : 'Add Classes'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
 
             {show && (
               <DateTimePicker
@@ -627,7 +634,6 @@ function AddClass({ navigation }: any) {
                 onChange={onChange}
               />
             )}
-           
           </View>
 
           <View
@@ -645,17 +651,18 @@ function AddClass({ navigation }: any) {
                 borderRadius: 10,
                 width: '95%',
               }}>
-              <Text style={{ textAlign: 'center', fontSize: 14, color: Theme.white }}>
+              <Text
+                style={{textAlign: 'center', fontSize: 14, color: Theme.white}}>
                 Confirm Class
               </Text>
             </TouchableOpacity>
           </View>
         </>
-        :
-        <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-          <Text style={{ color: 'black', }}> You have No Students</Text>
+      ) : (
+        <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
+          <Text style={{color: 'black'}}> You have No Students</Text>
         </View>
-      }
+      )}
       {/* <View style={{alignItems:'center',justifyContent:"center", flex:1}}>
       {student.length == 0 ? "" : }
       </View> */}

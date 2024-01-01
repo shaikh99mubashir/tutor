@@ -87,13 +87,16 @@ const Signup = ({navigation}: any) => {
         justifyContent: 'center',
         paddingHorizontal: 15,
       }}>
-      <Text style={[styles.textType1,{fontSize: 25, color: 'black'}]}>
+      <Text style={[styles.textType1, {fontSize: 25, color: 'black'}]}>
         Get Yourself Registered
       </Text>
       <Text
-        style={[styles.textType1,{fontSize: 14, color: 'black', marginTop: 14, paddingRight: 15}]}>
-        Fill out Full Name Phone Number and Email field to get yourself registered with
-        sifuTutor.
+        style={[
+          styles.textType1,
+          {fontSize: 14, color: 'black', marginTop: 14, paddingRight: 15},
+        ]}>
+        Fill out Full Name Phone Number and Email field to get yourself
+        registered with sifuTutor.
       </Text>
       <View style={styles.container}>
         <TextInput
@@ -109,7 +112,7 @@ const Signup = ({navigation}: any) => {
             borderWidth: 1,
             padding: 10,
             color: Theme.black,
-            fontFamily: 'Circular Std Book'
+            fontFamily: 'Circular Std Book',
           }}
           onChangeText={text => {
             setFullName(text);
@@ -128,22 +131,35 @@ const Signup = ({navigation}: any) => {
             borderWidth: 1,
             padding: 10,
             color: Theme.black,
-            fontFamily: 'Circular Std Book'
+            fontFamily: 'Circular Std Book',
           }}
           onChangeText={text => {
             setEmail(text);
           }}
         />
 
-
-        <View style={[styles.phoneNumberView, { flexDirection: 'row', alignItems: 'center', gap: 20, paddingHorizontal: 15, paddingVertical: 5 }]}>
-          <Image source={require('../../Assets/Images/malalogo.png')} style={{ width: 30, height: 30 }} resizeMode='contain' />
+        <View
+          style={[
+            styles.phoneNumberView,
+            {
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 20,
+              paddingHorizontal: 15,
+              paddingVertical: 5,
+            },
+          ]}>
+          <Image
+            source={require('../../Assets/Images/malalogo.png')}
+            style={{width: 30, height: 30}}
+            resizeMode="contain"
+          />
           <Text style={styles.textType3}>+60</Text>
           <TextInput
-            placeholder='Enter Your Mobile Number'
+            placeholder="Enter Your Mobile Number"
             placeholderTextColor={Theme.black}
-            keyboardType='number-pad'
-            style={[styles.textType3, { color: 'black' }]}
+            keyboardType="number-pad"
+            style={[styles.textType3, {color: 'black'}]}
             onChangeText={text => {
               setPhoneNumber(text);
             }}
@@ -186,7 +202,7 @@ const Signup = ({navigation}: any) => {
           onPress={() => handleLoginPress()}
           style={{
             alignItems: 'center',
-            padding: 10,
+            padding: 10,  
             backgroundColor: Theme.darkGray,
             borderRadius: 10,
           }}>
@@ -205,26 +221,33 @@ const Signup = ({navigation}: any) => {
         </TouchableOpacity>
       </View>
       <View
+        style={{
+          width: '100%',
+          alignItems: 'center',
+          padding: 10,
+          flexDirection: 'row',
+          justifyContent: 'center',
+        }}>
+        <Text
           style={{
-            width: '100%',
-            alignItems: 'center',
-            padding: 10,
-            flexDirection: 'row',
-            justifyContent: 'center',
+            color: Theme.black,
+            fontSize: 14,
+            fontWeight: '400',
+            fontFamily: 'Circular Std Book',
           }}>
+          Already have an account?{' '}
+        </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
           <Text
             style={{
               color: Theme.black,
-              fontSize: 14,
-              fontWeight: '400',
-              fontFamily: 'Circular Std Book'
+              fontWeight: 'bold',
+              fontFamily: 'Circular Std Book',
             }}>
-            Already have an account?{' '}
+            Login
           </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-            <Text style={{ color: Theme.black, fontWeight: 'bold',fontFamily: 'Circular Std Book' }}>Login</Text>
-          </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -249,11 +272,17 @@ const styles = StyleSheet.create({
     autoFocus: true,
   },
   textType1: {
-    fontWeight: '500', fontSize: 24, color: Theme.Dune, fontFamily: 'Circular Std Book', lineHeight: 24,
-    fontStyle: 'normal'
+    fontWeight: '500',
+    fontSize: 24,
+    color: Theme.Dune,
+    fontFamily: 'Circular Std Book',
+    lineHeight: 24,
+    fontStyle: 'normal',
   },
   textType3: {
-    color: Theme.Dune, fontWeight: '500', fontSize: 16,
+    color: Theme.Dune,
+    fontWeight: '500',
+    fontSize: 16,
     fontFamily: 'Circular Std Book',
     fontStyle: 'normal',
   },
