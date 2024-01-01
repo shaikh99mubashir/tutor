@@ -5,15 +5,17 @@ import {
   TouchableOpacity,
   View,
   ActivityIndicator,
+  Image,
+  TextInput,
 } from 'react-native';
-import React, {useRef, useState, useEffect} from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import PhoneInput from 'react-native-phone-number-input';
-import {Theme} from '../../constant/theme';
+import { Theme } from '../../constant/theme';
 import axios from 'axios';
-import {Base_Uri} from '../../constant/BaseUri';
-import {convertArea} from 'geolib';
+import { Base_Uri } from '../../constant/BaseUri';
+import { convertArea } from 'geolib';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const Login = ({navigation}: any) => {
+const Login = ({ navigation }: any) => {
   let [phoneNumber, setPhoneNumber] = useState('');
 
   const [loading, setLoading] = useState(false);
@@ -24,7 +26,7 @@ const Login = ({navigation}: any) => {
     setLoading(true);
     axios
       .get(`${Base_Uri}loginAPI/${phoneNumber}`)
-      .then(({data}) => {
+      .then(({ data }) => {
         if (data.status == 404) {
           setLoading(false);
           ToastAndroid.show(data.errorMessage, ToastAndroid.SHORT);
@@ -32,7 +34,7 @@ const Login = ({navigation}: any) => {
         }
         if (data.status == 200) {
           ToastAndroid.show(
-            'Verification Code Successfully send to your registered email',
+            'Verification Code Successfully send to this mobile number',
             ToastAndroid.SHORT,
           );
           navigation.navigate('Verification', data);
@@ -41,8 +43,8 @@ const Login = ({navigation}: any) => {
       })
       .catch(error => {
         setLoading(false);
-        console.log("error",error);
-        
+        console.log("error", error);
+
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
@@ -55,18 +57,31 @@ const Login = ({navigation}: any) => {
         justifyContent: 'center',
         paddingHorizontal: 15,
       }}>
-      <Text style={{fontSize: 25, color: 'black'}}>
+      <Text style={{ fontSize: 26, color: 'black', fontFamily: 'Circular Std Book' }}>
         Enter your{'\n'}mobile number
       </Text>
-      <Text style={{fontSize: 14, color: 'black', marginTop: 14}}>
-        A verification code will be sent{'\n'}to your registered email
+      <Text style={{ fontSize: 14, color: 'black', marginTop: 14, fontFamily: 'Circular Std Book' }}>
+        A verification code will be sent to{'\n'}this mobile Number
       </Text>
       <View style={styles.container}>
-        <PhoneInput
+        <View style={[styles.phoneNumberView, { flexDirection: 'row', alignItems: 'center', gap: 20, paddingHorizontal: 15, paddingVertical: 5 }]}>
+          <Image source={require('../../Assets/Images/malalogo.png')} style={{ width: 30, height: 30 }} resizeMode='contain' />
+          <Text style={styles.textType3}>+60</Text>
+          <TextInput
+            placeholder='Enter Your Mobile Number'
+            placeholderTextColor={Theme.black}
+            keyboardType='number-pad'
+            style={[styles.textType3, { color: 'black' }]}
+            onChangeText={text => {
+              setPhoneNumber(text);
+            }}
+          />
+        </View>
+        {/* <PhoneInput
           ref={phoneInput}
           placeholder="Enter Your Number"
           defaultValue={phoneNumber}
-          defaultCode="PK"
+          defaultCode="MY"
           layout="first"
           autoFocus={true}
           textInputStyle={{color: Theme.black, height: 50}}
@@ -82,7 +97,7 @@ const Login = ({navigation}: any) => {
           onChangeFormattedText={text => {
             setPhoneNumber(text);
           }}
-        />
+        /> */}
       </View>
       {/* Submit Button */}
 
@@ -132,7 +147,7 @@ const Login = ({navigation}: any) => {
             Don't have an account?{' '}
           </Text>
           <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-            <Text style={{color: Theme.black, fontWeight: 'bold'}}>Signup</Text>
+            <Text style={{ color: Theme.black, fontWeight: 'bold' }}>Signup</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -158,5 +173,14 @@ const styles = StyleSheet.create({
     color: '#E5E5E5',
     flexShrink: 22,
     autoFocus: true,
+  },
+  textType1: {
+    fontWeight: '500', fontSize: 24, color: Theme.Dune, fontFamily: 'Circular Std Book', lineHeight: 24,
+    fontStyle: 'normal'
+  },
+  textType3: {
+    color: Theme.Dune, fontWeight: '500', fontSize: 16,
+    fontFamily: 'Circular Std Book',
+    fontStyle: 'normal',
   },
 });

@@ -6,6 +6,7 @@ import {
   View,
   ActivityIndicator,
   TextInput,
+  Image,
 } from 'react-native';
 import React, {useRef, useState, useEffect} from 'react';
 import PhoneInput from 'react-native-phone-number-input';
@@ -18,10 +19,15 @@ const Signup = ({navigation}: any) => {
   let [phoneNumber, setPhoneNumber] = useState('');
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
+  const [fullName, setFullName] = useState('');
 
   const phoneInput = useRef(null);
 
   const handleLoginPress = () => {
+    if (!fullName) {
+      ToastAndroid.show('Kindly Enter Full Name', ToastAndroid.SHORT);
+      return;
+    }
     if (!email) {
       ToastAndroid.show('Kindly Enter Email Address', ToastAndroid.SHORT);
       return;
@@ -43,6 +49,7 @@ const Signup = ({navigation}: any) => {
 
     const formData = new FormData();
 
+    formData.append('fullName', fullName);
     formData.append('email', email);
     formData.append('phoneNumber', phoneNumber);
 
@@ -80,15 +87,34 @@ const Signup = ({navigation}: any) => {
         justifyContent: 'center',
         paddingHorizontal: 15,
       }}>
-      <Text style={{fontSize: 25, color: 'black'}}>
+      <Text style={[styles.textType1,{fontSize: 25, color: 'black'}]}>
         Get Yourself Registered
       </Text>
       <Text
-        style={{fontSize: 14, color: 'black', marginTop: 14, paddingRight: 15}}>
-        Fill out phoneNumber and email field to get yourself registered with
+        style={[styles.textType1,{fontSize: 14, color: 'black', marginTop: 14, paddingRight: 15}]}>
+        Fill out Full Name Phone Number and Email field to get yourself registered with
         sifuTutor.
       </Text>
       <View style={styles.container}>
+        <TextInput
+          placeholder="Enter Full Name"
+          placeholderTextColor={Theme.gray}
+          style={{
+            height: 60,
+            backgroundColor: 'white',
+            borderRadius: 10,
+            fontSize: 16,
+            borderColor: Theme.black,
+            marginBottom: 10,
+            borderWidth: 1,
+            padding: 10,
+            color: Theme.black,
+            fontFamily: 'Circular Std Book'
+          }}
+          onChangeText={text => {
+            setFullName(text);
+          }}
+        />
         <TextInput
           placeholder="Enter Your Email"
           placeholderTextColor={Theme.gray}
@@ -102,13 +128,29 @@ const Signup = ({navigation}: any) => {
             borderWidth: 1,
             padding: 10,
             color: Theme.black,
+            fontFamily: 'Circular Std Book'
           }}
           onChangeText={text => {
             setEmail(text);
           }}
         />
 
-        <PhoneInput
+
+        <View style={[styles.phoneNumberView, { flexDirection: 'row', alignItems: 'center', gap: 20, paddingHorizontal: 15, paddingVertical: 5 }]}>
+          <Image source={require('../../Assets/Images/malalogo.png')} style={{ width: 30, height: 30 }} resizeMode='contain' />
+          <Text style={styles.textType3}>+60</Text>
+          <TextInput
+            placeholder='Enter Your Mobile Number'
+            placeholderTextColor={Theme.black}
+            keyboardType='number-pad'
+            style={[styles.textType3, { color: 'black' }]}
+            onChangeText={text => {
+              setPhoneNumber(text);
+            }}
+          />
+        </View>
+
+        {/* <PhoneInput
           ref={phoneInput}
           placeholder="Enter Your Number"
           defaultValue={phoneNumber}
@@ -128,7 +170,7 @@ const Signup = ({navigation}: any) => {
           onChangeFormattedText={text => {
             setPhoneNumber(text);
           }}
-        />
+        /> */}
       </View>
       {/* Submit Button */}
 
@@ -162,6 +204,27 @@ const Signup = ({navigation}: any) => {
           )}
         </TouchableOpacity>
       </View>
+      <View
+          style={{
+            width: '100%',
+            alignItems: 'center',
+            padding: 10,
+            flexDirection: 'row',
+            justifyContent: 'center',
+          }}>
+          <Text
+            style={{
+              color: Theme.black,
+              fontSize: 14,
+              fontWeight: '400',
+              fontFamily: 'Circular Std Book'
+            }}>
+            Already have an account?{' '}
+          </Text>
+          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+            <Text style={{ color: Theme.black, fontWeight: 'bold',fontFamily: 'Circular Std Book' }}>Login</Text>
+          </TouchableOpacity>
+        </View>
     </View>
   );
 };
@@ -184,5 +247,14 @@ const styles = StyleSheet.create({
     color: '#E5E5E5',
     flexShrink: 22,
     autoFocus: true,
+  },
+  textType1: {
+    fontWeight: '500', fontSize: 24, color: Theme.Dune, fontFamily: 'Circular Std Book', lineHeight: 24,
+    fontStyle: 'normal'
+  },
+  textType3: {
+    color: Theme.Dune, fontWeight: '500', fontSize: 16,
+    fontFamily: 'Circular Std Book',
+    fontStyle: 'normal',
   },
 });

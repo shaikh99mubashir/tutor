@@ -53,7 +53,7 @@ function More({ navigation }: any) {
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <View style={{ paddingHorizontal: 15 }}>
           {/* Profile */}
-          {/* <TouchableOpacity
+          <TouchableOpacity
             onPress={() => navigation.navigate('Profile')}
             activeOpacity={0.8}
             style={{
@@ -91,7 +91,7 @@ function More({ navigation }: any) {
               style={{ width: 20, height: 20 }}
               resizeMode="contain"
             />
-          </TouchableOpacity> */}
+          </TouchableOpacity>
           {/* notification */}
           <TouchableOpacity
             onPress={() => navigation.navigate('Notifications')}
