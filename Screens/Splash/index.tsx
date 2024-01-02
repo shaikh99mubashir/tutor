@@ -1,4 +1,11 @@
-import {Image, StyleSheet, Text, View, Dimensions, ToastAndroid} from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  View,
+  Dimensions,
+  ToastAndroid,
+} from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
@@ -6,12 +13,10 @@ import axios from 'axios';
 import {Base_Uri} from '../../constant/BaseUri';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 const Splash = ({navigation}: any) => {
-
-
-  const [tutorDetail, setTutorDetail] = useState<any>();
+  // const [tutorDetail, setTutorDetails] = useState<any>();
 
   const tutorDetailsCont = useContext(TutorDetailsContext);
-  const {tutorDetails} = tutorDetailsCont;
+  const {tutorDetails, setTutorDetail} = tutorDetailsCont;
 
   console.log(tutorDetails, 'myDetails');
 
@@ -33,29 +38,38 @@ const Splash = ({navigation}: any) => {
 
       if (authData) {
         let tutorData = JSON.parse(authData);
-        console.log('tutorData',tutorData);
+        console.log('tutorData', tutorData);
 
         axios
           .get(`${Base_Uri}getTutorDetailByID/${tutorData?.tutorID}`)
           .then(res => {
-            console.log("res---->");
-            
+            console.log('res---->');
+
             let tutorData = res.data;
+            setTutorDetail(tutorData?.tutorDetailById[0]);
             if (tutorData?.tutorDetailById[0]?.status === 'unverified') {
-              navigation.replace('JobTicket')
-              console.log(tutorData?.tutorDetailById[0]?.status,'splash')
-              return
+              navigation.replace('JobTicket');
+              console.log(tutorData?.tutorDetailById[0]?.status, 'splash');
+              return;
             }
-            if(tutorData?.tutorDetailById[0]?.status === 'verified'){
-              navigation.replace('Main')
-              console.log(tutorData?.tutorDetailById[0]?.status,'splash')
-              return
+            if (tutorData?.tutorDetailById[0]?.status === 'verified') {
+              navigation.replace('Main', {
+                screen: 'Home',
+              });
+              console.log(tutorData?.tutorDetailById[0]?.status, 'splash');
+              return;
             }
-            if (tutorData?.tutorDetailById[0]?.status === 'terminated' || tutorData?.tutorDetailById[0]?.status === 'block') {
+            if (
+              tutorData?.tutorDetailById[0]?.status === 'terminated' ||
+              tutorData?.tutorDetailById[0]?.status === 'block'
+            ) {
               AsyncStorage.removeItem('loginAuth');
-              navigation.replace('Login')
-              console.log(tutorData?.tutorDetailById[0]?.status,'terminated or block');
-              return
+              navigation.replace('Login');
+              console.log(
+                tutorData?.tutorDetailById[0]?.status,
+                'terminated or block',
+              );
+              return;
             }
             // if (
             //   !tutorData.tutorDetailById[0]?.full_name &&
@@ -85,10 +99,11 @@ const Splash = ({navigation}: any) => {
             //     ],
             //   });
             // }
-          }).catch((error)=>{
-            console.log('error',error);
-            ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
           })
+          .catch(error => {
+            console.log('error', error);
+            ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+          });
         return;
       }
 
@@ -98,7 +113,6 @@ const Splash = ({navigation}: any) => {
       }
       navigation.replace('OnBoarding');
     }, 3000);
-    
   };
   useEffect(() => {
     navigateToHomeScreen();
