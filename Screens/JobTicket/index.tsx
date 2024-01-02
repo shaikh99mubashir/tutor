@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect, useContext} from 'react';
+import React, { useState, useCallback, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -16,11 +16,11 @@ import {
   StyleSheet,
 } from 'react-native';
 import Header from '../../Component/Header';
-import {Theme} from '../../constant/theme';
+import { Theme } from '../../constant/theme';
 import CustomTabView from '../../Component/CustomTabView';
-import {Base_Uri} from '../../constant/BaseUri';
+import { Base_Uri } from '../../constant/BaseUri';
 import axios from 'axios';
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage, {
   useAsyncStorage,
 } from '@react-native-async-storage/async-storage';
@@ -29,21 +29,21 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import bannerContext from '../../context/bannerContext';
 import Status from '../Status';
 
-function JobTicket({navigation, route}: any) {
+function JobTicket({ navigation, route }: any) {
   const focus = useIsFocused();
 
   let data = route.params;
 
   const bannerCont = useContext(bannerContext);
 
-  let {jobTicketBanner, setJobTicketBanner} = bannerCont;
+  let { jobTicketBanner, setJobTicketBanner } = bannerCont;
 
   const [isSearchItems, setIsSearchItems] = useState(false);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const tutor = useContext(TutorDetailsContext);
-
-  let {tutorDetails} = tutor;
+  const [modalVisible, setModalVisible] = useState(false);
+  let { tutorDetails } = tutor;
 
   const [currentTab, setCurrentTab]: any = useState([
     {
@@ -66,20 +66,20 @@ function JobTicket({navigation, route}: any) {
   const activateTab = (index: any) => {
     setCurrentTab(
       currentTab &&
-        currentTab.length > 0 &&
-        currentTab.map((e: any, i: any) => {
-          if (e.index == index) {
-            return {
-              ...e,
-              selected: true,
-            };
-          } else {
-            return {
-              ...e,
-              selected: false,
-            };
-          }
-        }),
+      currentTab.length > 0 &&
+      currentTab.map((e: any, i: any) => {
+        if (e.index == index) {
+          return {
+            ...e,
+            selected: true,
+          };
+        } else {
+          return {
+            ...e,
+            selected: false,
+          };
+        }
+      }),
     );
   };
   const [openData, setOpenData] = useState<any>([
@@ -159,15 +159,48 @@ function JobTicket({navigation, route}: any) {
     }
   }, [refresh]);
 
+  // const [tutorDetail, setTutorDetail] = useState<any>();
+
+  // const tutorDetailsCont = useContext(TutorDetailsContext);
+  // const {tutorPersonalDetails} = tutorDetailsCont;
+
+  // console.log(tutorPersonalDetails, 'myDetails');
+
+  // useEffect(() => {
+  //   try {
+  //     let tutorData: any = AsyncStorage.getItem('tutorData');
+  //     tutorData = JSON.parse(tutorData);
+  //     setTutorDetail(tutorData);
+  //     console.log('Bottom Navigation tutor data', tutorData);
+  //   } catch (error) {
+  //     console.error('Error retrieving or parsing tutor data:', error);
+  //   }
+  // }, []);
+
+
   const getTicketsData = async () => {
     setLoading(true);
-
+    // setModalVisible(true);
+    axios
+    .get(`${Base_Uri}getTutorDetailByID/${tutorDetails?.tutorId}`)
+    .then(res => {
+      let tutorData = res.data;
+      // console.log("tutorData",tutorData);
+      
+      setLoading(false);
+      console.log(tutorData?.tutorDetailById[0]?.status, 'check before if condition Job ticket');
+      if (tutorData?.tutorDetailById[0]?.status === 'verified') {
+        // setModalVisible(true);
+        console.log(tutorData?.tutorDetailById[0]?.status, 'fdgfdgfd verified check on job ticket');
+        return
+      }
+    });
     let filter: any = await AsyncStorage.getItem('filter');
 
     if (filter) {
       filter = JSON.parse(filter);
 
-      let {Category, subject, mode, state, city} = filter;
+      let { Category, subject, mode, state, city } = filter;
       let categoryID = Category.id ?? 'noFilter';
       let subjectID = subject.id ?? 'noFilter';
       let myMode = mode.subject ?? 'noFilter';
@@ -178,32 +211,32 @@ function JobTicket({navigation, route}: any) {
 
       axios
         .get(`${Base_Uri}ticketsAPI/${tutorDetails?.tutorId}`)
-        .then(({data}) => {
-          let {tickets} = data;
+        .then(({ data }) => {
+          let { tickets } = data;
           axios
             .get(`${Base_Uri}getTutorOffers/${tutorDetails?.tutorId}`)
-            .then(({data}) => {
-              let {getTutorOffers} = data;
+            .then(({ data }) => {
+              let { getTutorOffers } = data;
               const filteredTickets = tickets.filter(
                 (ticket: any) =>
                   !getTutorOffers.some((offer: any) => offer.id === ticket.id),
               );
               setOpenData(
                 filteredTickets.length > 0 &&
-                  filteredTickets.filter((e: any, i: number) => {
-                    // console.log("e?.cityID",e);
+                filteredTickets.filter((e: any, i: number) => {
+                  // console.log("e?.cityID",e);
 
-                    return (
-                      (myMode == 'noFilter' ||
-                        e?.mode?.toString()?.toLowerCase() ==
-                          myMode?.toString()?.toLowerCase()) &&
-                      (subjectID == 'noFilter' || e?.subject_id == subjectID) &&
-                      (categoryID == 'noFilter' ||
-                        e?.categoryID == categoryID) &&
-                      (myCity == 'noFilter' || e?.cityID == myCity) &&
-                      (myState == 'noFilter' || e?.stateID == myState)
-                    );
-                  }),
+                  return (
+                    (myMode == 'noFilter' ||
+                      e?.mode?.toString()?.toLowerCase() ==
+                      myMode?.toString()?.toLowerCase()) &&
+                    (subjectID == 'noFilter' || e?.subject_id == subjectID) &&
+                    (categoryID == 'noFilter' ||
+                      e?.categoryID == categoryID) &&
+                    (myCity == 'noFilter' || e?.cityID == myCity) &&
+                    (myState == 'noFilter' || e?.stateID == myState)
+                  );
+                }),
               );
               setLoading(false);
             })
@@ -225,13 +258,13 @@ function JobTicket({navigation, route}: any) {
       let tutor_id = tutorData?.tutorID;
       axios
         .get(`${Base_Uri}ticketsAPI/${tutor_id}`)
-        .then(async ({data}) => {
-          let {tickets} = data;
+        .then(async ({ data }) => {
+          let { tickets } = data;
           axios
             .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
-            .then(({data}) => {
-              let {getTutorOffers} = data;
-              console.log(tickets, 'tickets');
+            .then(({ data }) => {
+              let { getTutorOffers } = data;
+              // console.log(tickets, 'tickets');
 
               const filteredTickets = tickets.filter(
                 (ticket: any) =>
@@ -271,8 +304,8 @@ function JobTicket({navigation, route}: any) {
     if (status) {
       axios
         .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
-        .then(({data}) => {
-          let {getTutorOffers} = data;
+        .then(({ data }) => {
+          let { getTutorOffers } = data;
 
           let tutorOffer =
             getTutorOffers &&
@@ -296,8 +329,8 @@ function JobTicket({navigation, route}: any) {
 
     axios
       .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
-      .then(({data}) => {
-        let {getTutorOffers} = data;
+      .then(({ data }) => {
+        let { getTutorOffers } = data;
         setAppliedData(getTutorOffers);
         setLoading(false);
       })
@@ -309,21 +342,15 @@ function JobTicket({navigation, route}: any) {
 
   const getAssignedData = async () => {
     setLoading(true);
-
     let tutorData: any = await AsyncStorage.getItem('loginAuth');
-
     tutorData = JSON.parse(tutorData);
-
     let tutor_id = tutorData?.tutorID;
-
-    console.log('tutor_id===============>', tutor_id);
-
     axios
       .get(`${Base_Uri}assignedTicketsAPI/${tutor_id}`)
-      .then(({data}) => {
-        let {tickets} = data;
+      .then(({ data }) => {
+        let { tickets } = data;
         setAssignedData(tickets);
-        console.log('tickets===>', tickets);
+        // console.log('tickets===>', tickets);
 
         setLoading(false);
       })
@@ -336,12 +363,18 @@ function JobTicket({navigation, route}: any) {
       });
   };
 
+
+
   useEffect(() => {
     getTicketsData();
     getAppliedData();
     getAssignedData();
   }, [refresh, route]);
 
+  const HandelGoToDashboard = () => {
+    setModalVisible(false)
+    navigation.replace('Splash')
+  }
   const checkSearchItems = () => {
     searchText && foundName.length == 0 && setIsSearchItems(true);
   };
@@ -414,8 +447,8 @@ function JobTicket({navigation, route}: any) {
     return `${twelveHour}:${minuteStr} ${period}`;
   }
 
-  const renderOpenData: any = ({item}: any) => {
-    console.log('====================================renderOpenData', item);
+  const renderOpenData: any = ({ item }: any) => {
+    // console.log('====================================renderOpenData', item);
     return (
       <>
         <TouchableOpacity
@@ -440,18 +473,18 @@ function JobTicket({navigation, route}: any) {
             }}>
             <View>
               <Text style={styles.textType3}>{item?.jtuid}</Text>
-              <Text style={[styles.textType1, {lineHeight: 30}]}>
+              <Text style={[styles.textType1, { lineHeight: 30 }]}>
                 RM {item?.price}
               </Text>
               <View
-                style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
+                style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
                 <Image source={require('../../Assets/Images/mapicon.png')} />
-                <Text style={[styles.textType3, {color: '#003E9C'}]}>
+                <Text style={[styles.textType3, { color: '#003E9C' }]}>
                   {item?.city}
                 </Text>
               </View>
             </View>
-            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
               <Text
                 style={[
                   styles.textType3,
@@ -490,7 +523,7 @@ function JobTicket({navigation, route}: any) {
                 <Image source={require('../../Assets/Images/subIcon.png')} />
                 <Text style={styles.textType3}>Subject</Text>
               </View>
-              <Text style={[styles.textType1, {fontSize: 18}]}>
+              <Text style={[styles.textType1, { fontSize: 18 }]}>
                 {item?.subject_name}
               </Text>
             </View>
@@ -511,7 +544,7 @@ function JobTicket({navigation, route}: any) {
                 <Image source={require('../../Assets/Images/preftutor.png')} />
                 <Text style={styles.textType3}>Pref. Tutor</Text>
               </View>
-              <Text style={[styles.textType1, {fontSize: 18}]}>
+              <Text style={[styles.textType1, { fontSize: 18 }]}>
                 {item?.tutorPereference}
               </Text>
             </View>
@@ -532,13 +565,13 @@ function JobTicket({navigation, route}: any) {
                 <Image source={require('../../Assets/Images/level.png')} />
                 <Text style={styles.textType3}>Level</Text>
               </View>
-              <Text style={[styles.textType1, {fontSize: 18}]}>
+              <Text style={[styles.textType1, { fontSize: 18 }]}>
                 {item?.categoryName}
               </Text>
             </View>
           </View>
 
-          <View style={{flexDirection: 'row', gap: 10, marginTop: 15}}>
+          <View style={{ flexDirection: 'row', gap: 10, marginTop: 15 }}>
             <View
               style={{
                 backgroundColor: '#E6F2FF',
@@ -556,7 +589,7 @@ function JobTicket({navigation, route}: any) {
                 <Image
                   source={require('../../Assets/Images/scheduleicccon.png')}
                 />
-                <Text style={[styles.textType3, {color: '#298CFF'}]}>
+                <Text style={[styles.textType3, { color: '#298CFF' }]}>
                   {item?.classDayType}
                 </Text>
               </View>
@@ -576,7 +609,7 @@ function JobTicket({navigation, route}: any) {
                   gap: 10,
                 }}>
                 <Image source={require('../../Assets/Images/timeee.png')} />
-                <Text style={[styles.textType3, {color: '#298CFF'}]}>
+                <Text style={[styles.textType3, { color: '#298CFF' }]}>
                   {item?.classTime}
                 </Text>
               </View>
@@ -688,8 +721,8 @@ function JobTicket({navigation, route}: any) {
       </>
     );
   };
-  const renderCloseData = ({item}: any) => {
-    console.log('item', item);
+  const renderCloseData = ({ item }: any) => {
+    // console.log('item', item);
 
     return (
       <>
@@ -731,18 +764,18 @@ function JobTicket({navigation, route}: any) {
             }}>
             <View>
               <Text style={styles.textType3}>{item?.jtuid}</Text>
-              <Text style={[styles.textType1, {lineHeight: 30}]}>
+              <Text style={[styles.textType1, { lineHeight: 30 }]}>
                 RM {item?.price}
               </Text>
               <View
-                style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
+                style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
                 <Image source={require('../../Assets/Images/mapicon.png')} />
-                <Text style={[styles.textType3, {color: '#003E9C'}]}>
+                <Text style={[styles.textType3, { color: '#003E9C' }]}>
                   {item?.city}
                 </Text>
               </View>
             </View>
-            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
               <Text
                 style={[
                   styles.textType3,
@@ -781,7 +814,7 @@ function JobTicket({navigation, route}: any) {
                 <Image source={require('../../Assets/Images/subIcon.png')} />
                 <Text style={styles.textType3}>Subject</Text>
               </View>
-              <Text style={[styles.textType1, {fontSize: 18}]}>
+              <Text style={[styles.textType1, { fontSize: 18 }]}>
                 {item?.subject_name}
               </Text>
             </View>
@@ -802,7 +835,7 @@ function JobTicket({navigation, route}: any) {
                 <Image source={require('../../Assets/Images/preftutor.png')} />
                 <Text style={styles.textType3}>Pref. Tutor</Text>
               </View>
-              <Text style={[styles.textType1, {fontSize: 18}]}>
+              <Text style={[styles.textType1, { fontSize: 18 }]}>
                 {item?.tutorPereference}
               </Text>
             </View>
@@ -823,13 +856,13 @@ function JobTicket({navigation, route}: any) {
                 <Image source={require('../../Assets/Images/level.png')} />
                 <Text style={styles.textType3}>Level</Text>
               </View>
-              <Text style={[styles.textType1, {fontSize: 18}]}>
+              <Text style={[styles.textType1, { fontSize: 18 }]}>
                 {item?.categoryName}
               </Text>
             </View>
           </View>
 
-          <View style={{flexDirection: 'row', gap: 10, marginTop: 15}}>
+          <View style={{ flexDirection: 'row', gap: 10, marginTop: 15 }}>
             <View
               style={{
                 backgroundColor: '#E6F2FF',
@@ -847,7 +880,7 @@ function JobTicket({navigation, route}: any) {
                 <Image
                   source={require('../../Assets/Images/scheduleicccon.png')}
                 />
-                <Text style={[styles.textType3, {color: '#298CFF'}]}>
+                <Text style={[styles.textType3, { color: '#298CFF' }]}>
                   {item?.classDayType}
                 </Text>
               </View>
@@ -867,7 +900,7 @@ function JobTicket({navigation, route}: any) {
                   gap: 10,
                 }}>
                 <Image source={require('../../Assets/Images/timeee.png')} />
-                <Text style={[styles.textType3, {color: '#298CFF'}]}>
+                <Text style={[styles.textType3, { color: '#298CFF' }]}>
                   {item?.classTime}
                 </Text>
               </View>
@@ -975,7 +1008,7 @@ function JobTicket({navigation, route}: any) {
     );
   };
 
-  const renderAssignData = ({item}: any) => {
+  const renderAssignData = ({ item }: any) => {
     // console.log('====================================item',item);
     return (
       <TouchableOpacity
@@ -999,17 +1032,17 @@ function JobTicket({navigation, route}: any) {
           }}>
           <View>
             <Text style={styles.textType3}>{item?.jtuid}</Text>
-            <Text style={[styles.textType1, {lineHeight: 30}]}>
+            <Text style={[styles.textType1, { lineHeight: 30 }]}>
               RM {item?.price}
             </Text>
-            <View style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
               <Image source={require('../../Assets/Images/mapicon.png')} />
-              <Text style={[styles.textType3, {color: '#003E9C'}]}>
+              <Text style={[styles.textType3, { color: '#003E9C' }]}>
                 {item?.city}
               </Text>
             </View>
           </View>
-          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+          <View style={{ alignItems: 'center', justifyContent: 'center' }}>
             <Text
               style={[
                 styles.textType3,
@@ -1048,7 +1081,7 @@ function JobTicket({navigation, route}: any) {
               <Image source={require('../../Assets/Images/subIcon.png')} />
               <Text style={styles.textType3}>Subject</Text>
             </View>
-            <Text style={[styles.textType1, {fontSize: 18}]}>
+            <Text style={[styles.textType1, { fontSize: 18 }]}>
               {item?.subject_name}
             </Text>
           </View>
@@ -1069,7 +1102,7 @@ function JobTicket({navigation, route}: any) {
               <Image source={require('../../Assets/Images/preftutor.png')} />
               <Text style={styles.textType3}>Pref. Tutor</Text>
             </View>
-            <Text style={[styles.textType1, {fontSize: 18}]}>
+            <Text style={[styles.textType1, { fontSize: 18 }]}>
               {item?.tutorPereference}
             </Text>
           </View>
@@ -1090,13 +1123,13 @@ function JobTicket({navigation, route}: any) {
               <Image source={require('../../Assets/Images/level.png')} />
               <Text style={styles.textType3}>Level</Text>
             </View>
-            <Text style={[styles.textType1, {fontSize: 18}]}>
+            <Text style={[styles.textType1, { fontSize: 18 }]}>
               {item?.categoryName}
             </Text>
           </View>
         </View>
 
-        <View style={{flexDirection: 'row', gap: 10, marginTop: 15}}>
+        <View style={{ flexDirection: 'row', gap: 10, marginTop: 15 }}>
           <View
             style={{
               backgroundColor: '#E6F2FF',
@@ -1114,7 +1147,7 @@ function JobTicket({navigation, route}: any) {
               <Image
                 source={require('../../Assets/Images/scheduleicccon.png')}
               />
-              <Text style={[styles.textType3, {color: '#298CFF'}]}>
+              <Text style={[styles.textType3, { color: '#298CFF' }]}>
                 {item?.classDayType}
               </Text>
             </View>
@@ -1134,7 +1167,7 @@ function JobTicket({navigation, route}: any) {
                 gap: 10,
               }}>
               <Image source={require('../../Assets/Images/timeee.png')} />
-              <Text style={[styles.textType3, {color: '#298CFF'}]}>
+              <Text style={[styles.textType3, { color: '#298CFF' }]}>
                 {item?.classTime}
               </Text>
             </View>
@@ -1242,9 +1275,9 @@ function JobTicket({navigation, route}: any) {
   };
   const firstRoute = useCallback(() => {
     return (
-      <View style={{marginVertical: 20, marginBottom: 10}}>
+      <View style={{ marginVertical: 20, marginBottom: 10 }}>
         {/* Search */}
-        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <View
             style={{
               width: '100%',
@@ -1271,7 +1304,7 @@ function JobTicket({navigation, route}: any) {
             <TouchableOpacity onPress={() => navigation}>
               <Image
                 source={require('../../Assets/Images/search.png')}
-                style={{width: 20, height: 20}}
+                style={{ width: 20, height: 20 }}
               />
             </TouchableOpacity>
           </View>
@@ -1303,9 +1336,9 @@ function JobTicket({navigation, route}: any) {
 
   const secondRoute = useCallback(() => {
     return (
-      <View style={{marginVertical: 20, marginBottom: 10}}>
+      <View style={{ marginVertical: 20, marginBottom: 10 }}>
         {/* Search */}
-        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <View
             style={{
               width: '100%',
@@ -1322,12 +1355,12 @@ function JobTicket({navigation, route}: any) {
               placeholder="Search"
               placeholderTextColor="black"
               onChangeText={e => searchApplied(e)}
-              style={{width: '90%', padding: 8, color: 'black'}}
+              style={{ width: '90%', padding: 8, color: 'black' }}
             />
             <TouchableOpacity onPress={() => navigation}>
               <Image
                 source={require('../../Assets/Images/search.png')}
-                style={{width: 20, height: 20}}
+                style={{ width: 20, height: 20 }}
               />
             </TouchableOpacity>
           </View>
@@ -1340,7 +1373,7 @@ function JobTicket({navigation, route}: any) {
             keyExtractor={(items: any, index: number): any => index}
           />
         ) : (
-          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <Text
               style={{
                 fontWeight: 'bold',
@@ -1358,8 +1391,8 @@ function JobTicket({navigation, route}: any) {
 
   const thirdRoute = useCallback(() => {
     return (
-      <View style={{marginVertical: 20, marginBottom: 10}}>
-        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+      <View style={{ marginVertical: 20, marginBottom: 10 }}>
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <View
             style={{
               width: '100%',
@@ -1386,7 +1419,7 @@ function JobTicket({navigation, route}: any) {
             <TouchableOpacity onPress={() => navigation}>
               <Image
                 source={require('../../Assets/Images/search.png')}
-                style={{width: 20, height: 20}}
+                style={{ width: 20, height: 20 }}
               />
             </TouchableOpacity>
           </View>
@@ -1399,7 +1432,7 @@ function JobTicket({navigation, route}: any) {
             keyExtractor={(items: any, index: number): any => index}
           />
         ) : (
-          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <Text
               style={{
                 fontWeight: 'bold',
@@ -1421,7 +1454,7 @@ function JobTicket({navigation, route}: any) {
     setOpenPPModal(true);
     axios
       .get(`${Base_Uri}api/bannerAds`)
-      .then(({data}) => {})
+      .then(({ data }) => { })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
@@ -1458,7 +1491,7 @@ function JobTicket({navigation, route}: any) {
 
   const closeBannerModal = async () => {
     if (jobTicketBanner.displayOnce == 'on') {
-      let bannerData = {...jobTicketBanner};
+      let bannerData = { ...jobTicketBanner };
 
       let stringData = JSON.stringify(bannerData);
 
@@ -1471,11 +1504,11 @@ function JobTicket({navigation, route}: any) {
   };
 
   return loading ? (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator size={'large'} color={'black'} />
     </View>
   ) : (
-    <View style={{backgroundColor: Theme.white, height: '100%'}}>
+    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header
         tab={currentTab}
         title="Job Ticket"
@@ -1488,7 +1521,7 @@ function JobTicket({navigation, route}: any) {
         }
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled>
-        <View style={{paddingHorizontal: 15, marginTop: 20}}>
+        <View style={{ paddingHorizontal: 15, marginTop: 20 }}>
           <CustomTabView
             currentTab={currentTab}
             firstRoute={firstRoute}
@@ -1504,7 +1537,7 @@ function JobTicket({navigation, route}: any) {
       {Object.keys(jobTicketBanner).length > 0 &&
         (jobTicketBanner.tutorStatusCriteria == 'All' ||
           tutorDetails.status == 'verified') && (
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             <Modal
               visible={openPPModal}
               animationType="fade"
@@ -1541,7 +1574,7 @@ function JobTicket({navigation, route}: any) {
                   </TouchableOpacity>
                   {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
                   <Image
-                    source={{uri: jobTicketBanner.bannerImages}}
+                    source={{ uri: jobTicketBanner.bannerImages }}
                     style={{
                       width: Dimensions.get('screen').width / 1.05,
                       height: '90%',
@@ -1553,6 +1586,62 @@ function JobTicket({navigation, route}: any) {
             </Modal>
           </View>
         )}
+      <Modal visible={modalVisible} animationType="fade" transparent={true}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          }}>
+          <View
+            style={[
+              styles.modalContainer,
+              { padding: 30, marginHorizontal: 40 },
+            ]}>
+            <Text
+              style={{
+                color: Theme.darkGray,
+                fontSize: 16,
+                fontWeight: 'bold',
+                fontFamily: 'Circular Std Black',
+                lineHeight:30
+              }}>
+              You have been Verified!
+            </Text>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center',
+                gap: 10,
+                marginTop: 20,
+                marginBottom: 20,
+              }}>
+              <TouchableOpacity
+              onPress={()=> HandelGoToDashboard()}
+                activeOpacity={0.8}
+                style={{
+                  borderWidth: 1,
+                  paddingVertical: 10,
+                  borderRadius: 10,
+                  borderColor: Theme.lightGray,
+                  alignItems: 'center',
+                  width: '90%',
+                  backgroundColor:Theme.darkGray,
+                }}>
+                <Text
+                  style={{
+                    color:'white',
+                    fontSize: 14,
+                    fontFamily: 'Circular Std Book',
+                  }}>
+                  Go To Dashboard
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -1574,5 +1663,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontFamily: 'Circular Std',
     fontStyle: 'normal',
+  },
+  modalContainer: {
+    // flex: 1,
+    alignItems: 'center',
+    // justifyContent: 'center',
+    backgroundColor: '#fff',
+    borderColor: Theme.gray,
+    borderRadius: 10,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+  },
+  modalText: {
+    color: 'black',
+    fontSize: 12,
+    fontFamily: 'Poppins-Regular',
   },
 });

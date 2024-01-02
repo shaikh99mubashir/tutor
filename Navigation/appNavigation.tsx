@@ -67,7 +67,7 @@ function BottomNavigation({route}: any) {
   const initialRoute =
     tutorDetail?.tutorDetailById[0]?.status === 'unverified'
       ? 'JobTicket'
-      : 'Home';
+      : 'Main';
   const hideTabs =
     tutorDetail?.tutorDetailById[0]?.status === 'unverified'
       ? ['Schedule', 'Home', 'inbox']

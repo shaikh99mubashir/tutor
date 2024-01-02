@@ -7,7 +7,7 @@ import {
   ToastAndroid,
   ActivityIndicator,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Header from '../../Component/Header';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
@@ -17,11 +17,11 @@ import {
   useClearByFocusCell,
 } from 'react-native-confirmation-code-field';
 
-import {Theme} from '../../constant/theme';
-import {Base_Uri} from '../../constant/BaseUri';
+import { Theme } from '../../constant/theme';
+import { Base_Uri } from '../../constant/BaseUri';
 import axios from 'axios';
 
-const Verification = ({navigation, route}: any) => {
+const Verification = ({ navigation, route }: any) => {
   let data = route.params;
 
   const [user, setUser] = useState(false);
@@ -31,7 +31,7 @@ const Verification = ({navigation, route}: any) => {
   const [uploading, setUploading] = useState(false);
   const [codeError, setCodeError] = useState(false);
   const [value, setValue] = useState('');
-  const ref = useBlurOnFulfill({value, cellCount: CELL_COUNT});
+  const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue,
@@ -49,7 +49,7 @@ const Verification = ({navigation, route}: any) => {
 
     axios
       .get(`${Base_Uri}verificationCode/${value}`)
-      .then(({data}) => {
+      .then(({ data }) => {
         if (data?.status !== 200) {
           setLoading(false);
           ToastAndroid.show(data?.errorMessage, ToastAndroid.SHORT);
@@ -66,35 +66,46 @@ const Verification = ({navigation, route}: any) => {
             .then(res => {
               let tutorData = res.data;
               console.log(tutorData, 'data');
-
-              if (
-                !tutorData.tutorDetailById[0]?.full_name &&
-                !tutorData.tutorDetailById[0]?.displayName
-              ) {
-                navigation.reset({
-                  index: 0,
-                  routes: [
-                    {
-                      name: 'TutorDetails',
-                      params: {
-                        tutorData,
-                      },
-                    },
-                  ],
-                });
-              } else {
-                navigation.reset({
-                  index: 0,
-                  routes: [
-                    {
-                      name: 'Main',
-                      params: {
-                        data,
-                      },
-                    },
-                  ],
-                });
+              if (tutorData?.tutorDetailById[0]?.status === 'unverified' || tutorData?.tutorDetailById[0]?.status === 'verified') {
+                navigation.replace('Main')
+                console.log(tutorData?.tutorDetailById[0]?.status,'unverified or verified verification');
               }
+              else if (tutorData?.tutorDetailById[0]?.status === 'terminated' || tutorData?.tutorDetailById[0]?.status === 'block') {
+                AsyncStorage.removeItem('loginAuth');
+                navigation.replace('Login')
+                console.log(tutorData?.tutorDetailById[0]?.status,'terminated or block');
+              }
+              else {
+                // navigation.replace('JobTicket')
+              }
+              // if (
+              //   !tutorData.tutorDetailById[0]?.full_name &&
+              //   !tutorData.tutorDetailById[0]?.displayName
+              // ) {
+              //   navigation.reset({
+              //     index: 0,
+              //     routes: [
+              //       {
+              //         name: 'TutorDetails',
+              //         params: {
+              //           tutorData,
+              //         },
+              //       },
+              //     ],
+              //   });
+              // } else {
+              //   navigation.reset({
+              //     index: 0,
+              //     routes: [
+              //       {
+              //         name: 'Main',
+              //         params: {
+              //           data,
+              //         },
+              //       },
+              //     ],
+              //   });
+              // }
             });
         }
       })
@@ -105,13 +116,13 @@ const Verification = ({navigation, route}: any) => {
   };
 
   const handleResendPress = () => {
-    let {UserDetail} = data;
+    let { UserDetail } = data;
 
     setResendLoading(true);
 
     axios
       .get(`${Base_Uri}loginAPI/${UserDetail.phoneNumber}`)
-      .then(({data}) => {
+      .then(({ data }) => {
         if (data?.status == 200) {
           setResendLoading(false);
           ToastAndroid.show(
@@ -144,7 +155,7 @@ const Verification = ({navigation, route}: any) => {
         noSignUp
         title="Verification"
       />
-      <View style={{marginVertical: 10, paddingHorizontal: 15}}>
+      <View style={{ marginVertical: 10, paddingHorizontal: 15 }}>
         <Text
           style={{
             fontFamily: 'Poppins-Regular',
@@ -156,7 +167,7 @@ const Verification = ({navigation, route}: any) => {
           Enter Verification Code
         </Text>
       </View>
-      <View style={{paddingHorizontal: 15}}>
+      <View style={{ paddingHorizontal: 15 }}>
         <CodeField
           ref={ref}
           {...props}
@@ -167,7 +178,7 @@ const Verification = ({navigation, route}: any) => {
           rootStyle={styles.codeFieldRoot}
           keyboardType="number-pad"
           textContentType="oneTimeCode"
-          renderCell={({index, symbol, isFocused}) => (
+          renderCell={({ index, symbol, isFocused }) => (
             <Text
               key={index}
               style={[styles.cell, isFocused && styles.focusCell]}
@@ -177,7 +188,7 @@ const Verification = ({navigation, route}: any) => {
           )}
         />
       </View>
-      <View style={{alignItems: 'center', marginVertical: 20}}>
+      <View style={{ alignItems: 'center', marginVertical: 20 }}>
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => handleResendPress()}>
@@ -275,7 +286,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
     borderWidth: 1,
     borderRadius: 10,
-    backgroundColor:'#e6e9fa',
+    backgroundColor: '#e6e9fa',
     borderColor: Theme.darkGray,
     textAlign: 'center',
   },
