@@ -35,24 +35,29 @@ const CustomTabView = (Props: any): any => {
       <View style={{ marginBottom: 40, alignItems: 'center' }}>
         <View
           style={{
-            width: Dimensions.get('window').width / 1.1,
+            width: Dimensions.get('window').width / 1.08,
             alignItems: 'center',
             flexDirection: 'row',
-            gap: 10
+            gap: 10,
+            backgroundColor:Theme.lightGray,
+            borderRadius:10,
+            padding:5,
           }}>
           <TouchableOpacity
+          activeOpacity={0.8}
             onPress={() => activateTab(0)}
             style={{
-              width: '33%',
+              width: '49%',
               borderRadius: 10,
               paddingVertical: 5,
               borderColor: Theme.darkGray,
               // borderWidth:1,
-              borderBottomColor:
+              backgroundColor:
                 currentTab &&
                   currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
-                  ? Theme.darkGray
-                  : 'white',
+                  ? 'white'
+                  : Theme.lightGray,
+                  // backgroundColor:'white'
             }}>
             <Text
               style={[
@@ -65,7 +70,7 @@ const CustomTabView = (Props: any): any => {
                       )
                       ? 'black'
                       : Theme.gray,
-                  borderBottomWidth: 3,
+                  // borderBottomWidth: 3,
                   borderBottomColor:
                     currentTab &&
                       currentTab.some((e: any, i: any) => e.index == 0 && e.selected)
@@ -77,18 +82,24 @@ const CustomTabView = (Props: any): any => {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
+          activeOpacity={0.8}
             onPress={() => activateTab(1)}
             style={{
-              width: '33%',
+              width: '48%',
               borderRadius: 10,
               paddingVertical: 5,
               // borderWidth:1,
-              borderColor: Theme.gray,
+              // borderColor: Theme.gray,
               // backgroundColor:
               //   currentTab &&
               //   currentTab.some((e: any, i: any) => e.index == 1 && e.selected)
               //     ? Color.mainColor
               //     : 'white',
+              backgroundColor:
+                currentTab &&
+                  currentTab.some((e: any, i: any) => e.index == 1 && e.selected)
+                  ? 'white'
+                  : Theme.lightGray,
             }}>
             <Text
               style={[
@@ -101,7 +112,7 @@ const CustomTabView = (Props: any): any => {
                       )
                       ? 'black'
                       : Theme.gray,
-                  borderBottomWidth: 3,
+                  // borderBottomWidth: 3,
                   borderBottomColor:
                     currentTab &&
                       currentTab.some((e: any, i: any) => e.index == 1 && e.selected)
@@ -112,19 +123,24 @@ const CustomTabView = (Props: any): any => {
               {secondRouteTitle}
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => activateTab(2)}
             style={{
-              width: '30%',
+              width: '29%',
               borderRadius: 10,
               paddingVertical: 5,
               // borderWidth:1,
-              borderColor: Theme.gray,
+              // borderColor: Theme.gray,
               // backgroundColor:
               //   currentTab &&
               //   currentTab.some((e: any, i: any) => e.index == 1 && e.selected)
               //     ? Color.mainColor
               //     : 'white',
+              backgroundColor:
+              currentTab &&
+                currentTab.some((e: any, i: any) => e.index == 2 && e.selected)
+                ? 'white'
+                : Theme.lightGray,
             }}>
             <Text
               style={[
@@ -137,7 +153,7 @@ const CustomTabView = (Props: any): any => {
                       )
                       ? 'black'
                       : Theme.gray,
-                  borderBottomWidth: 3,
+                  // borderBottomWidth: 3,
                   borderBottomColor:
                     currentTab &&
                       currentTab.some((e: any, i: any) => e.index == 2 && e.selected)
@@ -147,7 +163,7 @@ const CustomTabView = (Props: any): any => {
               ]}>
               {thirdRouteTitle}
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         {currentTab &&
@@ -168,10 +184,10 @@ export default CustomTabView;
 
 const styles = StyleSheet.create({
   text: {
-    color: Theme.gray,
+    color: Theme.Dune,
     fontSize: 18,
-    fontWeight: '400',
+    // fontWeight: '400',
     textAlign: 'center',
-    fontFamily: 'Circular Std Black'
+    fontFamily: 'Circular Std Book'
   },
 });

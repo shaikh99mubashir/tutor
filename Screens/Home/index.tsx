@@ -987,12 +987,23 @@ function Home({navigation, route}: any) {
     return `${day} ${monthNames[monthIndex]} ${year}`;
   }
 
-  return !cancelledHours ? (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <ActivityIndicator size={'large'} color={Theme.black} />
-    </View>
-  ) : (
+  return (
+  // return !cancelledHours ? (
+  //   <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+  //     <ActivityIndicator size={'large'} color={Theme.black} />
+  //   </View>
+  // ) : (
     <View style={{flex: 1, backgroundColor: Theme.GhostWhite}}>
+          <Modal visible={refreshing} animationType="fade" transparent={true}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          }}>
+          <ActivityIndicator size={'large'} color={Theme.darkGray} />
+        </View>
+      </Modal>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useContext} from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -13,25 +13,25 @@ import {
   Linking,
   Modal,
 } from 'react-native';
-import {Theme} from '../../constant/theme';
+import { Theme } from '../../constant/theme';
 import CustomHeader from '../../Component/Header';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import axios from 'axios';
-import {Base_Uri} from '../../constant/BaseUri';
+import { Base_Uri } from '../../constant/BaseUri';
 import bannerContext from '../../context/bannerContext';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function Index({navigation}: any) {
+function Index({ navigation }: any) {
   let bannerCont = useContext(bannerContext);
 
-  let {inboxBanner, setInboxBanner} = bannerCont;
+  let { inboxBanner, setInboxBanner } = bannerCont;
 
   const tutorDetailsContext = useContext(TutorDetailsContext);
 
-  let {tutorDetails} = tutorDetailsContext;
+  let { tutorDetails } = tutorDetailsContext;
 
   const [inboxData, setInboxData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -39,7 +39,7 @@ function Index({navigation}: any) {
   const [refresh, setRefresh] = useState(false);
 
   const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
+    // setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
       setOpenPPModal(true);
@@ -52,9 +52,9 @@ function Index({navigation}: any) {
 
     axios
       .get(`${Base_Uri}api/news`)
-      .then(({data}) => {
+      .then(({ data }) => {
         setLoading(false);
-        let {news} = data;
+        let { news } = data;
 
         axios
           .get(`${Base_Uri}api/tutorNewsStatusList/${tutorDetails.tutorId}`)
@@ -88,7 +88,7 @@ function Index({navigation}: any) {
     setOpenPPModal(true);
     axios
       .get(`${Base_Uri}api/bannerAds`)
-      .then(({data}) => {
+      .then(({ data }) => {
         console.log('res', data.bannerAds);
       })
       .catch(error => {
@@ -102,7 +102,7 @@ function Index({navigation}: any) {
 
   const closeBannerModal = async () => {
     if (inboxBanner.displayOnce == 'on') {
-      let bannerData = {...inboxBanner};
+      let bannerData = { ...inboxBanner };
 
       let stringData = JSON.stringify(bannerData);
 
@@ -129,7 +129,7 @@ function Index({navigation}: any) {
       });
   };
 
-  const renderInboxData = ({item, index}: any): any => {
+  const renderInboxData = ({ item, index }: any): any => {
     return (
       <TouchableOpacity
         onPress={() => routeToInboxDetails(item)}
@@ -142,7 +142,7 @@ function Index({navigation}: any) {
           borderBottomColor: Theme.lightGray,
           width: '100%',
         }}>
-        <View style={{flexDirection: 'row', width: '70%'}}>
+        <View style={{ flexDirection: 'row', width: '70%' }}>
           <View
             style={{
               borderWidth: 1,
@@ -172,7 +172,7 @@ function Index({navigation}: any) {
             />
           </View>
 
-          <View style={{marginLeft: 10}}>
+          <View style={{ marginLeft: 10 }}>
             <Text
               style={{
                 fontSize: 16,
@@ -192,14 +192,14 @@ function Index({navigation}: any) {
               {item.status}
             </Text>
             <Text
-              style={{fontSize: 12, fontWeight: '500', color: Theme.gray}}
+              style={{ fontSize: 12, fontWeight: '500', color: Theme.gray }}
               numberOfLines={1}>
               {item.created_at}
             </Text>
           </View>
         </View>
 
-        <View style={{alignItems: 'center', justifyContent: 'center'}}>
+        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
           <AntDesign name="right" color={Theme.gray} size={15} />
         </View>
       </TouchableOpacity>
@@ -231,16 +231,16 @@ function Index({navigation}: any) {
       }
   };
 
-  return loading ? (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <ActivityIndicator size="large" color="black" />
-    </View>
-  ) : (
+  return (
+    //   <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    //     <ActivityIndicator size="large" color="black" />
+    //   </View>
+    // ) : (
     <ScrollView
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
-      style={{flex: 1, backgroundColor: Theme.white}}>
+      style={{ flex: 1, backgroundColor: Theme.white }}>
       <View>
         <CustomHeader title="Inbox" />
       </View>
@@ -249,7 +249,7 @@ function Index({navigation}: any) {
       {Object.keys(inboxBanner).length > 0 &&
         (inboxBanner.tutorStatusCriteria == 'All' ||
           tutorDetails.status == 'verified') && (
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             <Modal
               visible={openPPModal}
               animationType="fade"
@@ -286,7 +286,7 @@ function Index({navigation}: any) {
                   </TouchableOpacity>
                   {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
                   <Image
-                    source={{uri: inboxBanner.bannerImage}}
+                    source={{ uri: inboxBanner.bannerImage }}
                     style={{
                       width: Dimensions.get('screen').width / 1.1,
                       height: '80%',
@@ -298,6 +298,16 @@ function Index({navigation}: any) {
             </Modal>
           </View>
         )}
+      <Modal visible={loading} animationType="fade" transparent={true}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          }}>
+          <ActivityIndicator size={'large'} color={Theme.darkGray} />
+        </View>
+      </Modal>
     </ScrollView>
   );
 }

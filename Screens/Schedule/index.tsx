@@ -77,7 +77,7 @@ function Schedule({ navigation, route }: any) {
   const [refresh, setRefresh] = useState(false);
 
   const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
+    // setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
       setOpenPPModal(true);
@@ -603,7 +603,7 @@ function Schedule({ navigation, route }: any) {
           borderColor: item.selected ? Theme.darkGray : 'silver',
           // borderColor:  'silver',
           paddingHorizontal: 15,
-          paddingVertical:10,
+          paddingVertical: 10,
           // backgroundColor: item.selected ? 'silver' : 'silver',
           marginTop: 20,
           borderRadius: 10,
@@ -847,11 +847,11 @@ function Schedule({ navigation, route }: any) {
     return `${dayName}, ${day} ${monthNames[monthIndex]} ${year}`;
   }
 
-  return loading ? (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <ActivityIndicator size={'large'} color={Theme.black} />
-    </View>
-  ) : (
+  return (
+    //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    //     <ActivityIndicator size={'large'} color={Theme.black} />
+    //   </View>
+    // ) : (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
       <CustomHeader
         title="Schedule"
@@ -997,6 +997,16 @@ function Schedule({ navigation, route }: any) {
             </Modal>
           </View>
         )}
+      <Modal visible={loading} animationType="fade" transparent={true}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          }}>
+          <ActivityIndicator size={'large'} color={Theme.darkGray} />
+        </View>
+      </Modal>
     </View>
   );
 }

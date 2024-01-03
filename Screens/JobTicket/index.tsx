@@ -64,24 +64,43 @@ function JobTicket({ navigation, route }: any) {
   ]);
 
   const activateTab = (index: any) => {
-    setCurrentTab(
-      currentTab &&
-      currentTab.length > 0 &&
-      currentTab.map((e: any, i: any) => {
-        if (e.index == index) {
-          return {
-            ...e,
-            selected: true,
-          };
-        } else {
-          return {
-            ...e,
-            selected: false,
-          };
-        }
-      }),
-    );
+    const newTabs = currentTab.map((e: any) => ({
+      ...e,
+      selected: e.index === index,
+    }));
+  
+    // Check if the user is switching between the first and second route
+    const switchingFirstToSecond = currentTab[0]?.selected && newTabs[1]?.selected;
+    const switchingSecondToFirst = newTabs[0]?.selected && currentTab[1]?.selected;
+  
+    setCurrentTab(newTabs);
+  
+    // Trigger the refresh when switching between the first and second route
+    if (switchingFirstToSecond || switchingSecondToFirst) {
+      onRefresh();
+    }
   };
+  
+
+  // const activateTab = (index: any) => {
+  //   setCurrentTab(
+  //     currentTab &&
+  //     currentTab.length > 0 &&
+  //     currentTab.map((e: any, i: any) => {
+  //       if (e.index == index) {
+  //         return {
+  //           ...e,
+  //           selected: true,
+  //         };
+  //       } else {
+  //         return {
+  //           ...e,
+  //           selected: false,
+  //         };
+  //       }
+  //     }),
+  //   );
+  // };
   const [openData, setOpenData] = useState<any>([
     // {
     //   id: 59,
@@ -150,7 +169,7 @@ function JobTicket({ navigation, route }: any) {
 
   const onRefresh = React.useCallback(() => {
     if (!refreshing) {
-      setRefreshing(true);
+      // setRefreshing(true);
       setTimeout(() => {
         setRefreshing(false);
         setOpenPPModal(true);
@@ -182,19 +201,19 @@ function JobTicket({ navigation, route }: any) {
     setLoading(true);
     // setModalVisible(true);
     axios
-    .get(`${Base_Uri}getTutorDetailByID/${tutorDetails?.tutorId}`)
-    .then(res => {
-      let tutorData = res.data;
-      // console.log("tutorData",tutorData);
-      
-      setLoading(false);
-      console.log(tutorData?.tutorDetailById[0]?.status, 'check before if condition Job ticket');
-      if (tutorData?.tutorDetailById[0]?.status === 'verified') {
-        // setModalVisible(true);
-        console.log(tutorData?.tutorDetailById[0]?.status, 'fdgfdgfd verified check on job ticket');
-        return
-      }
-    });
+      .get(`${Base_Uri}getTutorDetailByID/${tutorDetails?.tutorId}`)
+      .then(res => {
+        let tutorData = res.data;
+        // console.log("tutorData",tutorData);
+
+        setLoading(false);
+        console.log(tutorData?.tutorDetailById[0]?.status, 'check before if condition Job ticket');
+        if (tutorData?.tutorDetailById[0]?.status === 'verified') {
+          // setModalVisible(true);
+          console.log(tutorData?.tutorDetailById[0]?.status, 'fdgfdgfd verified check on job ticket');
+          return
+        }
+      });
     let filter: any = await AsyncStorage.getItem('filter');
 
     if (filter) {
@@ -1287,9 +1306,17 @@ function JobTicket({ navigation, route }: any) {
               flexDirection: 'row',
               alignItems: 'center',
               paddingVertical: 4,
-              paddingHorizontal: 10,
+              paddingHorizontal: 15,
               marginBottom: 15,
+              gap: 10,
             }}>
+
+            <TouchableOpacity onPress={() => navigation}>
+              <Image
+                source={require('../../Assets/Images/search.png')}
+                style={{ width: 15, height: 15 }}
+              />
+            </TouchableOpacity>
             <TextInput
               placeholder="Search"
               placeholderTextColor="black"
@@ -1298,15 +1325,11 @@ function JobTicket({ navigation, route }: any) {
                 width: '90%',
                 padding: 8,
                 color: 'black',
-                fontFamily: 'Circular Std Black',
+                fontFamily: 'Circular Std Book',
+                fontSize: 16
               }}
             />
-            <TouchableOpacity onPress={() => navigation}>
-              <Image
-                source={require('../../Assets/Images/search.png')}
-                style={{ width: 20, height: 20 }}
-              />
-            </TouchableOpacity>
+
           </View>
         </View>
 
@@ -1332,7 +1355,7 @@ function JobTicket({ navigation, route }: any) {
         )}
       </View>
     );
-  }, [openData, searchText, foundName]);
+  }, [openData, searchText, foundName,refreshing]);
 
   const secondRoute = useCallback(() => {
     return (
@@ -1387,7 +1410,7 @@ function JobTicket({ navigation, route }: any) {
         )}
       </View>
     );
-  }, [appliedData, searchText, foundName]);
+  }, [appliedData, searchText, foundName,refreshing]);
 
   const thirdRoute = useCallback(() => {
     return (
@@ -1503,11 +1526,13 @@ function JobTicket({ navigation, route }: any) {
     }
   };
 
-  return loading ? (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <ActivityIndicator size={'large'} color={'black'} />
-    </View>
-  ) : (
+  return (
+    // <View  style={{ flex: 1, justifyContent: 'center', alignItems: 'center',backgroundColor:"transparent" }}>
+    //   {/* <ActivityIndicator size={'large'} color={'black'}  /> */}
+    //   <Image source={require('../../Assets/Images/loader.gif')}/>
+    // </View>
+
+
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header
         tab={currentTab}
@@ -1604,7 +1629,7 @@ function JobTicket({ navigation, route }: any) {
                 fontSize: 16,
                 fontWeight: 'bold',
                 fontFamily: 'Circular Std Black',
-                lineHeight:30
+                lineHeight: 30
               }}>
               You have been Verified!
             </Text>
@@ -1618,7 +1643,7 @@ function JobTicket({ navigation, route }: any) {
                 marginBottom: 20,
               }}>
               <TouchableOpacity
-              onPress={()=> HandelGoToDashboard()}
+                onPress={() => HandelGoToDashboard()}
                 activeOpacity={0.8}
                 style={{
                   borderWidth: 1,
@@ -1627,11 +1652,11 @@ function JobTicket({ navigation, route }: any) {
                   borderColor: Theme.lightGray,
                   alignItems: 'center',
                   width: '90%',
-                  backgroundColor:Theme.darkGray,
+                  backgroundColor: Theme.darkGray,
                 }}>
                 <Text
                   style={{
-                    color:'white',
+                    color: 'white',
                     fontSize: 14,
                     fontFamily: 'Circular Std Book',
                   }}>
@@ -1640,6 +1665,17 @@ function JobTicket({ navigation, route }: any) {
               </TouchableOpacity>
             </View>
           </View>
+        </View>
+      </Modal>
+
+      <Modal visible={loading} animationType="fade" transparent={true}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          }}>
+          <ActivityIndicator size={'large'} color={Theme.darkGray} />
         </View>
       </Modal>
     </View>

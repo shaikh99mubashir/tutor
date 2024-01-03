@@ -20,7 +20,7 @@ import {
 import { Theme } from '../../constant/theme';
 import { Base_Uri } from '../../constant/BaseUri';
 import axios from 'axios';
-
+import messaging from '@react-native-firebase/messaging';
 const Verification = ({ navigation, route }: any) => {
   let data = route.params;
 
@@ -40,6 +40,53 @@ const Verification = ({ navigation, route }: any) => {
   const [resendLoading, setResendLoading] = useState(false);
 
   const Verify = () => {
+
+    const sendDeviceTokenToDatabase = (tutorId:any) => {
+      messaging()
+        .requestPermission()
+        .then(() => {
+          // Retrieve the FCM token
+          return messaging().getToken();
+        })
+        .then(token => {
+          messaging()
+            .subscribeToTopic('all_devices')
+            .then(() => {
+              console.log(token, 'token');
+  
+              let formData = new FormData();
+  
+              formData.append('tutor_id', tutorId);
+              formData.append('device_token', token);
+  
+              axios
+                .post(`${Base_Uri}api/getTutorDeviceToken`, formData, {
+                  headers: {
+                    'Content-Type': 'multipart/form-data',
+                  },
+                })
+                .then(res => {
+                  let data = res.data;
+                  console.log(data, 'tokenResponse');
+                })
+                .catch(error => {
+                  console.log(error, 'error');
+                });
+            })
+            .catch(error => {
+              console.error('Failed to subscribe to topic: all_devices', error);
+            });
+        })
+        .catch(error => {
+          console.error(
+            'Error requesting permission or retrieving token:',
+            error,
+          );
+        });
+    };
+  
+
+
     if (value.length < 6) {
       ToastAndroid.show('Invalid Code', ToastAndroid.SHORT);
       return;
@@ -60,14 +107,17 @@ const Verification = ({ navigation, route }: any) => {
           ToastAndroid.show('Login Successfully', ToastAndroid.SHORT);
           let mydata = JSON.stringify(data);
           AsyncStorage.setItem('loginAuth', mydata);
-
+          sendDeviceTokenToDatabase(data.tutorID)
           axios
             .get(`${Base_Uri}getTutorDetailByID/${data.tutorID}`)
             .then(res => {
               let tutorData = res.data;
               console.log(tutorData, 'data');
               if (tutorData?.tutorDetailById[0]?.status === 'unverified' || tutorData?.tutorDetailById[0]?.status === 'verified') {
-                navigation.replace('Main')
+                // navigation.replace('Main')
+                navigation.replace('Main', {
+                  screen: 'Home',
+                });
                 console.log(tutorData?.tutorDetailById[0]?.status,'unverified or verified verification');
               }
               else if (tutorData?.tutorDetailById[0]?.status === 'terminated' || tutorData?.tutorDetailById[0]?.status === 'block') {
@@ -117,7 +167,8 @@ const Verification = ({ navigation, route }: any) => {
 
   const handleResendPress = () => {
     let { UserDetail } = data;
-
+    console.log('UserDetail.phoneNumber',UserDetail.phoneNumber);
+    
     setResendLoading(true);
 
     axios

@@ -12,6 +12,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
 import {Base_Uri} from '../../constant/BaseUri';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
+import messaging from '@react-native-firebase/messaging';
 const Splash = ({navigation}: any) => {
   // const [tutorDetail, setTutorDetails] = useState<any>();
 
@@ -19,6 +20,55 @@ const Splash = ({navigation}: any) => {
   const {tutorDetails, setTutorDetail} = tutorDetailsCont;
 
   console.log(tutorDetails, 'myDetails');
+  const sendDeviceTokenToDatabase = (tutorId:any) => {
+    messaging()
+      .requestPermission()
+      .then(() => {
+        // Retrieve the FCM token
+        return messaging().getToken();
+      })
+      .then(token => {
+        messaging()
+          .subscribeToTopic('all_devices')
+          .then(() => {
+            console.log(token, 'token');
+
+            let formData = new FormData();
+
+            formData.append('tutor_id', tutorId);
+            formData.append('device_token', token);
+
+            axios
+              .post(`${Base_Uri}api/getTutorDeviceToken`, formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              })
+              .then(res => {
+                let data = res.data;
+                console.log(data, 'tokenResponse');
+              })
+              .catch(error => {
+                console.log(error, 'error');
+              });
+          })
+          .catch(error => {
+            console.error('Failed to subscribe to topic: all_devices', error);
+          });
+      })
+      .catch(error => {
+        console.error(
+          'Error requesting permission or retrieving token:',
+          error,
+        );
+      });
+  };
+
+  // useEffect(() => {
+  //   if (tutorId) {
+  //     sendDeviceTokenToDatabase();
+  //   }
+  // }, [tutorId]);
 
   useEffect(() => {
     try {
@@ -37,18 +87,21 @@ const Splash = ({navigation}: any) => {
       let authData = await AsyncStorage.getItem('loginAuth');
 
       if (authData) {
-        let tutorData = JSON.parse(authData);
-        console.log('tutorData', tutorData);
-
+        let tutorData:any = JSON.parse(authData);
+        console.log('tutorData', tutorData?.tutorID);
+        sendDeviceTokenToDatabase(tutorData?.tutorID)
         axios
           .get(`${Base_Uri}getTutorDetailByID/${tutorData?.tutorID}`)
           .then(res => {
             console.log('res---->');
-
+            
             let tutorData = res.data;
             setTutorDetail(tutorData?.tutorDetailById[0]);
             if (tutorData?.tutorDetailById[0]?.status === 'unverified') {
-              navigation.replace('JobTicket');
+              // navigation.replace('JobTicket');
+              navigation.replace('Main', {
+                screen: 'Home',
+              });
               console.log(tutorData?.tutorDetailById[0]?.status, 'splash');
               return;
             }
@@ -61,7 +114,8 @@ const Splash = ({navigation}: any) => {
             }
             if (
               tutorData?.tutorDetailById[0]?.status === 'terminated' ||
-              tutorData?.tutorDetailById[0]?.status === 'block'
+              tutorData?.tutorDetailById[0]?.status === 'resigned' ||
+              tutorData?.tutorDetailById[0]?.status === 'inactive'
             ) {
               AsyncStorage.removeItem('loginAuth');
               navigation.replace('Login');

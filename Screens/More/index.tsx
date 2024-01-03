@@ -187,7 +187,7 @@ function More({navigation}: any) {
                     fontSize: 16,
                     fontWeight: '600',
                     color: Theme.black,
-                    fontFamily: 'Circular Std Black',
+                    fontFamily: 'Circular Std Book',
                   }}>
                   Notification
                 </Text>
@@ -235,7 +235,7 @@ function More({navigation}: any) {
                     fontSize: 16,
                     fontWeight: '600',
                     color: Theme.black,
-                    fontFamily: 'Circular Std Black',
+                    fontFamily: 'Circular Std Book',
                   }}>
                   Students
                 </Text>
@@ -283,7 +283,7 @@ function More({navigation}: any) {
                     fontSize: 16,
                     fontWeight: '600',
                     color: Theme.black,
-                    fontFamily: 'Circular Std Black',
+                    fontFamily: 'Circular Std Book',
                   }}>
                   Payment
                 </Text>
@@ -331,7 +331,7 @@ function More({navigation}: any) {
                     fontSize: 16,
                     fontWeight: '600',
                     color: Theme.black,
-                    fontFamily: 'Circular Std Black',
+                    fontFamily: 'Circular Std Book',
                   }}>
                   Report Submission History
                 </Text>
@@ -378,7 +378,7 @@ function More({navigation}: any) {
                   fontSize: 16,
                   fontWeight: '600',
                   color: Theme.black,
-                  fontFamily: 'Circular Std Black',
+                  fontFamily: 'Circular Std Book',
                 }}>
                 FAQs
               </Text>
@@ -465,7 +465,7 @@ function More({navigation}: any) {
                   fontSize: 16,
                   fontWeight: '600',
                   color: Theme.black,
-                  fontFamily: 'Circular Std Black',
+                  fontFamily: 'Circular Std Book',
                 }}>
                 Log Out
               </Text>
@@ -495,7 +495,7 @@ function More({navigation}: any) {
                 color: Theme.darkGray,
                 fontSize: 14,
                 fontWeight: 'bold',
-                fontFamily: 'Circular Std Black',
+                fontFamily: 'Circular Std Book',
               }}>
               Are you sure you want to Quit ?
             </Text>
@@ -525,7 +525,7 @@ function More({navigation}: any) {
                 <Text
                   style={{
                     fontSize: 14,
-                    fontFamily: 'Circular Std Black',
+                    fontFamily: 'Circular Std Book',
                     color: cancel ? 'white' : Theme.darkGray,
                   }}>
                   No
@@ -550,7 +550,7 @@ function More({navigation}: any) {
                     color: apply ? Theme.darkGray : 'white',
 
                     fontSize: 14,
-                    fontFamily: 'Circular Std Black',
+                    fontFamily: 'Circular Std Book',
                   }}>
                   Yes
                 </Text>

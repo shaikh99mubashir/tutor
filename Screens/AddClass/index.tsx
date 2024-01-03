@@ -8,6 +8,7 @@ import {
   Platform,
   ToastAndroid,
   ActivityIndicator,
+  Modal,
 } from 'react-native';
 import {Theme} from '../../constant/theme';
 import CustomDropDown from '../../Component/CustomDropDown';
@@ -523,11 +524,11 @@ function AddClass({navigation}: any) {
 
   console.log(student, 'student');
 
-  return loading ? (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <ActivityIndicator size="large" color={Theme.black} />
-    </View>
-  ) : (
+  return (
+  //   <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+  //     <ActivityIndicator size="large" color={Theme.black} />
+  //   </View>
+  // ) : (
     <View style={{flex: 1, backgroundColor: Theme.white}}>
       <View>
         <Header title={'Add Class'} backBtn navigation={navigation} />
@@ -666,6 +667,16 @@ function AddClass({navigation}: any) {
       {/* <View style={{alignItems:'center',justifyContent:"center", flex:1}}>
       {student.length == 0 ? "" : }
       </View> */}
+          <Modal visible={loading} animationType="fade" transparent={true}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          }}>
+          <ActivityIndicator size={'large'} color={Theme.darkGray} />
+        </View>
+      </Modal>
     </View>
   );
 }

@@ -29,7 +29,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import DropDownModalView from '../../Component/DropDownModalView';
 import bannerContext from '../../context/bannerContext';
 import ModalImg from '../../Component/Modal/modal';
-
+import defaultAvatar from '../../Assets/Images/avatar.png';
 
 
 const Profile = ({ navigation }: any) => {
@@ -295,13 +295,25 @@ const Profile = ({ navigation }: any) => {
 
   console.log(`file://${name}`)
 
-  let imageUrl = image
-    ? image
-    : !tutorDetail.tutorImage
-      ? '../../Assets/Images/plus.png'
-      : tutorDetail.tutorImage.includes('https')
-        ? tutorDetail.tutorImage
-        : `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`;
+  // let imageUrl = image
+  //   ? image
+  //   : !tutorDetail.tutorImage
+  //     ? defaultAvatar 
+  //     : tutorDetail.tutorImage.includes('https')
+  //       ? tutorDetail.tutorImage
+  //       : `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`;
+
+  let imageUrl;
+
+  if (image) {
+    imageUrl = image;
+  } else if (!tutorDetail.tutorImage) {
+    imageUrl = defaultAvatar;
+  } else if (tutorDetail.tutorImage.includes('https')) {
+    imageUrl = tutorDetail.tutorImage;
+  } else {
+    imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`;
+  }
 
   // console.log(imageUrl, "image")
   const [openPPModal, setOpenPPModal] = useState(false);
@@ -320,8 +332,6 @@ const Profile = ({ navigation }: any) => {
   useEffect(() => {
     displayBanner();
   }, []);
-
-
 
   const linkToOtherPage = () => {
 
@@ -393,22 +403,23 @@ const Profile = ({ navigation }: any) => {
   }
 
 
-  
 
 
+  console.log('imageUrl', imageUrl);
 
-  return loading ? (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <ActivityIndicator size="large" color={Theme.black} />
-    </View>
-  ) : (
+
+  return  (
+  //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+  //     <ActivityIndicator size="large" color={Theme.black} />
+  //   </View>
+  // ) : (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="Profile" navigation={navigation} backBtn />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <View style={{ paddingHorizontal: 15, marginBottom: 100 }}>
           <View style={{ paddingVertical: 15, alignItems: 'center' }}>
             <Image
-              source={{ uri: name ? `file://${uri}` : imageUrl }}
+              source={{ uri: name ? `file://${uri}` : `${imageUrl}` }}
               style={{ width: 80, height: 80, borderRadius: 50 }}
               resizeMode="contain"
             />
@@ -424,7 +435,7 @@ const Profile = ({ navigation }: any) => {
             <View style={{ alignItems: 'center' }}>
               <Text
                 style={{ fontSize: 18, fontWeight: '600', color: Theme.black }}>
-                {tutorDetail?.displayName}
+                {tutorDetail?.displayName ? tutorDetail?.displayName:tutorDetail?.full_name}
               </Text>
               <Text
                 style={{ fontSize: 14, fontWeight: '300', color: Theme.gray }}>
@@ -492,7 +503,7 @@ const Profile = ({ navigation }: any) => {
                 editable
                 onChangeText={text => setEmail(text)}
                 placeholder={tutorDetail?.email}
-                style={{ color: "black",fontSize:14 }}
+                style={{ color: "black", fontSize: 14 }}
                 placeholderTextColor={Theme.black}
               />
             </View>
@@ -528,7 +539,7 @@ const Profile = ({ navigation }: any) => {
                 editable
                 onChangeText={text => setDispalyName(text)}
                 placeholder={tutorDetail?.displayName}
-                style={{ color: "black",fontSize:14 }}
+                style={{ color: "black", fontSize: 14 }}
                 placeholderTextColor={Theme.black}
               />
             </View>
@@ -597,7 +608,7 @@ const Profile = ({ navigation }: any) => {
                 option={genderOption}
                 value={tutorDetail.gender}
                 modalHeading="Select Gender"
-                style={{ borderWidth: 0, marginTop: 0,fontSize:18,color:'black' }}
+                style={{ borderWidth: 0, marginTop: 0, fontSize: 18, color: 'black' }}
               />
             </View>
           </View>
@@ -694,7 +705,7 @@ const Profile = ({ navigation }: any) => {
               <Image
                 source={{ uri: profileBanner.bannerImage }}
                 style={{
-                  width: Dimensions.get('screen').width/1.05,
+                  width: Dimensions.get('screen').width / 1.05,
                   height: '90%',
                 }}
                 resizeMode="contain"
@@ -706,8 +717,8 @@ const Profile = ({ navigation }: any) => {
 
       {
         openPhotoModal &&
-         <ModalImg closeModal={() => 
-          setOpenPhotoModal(false)} 
+        <ModalImg closeModal={() =>
+          setOpenPhotoModal(false)}
           modalVisible={openPhotoModal}
           openCamera={openPhoto}
           openGallery={uploadProfilePicture} />
@@ -750,6 +761,16 @@ const Profile = ({ navigation }: any) => {
         </View>
       </View>
 
+      <Modal visible={loading} animationType="fade" transparent={true}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            backgroundColor: 'rgba(0,0,0,0.5)',
+          }}>
+          <ActivityIndicator size={'large'} color={Theme.darkGray} />
+        </View>
+      </Modal>
 
 
 

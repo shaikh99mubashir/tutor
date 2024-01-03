@@ -24,6 +24,8 @@ const Login = ({ navigation }: any) => {
 
   const handleLoginPress = () => {
     setLoading(true);
+    console.log('phoneNumber',phoneNumber);
+    
     axios
       .get(`${Base_Uri}loginAPI/${phoneNumber}`)
       .then(({ data }) => {
