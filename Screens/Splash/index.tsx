@@ -97,6 +97,8 @@ const Splash = ({navigation}: any) => {
             
             let tutorData = res.data;
             setTutorDetail(tutorData?.tutorDetailById[0]);
+            console.log('tutorData',tutorData);
+            
             if (tutorData?.tutorDetailById[0]?.status === 'unverified') {
               // navigation.replace('JobTicket');
               navigation.replace('Main', {
@@ -115,7 +117,7 @@ const Splash = ({navigation}: any) => {
             if (
               tutorData?.tutorDetailById[0]?.status === 'terminated' ||
               tutorData?.tutorDetailById[0]?.status === 'resigned' ||
-              tutorData?.tutorDetailById[0]?.status === 'inactive'
+              tutorData?.tutorDetailById[0]?.status === 'inactive' || tutorDetails == undefined || tutorData?.tutorDetailById[0] == null
             ) {
               AsyncStorage.removeItem('loginAuth');
               navigation.replace('Login');

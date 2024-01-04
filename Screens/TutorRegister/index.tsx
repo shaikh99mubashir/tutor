@@ -138,7 +138,7 @@ const Signup = ({navigation}: any) => {
           }}
         />
 
-        <View
+        {/* <View
           style={[
             styles.phoneNumberView,
             {
@@ -164,13 +164,13 @@ const Signup = ({navigation}: any) => {
               setPhoneNumber(text);
             }}
           />
-        </View>
+        </View> */}
 
-        {/* <PhoneInput
+        <PhoneInput
           ref={phoneInput}
           placeholder="Enter Your Number"
           defaultValue={phoneNumber}
-          defaultCode="PK"
+          defaultCode="MY"
           layout="first"
           autoFocus={true}
           textInputStyle={{color: Theme.black, height: 50}}
@@ -186,7 +186,7 @@ const Signup = ({navigation}: any) => {
           onChangeFormattedText={text => {
             setPhoneNumber(text);
           }}
-        /> */}
+        /> 
       </View>
       {/* Submit Button */}
 

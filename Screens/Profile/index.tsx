@@ -179,7 +179,7 @@ const Profile = ({ navigation }: any) => {
     },
   ];
 
-
+  let imageUrl;
   const updateTutorDetail = async () => {
 
     const expression: RegExp = /^[A -Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -232,6 +232,18 @@ const Profile = ({ navigation }: any) => {
           setUri("")
           setType("")
           setName("")
+          
+
+          if (image) {
+            imageUrl = image;
+          } else if (!tutorDetail.tutorImage) {
+            imageUrl = defaultAvatar;
+          } else if (tutorDetail.tutorImage.includes('https')) {
+            imageUrl = tutorDetail.tutorImage;
+          } else {
+            imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`;
+          }
+          console.log('imageUrl', imageUrl);
           ToastAndroid.show(
             'Successfully Update Tutor Details',
             ToastAndroid.SHORT,
@@ -303,17 +315,7 @@ const Profile = ({ navigation }: any) => {
   //       ? tutorDetail.tutorImage
   //       : `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`;
 
-  let imageUrl;
 
-  if (image) {
-    imageUrl = image;
-  } else if (!tutorDetail.tutorImage) {
-    imageUrl = defaultAvatar;
-  } else if (tutorDetail.tutorImage.includes('https')) {
-    imageUrl = tutorDetail.tutorImage;
-  } else {
-    imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`;
-  }
 
   // console.log(imageUrl, "image")
   const [openPPModal, setOpenPPModal] = useState(false);
@@ -403,9 +405,17 @@ const Profile = ({ navigation }: any) => {
   }
 
 
+  if (image) {
+    imageUrl = image;
+  } else if (!tutorDetail.tutorImage) {
+    imageUrl = defaultAvatar;
+  } else if (tutorDetail.tutorImage.includes('https')) {
+    imageUrl = tutorDetail.tutorImage;
+  } else {
+    imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`;
+  }
 
-
-  console.log('imageUrl', imageUrl);
+  
 
 
   return  (
@@ -418,11 +428,13 @@ const Profile = ({ navigation }: any) => {
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <View style={{ paddingHorizontal: 15, marginBottom: 100 }}>
           <View style={{ paddingVertical: 15, alignItems: 'center' }}>
+          {imageUrl == 1 ? <Image source={require('../../Assets/Images/avatar.png')} style={{ width: 80, height: 80, borderRadius: 50 }}/>
+          :
             <Image
               source={{ uri: name ? `file://${uri}` : `${imageUrl}` }}
               style={{ width: 80, height: 80, borderRadius: 50 }}
               resizeMode="contain"
-            />
+            />}
             <TouchableOpacity
               onPress={() => setOpenPhotoModal(true)}
               activeOpacity={0.8}>

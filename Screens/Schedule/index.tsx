@@ -893,12 +893,13 @@ function Schedule({ navigation, route }: any) {
             Object.keys(upcomingClass).length == 0 ? (
             <View
               style={{
-                height: Dimensions.get('window').height - 180,
+                height: Dimensions.get('window').height - 250,
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
+                <Image source={require('../../Assets/Images/noclassyet.png')} />
               <Text
-                style={{ fontSize: 18, fontWeight: 'bold', color: Theme.black, fontFamily: 'Circular Std Black' }}>
+                style={{ fontSize: 25, fontWeight: 'bold', color: Theme.black, fontFamily: 'Circular Std Black',marginTop:20 }}>
                 No Class, Yet
               </Text>
               <Text
@@ -909,7 +910,7 @@ function Schedule({ navigation, route }: any) {
                   marginTop: 10,
                   fontFamily: 'Circular Std Black'
                 }}>
-                Look like you haven't{'\n'} added any class.
+                Look like you haven't added any class.
               </Text>
               <View
                 style={{
@@ -917,6 +918,7 @@ function Schedule({ navigation, route }: any) {
                   borderColor: Theme.white,
                   marginVertical: 20,
                   width: '94%',
+                  marginTop:40
                 }}>
                 <TouchableOpacity
                   activeOpacity={0.8}

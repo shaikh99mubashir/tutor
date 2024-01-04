@@ -43,8 +43,7 @@ function JobTicket({ navigation, route }: any) {
   const [refresh, setRefresh] = useState(false);
   const tutor = useContext(TutorDetailsContext);
   const [modalVisible, setModalVisible] = useState(false);
-  let { tutorDetails } = tutor;
-
+  let { tutorDetails,updateTutorDetails } = tutor;
   const [currentTab, setCurrentTab]: any = useState([
     {
       index: 0,
@@ -170,9 +169,11 @@ function JobTicket({ navigation, route }: any) {
   const onRefresh = React.useCallback(() => {
     if (!refreshing) {
       // setRefreshing(true);
+      setLoading(true);
       setTimeout(() => {
         setRefreshing(false);
         setOpenPPModal(true);
+        setLoading(false);
         setRefresh(refresh ? false : true);
       }, 2000);
     }
@@ -195,10 +196,54 @@ function JobTicket({ navigation, route }: any) {
   //     console.error('Error retrieving or parsing tutor data:', error);
   //   }
   // }, []);
+  const [tutorId, setTutorId] = useState<Number | null>(null);
+  const getTutorId = async () => {
+    interface LoginAuth {
+      status: Number;
+      tutorID: Number;
+      token: string;
+    }
+    const data: any = await AsyncStorage.getItem('loginAuth');
+    let loginData: LoginAuth = JSON.parse(data);
 
+    let {tutorID} = loginData;
+    setTutorId(tutorID);
+  };
+
+  const getTutorDetails = async () => {
+    axios
+      .get(`${Base_Uri}getTutorDetailByID/${tutorId}`)
+      .then(({data}) => {
+        let {tutorDetailById} = data;
+
+        console.log(tutorDetailById, 'iddd');
+
+        let tutorDetails = tutorDetailById[0];
+
+        // console.log(tutorDetails,"detailsss")
+
+        let details = {
+          full_name: tutorDetails?.full_name,
+          email: tutorDetails?.email,
+          displayName: tutorDetails?.displayName,
+          gender: tutorDetails?.gender,
+          phoneNumber: tutorDetails.phoneNumber,
+          age: tutorDetails.age,
+          nric: tutorDetails.nric,
+          tutorImage: tutorDetails.tutorImage,
+          tutorId: tutorDetails?.id,
+          status: tutorDetails?.status,
+        };
+
+        updateTutorDetails(details);
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+      });
+  };
 
   const getTicketsData = async () => {
-    setLoading(true);
+    // setLoading(true);
     // setModalVisible(true);
     axios
       .get(`${Base_Uri}getTutorDetailByID/${tutorDetails?.tutorId}`)
@@ -257,15 +302,15 @@ function JobTicket({ navigation, route }: any) {
                   );
                 }),
               );
-              setLoading(false);
+              // setLoading(false);
             })
             .catch(error => {
               ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
-              setLoading(false);
+              // setLoading(false);
             });
         })
         .catch(error => {
-          setLoading(false);
+          // setLoading(false);
           console.log(error);
           ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
         });
@@ -292,15 +337,15 @@ function JobTicket({ navigation, route }: any) {
                   ),
               );
               setOpenData(filteredTickets);
-              setLoading(false);
+              // setLoading(false);
             })
             .catch(error => {
               ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
-              setLoading(false);
+              // setLoading(false);
             });
         })
         .catch(error => {
-          setLoading(false);
+          // setLoading(false);
           console.log(error);
           ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
         });
@@ -308,7 +353,7 @@ function JobTicket({ navigation, route }: any) {
   };
 
   const getAppliedData = async () => {
-    setLoading(true);
+    // setLoading(true);
 
     let tutorData: any = await AsyncStorage.getItem('loginAuth');
 
@@ -337,11 +382,11 @@ function JobTicket({ navigation, route }: any) {
             });
 
           setAppliedData(tutorOffer);
-          setLoading(false);
+          // setLoading(false);
         })
         .catch(error => {
           ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
-          setLoading(false);
+          // setLoading(false);
         });
       return;
     }
@@ -351,11 +396,11 @@ function JobTicket({ navigation, route }: any) {
       .then(({ data }) => {
         let { getTutorOffers } = data;
         setAppliedData(getTutorOffers);
-        setLoading(false);
+        // setLoading(false);
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
-        setLoading(false);
+        // setLoading(false);
       });
   };
 
@@ -383,11 +428,13 @@ function JobTicket({ navigation, route }: any) {
   };
 
 
-
+  useEffect(()=>{
+    getTutorId()
+  },[])
   useEffect(() => {
+    getTutorDetails()
     getTicketsData();
     getAppliedData();
-    getAssignedData();
   }, [refresh, route]);
 
   const HandelGoToDashboard = () => {
