@@ -51,7 +51,7 @@ function BottomNavigation({route}: any) {
   const tutorDetailsCont = useContext(TutorDetailsContext);
   const {tutorDetails} = tutorDetailsCont;
 
-  console.log(tutorDetails, 'myDetails');
+  // console.log(tutorDetails, 'myDetails');
 
   useEffect(() => {
     try {

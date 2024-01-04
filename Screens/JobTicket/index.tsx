@@ -283,7 +283,10 @@ function JobTicket({ navigation, route }: any) {
               let { getTutorOffers } = data;
               const filteredTickets = tickets.filter(
                 (ticket: any) =>
-                  !getTutorOffers.some((offer: any) => offer.id === ticket.id),
+                  // !getTutorOffers.some((offer: any) => offer.id === ticket.id),
+                  !getTutorOffers.some(
+                    (offer: any) => offer.ticket_id == ticket.ticketID,
+                  ),
               );
               setOpenData(
                 filteredTickets.length > 0 &&
@@ -328,12 +331,13 @@ function JobTicket({ navigation, route }: any) {
             .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
             .then(({ data }) => {
               let { getTutorOffers } = data;
-              // console.log(tickets, 'tickets');
+              console.log(tickets, 'tickets');
+              console.log(getTutorOffers, 'getTutorOffers');
 
               const filteredTickets = tickets.filter(
                 (ticket: any) =>
                   !getTutorOffers.some(
-                    (offer: any) => offer.tutor_id !== ticket.tutorOfferTutorID,
+                    (offer: any) => offer.ticket_id == ticket.ticketID,
                   ),
               );
               setOpenData(filteredTickets);

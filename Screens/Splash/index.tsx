@@ -19,7 +19,7 @@ const Splash = ({navigation}: any) => {
   const tutorDetailsCont = useContext(TutorDetailsContext);
   const {tutorDetails, setTutorDetail} = tutorDetailsCont;
 
-  console.log(tutorDetails, 'myDetails');
+  // console.log(tutorDetails, 'myDetails');
   const sendDeviceTokenToDatabase = (tutorId:any) => {
     messaging()
       .requestPermission()
