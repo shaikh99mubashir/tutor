@@ -245,11 +245,11 @@ function BottomNavigation({route}: any) {
                         borderRadius: 5,
                       }}>
                       <Image
-                        source={require('../Assets/Images/Chat_1.png')}
+                        source={require('../Assets/Images/Group203.png')}
                         resizeMode="contain"
                         style={{
-                          height: 40,
-                          width: 40,
+                          height: 35,
+                          width: 35,
                           tintColor: focused ? 'black' : 'grey',
                         }}
                       />
@@ -262,11 +262,11 @@ function BottomNavigation({route}: any) {
                         flexDirection: 'row',
                       }}>
                       <Image
-                        source={require('../Assets/Images/Chat_1.png')}
+                        source={require('../Assets/Images/Group203.png')}
                         resizeMode="contain"
                         style={{
-                          height: 40,
-                          width: 40,
+                          height: 35,
+                          width: 35,
                           tintColor: focused ? 'black' : 'grey',
                         }}
                       />
@@ -293,11 +293,11 @@ function BottomNavigation({route}: any) {
                       borderRadius: 5,
                     }}>
                     <Image
-                      source={require('../Assets/Images/Profile_1.png')}
+                      source={require('../Assets/Images/Group202.png')}
                       resizeMode="contain"
                       style={{
-                        height: 40,
-                        width: 40,
+                        height: 35,
+                        width: 35,
                         tintColor: focused ? 'black' : 'grey',
                       }}
                     />
@@ -310,11 +310,11 @@ function BottomNavigation({route}: any) {
                       flexDirection: 'row',
                     }}>
                     <Image
-                      source={require('../Assets/Images/Profile_1.png')}
+                      source={require('../Assets/Images/Group202.png')}
                       resizeMode="contain"
                       style={{
-                        height: 40,
-                        width: 40,
+                        height: 35,
+                        width: 35,
                         tintColor: focused ? 'black' : 'grey',
                       }}
                     />

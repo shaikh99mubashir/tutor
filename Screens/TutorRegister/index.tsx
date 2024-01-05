@@ -62,6 +62,8 @@ const Signup = ({navigation}: any) => {
         },
       })
       .then(({data}) => {
+        console.log('data signup===>',data);
+        
         if (data.status == 200) {
           ToastAndroid.show(
             'You have been successfully registered as tutor Login to continue',
@@ -170,7 +172,7 @@ const Signup = ({navigation}: any) => {
           ref={phoneInput}
           placeholder="Enter Your Number"
           defaultValue={phoneNumber}
-          defaultCode="MY"
+          defaultCode="PK"
           layout="first"
           autoFocus={true}
           textInputStyle={{color: Theme.black, height: 50}}

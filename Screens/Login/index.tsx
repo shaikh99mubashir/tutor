@@ -29,8 +29,12 @@ const Login = ({ navigation }: any) => {
     axios
       .get(`${Base_Uri}loginAPI/${phoneNumber}`)
       .then(({ data }) => {
+        console.log('data',data);
+        
         if (data.status == 404) {
           setLoading(false);
+          console.log(data.status);
+          
           ToastAndroid.show(data.errorMessage, ToastAndroid.SHORT);
           return;
         }
@@ -84,7 +88,7 @@ const Login = ({ navigation }: any) => {
           ref={phoneInput}
           placeholder="Enter Your Number"
           defaultValue={phoneNumber}
-          defaultCode="MY"
+          defaultCode="PK"
           layout="first"
           autoFocus={true}
           textInputStyle={{color: Theme.black, height: 50}}

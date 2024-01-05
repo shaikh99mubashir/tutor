@@ -410,7 +410,7 @@ const OpenDetails = ({ route, navigation }: any) => {
                       fontSize: 14,
                       fontWeight: '400',
                       marginTop: 5,
-                      fontFamily: 'Circular Std Black',
+                      fontFamily: 'Circular Std Medium',
                     }}>
                     Student Name : {e?.student_name}
                   </Text>
@@ -420,7 +420,7 @@ const OpenDetails = ({ route, navigation }: any) => {
                       fontSize: 14,
                       fontWeight: '400',
                       marginTop: 5,
-                      fontFamily: 'Circular Std Black',
+                      fontFamily: 'Circular Std Medium',
                     }}>
                     Age : {e?.student_age}
                   </Text>
@@ -430,7 +430,7 @@ const OpenDetails = ({ route, navigation }: any) => {
                       fontSize: 14,
                       fontWeight: '400',
                       marginTop: 5,
-                      fontFamily: 'Circular Std Black',
+                      fontFamily: 'Circular Std Medium',
                     }}>
                     Gender : {e?.student_gender}
                   </Text>
@@ -450,7 +450,7 @@ const OpenDetails = ({ route, navigation }: any) => {
                       fontSize: 14,
                       fontWeight: '400',
                       marginTop: 5,
-                      fontFamily: 'Circular Std Black',
+                      fontFamily: 'Circular Std Medium',
                     }}>
                     Special Need : {e?.special_need}
                   </Text>
@@ -555,14 +555,14 @@ const styles = StyleSheet.create({
     height: 150,
     justifyContent: 'flex-start',
     textAlignVertical: 'top',
-    fontFamily: 'Circular Std Black',
+    fontFamily: 'Circular Std',
   },
 
   textType1: {
     fontWeight: '500',
     fontSize: 24,
     color: Theme.Dune,
-    fontFamily: 'Circular Std Black',
+    fontFamily: 'Circular Std Medium',
     lineHeight: 24,
     fontStyle: 'normal',
   },

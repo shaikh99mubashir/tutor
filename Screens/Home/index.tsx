@@ -1738,7 +1738,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 24,
     color: Theme.Dune,
-    fontFamily: 'Circular Std Black',
+    fontFamily: 'Circular Std Medium',
     lineHeight: 24,
     fontStyle: 'normal',
   },

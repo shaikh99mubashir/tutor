@@ -238,12 +238,12 @@ function JobTicket({ navigation, route }: any) {
         updateTutorDetails(details);
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        ToastAndroid.show('Internal Server Error getTutorDetailByID ', ToastAndroid.SHORT);
       });
   };
 
   const getTicketsData = async () => {
-    // setLoading(true);
+    setLoading(true);
     // setModalVisible(true);
     axios
       .get(`${Base_Uri}getTutorDetailByID/${tutorDetails?.tutorId}`)
@@ -305,17 +305,17 @@ function JobTicket({ navigation, route }: any) {
                   );
                 }),
               );
-              // setLoading(false);
+              setLoading(false);
             })
             .catch(error => {
-              ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
-              // setLoading(false);
+              ToastAndroid.show('Internal Server Error getTutorOffers2', ToastAndroid.SHORT);
+              setLoading(false);
             });
         })
         .catch(error => {
-          // setLoading(false);
+          setLoading(false);
           console.log(error);
-          ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+          ToastAndroid.show('Internal Server Error ticketsAPI1', ToastAndroid.SHORT);
         });
 
       return;
@@ -341,23 +341,23 @@ function JobTicket({ navigation, route }: any) {
                   ),
               );
               setOpenData(filteredTickets);
-              // setLoading(false);
+              setLoading(false);
             })
             .catch(error => {
-              ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
-              // setLoading(false);
+              ToastAndroid.show('Internal Server Error getTutorOffers1', ToastAndroid.SHORT);
+              setLoading(false);
             });
         })
         .catch(error => {
-          // setLoading(false);
+          setLoading(false);
           console.log(error);
-          ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+          ToastAndroid.show('Internal Server Error ticketsAPI', ToastAndroid.SHORT);
         });
     }
   };
 
   const getAppliedData = async () => {
-    // setLoading(true);
+    setLoading(true);
 
     let tutorData: any = await AsyncStorage.getItem('loginAuth');
 
@@ -386,11 +386,11 @@ function JobTicket({ navigation, route }: any) {
             });
 
           setAppliedData(tutorOffer);
-          // setLoading(false);
+          setLoading(false);
         })
         .catch(error => {
-          ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
-          // setLoading(false);
+          ToastAndroid.show('Internal Server Error getTutorOffers', ToastAndroid.SHORT);
+          setLoading(false);
         });
       return;
     }
@@ -400,11 +400,11 @@ function JobTicket({ navigation, route }: any) {
       .then(({ data }) => {
         let { getTutorOffers } = data;
         setAppliedData(getTutorOffers);
-        // setLoading(false);
+        setLoading(false);
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
-        // setLoading(false);
+        ToastAndroid.show('Internal Server Error getTutorOffers3', ToastAndroid.SHORT);
+        setLoading(false);
       });
   };
 
@@ -436,7 +436,7 @@ function JobTicket({ navigation, route }: any) {
     getTutorId()
   },[])
   useEffect(() => {
-    getTutorDetails()
+    // getTutorDetails()
     getTicketsData();
     getAppliedData();
   }, [refresh, route]);
@@ -1393,16 +1393,15 @@ function JobTicket({ navigation, route }: any) {
             keyExtractor={(items: any, index: number): any => index}
           />
         ) : (
-          <Text
-            style={{
-              fontWeight: 'bold',
-              fontSize: 16,
-              color: Theme.black,
-              textAlign: 'center',
-              fontFamily: 'Circular Std Black',
-            }}>
-            No Data Found
-          </Text>
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+         
+       
+        <Image
+          source={require('../../Assets/Images/nojobticketavailable.png')}
+          style={{ width: 300, height: 300 }}
+        />
+     
+          </View>
         )}
       </View>
     );
@@ -1448,7 +1447,7 @@ function JobTicket({ navigation, route }: any) {
           />
         ) : (
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-            <Text
+            {/* <Text
               style={{
                 fontWeight: 'bold',
                 fontSize: 16,
@@ -1456,7 +1455,13 @@ function JobTicket({ navigation, route }: any) {
                 textAlign: 'center',
               }}>
               No Data Found
-            </Text>
+            </Text> */}
+       
+        <Image
+        source={require('../../Assets/Images/nojobavailable.png')}
+          style={{ width: 300, height: 300 }}
+        />
+    
           </View>
         )}
       </View>
@@ -1487,7 +1492,7 @@ function JobTicket({ navigation, route }: any) {
                 width: '90%',
                 padding: 8,
                 color: 'black',
-                fontFamily: 'Circular Std Black',
+                fontFamily: 'Circular Std Medium',
               }}
             />
             <TouchableOpacity onPress={() => navigation}>
@@ -1591,6 +1596,7 @@ function JobTicket({ navigation, route }: any) {
         filter
         navigation={navigation}
       />
+      
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -1679,7 +1685,7 @@ function JobTicket({ navigation, route }: any) {
                 color: Theme.darkGray,
                 fontSize: 16,
                 fontWeight: 'bold',
-                fontFamily: 'Circular Std Black',
+                fontFamily: 'Circular Std Medium',
                 lineHeight: 30
               }}>
               You have been Verified!
@@ -1709,7 +1715,7 @@ function JobTicket({ navigation, route }: any) {
                   style={{
                     color: 'white',
                     fontSize: 14,
-                    fontFamily: 'Circular Std Book',
+                    fontFamily: 'Circular Std Medium',
                   }}>
                   Go To Dashboard
                 </Text>
@@ -1724,9 +1730,14 @@ function JobTicket({ navigation, route }: any) {
           style={{
             flex: 1,
             justifyContent: 'center',
+            alignItems:'center',
             backgroundColor: 'rgba(0,0,0,0.5)',
           }}>
-          <ActivityIndicator size={'large'} color={Theme.darkGray} />
+           <Image
+                source={require('../../Assets/Images/loadergif.gif')}
+                style={{ width: 150, height: 150 }}
+              />
+          {/* <ActivityIndicator size={'large'} color={Theme.darkGray} /> */}
         </View>
       </Modal>
     </View>
@@ -1740,7 +1751,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     fontSize: 24,
     color: Theme.Dune,
-    fontFamily: 'Circular Std Black',
+    fontFamily: 'Circular Std Medium',
     lineHeight: 24,
     fontStyle: 'normal',
   },
