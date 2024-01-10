@@ -66,7 +66,8 @@ const Profile = ({ navigation }: any) => {
   let tutorDetail = context?.tutorDetails
 
   let tutorDetails = context?.tutorDetails
-
+  console.log('tutorDetail',tutorDetail);
+  
 
   let bannerCont = useContext(bannerContext)
 

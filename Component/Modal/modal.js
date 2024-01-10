@@ -37,16 +37,16 @@ export default function ModalImg({
                 <View style={[styles.frontContainer,{}]}>
                     <TouchableOpacity style={[styles.innerContainer,{alignSelf:'flex-end'}]} onPress={closeModal}>
                         {/* <Text style={styles.textStyle}>Close</Text> */}
-                        <AntDesign name="closecircleo" size={20} color={'black'} />
+                        <AntDesign name="closecircleo" size={20} color={'grey'} />
                     </TouchableOpacity>
                     <View style={{flexDirection:'row', paddingVertical:20}}>
 
                     <TouchableOpacity style={[styles.innerContainer,{alignItems:'center'}]} onPress={openCamera}>
-                    <AntDesign name="camera" size={40} color={'black'} />
+                    <AntDesign name="camera" size={40} color={'grey'} />
                         <Text style={[styles.textStyle,{marginTop:20}]}>Take a Photo</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={[styles.midContainer,{alignItems:'center'}]} onPress={openGallery} >
-                    <AntDesign name="clouduploado" size={40} color={'black'} />
+                    <AntDesign name="clouduploado" size={40} color={'grey'} />
                         <Text style={[styles.textStyle,{marginTop:20}]}>Upload a Photo</Text>
                     </TouchableOpacity>
                     </View>
@@ -87,7 +87,9 @@ const styles = StyleSheet.create({
         borderColor: Theme.gray
     },
     textStyle: {
-        fontSize: 15,
-        color: Theme.darkGray
+        fontSize: 16,
+        color: Theme.darkGray,
+        fontFamily:'Circular Std Medium'
+
     }
 })

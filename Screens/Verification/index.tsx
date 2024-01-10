@@ -23,6 +23,7 @@ import axios from 'axios';
 import messaging from '@react-native-firebase/messaging';
 const Verification = ({ navigation, route }: any) => {
   let data = route.params;
+console.log('data=============>Verification',data);
 
   const [user, setUser] = useState(false);
   const CELL_COUNT = 6;
@@ -41,7 +42,7 @@ const Verification = ({ navigation, route }: any) => {
 
   const Verify = () => {
 
-    const sendDeviceTokenToDatabase = (tutorId:any) => {
+    const sendDeviceTokenToDatabase = (tutorId: any) => {
       messaging()
         .requestPermission()
         .then(() => {
@@ -52,13 +53,13 @@ const Verification = ({ navigation, route }: any) => {
           messaging()
             .subscribeToTopic('all_devices')
             .then(() => {
-              console.log(token, 'token');
-  
+              // console.log(token, 'token');
+
               let formData = new FormData();
-  
+
               formData.append('tutor_id', tutorId);
               formData.append('device_token', token);
-  
+
               axios
                 .post(`${Base_Uri}api/getTutorDeviceToken`, formData, {
                   headers: {
@@ -67,7 +68,7 @@ const Verification = ({ navigation, route }: any) => {
                 })
                 .then(res => {
                   let data = res.data;
-                  console.log(data, 'tokenResponse');
+                  // console.log(data, 'tokenResponse');
                 })
                 .catch(error => {
                   console.log(error, 'error');
@@ -84,7 +85,7 @@ const Verification = ({ navigation, route }: any) => {
           );
         });
     };
-  
+
 
 
     if (value.length < 6) {
@@ -93,41 +94,64 @@ const Verification = ({ navigation, route }: any) => {
     }
 
     setLoading(true);
-
-    axios
+    console.log('Value', value);
+    
+    axios   
       .get(`${Base_Uri}verificationCode/${value}`)
-      .then(({ data }) => {
+      .then(({ data }:any) => {
+        // console.log('data.tutorID',data.tutorID);
+        
         if (data?.status !== 200) {
           setLoading(false);
           ToastAndroid.show(data?.errorMessage, ToastAndroid.SHORT);
           return;
         }
         if (data?.status == 200) {
+          console.log('data.tutorID', data.tutorID);
+
           setLoading(false);
-          ToastAndroid.show('Login Successfully', ToastAndroid.SHORT);
+         
           let mydata = JSON.stringify(data);
           AsyncStorage.setItem('loginAuth', mydata);
+          console.log('mydata',mydata);
+          console.log('data.tutorID',data.tutorID);
+          
           sendDeviceTokenToDatabase(data.tutorID)
           axios
-            .get(`${Base_Uri}getTutorDetailByID/${data.tutorID}`)
+            .get(`${Base_Uri}getTutorDetailByID/${data?.tutorID}`)
             .then(res => {
               let tutorData = res.data;
-              console.log(tutorData, 'data');
-              if (tutorData?.tutorDetailById[0]?.status === 'unverified' || tutorData?.tutorDetailById[0]?.status === 'verified') {
-                // navigation.replace('Main')
+              console.log('tutorData',tutorData);
+              
+              if (
+                tutorData?.tutorDetailById[0]?.full_name == null && tutorData?.tutorDetailById[0]?.email == null
+              ) {
+                navigation.replace('Signup', tutorData)
+               
+              }
+              else if(tutorData?.tutorDetailById[0]?.status === 'unverified' || tutorData?.tutorDetailById[0]?.status === 'verified'){
+               
                 navigation.replace('Main', {
                   screen: 'Home',
                 });
-                console.log(tutorData?.tutorDetailById[0]?.status,'unverified or verified verification');
+                ToastAndroid.show(`Login Successfully ${data.tutorID}`, ToastAndroid.SHORT);
               }
-              else if (tutorData?.tutorDetailById[0]?.status === 'terminated' || tutorData?.tutorDetailById[0]?.status === 'block') {
-                AsyncStorage.removeItem('loginAuth');
-                navigation.replace('Login')
-                console.log(tutorData?.tutorDetailById[0]?.status,'terminated or block');
-              }
-              else {
-                // navigation.replace('JobTicket')
-              }
+              // else (tutorData?.tutorDetailById[0]?.status === 'unverified' || tutorData?.tutorDetailById[0]?.status === 'verified') 
+              // {
+              //   // navigation.replace('Main')
+              //   navigation.replace('Main', {
+              //     screen: 'Home',
+              //   });
+              //   console.log(tutorData?.tutorDetailById[0]?.status, 'unverified or verified verification');
+              // }
+              // else if (tutorData?.tutorDetailById[0]?.status === 'terminated' || tutorData?.tutorDetailById[0]?.status === 'resigned') {
+              //   AsyncStorage.removeItem('loginAuth');
+              //   navigation.replace('Login')
+              //   console.log(tutorData?.tutorDetailById[0]?.status,'terminated or block');
+              // }
+              // else {
+              //   // navigation.replace('JobTicket')
+              // }
               // if (
               //   !tutorData.tutorDetailById[0]?.full_name &&
               //   !tutorData.tutorDetailById[0]?.displayName
@@ -160,6 +184,8 @@ const Verification = ({ navigation, route }: any) => {
         }
       })
       .catch(error => {
+        console.log('reeoe', error);
+
         ToastAndroid.show('Invalid Code', ToastAndroid.SHORT);
         setLoading(false);
       });
@@ -167,8 +193,8 @@ const Verification = ({ navigation, route }: any) => {
 
   const handleResendPress = () => {
     let { UserDetail } = data;
-    console.log('UserDetail.phoneNumber',UserDetail.phoneNumber);
-    
+    console.log('UserDetail.phoneNumber', UserDetail.phoneNumber);
+
     setResendLoading(true);
 
     axios

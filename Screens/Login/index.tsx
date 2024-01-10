@@ -22,27 +22,36 @@ const Login = ({ navigation }: any) => {
 
   const phoneInput = useRef(null);
 
+  // console.log('phoneNumber',phoneNumber.slice(1));
   const handleLoginPress = () => {
     setLoading(true);
-    console.log('phoneNumber',phoneNumber);
-    
+
+    const timeoutId = setTimeout(() => {
+      setLoading(false);
+      ToastAndroid.show('Request timeout: Please check your internet connection', ToastAndroid.SHORT);
+    }, 30000);
+
     axios
-      .get(`${Base_Uri}loginAPI/${phoneNumber}`)
+      .get(`${Base_Uri}loginAPI/${phoneNumber}`,{
+          // Set the timeout for the API call
+      timeout: 30000, // 30 seconds
+      })
       .then(({ data }) => {
-        console.log('data',data);
-        
-        if (data.status == 404) {
+        console.log('data===>',data);
+        clearTimeout(timeoutId);
+        if (data?.status == 404) {
           setLoading(false);
           console.log(data.status);
           
-          ToastAndroid.show(data.errorMessage, ToastAndroid.SHORT);
+          ToastAndroid.show(data.userStatus, ToastAndroid.SHORT);
           return;
         }
-        if (data.status == 200) {
-          ToastAndroid.show(
-            'Verification Code Successfully send to this mobile number',
-            ToastAndroid.SHORT,
-          );
+        if (data?.status == 200) {
+          ToastAndroid.show(data.tutorDeviceToken, ToastAndroid.SHORT);
+          // ToastAndroid.show(
+          //   'Verification Code Successfully send to this mobile number',
+          //   ToastAndroid.SHORT,
+          // );
           navigation.navigate('Verification', data);
           setLoading(false);
         }
@@ -50,8 +59,7 @@ const Login = ({ navigation }: any) => {
       .catch(error => {
         setLoading(false);
         console.log("error", error);
-
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        ToastAndroid.show('Request timeout: Please check your internet connection', ToastAndroid.LONG);
       });
   };
 
@@ -137,7 +145,7 @@ const Login = ({ navigation }: any) => {
             </Text>
           )}
         </TouchableOpacity>
-        <View
+        {/* <View
           style={{
             width: '100%',
             alignItems: 'center',
@@ -156,7 +164,7 @@ const Login = ({ navigation }: any) => {
           <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
             <Text style={{ color: Theme.black, fontWeight: 'bold' }}>Signup</Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
     </View>
   );

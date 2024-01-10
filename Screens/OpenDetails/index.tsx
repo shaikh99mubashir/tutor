@@ -39,12 +39,12 @@ const OpenDetails = ({ route, navigation }: any) => {
     let ticketID = data?.ticketID;
     // let id = data?.id
     let tutor_id = tutorData?.tutorID;
-    let comment = openDetailItem.comment ? openDetailItem.comment : null;
+    let comment = openDetailItem.comment ? openDetailItem?.comment : null;
     // console.log('idddddddddddddd',data.id)
-    // console.log(subjectId)
-    // console.log(subjectId)
-    // console.log(tutor_id)
-    // console.log(comment, "comment")
+    console.log(subjectId, "subjectId")
+    console.log(ticketID, "ticketID")
+    console.log(tutor_id , "tutor_id")
+    console.log(comment, "comment")
 
     setLoading(true);
     axios
@@ -52,7 +52,10 @@ const OpenDetails = ({ route, navigation }: any) => {
         `${Base_Uri}offerSendByTutor/${subjectId}/${tutor_id}/${ticketID}/${comment}`,
       )
       .then(({ data }) => {
-        if (data?.result?.status == 'Applied') {
+
+
+
+        if (data?.result?.status == 'pending') {
           setLoading(false);
           ToastAndroid.show(
             'You have successfully applied for this ticket',

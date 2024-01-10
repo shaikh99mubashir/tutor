@@ -26,6 +26,8 @@ import AsyncStorage, {
 } from '@react-native-async-storage/async-storage';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import bannerContext from '../../context/bannerContext';
 import Status from '../Status';
 
@@ -53,11 +55,6 @@ function JobTicket({ navigation, route }: any) {
     {
       index: 1,
       name: 'Applied',
-      selected: false,
-    },
-    {
-      index: 2,
-      name: 'Assigned',
       selected: false,
     },
   ]);
@@ -165,7 +162,7 @@ function JobTicket({ navigation, route }: any) {
   const [appliedData, setAppliedData] = useState([]);
   const [assignedData, setAssignedData] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
-
+  
   const onRefresh = React.useCallback(() => {
     if (!refreshing) {
       // setRefreshing(true);
@@ -179,23 +176,7 @@ function JobTicket({ navigation, route }: any) {
     }
   }, [refresh]);
 
-  // const [tutorDetail, setTutorDetail] = useState<any>();
 
-  // const tutorDetailsCont = useContext(TutorDetailsContext);
-  // const {tutorPersonalDetails} = tutorDetailsCont;
-
-  // console.log(tutorPersonalDetails, 'myDetails');
-
-  // useEffect(() => {
-  //   try {
-  //     let tutorData: any = AsyncStorage.getItem('tutorData');
-  //     tutorData = JSON.parse(tutorData);
-  //     setTutorDetail(tutorData);
-  //     console.log('Bottom Navigation tutor data', tutorData);
-  //   } catch (error) {
-  //     console.error('Error retrieving or parsing tutor data:', error);
-  //   }
-  // }, []);
   const [tutorId, setTutorId] = useState<Number | null>(null);
   const getTutorId = async () => {
     interface LoginAuth {
@@ -205,60 +186,68 @@ function JobTicket({ navigation, route }: any) {
     }
     const data: any = await AsyncStorage.getItem('loginAuth');
     let loginData: LoginAuth = JSON.parse(data);
-
+    
     let {tutorID} = loginData;
     setTutorId(tutorID);
   };
 
-  const getTutorDetails = async () => {
+  let isVerified = false
+  const checkTutorStatus = async () => {
+    // isVerified = true
+    // if(isVerified){
+    //   setModalVisible(true)
+    // }
+    
     axios
       .get(`${Base_Uri}getTutorDetailByID/${tutorId}`)
       .then(({data}) => {
         let {tutorDetailById} = data;
 
         console.log(tutorDetailById, 'iddd');
-
+        console.log('getTutorDetailByID check true hoo gia');
         let tutorDetails = tutorDetailById[0];
 
-        // console.log(tutorDetails,"detailsss")
-
-        let details = {
-          full_name: tutorDetails?.full_name,
-          email: tutorDetails?.email,
-          displayName: tutorDetails?.displayName,
-          gender: tutorDetails?.gender,
-          phoneNumber: tutorDetails.phoneNumber,
-          age: tutorDetails.age,
-          nric: tutorDetails.nric,
-          tutorImage: tutorDetails.tutorImage,
-          tutorId: tutorDetails?.id,
-          status: tutorDetails?.status,
-        };
-
-        updateTutorDetails(details);
+        console.log(tutorDetailById[0].status,"detailsss")
+        console.log(tutorDetailById[0].phoneNumber,"detailsss")
+        // tutorDetailById[0].status == 'verified' &&
+        if( tutorDetailById[0]?.open_dashboard != 'yes'){
+          axios
+          .get(`${Base_Uri}api/update_dashboard_status/${tutorId}`)
+          .then(({data})=>{
+            setModalVisible(true)
+            console.log('data =======>',data);
+            let {tutorDetailById} = data;
+            let tutorDetails = tutorDetailById[0];
+            let details = {
+              full_name: tutorDetails?.full_name,
+              email: tutorDetails?.email,
+              displayName: tutorDetails?.displayName,
+              gender: tutorDetails?.gender,
+              phoneNumber: tutorDetails?.phoneNumber,
+              age: tutorDetails?.age,
+              nric: tutorDetails?.nric,
+              tutorImage: tutorDetails?.tutorImage,
+              tutorId: tutorDetails?.id,
+              status: tutorDetails?.status,
+            };
+            updateTutorDetails(details);
+           
+          })
+          .catch((error:any)=>{
+            console.log('errror========>',error);
+          })
+          return
+        }        
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error getTutorDetailByID ', ToastAndroid.SHORT);
       });
   };
 
+
+
   const getTicketsData = async () => {
     setLoading(true);
-    // setModalVisible(true);
-    axios
-      .get(`${Base_Uri}getTutorDetailByID/${tutorDetails?.tutorId}`)
-      .then(res => {
-        let tutorData = res.data;
-        // console.log("tutorData",tutorData);
-
-        setLoading(false);
-        console.log(tutorData?.tutorDetailById[0]?.status, 'check before if condition Job ticket');
-        if (tutorData?.tutorDetailById[0]?.status === 'verified') {
-          // setModalVisible(true);
-          console.log(tutorData?.tutorDetailById[0]?.status, 'fdgfdgfd verified check on job ticket');
-          return
-        }
-      });
     let filter: any = await AsyncStorage.getItem('filter');
 
     if (filter) {
@@ -270,8 +259,6 @@ function JobTicket({ navigation, route }: any) {
       let myMode = mode.subject ?? 'noFilter';
       let myState = state.id ?? 'noFilter';
       let myCity = city.id ?? 'noFilter';
-      // console.log("myCitymyCity",myCity);
-      // console.log("myCitymyCity",city);
 
       axios
         .get(`${Base_Uri}ticketsAPI/${tutorDetails?.tutorId}`)
@@ -291,8 +278,6 @@ function JobTicket({ navigation, route }: any) {
               setOpenData(
                 filteredTickets.length > 0 &&
                 filteredTickets.filter((e: any, i: number) => {
-                  // console.log("e?.cityID",e);
-
                   return (
                     (myMode == 'noFilter' ||
                       e?.mode?.toString()?.toLowerCase() ==
@@ -314,7 +299,6 @@ function JobTicket({ navigation, route }: any) {
         })
         .catch(error => {
           setLoading(false);
-          console.log(error);
           ToastAndroid.show('Internal Server Error ticketsAPI1', ToastAndroid.SHORT);
         });
 
@@ -331,9 +315,6 @@ function JobTicket({ navigation, route }: any) {
             .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
             .then(({ data }) => {
               let { getTutorOffers } = data;
-              console.log(tickets, 'tickets');
-              console.log(getTutorOffers, 'getTutorOffers');
-
               const filteredTickets = tickets.filter(
                 (ticket: any) =>
                   !getTutorOffers.some(
@@ -350,31 +331,23 @@ function JobTicket({ navigation, route }: any) {
         })
         .catch(error => {
           setLoading(false);
-          console.log(error);
           ToastAndroid.show('Internal Server Error ticketsAPI', ToastAndroid.SHORT);
         });
     }
   };
 
   const getAppliedData = async () => {
-    setLoading(true);
-
+    setLoading(true)
     let tutorData: any = await AsyncStorage.getItem('loginAuth');
-
     tutorData = JSON.parse(tutorData);
-
     let tutor_id = tutorData?.tutorID;
-
     let appliedStatus: any = await AsyncStorage.getItem('statusFilter');
-
     let status = JSON.parse(appliedStatus);
-
     if (status) {
       axios
         .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
         .then(({ data }) => {
           let { getTutorOffers } = data;
-
           let tutorOffer =
             getTutorOffers &&
             getTutorOffers.length > 0 &&
@@ -408,42 +381,30 @@ function JobTicket({ navigation, route }: any) {
       });
   };
 
-  const getAssignedData = async () => {
-    setLoading(true);
-    let tutorData: any = await AsyncStorage.getItem('loginAuth');
-    tutorData = JSON.parse(tutorData);
-    let tutor_id = tutorData?.tutorID;
-    axios
-      .get(`${Base_Uri}assignedTicketsAPI/${tutor_id}`)
-      .then(({ data }) => {
-        let { tickets } = data;
-        setAssignedData(tickets);
-        // console.log('tickets===>', tickets);
 
-        setLoading(false);
-      })
-      .catch(error => {
-        ToastAndroid.show(
-          'Internal Server Error assignedTicketsAPI',
-          ToastAndroid.SHORT,
-        );
-        setLoading(false);
-      });
-  };
 
 
   useEffect(()=>{
     getTutorId()
   },[])
   useEffect(() => {
-    // getTutorDetails()
+    checkTutorStatus()
     getTicketsData();
     getAppliedData();
   }, [refresh, route]);
 
   const HandelGoToDashboard = () => {
     setModalVisible(false)
-    navigation.replace('Splash')
+    // navigation.navigate('Home')
+    navigation.reset({
+      index: 0,
+      routes: [
+        {
+          name: 'Main', // Change 'Login' to 'Main'
+          screen: 'Home', 
+        },
+      ],
+    });
   }
   const checkSearchItems = () => {
     searchText && foundName.length == 0 && setIsSearchItems(true);
@@ -452,17 +413,12 @@ function JobTicket({ navigation, route }: any) {
   const [foundName, setFoundName] = useState([]);
   const [searchText, setSearchText] = useState('');
   const searchOpen = (e: any) => {
-    // console.log("rinnimg");
-
     if (e == '') {
       setFoundName([]);
       setSearchText(e);
       return;
     }
-
     setSearchText(e);
-    // console.log("e === search ",searchText);
-
     let filteredItems: any = openData.filter(
       (x: any) =>
         x?.subject_name?.toLowerCase().includes(e?.toLowerCase()) ||
@@ -493,32 +449,8 @@ function JobTicket({ navigation, route }: any) {
     setFoundName(filteredItems);
   };
 
-  function convertTo12HourFormat(time24: any): any {
-    // console.log('time24',time24);
-    if (time24 === null) {
-      return 'Invalid time';
-    }
-    const [hourStr, minuteStr] = time24?.split(':');
-    const hour = parseInt(hourStr);
-    let period = 'AM';
-    let twelveHour = hour;
-
-    if (hour >= 12) {
-      period = 'PM';
-      if (hour > 12) {
-        twelveHour = hour - 12;
-      }
-    }
-
-    if (twelveHour === 0) {
-      twelveHour = 12;
-    }
-
-    return `${twelveHour}:${minuteStr} ${period}`;
-  }
 
   const renderOpenData: any = ({ item }: any) => {
-    // console.log('====================================renderOpenData', item);
     return (
       <>
         <TouchableOpacity
@@ -548,7 +480,11 @@ function JobTicket({ navigation, route }: any) {
               </Text>
               <View
                 style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
-                <Image source={require('../../Assets/Images/mapicon.png')} />
+                <Feather
+                        name="map-pin"
+                        size={18}
+                        color={'#298CFF'}
+                      />
                 <Text style={[styles.textType3, { color: '#003E9C' }]}>
                   {item?.city}
                 </Text>
@@ -564,6 +500,7 @@ function JobTicket({ navigation, route }: any) {
                     paddingVertical: 5,
                     paddingHorizontal: 30,
                     borderRadius: 30,
+                    textTransform:'capitalize',
                   },
                 ]}>
                 {item?.mode}
@@ -590,10 +527,14 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 10,
                 }}>
-                <Image source={require('../../Assets/Images/subIcon.png')} />
+                <AntDesign
+                        name="copy1"
+                        size={20}
+                        color={'#298CFF'}
+                      />
                 <Text style={styles.textType3}>Subject</Text>
               </View>
-              <Text style={[styles.textType1, { fontSize: 18 }]}>
+              <Text style={[styles.textType1, { fontSize: 18,textTransform:'capitalize', }]}>
                 {item?.subject_name}
               </Text>
             </View>
@@ -611,10 +552,15 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 10,
                 }}>
-                <Image source={require('../../Assets/Images/preftutor.png')} />
+                {/* <Image source={require('../../Assets/Images/preftutor.png')} /> */}
+                <FontAwesome
+                        name="user-o"
+                        size={18}
+                        color={'#298CFF'}
+                      />
                 <Text style={styles.textType3}>Pref. Tutor</Text>
               </View>
-              <Text style={[styles.textType1, { fontSize: 18 }]}>
+              <Text style={[styles.textType1, { fontSize: 18,textTransform:'capitalize', }]}>
                 {item?.tutorPereference}
               </Text>
             </View>
@@ -632,10 +578,14 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 10,
                 }}>
-                <Image source={require('../../Assets/Images/level.png')} />
+                  <FontAwesome
+                        name="level-up"
+                        size={18}
+                        color={'#298CFF'}
+                      />
                 <Text style={styles.textType3}>Level</Text>
               </View>
-              <Text style={[styles.textType1, { fontSize: 18 }]}>
+              <Text style={[styles.textType1, { fontSize: 18 ,textTransform:'capitalize',}]}>
                 {item?.categoryName}
               </Text>
             </View>
@@ -656,10 +606,12 @@ function JobTicket({ navigation, route }: any) {
                   gap: 10,
                   paddingHorizontal: 10,
                 }}>
-                <Image
-                  source={require('../../Assets/Images/scheduleicccon.png')}
-                />
-                <Text style={[styles.textType3, { color: '#298CFF' }]}>
+                <AntDesign
+                        name="calendar"
+                        size={20}
+                        color={'#298CFF'}
+                      />
+                <Text style={[styles.textType3, { color: '#298CFF' ,textTransform:'capitalize',}]}>
                   {item?.classDayType}
                 </Text>
               </View>
@@ -678,7 +630,11 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 10,
                 }}>
-                <Image source={require('../../Assets/Images/timeee.png')} />
+                  <AntDesign
+                        name="clockcircleo"
+                        size={20}
+                        color={'#298CFF'}
+                      />
                 <Text style={[styles.textType3, { color: '#298CFF' }]}>
                   {item?.classTime}
                 </Text>
@@ -686,114 +642,10 @@ function JobTicket({ navigation, route }: any) {
             </View>
           </View>
         </TouchableOpacity>
-        {/* <TouchableOpacity
-        onPress={() => navigation.navigate('OpenDetails', item)}
-        activeOpacity={0.8}
-        style={{
-          borderWidth: 1,
-          borderRadius: 5,
-          marginBottom: 10,
-          padding: 10,
-          borderColor: Theme.lightGray,
-        }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: '100%',
-          }}>
-          <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            {item?.jtuid}
-          </Text>
-          <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            {item?.city}
-          </Text>
-        </View>
-        <Text
-          style={{
-            color: Theme.black,
-            fontSize: 16,
-            fontWeight: '600',
-            marginTop: 10,
-            fontFamily: 'Circular Std Black'
-          }}>
-          {item.subject_name}
-        </Text>
-        <View>
-          <Text
-            style={{
-              color: Theme.black,
-              fontSize: 16,
-              fontWeight: '600',
-              marginTop: 10,
-              fontFamily: 'Circular Std Black'
-            }}>
-            Details
-          </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            {item?.classDay} at {convertTo12HourFormat(item?.classTime)} for{' '}
-            {item?.quantity} hour(s) of each class.
-          </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            {item?.studentGender} Student {item?.student_age} y/o
-          </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            {item?.subject_name} - {item?.session} sessions {item?.quantity}{' '}
-            hour(s)
-          </Text>
-          <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black' }}>
-            - Tutor Preference: {item?.tutorPereference}
-          </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            - Class Frequency: {item?.classFrequency}
-          </Text>
-          {item?.specialRequest ?
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            - Special Request: {item?.specialRequest}
-          </Text>
-          :''}
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            - PreferredDay/Time: {item?.classDay}
-          </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            - Mode: {item?.mode}
-          </Text>
-          <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-            - Level: {item?.categoryName}
-          </Text>
-          {item?.remarks && (
-            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-              - Remarks: {item?.remarks}
-            </Text>
-          )}
-          {item?.first8Hour && (
-            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-              {item?.first8Hour}
-            </Text>
-          )}
-          {item?.above9Hour && (
-            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-              {item?.above9Hour}
-            </Text>
-          )}
-        </View>
-        <Text
-          style={{
-            color: Theme.black,
-            fontSize: 18,
-            fontWeight: '600',
-            marginTop: 10,
-            fontFamily: 'Circular Std Black'
-          }}>
-          RM {item?.price}/subject
-        </Text>
-      </TouchableOpacity> */}
       </>
     );
   };
   const renderCloseData = ({ item }: any) => {
-    // console.log('item', item);
-
     return (
       <>
         <Text
@@ -807,11 +659,12 @@ function JobTicket({ navigation, route }: any) {
               borderTopLeftRadius: 16,
               borderTopRightRadius: 16,
               marginLeft: 20,
-              width: 100,
+              width: 120,
               textAlign: 'center',
+              textTransform:'capitalize'
             },
           ]}>
-          {item.tutor_status}
+          {item.ticket_status}
         </Text>
         <TouchableOpacity
           activeOpacity={0.8}
@@ -834,13 +687,17 @@ function JobTicket({ navigation, route }: any) {
             }}>
             <View>
               <Text style={styles.textType3}>{item?.jtuid}</Text>
-              <Text style={[styles.textType1, { lineHeight: 30 }]}>
+              <Text style={[styles.textType1, { lineHeight: 30,textTransform:'capitalize', }]}>
                 RM {item?.price}
               </Text>
               <View
                 style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
-                <Image source={require('../../Assets/Images/mapicon.png')} />
-                <Text style={[styles.textType3, { color: '#003E9C' }]}>
+                <Feather
+                        name="map-pin"
+                        size={18}
+                        color={'#298CFF'}
+                      />
+                <Text style={[styles.textType3, { color: '#003E9C',textTransform:'capitalize', }]}>
                   {item?.city}
                 </Text>
               </View>
@@ -855,6 +712,7 @@ function JobTicket({ navigation, route }: any) {
                     paddingVertical: 5,
                     paddingHorizontal: 30,
                     borderRadius: 30,
+                    textTransform:'capitalize'
                   },
                 ]}>
                 {item?.mode}
@@ -881,10 +739,14 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 10,
                 }}>
-                <Image source={require('../../Assets/Images/subIcon.png')} />
+                  <AntDesign
+                        name="copy1"
+                        size={18}
+                        color={'#298CFF'}
+                      />
                 <Text style={styles.textType3}>Subject</Text>
               </View>
-              <Text style={[styles.textType1, { fontSize: 18 }]}>
+              <Text style={[styles.textType1, { fontSize: 18,textTransform:'capitalize', }]}>
                 {item?.subject_name}
               </Text>
             </View>
@@ -902,10 +764,14 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 10,
                 }}>
-                <Image source={require('../../Assets/Images/preftutor.png')} />
+                   <FontAwesome
+                        name="user-o"
+                        size={18}
+                        color={'#298CFF'}
+                      />
                 <Text style={styles.textType3}>Pref. Tutor</Text>
               </View>
-              <Text style={[styles.textType1, { fontSize: 18 }]}>
+              <Text style={[styles.textType1, { fontSize: 18,textTransform:'capitalize', }]}>
                 {item?.tutorPereference}
               </Text>
             </View>
@@ -923,10 +789,14 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 10,
                 }}>
-                <Image source={require('../../Assets/Images/level.png')} />
+                <FontAwesome
+                        name="level-up"
+                        size={18}
+                        color={'#298CFF'}
+                      />
                 <Text style={styles.textType3}>Level</Text>
               </View>
-              <Text style={[styles.textType1, { fontSize: 18 }]}>
+              <Text style={[styles.textType1, { fontSize: 18 ,textTransform:'capitalize',}]}>
                 {item?.categoryName}
               </Text>
             </View>
@@ -947,10 +817,12 @@ function JobTicket({ navigation, route }: any) {
                   gap: 10,
                   paddingHorizontal: 10,
                 }}>
-                <Image
-                  source={require('../../Assets/Images/scheduleicccon.png')}
-                />
-                <Text style={[styles.textType3, { color: '#298CFF' }]}>
+                <AntDesign
+                        name="calendar"
+                        size={20}
+                        color={'#298CFF'}
+                      />
+                <Text style={[styles.textType3, { color: '#298CFF',textTransform:'capitalize', }]}>
                   {item?.classDayType}
                 </Text>
               </View>
@@ -969,8 +841,12 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 10,
                 }}>
-                <Image source={require('../../Assets/Images/timeee.png')} />
-                <Text style={[styles.textType3, { color: '#298CFF' }]}>
+                  <AntDesign
+                        name="clockcircleo"
+                        size={20}
+                        color={'#298CFF'}
+                      />
+                <Text style={[styles.textType3, { color: '#298CFF',textTransform:'capitalize', }]}>
                   {item?.classTime}
                 </Text>
               </View>
@@ -978,371 +854,11 @@ function JobTicket({ navigation, route }: any) {
           </View>
         </TouchableOpacity>
       </>
-      // <TouchableOpacity
-      //   activeOpacity={0.8}
-      //   style={{
-      //     borderWidth: 1,
-      //     borderRadius: 5,
-      //     marginBottom: 10,
-      //     padding: 10,
-      //     borderColor: Theme.lightGray,
-      //   }}>
-      //   <View
-      //     style={{
-      //       flexDirection: 'row',
-      //       justifyContent: 'space-between',
-      //       width: '100%',
-      //     }}>
-      //     <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //       {item.jtuid}
-      //     </Text>
-      //     <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //       {item.status}
-      //     </Text>
-      //   </View>
-      //   <Text
-      //     style={{
-      //       color: Theme.black,
-      //       fontSize: 15,
-      //       fontWeight: '600',
-      //       marginTop: 10,
-      //       fontFamily: 'Circular Std Black'
-      //     }}>
-      //     {item.subject_name}
-      //   </Text>
-      //   <View>
-      //     <Text
-      //       style={{
-      //         color: Theme.black,
-      //         fontSize: 16,
-      //         fontWeight: '600',
-      //         marginTop: 10,
-      //         fontFamily: 'Circular Std Black'
-      //       }}>
-      //       Details
-      //     </Text>
-      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //       {item?.classDay} at {convertTo12HourFormat(item?.classTime)} for{' '}
-      //       {item?.quantity} hour(s) of each class.
-      //     </Text>
-      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //       {item?.studentGender} Student ({item?.studentAge}y/o)
-      //     </Text>
-      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //       {item?.subject_name} - {item?.session} sessions {item?.quantity}
-      //       hour(s)
-      //     </Text>
-      //     <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black' }}>
-      //       - Tutor Pereference: {item?.tutorPereference}
-      //     </Text>
-      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //       - Class Frequency: {item?.classFrequency}
-      //     </Text>
-      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //       - Special Request: {item?.specialRequest}
-      //     </Text>
-      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //       - classDay/Time: {item?.classDay}
-      //     </Text>
-      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //       - Mode: {item?.mode}
-      //     </Text>
-      //     {item?.remarks && (
-      //       <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //         - Remarks: {item?.remarks}
-      //       </Text>
-      //     )}
-      //     {item?.first8Hour && (
-      //       <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //         {item?.first8Hour}
-      //       </Text>
-      //     )}
-      //     {item?.above9Hour && (
-      //       <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //         {item?.above9Hour}
-      //       </Text>
-      //     )}
-      //   </View>
-
-      //   <Text
-      //     style={{
-      //       color: Theme.black,
-      //       fontSize: 18,
-      //       fontWeight: '600',
-      //       marginTop: 10,
-      //       fontFamily: 'Circular Std Black'
-      //     }}>
-      //     RM {item?.price}/subject
-      //   </Text>
-      // </TouchableOpacity>
+      
     );
   };
 
-  const renderAssignData = ({ item }: any) => {
-    // console.log('====================================item',item);
-    return (
-      <TouchableOpacity
-        activeOpacity={0.8}
-        style={{
-          borderWidth: 1,
-          borderRadius: 20,
-          marginBottom: 10,
-          padding: 20,
-          borderColor: Theme.lightGray,
-          backgroundColor: Theme.white,
-        }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: '100%',
-            borderBottomWidth: 2,
-            paddingBottom: 20,
-            borderBottomColor: Theme.lightGray,
-          }}>
-          <View>
-            <Text style={styles.textType3}>{item?.jtuid}</Text>
-            <Text style={[styles.textType1, { lineHeight: 30 }]}>
-              RM {item?.price}
-            </Text>
-            <View style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
-              <Image source={require('../../Assets/Images/mapicon.png')} />
-              <Text style={[styles.textType3, { color: '#003E9C' }]}>
-                {item?.city}
-              </Text>
-            </View>
-          </View>
-          <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-            <Text
-              style={[
-                styles.textType3,
-                {
-                  color: '#003E9C',
-                  backgroundColor: '#298CFF33',
-                  paddingVertical: 5,
-                  paddingHorizontal: 30,
-                  borderRadius: 30,
-                },
-              ]}>
-              {item?.mode}
-            </Text>
-          </View>
-        </View>
 
-        <View
-          style={{
-            paddingVertical: 20,
-            borderBottomWidth: 2,
-            borderBottomColor: Theme.lightGray,
-          }}>
-          <View
-            style={{
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                gap: 10,
-              }}>
-              <Image source={require('../../Assets/Images/subIcon.png')} />
-              <Text style={styles.textType3}>Subject</Text>
-            </View>
-            <Text style={[styles.textType1, { fontSize: 18 }]}>
-              {item?.subject_name}
-            </Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginTop: 10,
-            }}>
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                gap: 10,
-              }}>
-              <Image source={require('../../Assets/Images/preftutor.png')} />
-              <Text style={styles.textType3}>Pref. Tutor</Text>
-            </View>
-            <Text style={[styles.textType1, { fontSize: 18 }]}>
-              {item?.tutorPereference}
-            </Text>
-          </View>
-          <View
-            style={{
-              justifyContent: 'space-between',
-              flexDirection: 'row',
-              alignItems: 'center',
-              marginTop: 10,
-            }}>
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                gap: 10,
-              }}>
-              <Image source={require('../../Assets/Images/level.png')} />
-              <Text style={styles.textType3}>Level</Text>
-            </View>
-            <Text style={[styles.textType1, { fontSize: 18 }]}>
-              {item?.categoryName}
-            </Text>
-          </View>
-        </View>
-
-        <View style={{ flexDirection: 'row', gap: 10, marginTop: 15 }}>
-          <View
-            style={{
-              backgroundColor: '#E6F2FF',
-              paddingVertical: 10,
-              borderRadius: 10,
-            }}>
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                gap: 10,
-                paddingHorizontal: 10,
-              }}>
-              <Image
-                source={require('../../Assets/Images/scheduleicccon.png')}
-              />
-              <Text style={[styles.textType3, { color: '#298CFF' }]}>
-                {item?.classDayType}
-              </Text>
-            </View>
-          </View>
-          <View
-            style={{
-              backgroundColor: '#E6F2FF',
-              paddingVertical: 10,
-              borderRadius: 10,
-              paddingHorizontal: 10,
-            }}>
-            <View
-              style={{
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexDirection: 'row',
-                gap: 10,
-              }}>
-              <Image source={require('../../Assets/Images/timeee.png')} />
-              <Text style={[styles.textType3, { color: '#298CFF' }]}>
-                {item?.classTime}
-              </Text>
-            </View>
-          </View>
-        </View>
-      </TouchableOpacity>
-      // <TouchableOpacity
-      //   activeOpacity={0.8}
-      //   style={{
-      //     borderWidth: 1,
-      //     borderRadius: 5,
-      //     marginBottom: 10,
-      //     padding: 10,
-      //     borderColor: Theme.lightGray,
-      //   }}>
-      //   <View
-      //     style={{
-      //       flexDirection: 'row',
-      //       justifyContent: 'space-between',
-      //       width: '100%',
-      //     }}>
-      //     <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //       {item.jtuid}
-      //     </Text>
-      //     <Text style={{color: 'green', fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //       {item.status}
-      //     </Text>
-      //   </View>
-      //   <Text
-      //     style={{
-      //       color: Theme.black,
-      //       fontSize: 15,
-      //       fontWeight: '600',
-      //       marginTop: 10,
-      //       fontFamily: 'Circular Std Black'
-      //     }}>
-      //     {item.subject_name}
-      //   </Text>
-      //   <View>
-      //     <Text
-      //       style={{
-      //         color: Theme.black,
-      //         fontSize: 16,
-      //         fontWeight: '600',
-      //         marginTop: 10,
-      //         fontFamily: 'Circular Std Black'
-      //       }}>
-      //       Details
-      //     </Text>
-      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //       {item?.classDay} at {convertTo12HourFormat(item?.classTime)} for{' '}
-      //       {item?.quantity} hour(s) of each class.
-      //     </Text>
-      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //       {item?.studentGender} Student ({item?.studentAge}y/o)
-      //     </Text>
-      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //       {item?.subject_name} - {item?.session} sessions {item?.quantity}
-      //       hour(s)
-      //     </Text>
-      //     <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black' }}>
-      //       - Tutor Pereference: {item?.tutorPereference}
-      //     </Text>
-      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //       - Class Frequency: {item?.classFrequency}
-      //     </Text>
-      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //       - Special Request: {item?.specialRequest}
-      //     </Text>
-      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //       - classDay/Time: {item?.classDay}
-      //     </Text>
-      //     <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //       - Mode: {item?.mode}
-      //     </Text>
-      //     {item?.remarks && (
-      //       <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //         - Remarks: {item?.remarks}
-      //       </Text>
-      //     )}
-      //     {item?.first8Hour && (
-      //       <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //         {item?.first8Hour}
-      //       </Text>
-      //     )}
-      //     {item?.above9Hour && (
-      //       <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
-      //         {item?.above9Hour}
-      //       </Text>
-      //     )}
-      //   </View>
-
-      //   <Text
-      //     style={{
-      //       color: Theme.black,
-      //       fontSize: 18,
-      //       fontWeight: '600',
-      //       marginTop: 10,
-      //       fontFamily: 'Circular Std Black'
-      //     }}>
-      //     RM {item?.price}/subject
-      //   </Text>
-      // </TouchableOpacity>
-    );
-  };
   const firstRoute = useCallback(() => {
     return (
       <View style={{ marginVertical: 20, marginBottom: 10 }}>
@@ -1468,65 +984,6 @@ function JobTicket({ navigation, route }: any) {
     );
   }, [appliedData, searchText, foundName,refreshing]);
 
-  const thirdRoute = useCallback(() => {
-    return (
-      <View style={{ marginVertical: 20, marginBottom: 10 }}>
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-          <View
-            style={{
-              width: '100%',
-              backgroundColor: Theme.lightGray,
-              borderRadius: 10,
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingVertical: 4,
-              paddingHorizontal: 10,
-              marginBottom: 15,
-            }}>
-            <TextInput
-              placeholder="Search"
-              placeholderTextColor="black"
-              onChangeText={e => searchApplied(e)}
-              style={{
-                width: '90%',
-                padding: 8,
-                color: 'black',
-                fontFamily: 'Circular Std Medium',
-              }}
-            />
-            <TouchableOpacity onPress={() => navigation}>
-              <Image
-                source={require('../../Assets/Images/search.png')}
-                style={{ width: 20, height: 20 }}
-              />
-            </TouchableOpacity>
-          </View>
-        </View>
-        {assignedData && assignedData.length > 0 ? (
-          <FlatList
-            data={searchText && foundName.length > 0 ? foundName : assignedData}
-            renderItem={renderAssignData}
-            nestedScrollEnabled={true}
-            keyExtractor={(items: any, index: number): any => index}
-          />
-        ) : (
-          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-            <Text
-              style={{
-                fontWeight: 'bold',
-                fontSize: 16,
-                color: Theme.black,
-                textAlign: 'center',
-                fontFamily: 'Circular Std Black',
-              }}>
-              No Data Found
-            </Text>
-          </View>
-        )}
-      </View>
-    );
-  }, [assignedData, searchText, foundName]);
 
   const [openPPModal, setOpenPPModal] = useState(false);
   const displayBanner = async () => {
@@ -1608,11 +1065,9 @@ function JobTicket({ navigation, route }: any) {
             currentTab={currentTab}
             firstRoute={firstRoute}
             secondRoute={secondRoute}
-            thirdRoute={thirdRoute}
             activateTab={activateTab}
             firstRouteTitle="Open"
             secondRouteTitle="Applied"
-            thirdRouteTitle="Assigned"
           />
         </View>
       </ScrollView>
@@ -1734,7 +1189,7 @@ function JobTicket({ navigation, route }: any) {
             backgroundColor: 'rgba(0,0,0,0.5)',
           }}>
            <Image
-                source={require('../../Assets/Images/loadergif.gif')}
+                source={require('../../Assets/Images/SIFU.gif')}
                 style={{ width: 150, height: 150 }}
               />
           {/* <ActivityIndicator size={'large'} color={Theme.darkGray} /> */}

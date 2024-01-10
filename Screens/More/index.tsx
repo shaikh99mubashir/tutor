@@ -19,7 +19,7 @@ import axios from 'axios';
 function More({navigation}: any) {
   const context = useContext(TutorDetailsContext);
 
-  const {tutorDetails, setTutorDetail} = context;
+  const {tutorDetails, setTutorDetail,updateTutorDetails} = context;
 
   const [modalVisible, setModalVisible] = useState(false);
   const handleFilterPress = () => {
@@ -82,16 +82,22 @@ function More({navigation}: any) {
   }, []);
 
   const ApplyButton = async () => {
-    handleCloseModal();
-    await AsyncStorage.removeItem('loginAuth');
-    navigation.reset({
-      index: 0,
-      routes: [
-        {
-          name: 'Login',
-        },
-      ],
-    });
+    try {
+      handleCloseModal();
+      await AsyncStorage.removeItem('loginAuth');
+      updateTutorDetails('');
+      console.log('Item removed successfully');
+      navigation.reset({
+        index: 0,
+        routes: [
+          {
+            name: 'Login',
+          },
+        ],
+      });
+    } catch (error) {
+      console.error('Error removing item from AsyncStorage:', error);
+    }
   };
   const CancelButton = () => {
     handleCloseModal();

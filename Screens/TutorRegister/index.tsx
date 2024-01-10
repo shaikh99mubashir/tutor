@@ -7,22 +7,40 @@ import {
   ActivityIndicator,
   TextInput,
   Image,
+  ScrollView,
 } from 'react-native';
-import React, {useRef, useState, useEffect} from 'react';
+import React, {useRef, useState, useEffect, useContext} from 'react';
 import PhoneInput from 'react-native-phone-number-input';
 import {Theme} from '../../constant/theme';
 import axios from 'axios';
 import {Base_Uri} from '../../constant/BaseUri';
 import {convertArea} from 'geolib';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-const Signup = ({navigation}: any) => {
-  let [phoneNumber, setPhoneNumber] = useState('');
+import TutorDetailsContext from '../../context/tutorDetailsContext';
+// import defaultAvatar from '../../Assets/Images/avatar.png';
+import { PermissionsAndroid } from 'react-native';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import ModalImg from '../../Component/Modal/modal';
+const Signup = ({navigation, route}: any) => {
+  let data = route.params;
+
+  
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [fullName, setFullName] = useState('');
-
+  const [openPhotoModal, setOpenPhotoModal] = useState(false)
+  const [uri, setUri] = useState("")
+  const [type, setType] = useState("")
+  const [name, setName] = useState("")
+  const context = useContext(TutorDetailsContext);
   const phoneInput = useRef(null);
+  let imageUrl;
+  const [image, setImage] = useState('');
 
+  let tutorDetail = context?.tutorDetails
+
+  let tutorDetails = context?.tutorDetails
+  console.log('tutorDetail',tutorDetail);
   const handleLoginPress = () => {
     if (!fullName) {
       ToastAndroid.show('Kindly Enter Full Name', ToastAndroid.SHORT);
@@ -33,10 +51,10 @@ const Signup = ({navigation}: any) => {
       return;
     }
 
-    if (!phoneNumber) {
-      ToastAndroid.show('Kindly Enter Phonenumber', ToastAndroid.SHORT);
-      return;
-    }
+    // if (!phoneNumber) {
+    //   ToastAndroid.show('Kindly Enter Phonenumber', ToastAndroid.SHORT);
+    //   return;
+    // }
 
     let emailReg = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/;
 
@@ -51,10 +69,13 @@ const Signup = ({navigation}: any) => {
 
     formData.append('fullName', fullName);
     formData.append('email', email);
-    formData.append('phoneNumber', phoneNumber);
+    formData.append('tutorId', data.tutorDetailById[0]?.id);
+    // formData.append('tutorId', 70);
+    formData.append('phoneNumber', data.tutorDetailById[0]?.phoneNumber);
 
     setLoading(true);
-
+    console.log(formData,'formData');
+    
     axios
       .post(`${Base_Uri}api/appTutorRegister`, formData, {
         headers: {
@@ -69,7 +90,22 @@ const Signup = ({navigation}: any) => {
             'You have been successfully registered as tutor Login to continue',
             ToastAndroid.SHORT,
           );
-          navigation.navigate('Login', data);
+          // navigation.navigate('Login', data);
+          navigation.reset({
+            index: 0,
+            routes: [
+              {
+                name: 'Main', // Change 'Login' to 'Main'
+                params: {
+                  screen: 'Home',
+                },
+              },
+            ],
+          });
+          // navigation.replace('Main', {
+          //   screen: 'Home',
+          // });
+          ToastAndroid.show('Register Successfully Successfully', ToastAndroid.SHORT);
           setLoading(false);
         }
       })
@@ -79,7 +115,105 @@ const Signup = ({navigation}: any) => {
       });
   };
 
-  console.log(phoneNumber);
+
+  
+  const openPhoto = async () => {
+
+    setOpenPhotoModal(false)
+
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.CAMERA,
+    );
+
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+
+      const options: any = {
+        title: 'Select Picture',
+        storageOptions: {
+          skipBackup: true,
+          path: 'images',
+        },
+        maxWidth: 500,
+        maxHeight: 500,
+        quality: 0.5,
+      };
+
+      const result: any = await launchCamera(options);
+      if (result.didCancel) {
+        // ('Cancelled image selection');
+      } else if (result.errorCode == 'permission') {
+        // setToastMsg('Permission Not Satisfied');
+      } else if (result.errorCode == 'others') {
+        // setToastMsg(result.errorMessage);
+      } else {
+
+        let uri = result.assets[0].uri;
+        let type = result.assets[0].type;
+        let name = result.assets[0].fileName;
+
+
+        setUri(uri)
+        setType(type)
+        setName(name)
+
+      }
+
+    }
+
+  }
+
+
+
+
+  const uploadProfilePicture = async () => {
+
+
+    setOpenPhotoModal(false)
+
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.CAMERA,
+    );
+
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+
+      const options: any = {
+        title: 'Select Picture',
+        storageOptions: {
+          skipBackup: true,
+          path: 'images',
+        },
+        maxWidth: 500,
+        maxHeight: 500,
+        quality: 0.5,
+      };
+      const result: any = await launchImageLibrary(options);
+      if (result.didCancel) {
+        // ('Cancelled image selection');
+      } else if (result.errorCode == 'permission') {
+        // setToastMsg('Permission Not Satisfied');
+      } else if (result.errorCode == 'others') {
+        // setToastMsg(result.errorMessage);
+      } else {
+
+        let uri = result.assets[0].uri;
+        let type = result.assets[0].type;
+        let name = result.assets[0].fileName;
+        setUri(uri)
+        setType(type)
+        setName(name)
+      }
+    }
+  };
+
+  if (image) {
+    imageUrl = image;
+  } else if (!tutorDetail.tutorImage) {
+    imageUrl = require('../../Assets/Images/avatar.png');
+  } else if (tutorDetail.tutorImage.includes('https')) {
+    imageUrl = tutorDetail.tutorImage;
+  } else {
+    imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`;
+  }
 
   return (
     <View
@@ -89,7 +223,8 @@ const Signup = ({navigation}: any) => {
         justifyContent: 'center',
         paddingHorizontal: 15,
       }}>
-      <Text style={[styles.textType1, {fontSize: 25, color: 'black'}]}>
+        <ScrollView showsHorizontalScrollIndicator={false} style={{height: '100%',}}>
+      <Text style={[styles.textType1, {fontSize: 25, color: 'black', marginTop:100}]}>
         Get Yourself Registered
       </Text>
       <Text
@@ -101,6 +236,24 @@ const Signup = ({navigation}: any) => {
         registered with sifuTutor.
       </Text>
       <View style={styles.container}>
+      <View style={{ paddingVertical: 15, }}>
+          {imageUrl == 1 ? <Image source={require('../../Assets/Images/avatar.png')} style={{ width: 80, height: 80, borderRadius: 50 }}/>
+          :
+            <Image
+              source={{ uri: name ? `file://${uri}` : `${imageUrl}` }}
+              style={{ width: 80, height: 80, borderRadius: 50 }}
+              resizeMode="contain"
+            />}
+            <TouchableOpacity
+              onPress={() => setOpenPhotoModal(true)}
+              activeOpacity={0.8}>
+              <Image
+                source={require('../../Assets/Images/plus.png')}
+                style={{ width: 20, height: 20, top: -20, left: 55 }}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+          </View>
         <TextInput
           placeholder="Enter Full Name"
           placeholderTextColor={Theme.gray}
@@ -168,7 +321,7 @@ const Signup = ({navigation}: any) => {
           />
         </View> */}
 
-        <PhoneInput
+        {/* <PhoneInput
           ref={phoneInput}
           placeholder="Enter Your Number"
           defaultValue={phoneNumber}
@@ -188,17 +341,25 @@ const Signup = ({navigation}: any) => {
           onChangeFormattedText={text => {
             setPhoneNumber(text);
           }}
-        /> 
+        />  */}
       </View>
       {/* Submit Button */}
+      {
+        openPhotoModal &&
+        <ModalImg closeModal={() =>
+          setOpenPhotoModal(false)}
+          modalVisible={openPhotoModal}
+          openCamera={openPhoto}
+          openGallery={uploadProfilePicture} />
+      }
 
       <View
         style={{
           borderWidth: 1,
           borderColor: Theme.white,
-
           marginVertical: 20,
           width: '100%',
+          alignSelf:'center'
         }}>
         <TouchableOpacity
           onPress={() => handleLoginPress()}
@@ -217,39 +378,12 @@ const Signup = ({navigation}: any) => {
                 fontSize: 18,
                 fontFamily: 'Poppins-Regular',
               }}>
-              Continue
+              Register
             </Text>
           )}
         </TouchableOpacity>
       </View>
-      <View
-        style={{
-          width: '100%',
-          alignItems: 'center',
-          padding: 10,
-          flexDirection: 'row',
-          justifyContent: 'center',
-        }}>
-        <Text
-          style={{
-            color: Theme.black,
-            fontSize: 14,
-            fontWeight: '400',
-            fontFamily: 'Circular Std Book',
-          }}>
-          Already have an account?{' '}
-        </Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <Text
-            style={{
-              color: Theme.black,
-              fontWeight: 'bold',
-              fontFamily: 'Circular Std Book',
-            }}>
-            Login
-          </Text>
-        </TouchableOpacity>
-      </View>
+      </ScrollView>
     </View>
   );
 };
