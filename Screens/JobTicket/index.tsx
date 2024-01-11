@@ -30,7 +30,11 @@ import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import bannerContext from '../../context/bannerContext';
 import Status from '../Status';
-
+interface LoginAuth {
+  status: Number;
+  tutorID: Number;
+  token: string;
+}
 function JobTicket({ navigation, route }: any) {
   const focus = useIsFocused();
 
@@ -39,7 +43,7 @@ function JobTicket({ navigation, route }: any) {
   const bannerCont = useContext(bannerContext);
 
   let { jobTicketBanner, setJobTicketBanner } = bannerCont;
-
+  let loginData: LoginAuth
   const [isSearchItems, setIsSearchItems] = useState(false);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
@@ -78,86 +82,9 @@ function JobTicket({ navigation, route }: any) {
   };
   
 
-  // const activateTab = (index: any) => {
-  //   setCurrentTab(
-  //     currentTab &&
-  //     currentTab.length > 0 &&
-  //     currentTab.map((e: any, i: any) => {
-  //       if (e.index == index) {
-  //         return {
-  //           ...e,
-  //           selected: true,
-  //         };
-  //       } else {
-  //         return {
-  //           ...e,
-  //           selected: false,
-  //         };
-  //       }
-  //     }),
-  //   );
-  // };
-  const [openData, setOpenData] = useState<any>([
-    // {
-    //   id: 59,
-    //   days: 1,
-    //   student_id: 99,
-    //   ticket_id: 59,
-    //   tutor_id: null,
-    //   subject: 16,
-    //   day: 'Monday',
-    //   time: '22:00',
-    //   status: 'scheduled',
-    //   subscription: 'LongTerm',
-    //   created_at: '2023-06-16 16:17:43',
-    //   updated_at: '2023-06-14 14:17:43',
-    //   uid: 'JT-144743',
-    //   slug: null,
-    //   register_date: '2023-06-14',
-    //   admin_charge: null,
-    //   students: null,
-    //   student_address: null,
-    //   payment_attachment: '4.jpg',
-    //   fee_payment_date: '2023-06-27',
-    //   tutor_status: 'pending',
-    //   receiving_account: '76',
-    //   subscription_duration: null,
-    //   subjects: null,
-    //   remarks: null,
-    //   application_status: 'incomplete',
-    //   estimate_commission: 0,
-    //   subject_name: 'Chemistry (SPM) - PHYSICAL',
-    //   jtuid: 'JT-144743',
-    //   subject_id: 16,
-    //   tutorID: 16,
-    //   ssid: 102,
-    //   studentName: 'student17',
-    //   studentAddress1: 'address lne 1',
-    //   studentAddress2: 'address  line 2',
-    //   studentCity: 'city',
-    //   ticket_status: 'Accepted',
-    // },
-  ]);
-  const [closeData, setCloseData] = useState<any>([
-    // {
-    //   id: 1,
-    //   code: 'SS545455',
-    //   code2: 'Approved',
-    //   title: 'Mathematics (UPSR) - PHYSICAL - Weekday',
-    //   details: 'Weekday at 90:00Am for 1.5 hour(S) of each class',
-    //   details5: 'Testing',
-    //   RS: '180',
-    // },
-    // {
-    //   id: 2,
-    //   code: 'SS545455',
-    //   code2: 'Approved',
-    //   title: 'Algebra (UPSR) - PHYSICAL - Weekday',
-    //   details: 'Weekday at 90:00Am for 1.5 hour(S) of each class',
-    //   details5: 'Testing',
-    //   RS: '180',
-    // },
-  ]);
+  
+  const [openData, setOpenData] = useState<any>([]);
+  const [closeData, setCloseData] = useState<any>([]);
 
   const [appliedData, setAppliedData] = useState([]);
   const [assignedData, setAssignedData] = useState([]);
@@ -178,14 +105,12 @@ function JobTicket({ navigation, route }: any) {
 
 
   const [tutorId, setTutorId] = useState<Number | null>(null);
+  console.log('tutorId======>',tutorId);
+  
   const getTutorId = async () => {
-    interface LoginAuth {
-      status: Number;
-      tutorID: Number;
-      token: string;
-    }
+   
     const data: any = await AsyncStorage.getItem('loginAuth');
-    let loginData: LoginAuth = JSON.parse(data);
+    loginData = JSON.parse(data);
     
     let {tutorID} = loginData;
     setTutorId(tutorID);
@@ -201,11 +126,23 @@ function JobTicket({ navigation, route }: any) {
     axios
       .get(`${Base_Uri}getTutorDetailByID/${tutorId}`)
       .then(({data}) => {
-        let {tutorDetailById} = data;
 
-        console.log(tutorDetailById, 'iddd');
-        console.log('getTutorDetailByID check true hoo gia');
+        let {tutorDetailById} = data;
         let tutorDetails = tutorDetailById[0];
+        let details = {
+          full_name: tutorDetails?.full_name,
+          email: tutorDetails?.email,
+          displayName: tutorDetails?.displayName,
+          gender: tutorDetails?.gender,
+          phoneNumber: tutorDetails?.phoneNumber,
+          age: tutorDetails?.age,
+          nric: tutorDetails?.nric,
+          tutorImage: tutorDetails?.tutorImage,
+          tutorId: tutorDetails?.id,
+          status: tutorDetails?.status,
+        };
+        updateTutorDetails(details);
+
 
         console.log(tutorDetailById[0].status,"detailsss")
         console.log(tutorDetailById[0].phoneNumber,"detailsss")
@@ -214,8 +151,7 @@ function JobTicket({ navigation, route }: any) {
           axios
           .get(`${Base_Uri}api/update_dashboard_status/${tutorId}`)
           .then(({data})=>{
-            setModalVisible(true)
-            console.log('data =======>',data);
+            // setModalVisible(true)
             let {tutorDetailById} = data;
             let tutorDetails = tutorDetailById[0];
             let details = {
@@ -247,7 +183,7 @@ function JobTicket({ navigation, route }: any) {
 
 
   const getTicketsData = async () => {
-    setLoading(true);
+    // setLoading(true);
     let filter: any = await AsyncStorage.getItem('filter');
 
     if (filter) {
@@ -264,38 +200,57 @@ function JobTicket({ navigation, route }: any) {
         .get(`${Base_Uri}ticketsAPI/${tutorDetails?.tutorId}`)
         .then(({ data }) => {
           let { tickets } = data;
-          axios
-            .get(`${Base_Uri}getTutorOffers/${tutorDetails?.tutorId}`)
-            .then(({ data }) => {
-              let { getTutorOffers } = data;
-              const filteredTickets = tickets.filter(
-                (ticket: any) =>
-                  // !getTutorOffers.some((offer: any) => offer.id === ticket.id),
-                  !getTutorOffers.some(
-                    (offer: any) => offer.ticket_id == ticket.ticketID,
-                  ),
+          setOpenData(
+            tickets?.filter((e: any, i: number) => {
+              return (
+                (myMode == 'noFilter' ||
+                  e?.mode?.toString()?.toLowerCase() ==
+                  myMode?.toString()?.toLowerCase()) &&
+                (subjectID == 'noFilter' || e?.subject_id == subjectID) &&
+                (categoryID == 'noFilter' ||
+                  e?.categoryID == categoryID) &&
+                (myCity == 'noFilter' || e?.cityID == myCity) &&
+                (myState == 'noFilter' || e?.stateID == myState)
               );
-              setOpenData(
-                filteredTickets.length > 0 &&
-                filteredTickets.filter((e: any, i: number) => {
-                  return (
-                    (myMode == 'noFilter' ||
-                      e?.mode?.toString()?.toLowerCase() ==
-                      myMode?.toString()?.toLowerCase()) &&
-                    (subjectID == 'noFilter' || e?.subject_id == subjectID) &&
-                    (categoryID == 'noFilter' ||
-                      e?.categoryID == categoryID) &&
-                    (myCity == 'noFilter' || e?.cityID == myCity) &&
-                    (myState == 'noFilter' || e?.stateID == myState)
-                  );
-                }),
-              );
-              setLoading(false);
             })
-            .catch(error => {
-              ToastAndroid.show('Internal Server Error getTutorOffers2', ToastAndroid.SHORT);
-              setLoading(false);
-            });
+          );
+          
+          // axios
+          //   .get(`${Base_Uri}getTutorOffers/${tutorDetails?.tutorId}`)
+          //   .then(({ data }) => {
+          //     let { getTutorOffers } = data;
+
+          //     const isDataUpdated = JSON.stringify(openData) !== JSON.stringify(tickets);
+
+          //     const filteredTickets = tickets.filter(
+          //       (ticket: any) =>
+          //         // !getTutorOffers.some((offer: any) => offer.id === ticket.id),
+          //         !getTutorOffers.some(
+          //           (offer: any) => offer.ticket_id == ticket.ticketID,
+          //         ),
+          //     );
+          //     setOpenData(
+          //       filteredTickets.length > 0 ?
+          //       filteredTickets.filter((e: any, i: number) => {
+          //         return (
+          //           (myMode == 'noFilter' ||
+          //             e?.mode?.toString()?.toLowerCase() ==
+          //             myMode?.toString()?.toLowerCase()) &&
+          //           (subjectID == 'noFilter' || e?.subject_id == subjectID) &&
+          //           (categoryID == 'noFilter' ||
+          //             e?.categoryID == categoryID) &&
+          //           (myCity == 'noFilter' || e?.cityID == myCity) &&
+          //           (myState == 'noFilter' || e?.stateID == myState)
+          //         );
+          //       })
+          //       : openData
+          //     );
+          //     setLoading(false);
+          //   })
+          //   .catch(error => {
+          //     ToastAndroid.show('Internal Server Error getTutorOffers2', ToastAndroid.SHORT);
+          //     setLoading(false);
+          //   });
         })
         .catch(error => {
           setLoading(false);
@@ -311,17 +266,25 @@ function JobTicket({ navigation, route }: any) {
         .get(`${Base_Uri}ticketsAPI/${tutor_id}`)
         .then(async ({ data }) => {
           let { tickets } = data;
+          console.log('tickets',tickets);
+          setOpenData(tickets)
           axios
             .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
             .then(({ data }) => {
               let { getTutorOffers } = data;
-              const filteredTickets = tickets.filter(
-                (ticket: any) =>
-                  !getTutorOffers.some(
-                    (offer: any) => offer.ticket_id == ticket.ticketID,
-                  ),
-              );
-              setOpenData(filteredTickets);
+              
+              // const isDataUpdated = JSON.stringify(openData) !== JSON.stringify(tickets);
+
+              // const filteredTickets = tickets.filter(
+              //   (ticket: any) =>
+              //     !getTutorOffers.some(
+              //       (offer: any) => offer.ticket_id == ticket.ticketID,
+              //     ),
+              // );
+              // setOpenData(
+              //   filteredTickets.length > 0 ? filteredTickets : openData
+              // );
+              // setOpenData(filteredTickets);
               setLoading(false);
             })
             .catch(error => {
@@ -337,7 +300,7 @@ function JobTicket({ navigation, route }: any) {
   };
 
   const getAppliedData = async () => {
-    setLoading(true)
+    // setLoading(true)
     let tutorData: any = await AsyncStorage.getItem('loginAuth');
     tutorData = JSON.parse(tutorData);
     let tutor_id = tutorData?.tutorID;
@@ -388,10 +351,12 @@ function JobTicket({ navigation, route }: any) {
     getTutorId()
   },[])
   useEffect(() => {
-    checkTutorStatus()
-    getTicketsData();
-    getAppliedData();
-  }, [refresh, route]);
+    if(tutorId){
+      checkTutorStatus()
+      getTicketsData();
+      getAppliedData();
+    }
+  }, [ route]);
 
   const HandelGoToDashboard = () => {
     setModalVisible(false)
@@ -664,7 +629,7 @@ function JobTicket({ navigation, route }: any) {
               textTransform:'capitalize'
             },
           ]}>
-          {item.ticket_status}
+          {item.offer_status}
         </Text>
         <TouchableOpacity
           activeOpacity={0.8}

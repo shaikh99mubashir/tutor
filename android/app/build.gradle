@@ -6,7 +6,7 @@ import com.android.build.OutputFile
 
 
 project.ext.vectoricons = [
-    iconFontNames: [ 'MaterialIcons.ttf', 'EvilIcons.ttf','FontAwesome.ttf','Ionicons.ttf',"AntDesign.ttf","Entypo.ttf","Feather.ttf","FontAwesome5.ttf","Fontisto.ttf","MaterialCommunityIcons.ttf" ] // Name of the font files you want to copy
+    iconFontNames: [ 'MaterialIcons.ttf', 'EvilIcons.ttf','FontAwesome.ttf','Ionicons.ttf',"AntDesign.ttf","Entypo.ttf","Feather.ttf","FontAwesome5.ttf","Fontisto.ttf","MaterialCommunityIcons.ttf","FontAwesome6.ttf" ] // Name of the font files you want to copy
 ]
 /**
  * This is the configuration block to customize your React Native Android app.

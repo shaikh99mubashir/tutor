@@ -77,15 +77,7 @@ const Splash = ({navigation}: any) => {
       setTutorDetail(tutorData);
       console.log('Bottom Navigation tutor data', tutorData);
     } catch (error) {
-      setTutorDetail('')
-      navigation.reset({
-        index: 0,
-        routes: [
-          {
-            name: 'Login',
-          },
-        ],
-      });
+      
       console.error('Error retrieving or parsing tutor data:', error);
     }
   }, []);
@@ -102,8 +94,19 @@ const Splash = ({navigation}: any) => {
         axios
           .get(`${Base_Uri}getTutorDetailByID/${tutorData?.tutorID}`)
           .then(res => {
-            console.log('res---->');
+            console.log('res---->',res.data.tutorDetailById);
             
+            if(res.data.tutorDetailById== null){
+              AsyncStorage.removeItem('loginAuth');
+              navigation.replace('Login');
+              setTutorDetail('')
+              console.log(
+               
+                'Working',
+              );
+              return;
+            }
+
             let tutorData = res.data;
             setTutorDetail(tutorData?.tutorDetailById[0]);
             console.log('tutorData',tutorData);
@@ -126,10 +129,12 @@ const Splash = ({navigation}: any) => {
             if (
               tutorData?.tutorDetailById[0]?.status === 'terminated' ||
               tutorData?.tutorDetailById[0]?.status === 'resigned' ||
-              tutorData?.tutorDetailById[0]?.status === 'inactive' || tutorDetails == undefined || tutorData?.tutorDetailById[0] == null
+              tutorData?.tutorDetailById[0]?.status === 'inactive' || 
+              tutorDetails == undefined
             ) {
               AsyncStorage.removeItem('loginAuth');
               navigation.replace('Login');
+              setTutorDetail('')
               console.log(
                 tutorData?.tutorDetailById[0]?.status,
                 'terminated or block',

@@ -15,6 +15,9 @@ import { Theme } from '../../constant/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const OpenDetails = ({ route, navigation }: any) => {
   const data = route.params;
@@ -110,8 +113,12 @@ const OpenDetails = ({ route, navigation }: any) => {
                 RM {data?.price}
               </Text>
               <View
-                style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
-                <Image source={require('../../Assets/Images/mapwhite.png')} />
+                style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
+                <Feather
+                        name="map-pin"
+                        size={18}
+                        color={'#fff'}
+                      />
                 <Text style={[styles.textType3, { color: 'white' }]}>
                   {data?.city}
                 </Text>
@@ -217,7 +224,11 @@ const OpenDetails = ({ route, navigation }: any) => {
                     flexDirection: 'row',
                     gap: 10,
                   }}>
-                  <Image source={require('../../Assets/Images/subIcon.png')} />
+                  <AntDesign
+                        name="copy1"
+                        size={20}
+                        color={'#298CFF'}
+                      />
                   <Text style={styles.textType3}>Subject</Text>
                 </View>
                 <Text style={[styles.textType1, { fontSize: 18 }]}>
@@ -238,9 +249,11 @@ const OpenDetails = ({ route, navigation }: any) => {
                     flexDirection: 'row',
                     gap: 10,
                   }}>
-                  <Image
-                    source={require('../../Assets/Images/preftutor.png')}
-                  />
+                   <FontAwesome
+                        name="user-o"
+                        size={18}
+                        color={'#298CFF'}
+                      />
                   <Text style={styles.textType3}>Pref. Tutor</Text>
                 </View>
                 <Text style={[styles.textType1, { fontSize: 18 }]}>
@@ -262,7 +275,11 @@ const OpenDetails = ({ route, navigation }: any) => {
                     flexDirection: 'row',
                     gap: 10,
                   }}>
-                  <Image source={require('../../Assets/Images/level.png')} />
+                   <FontAwesome
+                        name="level-up"
+                        size={18}
+                        color={'#298CFF'}
+                      />
                   <Text style={styles.textType3}>Level</Text>
                 </View>
                 <Text style={[styles.textType1, { fontSize: 18 }]}>
@@ -273,13 +290,21 @@ const OpenDetails = ({ route, navigation }: any) => {
               <View style={{ flexDirection: 'row', gap: 10, paddingTop: 15, borderTopWidth: 1, borderTopColor: 'gray' }}>
                 <View style={{ backgroundColor: "#E6F2FF", paddingVertical: 10, borderRadius: 10 }}>
                   <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 10, paddingHorizontal: 10 }}>
-                    <Image source={require('../../Assets/Images/scheduleicccon.png')} />
+                  <AntDesign
+                        name="calendar"
+                        size={20}
+                        color={'#298CFF'}
+                      />
                     <Text style={[styles.textType3, { color: '#298CFF' }]}>{data?.classDay}</Text>
                   </View>
                 </View>
                 <View style={{ backgroundColor: "#E6F2FF", paddingVertical: 10, borderRadius: 10, paddingHorizontal: 10 }}>
                   <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 10 }}>
-                    <Image source={require('../../Assets/Images/timeee.png')} />
+                  <AntDesign
+                        name="clockcircleo"
+                        size={20}
+                        color={'#298CFF'}
+                      />
                     <Text style={[styles.textType3, { color: '#298CFF' }]}>{data?.classTime}</Text>
                   </View>
                 </View>

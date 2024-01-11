@@ -86,7 +86,10 @@ console.log('data=============>Verification',data);
         });
     };
 
-
+    if (!value) {
+      ToastAndroid.show('Kindly Enter 6 Digut OTP Code', ToastAndroid.SHORT);
+      return;
+    }
 
     if (value.length < 6) {
       ToastAndroid.show('Invalid Code', ToastAndroid.SHORT);

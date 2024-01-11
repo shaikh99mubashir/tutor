@@ -71,7 +71,7 @@ const Profile = ({ navigation }: any) => {
 
   let bannerCont = useContext(bannerContext)
 
-  let { profileBanner, setProfileBanner } = bannerCont
+  let { profileBanner, setProfileBanner }:any = bannerCont
 
 
   let { updateTutorDetails, setTutorDetail } = context;

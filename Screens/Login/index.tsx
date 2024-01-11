@@ -24,6 +24,10 @@ const Login = ({ navigation }: any) => {
 
   // console.log('phoneNumber',phoneNumber.slice(1));
   const handleLoginPress = () => {
+    if (!phoneNumber) {
+      ToastAndroid.show('Kindly Enter Phone Number', ToastAndroid.SHORT);
+      return;
+    }
     setLoading(true);
 
     const timeoutId = setTimeout(() => {
@@ -47,11 +51,11 @@ const Login = ({ navigation }: any) => {
           return;
         }
         if (data?.status == 200) {
-          ToastAndroid.show(data.tutorDeviceToken, ToastAndroid.SHORT);
-          // ToastAndroid.show(
-          //   'Verification Code Successfully send to this mobile number',
-          //   ToastAndroid.SHORT,
-          // );
+          // ToastAndroid.show(data.tutorDeviceToken, ToastAndroid.SHORT);
+          ToastAndroid.show(
+            'Verification Code Successfully send to this mobile number',
+            ToastAndroid.SHORT,
+          );
           navigation.navigate('Verification', data);
           setLoading(false);
         }

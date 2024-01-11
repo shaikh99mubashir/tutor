@@ -85,7 +85,7 @@ function More({navigation}: any) {
     try {
       handleCloseModal();
       await AsyncStorage.removeItem('loginAuth');
-      updateTutorDetails('');
+      
       console.log('Item removed successfully');
       navigation.reset({
         index: 0,
@@ -95,6 +95,7 @@ function More({navigation}: any) {
           },
         ],
       });
+      updateTutorDetails('');
     } catch (error) {
       console.error('Error removing item from AsyncStorage:', error);
     }
@@ -148,7 +149,7 @@ function More({navigation}: any) {
                   style={{fontSize: 14, fontWeight: '300', color: Theme.gray}}>
                   {tutorDetails?.email}
                 </Text>
-              </View>
+             </View>
             </View>
             <Image
               source={require('../../Assets/Images/right.png')}
