@@ -20,11 +20,10 @@ import TutorDetailsContext from '../../context/tutorDetailsContext';
 // import defaultAvatar from '../../Assets/Images/avatar.png';
 import { PermissionsAndroid } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import Icon from 'react-native-vector-icons/Ionicons';
 import ModalImg from '../../Component/Modal/modal';
 const Signup = ({navigation, route}: any) => {
   let data = route.params;
-
-  
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [fullName, setFullName] = useState('');
@@ -32,14 +31,13 @@ const Signup = ({navigation, route}: any) => {
   const [uri, setUri] = useState("")
   const [type, setType] = useState("")
   const [name, setName] = useState("")
+  const [rememberMe, setRememberMe] = useState(false)
   const context = useContext(TutorDetailsContext);
   const phoneInput = useRef(null);
   let imageUrl;
   const [image, setImage] = useState('');
 
   let tutorDetail = context?.tutorDetails
-
-  let tutorDetails = context?.tutorDetails
   console.log('tutorDetail',tutorDetail);
   const handleLoginPress = () => {
     if (!fullName) {
@@ -66,7 +64,11 @@ const Signup = ({navigation, route}: any) => {
     }
 
     const formData = new FormData();
-
+    formData.append('profileImage', {
+      uri: uri,
+      type: type,
+      name: name,
+    });
     formData.append('fullName', fullName);
     formData.append('email', email);
     formData.append('tutorId', data.tutorDetailById[0]?.id);
@@ -109,8 +111,10 @@ const Signup = ({navigation, route}: any) => {
           setLoading(false);
         }
       })
-      .catch(error => {
+      .catch((error:any) => {
         setLoading(false);
+        console.log("error",error);
+        
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
@@ -208,12 +212,13 @@ const Signup = ({navigation, route}: any) => {
   if (image) {
     imageUrl = image;
   } else if (!tutorDetail.tutorImage) {
-    imageUrl = require('../../Assets/Images/avatar.png');
+    imageUrl = data.tutorDetailById[0].tutorImage
   } else if (tutorDetail.tutorImage.includes('https')) {
     imageUrl = tutorDetail.tutorImage;
   } else {
     imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`;
   }
+  
 
   return (
     <View
@@ -224,26 +229,26 @@ const Signup = ({navigation, route}: any) => {
         paddingHorizontal: 15,
       }}>
         <ScrollView showsHorizontalScrollIndicator={false} style={{height: '100%',}}>
-      <Text style={[styles.textType1, {fontSize: 25, color: 'black', marginTop:100}]}>
-        Get Yourself Registered
+      <Text style={[styles.textType1, {fontSize: 35, color: 'black', marginTop:100, lineHeight:40}]}>
+        Welcome To {'\n'}SifuTutor
       </Text>
       <Text
         style={[
           styles.textType1,
-          {fontSize: 14, color: 'black', marginTop: 14, paddingRight: 15},
+          {fontSize: 22, color: 'black', marginTop: 14, paddingRight: 15},
         ]}>
-        Fill out Full Name Phone Number and Email field to get yourself
-        registered with sifuTutor.
+        Sign up to join
       </Text>
       <View style={styles.container}>
       <View style={{ paddingVertical: 15, }}>
-          {imageUrl == 1 ? <Image source={require('../../Assets/Images/avatar.png')} style={{ width: 80, height: 80, borderRadius: 50 }}/>
-          :
+          {/* {imageUrl == 1 ? <Image source={require('../../Assets/Images/avatar.png')} style={{ width: 80, height: 80, borderRadius: 50 }}/> */}
+          
             <Image
               source={{ uri: name ? `file://${uri}` : `${imageUrl}` }}
               style={{ width: 80, height: 80, borderRadius: 50 }}
               resizeMode="contain"
-            />}
+            />
+            
             <TouchableOpacity
               onPress={() => setOpenPhotoModal(true)}
               activeOpacity={0.8}>
@@ -254,6 +259,7 @@ const Signup = ({navigation, route}: any) => {
               />
             </TouchableOpacity>
           </View>
+          <Text style={[styles.textType3,{lineHeight:30, fontWeight:'800'}]}>Full Name</Text>
         <TextInput
           placeholder="Enter Full Name"
           placeholderTextColor={Theme.gray}
@@ -273,6 +279,7 @@ const Signup = ({navigation, route}: any) => {
             setFullName(text);
           }}
         />
+        <Text style={[styles.textType3,{lineHeight:30, fontWeight:'800'}]}>Email</Text>
         <TextInput
           placeholder="Enter Your Email"
           placeholderTextColor={Theme.gray}
@@ -382,6 +389,23 @@ const Signup = ({navigation, route}: any) => {
             </Text>
           )}
         </TouchableOpacity>
+        <View style={{marginTop:10, alignItems:'center', justifyContent:'center', flexDirection:'row',gap:10}}>
+        <TouchableOpacity
+                style={{width: 14, height: 14, borderWidth: 1, borderRadius: 0}}
+                onPress={() => setRememberMe(!rememberMe)}>
+                {rememberMe ? (
+                  <Icon
+                    name="md-checkmark-sharp"
+                    size={11}
+                    color="white"
+                    style={{backgroundColor: Theme.darkGray}}
+                  />
+                ) : (
+                  ''
+                )}
+              </TouchableOpacity>
+        <Text style={[styles.textType3,{textAlign:'center'}]} >I agree to the <Text style={[styles.textType3,{textAlign:'center',color:Theme.darkGray}]}>Terms and services</Text></Text>
+        </View>
       </View>
       </ScrollView>
     </View>

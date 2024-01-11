@@ -29,7 +29,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import DropDownModalView from '../../Component/DropDownModalView';
 import bannerContext from '../../context/bannerContext';
 import ModalImg from '../../Component/Modal/modal';
-import defaultAvatar from '../../Assets/Images/avatar.png';
 
 
 const Profile = ({ navigation }: any) => {
@@ -41,6 +40,7 @@ const Profile = ({ navigation }: any) => {
     age: any;
     nric: string | undefined;
   }
+
 
   // const [tutorDetail, setTutorDetail] = useState<ITutorDetails>({
   //   full_name: '',
@@ -214,6 +214,8 @@ const Profile = ({ navigation }: any) => {
       formData.append('nric', tutorDetail?.nric);
       formData.append('phone', tutorDetail?.phoneNumber);
       formData.append('age', tutorDetail?.age);
+      console.log('formData',formData);
+      
       axios
         .post(`${Base_Uri}api/editTutorProfile`, formData, {
           headers: {
@@ -235,15 +237,22 @@ const Profile = ({ navigation }: any) => {
           setName("")
           
 
+          // if (image) {
+          //   imageUrl = image;
+          // } else if (!tutorDetail.tutorImage) {
+          //   imageUrl = defaultAvatar;
+          // } else if (tutorDetail.tutorImage.includes('https')) {
+          //   imageUrl = tutorDetail.tutorImage;
+          // } else {
+          //   imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`;
+          // }
           if (image) {
-            imageUrl = image;
-          } else if (!tutorDetail.tutorImage) {
-            imageUrl = defaultAvatar;
-          } else if (tutorDetail.tutorImage.includes('https')) {
-            imageUrl = tutorDetail.tutorImage;
-          } else {
-            imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`;
-          }
+              imageUrl = image;
+            } else if (tutorDetail.tutorImage.includes('https')) {
+              imageUrl = tutorDetail.tutorImage;
+            } else {
+              imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`;
+            }
           console.log('imageUrl', imageUrl);
           ToastAndroid.show(
             'Successfully Update Tutor Details',
@@ -408,8 +417,6 @@ const Profile = ({ navigation }: any) => {
 
   if (image) {
     imageUrl = image;
-  } else if (!tutorDetail.tutorImage) {
-    imageUrl = defaultAvatar;
   } else if (tutorDetail.tutorImage.includes('https')) {
     imageUrl = tutorDetail.tutorImage;
   } else {
@@ -429,13 +436,14 @@ const Profile = ({ navigation }: any) => {
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <View style={{ paddingHorizontal: 15, marginBottom: 100 }}>
           <View style={{ paddingVertical: 15, alignItems: 'center' }}>
-          {imageUrl == 1 ? <Image source={require('../../Assets/Images/avatar.png')} style={{ width: 80, height: 80, borderRadius: 50 }}/>
-          :
+          {/* {imageUrl == 1 ? <Image source={require('../../Assets/Images/avatar.png')} style={{ width: 80, height: 80, borderRadius: 50 }}/>
+          : */}
             <Image
               source={{ uri: name ? `file://${uri}` : `${imageUrl}` }}
-              style={{ width: 80, height: 80, borderRadius: 50 }}
+              style={{ width: 90, height: 90, borderRadius: 50 }}
               resizeMode="contain"
-            />}
+            />
+      
             <TouchableOpacity
               onPress={() => setOpenPhotoModal(true)}
               activeOpacity={0.8}>

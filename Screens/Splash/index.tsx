@@ -77,6 +77,15 @@ const Splash = ({navigation}: any) => {
       setTutorDetail(tutorData);
       console.log('Bottom Navigation tutor data', tutorData);
     } catch (error) {
+      setTutorDetail('')
+      navigation.reset({
+        index: 0,
+        routes: [
+          {
+            name: 'Login',
+          },
+        ],
+      });
       console.error('Error retrieving or parsing tutor data:', error);
     }
   }, []);
