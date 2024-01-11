@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useContext } from 'react';
+import React, {useState, useCallback, useEffect, useContext} from 'react';
 import {
   View,
   Text,
@@ -16,11 +16,11 @@ import {
   StyleSheet,
 } from 'react-native';
 import Header from '../../Component/Header';
-import { Theme } from '../../constant/theme';
+import {Theme} from '../../constant/theme';
 import CustomTabView from '../../Component/CustomTabView';
-import { Base_Uri } from '../../constant/BaseUri';
+import {Base_Uri} from '../../constant/BaseUri';
 import axios from 'axios';
-import { useIsFocused } from '@react-navigation/native';
+import {useIsFocused} from '@react-navigation/native';
 import AsyncStorage, {
   useAsyncStorage,
 } from '@react-native-async-storage/async-storage';
@@ -35,21 +35,21 @@ interface LoginAuth {
   tutorID: Number;
   token: string;
 }
-function JobTicket({ navigation, route }: any) {
+function JobTicket({navigation, route}: any) {
   const focus = useIsFocused();
 
   let data = route.params;
 
   const bannerCont = useContext(bannerContext);
 
-  let { jobTicketBanner, setJobTicketBanner } = bannerCont;
-  let loginData: LoginAuth
+  let {jobTicketBanner, setJobTicketBanner} = bannerCont;
+  let loginData: LoginAuth;
   const [isSearchItems, setIsSearchItems] = useState(false);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const tutor = useContext(TutorDetailsContext);
   const [modalVisible, setModalVisible] = useState(false);
-  let { tutorDetails,updateTutorDetails } = tutor;
+  let {tutorDetails, updateTutorDetails} = tutor;
   const [currentTab, setCurrentTab]: any = useState([
     {
       index: 0,
@@ -68,28 +68,28 @@ function JobTicket({ navigation, route }: any) {
       ...e,
       selected: e.index === index,
     }));
-  
+
     // Check if the user is switching between the first and second route
-    const switchingFirstToSecond = currentTab[0]?.selected && newTabs[1]?.selected;
-    const switchingSecondToFirst = newTabs[0]?.selected && currentTab[1]?.selected;
-  
+    const switchingFirstToSecond =
+      currentTab[0]?.selected && newTabs[1]?.selected;
+    const switchingSecondToFirst =
+      newTabs[0]?.selected && currentTab[1]?.selected;
+
     setCurrentTab(newTabs);
-  
+
     // Trigger the refresh when switching between the first and second route
     if (switchingFirstToSecond || switchingSecondToFirst) {
       onRefresh();
     }
   };
-  
 
-  
   const [openData, setOpenData] = useState<any>([]);
   const [closeData, setCloseData] = useState<any>([]);
 
   const [appliedData, setAppliedData] = useState([]);
   const [assignedData, setAssignedData] = useState([]);
   const [refreshing, setRefreshing] = React.useState(false);
-  
+
   const onRefresh = React.useCallback(() => {
     if (!refreshing) {
       // setRefreshing(true);
@@ -103,30 +103,27 @@ function JobTicket({ navigation, route }: any) {
     }
   }, [refresh]);
 
-
   const [tutorId, setTutorId] = useState<Number | null>(null);
-  console.log('tutorId======>',tutorId);
-  
+  console.log('tutorId======>', tutorId);
+
   const getTutorId = async () => {
-   
     const data: any = await AsyncStorage.getItem('loginAuth');
     loginData = JSON.parse(data);
-    
+
     let {tutorID} = loginData;
     setTutorId(tutorID);
   };
 
-  let isVerified = false
+  let isVerified = false;
   const checkTutorStatus = async () => {
     // isVerified = true
     // if(isVerified){
     //   setModalVisible(true)
     // }
-    
+
     axios
       .get(`${Base_Uri}getTutorDetailByID/${tutorId}`)
       .then(({data}) => {
-
         let {tutorDetailById} = data;
         let tutorDetails = tutorDetailById[0];
         let details = {
@@ -143,53 +140,54 @@ function JobTicket({ navigation, route }: any) {
         };
         updateTutorDetails(details);
 
-
-        console.log(tutorDetailById[0].status,"detailsss")
-        console.log(tutorDetailById[0].phoneNumber,"detailsss")
+        console.log(tutorDetailById[0].status, 'detailsss');
+        console.log(tutorDetailById[0].phoneNumber, 'detailsss');
         // tutorDetailById[0].status == 'verified' &&
-        if( tutorDetailById[0]?.open_dashboard != 'yes'){
+        if (tutorDetailById[0]?.open_dashboard != 'yes') {
           axios
-          .get(`${Base_Uri}api/update_dashboard_status/${tutorId}`)
-          .then(({data})=>{
-            // setModalVisible(true)
-            let {tutorDetailById} = data;
-            let tutorDetails = tutorDetailById[0];
-            let details = {
-              full_name: tutorDetails?.full_name,
-              email: tutorDetails?.email,
-              displayName: tutorDetails?.displayName,
-              gender: tutorDetails?.gender,
-              phoneNumber: tutorDetails?.phoneNumber,
-              age: tutorDetails?.age,
-              nric: tutorDetails?.nric,
-              tutorImage: tutorDetails?.tutorImage,
-              tutorId: tutorDetails?.id,
-              status: tutorDetails?.status,
-            };
-            updateTutorDetails(details);
-           
-          })
-          .catch((error:any)=>{
-            console.log('errror========>',error);
-          })
-          return
-        }        
+            .get(`${Base_Uri}api/update_dashboard_status/${tutorId}`)
+            .then(({data}) => {
+              // setModalVisible(true)
+              let {tutorDetailById} = data;
+              let tutorDetails = tutorDetailById[0];
+              let details = {
+                full_name: tutorDetails?.full_name,
+                email: tutorDetails?.email,
+                displayName: tutorDetails?.displayName,
+                gender: tutorDetails?.gender,
+                phoneNumber: tutorDetails?.phoneNumber,
+                age: tutorDetails?.age,
+                nric: tutorDetails?.nric,
+                tutorImage: tutorDetails?.tutorImage,
+                tutorId: tutorDetails?.id,
+                status: tutorDetails?.status,
+              };
+              updateTutorDetails(details);
+            })
+            .catch((error: any) => {
+              console.log('errror========>', error);
+            });
+          return;
+        }
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error getTutorDetailByID ', ToastAndroid.SHORT);
+        ToastAndroid.show(
+          'Internal Server Error getTutorDetailByID ',
+          ToastAndroid.SHORT,
+        );
       });
   };
-
-
 
   const getTicketsData = async () => {
     // setLoading(true);
     let filter: any = await AsyncStorage.getItem('filter');
 
+    console.log(filter, 'filter');
+
     if (filter) {
       filter = JSON.parse(filter);
 
-      let { Category, subject, mode, state, city } = filter;
+      let {Category, subject, mode, state, city} = filter;
       let categoryID = Category.id ?? 'noFilter';
       let subjectID = subject.id ?? 'noFilter';
       let myMode = mode.subject ?? 'noFilter';
@@ -198,23 +196,22 @@ function JobTicket({ navigation, route }: any) {
 
       axios
         .get(`${Base_Uri}ticketsAPI/${tutorDetails?.tutorId}`)
-        .then(({ data }) => {
-          let { tickets } = data;
+        .then(({data}) => {
+          let {tickets} = data;
           setOpenData(
             tickets?.filter((e: any, i: number) => {
               return (
                 (myMode == 'noFilter' ||
                   e?.mode?.toString()?.toLowerCase() ==
-                  myMode?.toString()?.toLowerCase()) &&
+                    myMode?.toString()?.toLowerCase()) &&
                 (subjectID == 'noFilter' || e?.subject_id == subjectID) &&
-                (categoryID == 'noFilter' ||
-                  e?.categoryID == categoryID) &&
+                (categoryID == 'noFilter' || e?.categoryID == categoryID) &&
                 (myCity == 'noFilter' || e?.cityID == myCity) &&
                 (myState == 'noFilter' || e?.stateID == myState)
               );
-            })
+            }),
           );
-          
+
           // axios
           //   .get(`${Base_Uri}getTutorOffers/${tutorDetails?.tutorId}`)
           //   .then(({ data }) => {
@@ -254,7 +251,10 @@ function JobTicket({ navigation, route }: any) {
         })
         .catch(error => {
           setLoading(false);
-          ToastAndroid.show('Internal Server Error ticketsAPI1', ToastAndroid.SHORT);
+          ToastAndroid.show(
+            'Internal Server Error ticketsAPI1',
+            ToastAndroid.SHORT,
+          );
         });
 
       return;
@@ -264,15 +264,14 @@ function JobTicket({ navigation, route }: any) {
       let tutor_id = tutorData?.tutorID;
       axios
         .get(`${Base_Uri}ticketsAPI/${tutor_id}`)
-        .then(async ({ data }) => {
-          let { tickets } = data;
-          console.log('tickets',tickets);
-          setOpenData(tickets)
+        .then(async ({data}) => {
+          let {tickets} = data;
+          setOpenData(tickets);
           axios
             .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
-            .then(({ data }) => {
-              let { getTutorOffers } = data;
-              
+            .then(({data}) => {
+              let {getTutorOffers} = data;
+
               // const isDataUpdated = JSON.stringify(openData) !== JSON.stringify(tickets);
 
               // const filteredTickets = tickets.filter(
@@ -288,13 +287,19 @@ function JobTicket({ navigation, route }: any) {
               setLoading(false);
             })
             .catch(error => {
-              ToastAndroid.show('Internal Server Error getTutorOffers1', ToastAndroid.SHORT);
+              ToastAndroid.show(
+                'Internal Server Error getTutorOffers1',
+                ToastAndroid.SHORT,
+              );
               setLoading(false);
             });
         })
         .catch(error => {
           setLoading(false);
-          ToastAndroid.show('Internal Server Error ticketsAPI', ToastAndroid.SHORT);
+          ToastAndroid.show(
+            'Internal Server Error ticketsAPI',
+            ToastAndroid.SHORT,
+          );
         });
     }
   };
@@ -309,8 +314,8 @@ function JobTicket({ navigation, route }: any) {
     if (status) {
       axios
         .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
-        .then(({ data }) => {
-          let { getTutorOffers } = data;
+        .then(({data}) => {
+          let {getTutorOffers} = data;
           let tutorOffer =
             getTutorOffers &&
             getTutorOffers.length > 0 &&
@@ -325,7 +330,10 @@ function JobTicket({ navigation, route }: any) {
           setLoading(false);
         })
         .catch(error => {
-          ToastAndroid.show('Internal Server Error getTutorOffers', ToastAndroid.SHORT);
+          ToastAndroid.show(
+            'Internal Server Error getTutorOffers',
+            ToastAndroid.SHORT,
+          );
           setLoading(false);
         });
       return;
@@ -333,44 +341,45 @@ function JobTicket({ navigation, route }: any) {
 
     axios
       .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
-      .then(({ data }) => {
-        let { getTutorOffers } = data;
+      .then(({data}) => {
+        let {getTutorOffers} = data;
         setAppliedData(getTutorOffers);
         setLoading(false);
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error getTutorOffers3', ToastAndroid.SHORT);
+        ToastAndroid.show(
+          'Internal Server Error getTutorOffers3',
+          ToastAndroid.SHORT,
+        );
         setLoading(false);
       });
   };
 
-
-
-
-  useEffect(()=>{
-    getTutorId()
-  },[])
   useEffect(() => {
-    if(tutorId){
-      checkTutorStatus()
+    getTutorId();
+  }, []);
+
+  useEffect(() => {
+    if (tutorId) {
+      checkTutorStatus();
       getTicketsData();
       getAppliedData();
     }
-  }, [ route]);
+  }, [route, tutorId]);
 
   const HandelGoToDashboard = () => {
-    setModalVisible(false)
+    setModalVisible(false);
     // navigation.navigate('Home')
     navigation.reset({
       index: 0,
       routes: [
         {
           name: 'Main', // Change 'Login' to 'Main'
-          screen: 'Home', 
+          screen: 'Home',
         },
       ],
     });
-  }
+  };
   const checkSearchItems = () => {
     searchText && foundName.length == 0 && setIsSearchItems(true);
   };
@@ -414,8 +423,7 @@ function JobTicket({ navigation, route }: any) {
     setFoundName(filteredItems);
   };
 
-
-  const renderOpenData: any = ({ item }: any) => {
+  const renderOpenData: any = ({item}: any) => {
     return (
       <>
         <TouchableOpacity
@@ -440,22 +448,18 @@ function JobTicket({ navigation, route }: any) {
             }}>
             <View>
               <Text style={styles.textType3}>{item?.jtuid}</Text>
-              <Text style={[styles.textType1, { lineHeight: 30 }]}>
+              <Text style={[styles.textType1, {lineHeight: 30}]}>
                 RM {item?.price}
               </Text>
               <View
-                style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
-                <Feather
-                        name="map-pin"
-                        size={18}
-                        color={'#298CFF'}
-                      />
-                <Text style={[styles.textType3, { color: '#003E9C' }]}>
+                style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
+                <Feather name="map-pin" size={18} color={'#298CFF'} />
+                <Text style={[styles.textType3, {color: '#003E9C'}]}>
                   {item?.city}
                 </Text>
               </View>
             </View>
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{alignItems: 'center', justifyContent: 'center'}}>
               <Text
                 style={[
                   styles.textType3,
@@ -465,7 +469,7 @@ function JobTicket({ navigation, route }: any) {
                     paddingVertical: 5,
                     paddingHorizontal: 30,
                     borderRadius: 30,
-                    textTransform:'capitalize',
+                    textTransform: 'capitalize',
                   },
                 ]}>
                 {item?.mode}
@@ -492,14 +496,14 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 10,
                 }}>
-                <AntDesign
-                        name="copy1"
-                        size={20}
-                        color={'#298CFF'}
-                      />
+                <AntDesign name="copy1" size={20} color={'#298CFF'} />
                 <Text style={styles.textType3}>Subject</Text>
               </View>
-              <Text style={[styles.textType1, { fontSize: 18,textTransform:'capitalize', }]}>
+              <Text
+                style={[
+                  styles.textType1,
+                  {fontSize: 18, textTransform: 'capitalize'},
+                ]}>
                 {item?.subject_name}
               </Text>
             </View>
@@ -518,14 +522,14 @@ function JobTicket({ navigation, route }: any) {
                   gap: 10,
                 }}>
                 {/* <Image source={require('../../Assets/Images/preftutor.png')} /> */}
-                <FontAwesome
-                        name="user-o"
-                        size={18}
-                        color={'#298CFF'}
-                      />
+                <FontAwesome name="user-o" size={18} color={'#298CFF'} />
                 <Text style={styles.textType3}>Pref. Tutor</Text>
               </View>
-              <Text style={[styles.textType1, { fontSize: 18,textTransform:'capitalize', }]}>
+              <Text
+                style={[
+                  styles.textType1,
+                  {fontSize: 18, textTransform: 'capitalize'},
+                ]}>
                 {item?.tutorPereference}
               </Text>
             </View>
@@ -543,20 +547,20 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 10,
                 }}>
-                  <FontAwesome
-                        name="level-up"
-                        size={18}
-                        color={'#298CFF'}
-                      />
+                <FontAwesome name="level-up" size={18} color={'#298CFF'} />
                 <Text style={styles.textType3}>Level</Text>
               </View>
-              <Text style={[styles.textType1, { fontSize: 18 ,textTransform:'capitalize',}]}>
+              <Text
+                style={[
+                  styles.textType1,
+                  {fontSize: 18, textTransform: 'capitalize'},
+                ]}>
                 {item?.categoryName}
               </Text>
             </View>
           </View>
 
-          <View style={{ flexDirection: 'row', gap: 10, marginTop: 15 }}>
+          <View style={{flexDirection: 'row', gap: 10, marginTop: 15}}>
             <View
               style={{
                 backgroundColor: '#E6F2FF',
@@ -571,12 +575,12 @@ function JobTicket({ navigation, route }: any) {
                   gap: 10,
                   paddingHorizontal: 10,
                 }}>
-                <AntDesign
-                        name="calendar"
-                        size={20}
-                        color={'#298CFF'}
-                      />
-                <Text style={[styles.textType3, { color: '#298CFF' ,textTransform:'capitalize',}]}>
+                <AntDesign name="calendar" size={20} color={'#298CFF'} />
+                <Text
+                  style={[
+                    styles.textType3,
+                    {color: '#298CFF', textTransform: 'capitalize'},
+                  ]}>
                   {item?.classDayType}
                 </Text>
               </View>
@@ -595,12 +599,8 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 10,
                 }}>
-                  <AntDesign
-                        name="clockcircleo"
-                        size={20}
-                        color={'#298CFF'}
-                      />
-                <Text style={[styles.textType3, { color: '#298CFF' }]}>
+                <AntDesign name="clockcircleo" size={20} color={'#298CFF'} />
+                <Text style={[styles.textType3, {color: '#298CFF'}]}>
                   {item?.classTime}
                 </Text>
               </View>
@@ -610,7 +610,7 @@ function JobTicket({ navigation, route }: any) {
       </>
     );
   };
-  const renderCloseData = ({ item }: any) => {
+  const renderCloseData = ({item}: any) => {
     return (
       <>
         <Text
@@ -626,7 +626,7 @@ function JobTicket({ navigation, route }: any) {
               marginLeft: 20,
               width: 120,
               textAlign: 'center',
-              textTransform:'capitalize'
+              textTransform: 'capitalize',
             },
           ]}>
           {item.offer_status}
@@ -652,22 +652,26 @@ function JobTicket({ navigation, route }: any) {
             }}>
             <View>
               <Text style={styles.textType3}>{item?.jtuid}</Text>
-              <Text style={[styles.textType1, { lineHeight: 30,textTransform:'capitalize', }]}>
+              <Text
+                style={[
+                  styles.textType1,
+                  {lineHeight: 30, textTransform: 'capitalize'},
+                ]}>
                 RM {item?.price}
               </Text>
               <View
-                style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
-                <Feather
-                        name="map-pin"
-                        size={18}
-                        color={'#298CFF'}
-                      />
-                <Text style={[styles.textType3, { color: '#003E9C',textTransform:'capitalize', }]}>
+                style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
+                <Feather name="map-pin" size={18} color={'#298CFF'} />
+                <Text
+                  style={[
+                    styles.textType3,
+                    {color: '#003E9C', textTransform: 'capitalize'},
+                  ]}>
                   {item?.city}
                 </Text>
               </View>
             </View>
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{alignItems: 'center', justifyContent: 'center'}}>
               <Text
                 style={[
                   styles.textType3,
@@ -677,7 +681,7 @@ function JobTicket({ navigation, route }: any) {
                     paddingVertical: 5,
                     paddingHorizontal: 30,
                     borderRadius: 30,
-                    textTransform:'capitalize'
+                    textTransform: 'capitalize',
                   },
                 ]}>
                 {item?.mode}
@@ -704,14 +708,14 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 10,
                 }}>
-                  <AntDesign
-                        name="copy1"
-                        size={18}
-                        color={'#298CFF'}
-                      />
+                <AntDesign name="copy1" size={18} color={'#298CFF'} />
                 <Text style={styles.textType3}>Subject</Text>
               </View>
-              <Text style={[styles.textType1, { fontSize: 18,textTransform:'capitalize', }]}>
+              <Text
+                style={[
+                  styles.textType1,
+                  {fontSize: 18, textTransform: 'capitalize'},
+                ]}>
                 {item?.subject_name}
               </Text>
             </View>
@@ -729,14 +733,14 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 10,
                 }}>
-                   <FontAwesome
-                        name="user-o"
-                        size={18}
-                        color={'#298CFF'}
-                      />
+                <FontAwesome name="user-o" size={18} color={'#298CFF'} />
                 <Text style={styles.textType3}>Pref. Tutor</Text>
               </View>
-              <Text style={[styles.textType1, { fontSize: 18,textTransform:'capitalize', }]}>
+              <Text
+                style={[
+                  styles.textType1,
+                  {fontSize: 18, textTransform: 'capitalize'},
+                ]}>
                 {item?.tutorPereference}
               </Text>
             </View>
@@ -754,20 +758,20 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 10,
                 }}>
-                <FontAwesome
-                        name="level-up"
-                        size={18}
-                        color={'#298CFF'}
-                      />
+                <FontAwesome name="level-up" size={18} color={'#298CFF'} />
                 <Text style={styles.textType3}>Level</Text>
               </View>
-              <Text style={[styles.textType1, { fontSize: 18 ,textTransform:'capitalize',}]}>
+              <Text
+                style={[
+                  styles.textType1,
+                  {fontSize: 18, textTransform: 'capitalize'},
+                ]}>
                 {item?.categoryName}
               </Text>
             </View>
           </View>
 
-          <View style={{ flexDirection: 'row', gap: 10, marginTop: 15 }}>
+          <View style={{flexDirection: 'row', gap: 10, marginTop: 15}}>
             <View
               style={{
                 backgroundColor: '#E6F2FF',
@@ -782,12 +786,12 @@ function JobTicket({ navigation, route }: any) {
                   gap: 10,
                   paddingHorizontal: 10,
                 }}>
-                <AntDesign
-                        name="calendar"
-                        size={20}
-                        color={'#298CFF'}
-                      />
-                <Text style={[styles.textType3, { color: '#298CFF',textTransform:'capitalize', }]}>
+                <AntDesign name="calendar" size={20} color={'#298CFF'} />
+                <Text
+                  style={[
+                    styles.textType3,
+                    {color: '#298CFF', textTransform: 'capitalize'},
+                  ]}>
                   {item?.classDayType}
                 </Text>
               </View>
@@ -806,12 +810,12 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 10,
                 }}>
-                  <AntDesign
-                        name="clockcircleo"
-                        size={20}
-                        color={'#298CFF'}
-                      />
-                <Text style={[styles.textType3, { color: '#298CFF',textTransform:'capitalize', }]}>
+                <AntDesign name="clockcircleo" size={20} color={'#298CFF'} />
+                <Text
+                  style={[
+                    styles.textType3,
+                    {color: '#298CFF', textTransform: 'capitalize'},
+                  ]}>
                   {item?.classTime}
                 </Text>
               </View>
@@ -819,16 +823,14 @@ function JobTicket({ navigation, route }: any) {
           </View>
         </TouchableOpacity>
       </>
-      
     );
   };
 
-
   const firstRoute = useCallback(() => {
     return (
-      <View style={{ marginVertical: 20, marginBottom: 10 }}>
+      <View style={{marginVertical: 20, marginBottom: 10}}>
         {/* Search */}
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <View
             style={{
               width: '100%',
@@ -842,11 +844,10 @@ function JobTicket({ navigation, route }: any) {
               marginBottom: 15,
               gap: 10,
             }}>
-
             <TouchableOpacity onPress={() => navigation}>
               <Image
                 source={require('../../Assets/Images/search.png')}
-                style={{ width: 15, height: 15 }}
+                style={{width: 15, height: 15}}
               />
             </TouchableOpacity>
             <TextInput
@@ -858,10 +859,9 @@ function JobTicket({ navigation, route }: any) {
                 padding: 8,
                 color: 'black',
                 fontFamily: 'Circular Std Book',
-                fontSize: 16
+                fontSize: 16,
               }}
             />
-
           </View>
         </View>
 
@@ -874,25 +874,22 @@ function JobTicket({ navigation, route }: any) {
             keyExtractor={(items: any, index: number): any => index}
           />
         ) : (
-          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-         
-       
-        <Image
-          source={require('../../Assets/Images/nojobticketavailable.png')}
-          style={{ width: 300, height: 300 }}
-        />
-     
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Image
+              source={require('../../Assets/Images/nojobticketavailable.png')}
+              style={{width: 300, height: 300}}
+            />
           </View>
         )}
       </View>
     );
-  }, [openData, searchText, foundName,refreshing]);
+  }, [openData, searchText, foundName, refreshing]);
 
   const secondRoute = useCallback(() => {
     return (
-      <View style={{ marginVertical: 20, marginBottom: 10 }}>
+      <View style={{marginVertical: 20, marginBottom: 10}}>
         {/* Search */}
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        <View style={{justifyContent: 'center', alignItems: 'center'}}>
           <View
             style={{
               width: '100%',
@@ -909,12 +906,12 @@ function JobTicket({ navigation, route }: any) {
               placeholder="Search"
               placeholderTextColor="black"
               onChangeText={e => searchApplied(e)}
-              style={{ width: '90%', padding: 8, color: 'black' }}
+              style={{width: '90%', padding: 8, color: 'black'}}
             />
             <TouchableOpacity onPress={() => navigation}>
               <Image
                 source={require('../../Assets/Images/search.png')}
-                style={{ width: 20, height: 20 }}
+                style={{width: 20, height: 20}}
               />
             </TouchableOpacity>
           </View>
@@ -927,7 +924,7 @@ function JobTicket({ navigation, route }: any) {
             keyExtractor={(items: any, index: number): any => index}
           />
         ) : (
-          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
             {/* <Text
               style={{
                 fontWeight: 'bold',
@@ -937,25 +934,23 @@ function JobTicket({ navigation, route }: any) {
               }}>
               No Data Found
             </Text> */}
-       
-        <Image
-        source={require('../../Assets/Images/nojobavailable.png')}
-          style={{ width: 300, height: 300 }}
-        />
-    
+
+            <Image
+              source={require('../../Assets/Images/nojobavailable.png')}
+              style={{width: 300, height: 300}}
+            />
           </View>
         )}
       </View>
     );
-  }, [appliedData, searchText, foundName,refreshing]);
-
+  }, [appliedData, searchText, foundName, refreshing]);
 
   const [openPPModal, setOpenPPModal] = useState(false);
   const displayBanner = async () => {
     setOpenPPModal(true);
     axios
       .get(`${Base_Uri}api/bannerAds`)
-      .then(({ data }) => { })
+      .then(({data}) => {})
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
@@ -992,7 +987,7 @@ function JobTicket({ navigation, route }: any) {
 
   const closeBannerModal = async () => {
     if (jobTicketBanner.displayOnce == 'on') {
-      let bannerData = { ...jobTicketBanner };
+      let bannerData = {...jobTicketBanner};
 
       let stringData = JSON.stringify(bannerData);
 
@@ -1010,22 +1005,21 @@ function JobTicket({ navigation, route }: any) {
     //   <Image source={require('../../Assets/Images/loader.gif')}/>
     // </View>
 
-
-    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+    <View style={{backgroundColor: Theme.white, height: '100%'}}>
       <Header
         tab={currentTab}
         title="Job Ticket"
         filter
         navigation={navigation}
       />
-      
+
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled>
-        <View style={{ paddingHorizontal: 15, marginTop: 20 }}>
+        <View style={{paddingHorizontal: 15, marginTop: 20}}>
           <CustomTabView
             currentTab={currentTab}
             firstRoute={firstRoute}
@@ -1039,7 +1033,7 @@ function JobTicket({ navigation, route }: any) {
       {Object.keys(jobTicketBanner).length > 0 &&
         (jobTicketBanner.tutorStatusCriteria == 'All' ||
           tutorDetails.status == 'verified') && (
-          <View style={{ flex: 1 }}>
+          <View style={{flex: 1}}>
             <Modal
               visible={openPPModal}
               animationType="fade"
@@ -1076,7 +1070,7 @@ function JobTicket({ navigation, route }: any) {
                   </TouchableOpacity>
                   {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
                   <Image
-                    source={{ uri: jobTicketBanner.bannerImages }}
+                    source={{uri: jobTicketBanner.bannerImages}}
                     style={{
                       width: Dimensions.get('screen').width / 1.05,
                       height: '90%',
@@ -1098,7 +1092,7 @@ function JobTicket({ navigation, route }: any) {
           <View
             style={[
               styles.modalContainer,
-              { padding: 30, marginHorizontal: 40 },
+              {padding: 30, marginHorizontal: 40},
             ]}>
             <Text
               style={{
@@ -1106,7 +1100,7 @@ function JobTicket({ navigation, route }: any) {
                 fontSize: 16,
                 fontWeight: 'bold',
                 fontFamily: 'Circular Std Medium',
-                lineHeight: 30
+                lineHeight: 30,
               }}>
               You have been Verified!
             </Text>
@@ -1150,13 +1144,13 @@ function JobTicket({ navigation, route }: any) {
           style={{
             flex: 1,
             justifyContent: 'center',
-            alignItems:'center',
+            alignItems: 'center',
             backgroundColor: 'rgba(0,0,0,0.5)',
           }}>
-           <Image
-                source={require('../../Assets/Images/SIFU.gif')}
-                style={{ width: 150, height: 150 }}
-              />
+          <Image
+            source={require('../../Assets/Images/SIFU.gif')}
+            style={{width: 150, height: 150}}
+          />
           {/* <ActivityIndicator size={'large'} color={Theme.darkGray} /> */}
         </View>
       </Modal>

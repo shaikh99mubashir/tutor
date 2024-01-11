@@ -19,7 +19,7 @@ import axios from 'axios';
 function More({navigation}: any) {
   const context = useContext(TutorDetailsContext);
 
-  const {tutorDetails, setTutorDetail,updateTutorDetails} = context;
+  const {tutorDetails, setTutorDetail, updateTutorDetails} = context;
 
   const [modalVisible, setModalVisible] = useState(false);
   const handleFilterPress = () => {
@@ -85,7 +85,7 @@ function More({navigation}: any) {
     try {
       handleCloseModal();
       await AsyncStorage.removeItem('loginAuth');
-      
+
       console.log('Item removed successfully');
       navigation.reset({
         index: 0,
@@ -149,7 +149,7 @@ function More({navigation}: any) {
                   style={{fontSize: 14, fontWeight: '300', color: Theme.gray}}>
                   {tutorDetails?.email}
                 </Text>
-             </View>
+              </View>
             </View>
             <Image
               source={require('../../Assets/Images/right.png')}

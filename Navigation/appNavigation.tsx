@@ -42,36 +42,55 @@ import TutorDetailForm from '../Screens/TutorDetailForm';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useContext, useEffect, useState} from 'react';
 import TutorDetailsContext from '../context/tutorDetailsContext';
+import axios from 'axios';
+import {Base_Uri} from '../constant/BaseUri';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 function BottomNavigation({route}: any) {
-  const [tutorDetail, setTutorDetail] = useState<any>();
+  // const [tutorDetail, setTutorDetail] = useState<any>();
 
   const tutorDetailsCont = useContext(TutorDetailsContext);
-  const {tutorDetails} = tutorDetailsCont;
+  const {tutorDetails, setTutorDetail}: any = tutorDetailsCont;
 
   // console.log(tutorDetails, 'myDetails');
 
-  useEffect(() => {
-    try {
-      let tutorData: any = AsyncStorage.getItem('tutorData');
-      tutorData = JSON.parse(tutorData);
-      setTutorDetail(tutorData);
-      console.log('Bottom Navigation tutor data', tutorData);
-    } catch (error) {
-      console.error('Error retrieving or parsing tutor data:', error);
+  const getTutorData = async () => {
+    // let tutorData: any = await AsyncStorage.getItem('tutorData');
+    // tutorData = JSON.parse(tutorData);/
+    let authData = await AsyncStorage.getItem('loginAuth');
+
+    if (authData) {
+      let tutorData: any = JSON.parse(authData);
+      axios
+        .get(`${Base_Uri}getTutorDetailByID/${tutorData?.tutorID}`)
+        .then(res => {
+          console.log('res---->', res.data.tutorDetailById);
+
+          let tutorData = res.data;
+          if (tutorData) {
+            let allData = tutorData?.tutorDetailById[0];
+            // allData.status = 'verified';
+            setTutorDetail(allData);
+          }
+          // console.log(tutorData?.tutorDetailById[0]?.status, 'splash');
+          return;
+        });
     }
+  };
+
+  useEffect(() => {
+    getTutorData();
   }, []);
 
   const initialRoute =
-    tutorDetail?.tutorDetailById[0]?.status === 'unverified'
-      ? 'JobTicket'
-      : 'Home';
+    tutorDetails?.status == 'unverified' ? 'JobTicket' : 'Home';
+
   const hideTabs =
-    tutorDetail?.tutorDetailById[0]?.status === 'unverified'
-      ? ['Schedule', 'Home', 'inbox']
-      : [];
+    tutorDetails?.status == 'unverified' ? ['Schedule', 'Home', 'inbox'] : [];
+
+  console.log(tutorDetails, 'tutorDetails');
+
   return (
     <Tab.Navigator
       initialRouteName={initialRoute}
