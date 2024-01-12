@@ -42,7 +42,7 @@ const CustomDropDown = (props: any) => {
         {ddTitle &&
           <Text
             style={{
-              fontFamily: 'Circular Std Black',
+              fontFamily: 'Circular Std Medium',
               color: Theme.gray,
               fontSize: 14,
               // fontWeight: 'bold',
@@ -83,7 +83,7 @@ const CustomDropDown = (props: any) => {
               <Text
                 style={{
                   color: Theme.gray,
-                  fontFamily: 'Circular Std Black',
+                  fontFamily: 'Circular Std Medium',
                   fontSize: 14,
                 }}>
                 {selectedServicedata.complain_name &&
@@ -107,7 +107,7 @@ const CustomDropDown = (props: any) => {
               <Text
                 style={{
                   color: Theme.gray,
-                  fontFamily: 'Circular Std Black',
+                  fontFamily: 'Circular Std Medium',
                   fontSize: 14,
                 }}>
                 {selectedSubject ? selectedSubject?.subject : dropdownPlace ?? ddTitle}
@@ -156,7 +156,7 @@ const CustomDropDown = (props: any) => {
                     <Text
                       style={{
                         color: Theme.gray,
-                        fontFamily: 'Circular Std Black',
+                        fontFamily: 'Circular Std Medium',
                         fontSize: 14,
                       }}>
                       {e}
@@ -189,7 +189,7 @@ const CustomDropDown = (props: any) => {
                   borderBottomWidth: 1,
                   gap: 0,
                   height: 38,
-                  fontFamily: 'Circular Std Black'
+                  fontFamily: 'Circular Std Medium'
                 }}
                   placeholder={"SEARCH"}
                   placeholderTextColor={"black"}
@@ -218,7 +218,7 @@ const CustomDropDown = (props: any) => {
                       <Text
                         style={{
                           color: Theme.gray,
-                          fontFamily: 'Circular Std Black',
+                          fontFamily: 'Circular Std Medium',
                           fontSize: 14,
                         }}>
                         {e ?? selectedSubject}
@@ -251,7 +251,7 @@ const CustomDropDown = (props: any) => {
                           <Text
                             style={{
                               color: Theme.gray,
-                              fontFamily: 'Circular Std Black',
+                              fontFamily: 'Circular Std Medium',
                               fontSize: 14,
                             }}>
                             {e ?? selectedSubject}

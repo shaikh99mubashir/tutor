@@ -40,12 +40,21 @@ const Signup = ({navigation, route}: any) => {
   let tutorDetail = context?.tutorDetails
   console.log('tutorDetail',tutorDetail);
   const handleLoginPress = () => {
+    if (!name) {
+      ToastAndroid.show('Kindly Enter Image', ToastAndroid.SHORT);
+      return;
+    }
     if (!fullName) {
       ToastAndroid.show('Kindly Enter Full Name', ToastAndroid.SHORT);
       return;
     }
     if (!email) {
       ToastAndroid.show('Kindly Enter Email Address', ToastAndroid.SHORT);
+      return;
+    }
+
+    if (!rememberMe) {
+      ToastAndroid.show('Kindly Accept Terms and Services', ToastAndroid.SHORT);
       return;
     }
 
@@ -167,8 +176,6 @@ const Signup = ({navigation, route}: any) => {
   }
 
 
-
-
   const uploadProfilePicture = async () => {
 
 
@@ -211,12 +218,12 @@ const Signup = ({navigation, route}: any) => {
 
   if (image) {
     imageUrl = image;
-  } else if (!tutorDetail.tutorImage) {
-    imageUrl = data.tutorDetailById[0].tutorImage
-  } else if (tutorDetail.tutorImage.includes('https')) {
-    imageUrl = tutorDetail.tutorImage;
+  } else if (!tutorDetail?.tutorImage) {
+    imageUrl = data?.tutorDetailById[0]?.tutorImage
+  } else if (tutorDetail?.tutorImage?.includes('https')) {
+    imageUrl = tutorDetail?.tutorImage;
   } else {
-    imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`;
+    imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail?.tutorImage}`;
   }
   
 
@@ -389,9 +396,9 @@ const Signup = ({navigation, route}: any) => {
             </Text>
           )}
         </TouchableOpacity>
-        <View style={{marginTop:10, alignItems:'center', justifyContent:'center', flexDirection:'row',gap:10}}>
+        <View style={{marginTop:10, alignItems:'center', justifyContent:'center', flexDirection:'row',}}>
         <TouchableOpacity
-                style={{width: 14, height: 14, borderWidth: 1, borderRadius: 0}}
+                style={{width: 14, height: 14, borderWidth: 1, borderRadius: 0,margin:10}}
                 onPress={() => setRememberMe(!rememberMe)}>
                 {rememberMe ? (
                   <Icon

@@ -423,6 +423,15 @@ const Profile = ({ navigation }: any) => {
     imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`;
   }
 
+   if (image) {
+    imageUrl = image;
+  } else if (!tutorDetail?.tutorImage) {
+    imageUrl =  tutorDetails?.tutorDetailById[0]?.tutorImage
+  } else if (tutorDetail?.tutorImage?.includes('https')) {
+    imageUrl = tutorDetail?.tutorImage;
+  } else {
+    imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail?.tutorImage}`;
+  }
   
 
 

@@ -100,10 +100,7 @@ const Splash = ({navigation}: any) => {
               AsyncStorage.removeItem('loginAuth');
               navigation.replace('Login');
               setTutorDetail('')
-              console.log(
-               
-                'Working',
-              );
+              ToastAndroid.show('Terminated', ToastAndroid.SHORT);
               return;
             }
 

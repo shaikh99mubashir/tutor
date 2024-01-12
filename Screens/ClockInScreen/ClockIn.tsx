@@ -55,7 +55,7 @@ function ClockIn({navigation, route}: any) {
         },
         maxWidth: 250,
         maxHeight: 250,
-        quality: 0.3,
+        quality: 0.8,
       };
 
       launchCamera(options, (res: any) => {

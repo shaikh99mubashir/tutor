@@ -171,7 +171,7 @@ const Filter = ({ navigation, route }: any) => {
 
     navigation.navigate("Job Ticket", selectedStatus)
 
-
+    console.log('====================================',selectedStatus);
   }
 
   const resetStatusFilter = async () => {

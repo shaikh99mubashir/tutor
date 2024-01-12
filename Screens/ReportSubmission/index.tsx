@@ -462,7 +462,7 @@ console.log("data",data);
             </View>
             :
             <View style={{ marginTop: 8 }}>
-              <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black',fontFamily: 'Circular Std Black' }}>
+              <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black',fontFamily: 'Circular Std Medium' }}>
                 First Class Date
               </Text>
               <View
@@ -484,7 +484,7 @@ console.log("data",data);
                 <Text
                   style={{
                     color: Theme.gray,
-                    fontFamily: 'Circular Std Black',
+                    fontFamily: 'Circular Std Medium',
                     fontSize: 16,
                   }}>
                   {formattedDateFirstClass}
@@ -501,7 +501,7 @@ console.log("data",data);
             modalHeading="Student"
           /> */}
           <View style={{ marginTop: 8 }}>
-              <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black',fontFamily: 'Circular Std Black' }}>
+              <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black',fontFamily: 'Circular Std Medium' }}>
                 Student
               </Text>
               <View
@@ -523,7 +523,7 @@ console.log("data",data);
                 <Text
                   style={{
                     color: Theme.gray,
-                    fontFamily: 'Circular Std Black',
+                    fontFamily: 'Circular Std Medium',
                     fontSize: 16,
                   }}>
                   {data?.studentName}
@@ -540,7 +540,7 @@ console.log("data",data);
             modalHeading="Subject"
           /> */}
           <View style={{ marginTop: 8 }}>
-              <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black',fontFamily: 'Circular Std Black' }}>
+              <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black',fontFamily: 'Circular Std Medium' }}>
                 Subject
               </Text>
               <View
@@ -562,7 +562,7 @@ console.log("data",data);
                 <Text
                   style={{
                     color: Theme.gray,
-                    fontFamily: 'Circular Std Black',
+                    fontFamily: 'Circular Std Medium',
                     fontSize: 16,
                   }}>
                   {data?.subjectName}
@@ -707,14 +707,14 @@ console.log("data",data);
                   fontWeight: 'bold',
                   color: 'black',
                   marginTop: 8,
-                  fontFamily: 'Circular Std Black'
+                  fontFamily: 'Circular Std Medium'
                 }}>
                 4. Observation
               </Text>
               <Text
                 style={{
                   color: Theme.gray,
-                  fontFamily: 'Circular Std Black',
+                  fontFamily: 'Circular Std Medium',
                   fontSize: 12,
                 }}>
                 Did you (tutor) hold or carried out any form of eximination/test/quiz for student within this 3 months?
@@ -740,7 +740,7 @@ console.log("data",data);
                       height: 80,
                       padding: 8,
                       color: 'black',
-                      fontFamily: 'Circular Std Black'
+                      fontFamily: 'Circular Std Medium'
                     },
                   ]}
                   underlineColorAndroid="transparent"
@@ -750,7 +750,7 @@ console.log("data",data);
               <Text
                 style={{
                   color: Theme.gray,
-                  fontFamily: 'Circular Std Black',
+                  fontFamily: 'Circular Std Medium',
                   fontSize: 12,
                   marginTop: 8,
                 }}>
@@ -777,7 +777,7 @@ console.log("data",data);
                       height: 80,
                       padding: 8,
                       color: 'black',
-                      fontFamily: 'Circular Std Black'
+                      fontFamily: 'Circular Std Medium'
                     },
                   ]}
                   underlineColorAndroid="transparent"
@@ -787,7 +787,7 @@ console.log("data",data);
               <Text
                 style={{
                   color: Theme.gray,
-                  fontFamily: 'Circular Std Black',
+                  fontFamily: 'Circular Std Medium',
                   fontSize: 12,
                   marginTop: 8,
                 }}>
@@ -814,7 +814,7 @@ console.log("data",data);
                       height: 80,
                       padding: 8,
                       color: 'black',
-                      fontFamily: 'Circular Std Black'
+                      fontFamily: 'Circular Std Medium'
                     },
                   ]}
                   underlineColorAndroid="transparent"
@@ -824,7 +824,7 @@ console.log("data",data);
               <Text
                 style={{
                   color: Theme.gray,
-                  fontFamily: 'Circular Std Black',
+                  fontFamily: 'Circular Std Medium',
                   fontSize: 12,
                   marginTop: 8,
                 }}>
@@ -851,7 +851,7 @@ console.log("data",data);
                       height: 80,
                       padding: 8,
                       color: 'black',
-                      fontFamily: 'Circular Std Black'
+                      fontFamily: 'Circular Std Medium'
                     },
                   ]}
                   underlineColorAndroid="transparent"
@@ -867,14 +867,14 @@ console.log("data",data);
                   fontWeight: 'bold',
                   color: 'black',
                   marginTop: 8,
-                  fontFamily: 'Circular Std Black'
+                  fontFamily: 'Circular Std Medium'
                 }}>
                 4. Additional Assessment
               </Text>
               <Text
                 style={{
                   color: Theme.gray,
-                  fontFamily: 'Circular Std Black',
+                  fontFamily: 'Circular Std Medium',
                   fontSize: 12,
                 }}>
                 What is the current score for the subject?
@@ -902,7 +902,7 @@ console.log("data",data);
                       width: Dimensions.get('window').width,
                       padding: 8,
                       color: 'black',
-                      fontFamily: 'Circular Std Black'
+                      fontFamily: 'Circular Std Medium'
                     },
                   ]}
                   underlineColorAndroid="transparent"
@@ -912,7 +912,7 @@ console.log("data",data);
               <Text
                 style={{
                   color: Theme.gray,
-                  fontFamily: 'Circular Std Black',
+                  fontFamily: 'Circular Std Medium',
                   fontSize: 12,
                   marginTop: 8,
                 }}>
@@ -939,7 +939,7 @@ console.log("data",data);
                       height: 80,
                       padding: 8,
                       color: 'black',
-                      fontFamily: 'Circular Std Black'
+                      fontFamily: 'Circular Std Medium'
                     },
                   ]}
                   underlineColorAndroid="transparent"
@@ -979,7 +979,7 @@ console.log("data",data);
               style={{
                 color: 'white',
                 fontSize: 16,
-                fontFamily: 'Circular Std Black',
+                fontFamily: 'Circular Std Medium',
               }}>
               Submit
             </Text>

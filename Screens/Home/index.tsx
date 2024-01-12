@@ -421,8 +421,14 @@ function Home({navigation, route}: any) {
     axios
       .get(`${Base_Uri}getTutorDetailByID/${tutorId}`)
       .then(({data}) => {
+        if(data.tutorDetailById== null){
+          AsyncStorage.removeItem('loginAuth');
+          navigation.replace('Login');
+          updateTutorDetails('');
+          ToastAndroid.show('Terminated', ToastAndroid.SHORT);
+          return;
+        }
         let {tutorDetailById} = data;
-
         console.log(tutorDetailById, 'iddd');
 
         let tutorDetails = tutorDetailById[0];
@@ -719,7 +725,7 @@ function Home({navigation, route}: any) {
 
         if (myHomeBanners && myHomeBanners.length > 0) {
           let sort: any = myHomeBanners.sort(
-            (a: any, b: any) => new Date(b.created_at) - new Date(a.created_at),
+            (a: any, b: any):any => new Date(b.created_at) - new Date(a.created_at),
           );
           let bannerShow = sort[0];
 

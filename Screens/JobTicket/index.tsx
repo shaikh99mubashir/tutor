@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect, useContext} from 'react';
+import React, { useState, useCallback, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -16,11 +16,11 @@ import {
   StyleSheet,
 } from 'react-native';
 import Header from '../../Component/Header';
-import {Theme} from '../../constant/theme';
+import { Theme } from '../../constant/theme';
 import CustomTabView from '../../Component/CustomTabView';
-import {Base_Uri} from '../../constant/BaseUri';
+import { Base_Uri } from '../../constant/BaseUri';
 import axios from 'axios';
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 import AsyncStorage, {
   useAsyncStorage,
 } from '@react-native-async-storage/async-storage';
@@ -30,26 +30,28 @@ import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import bannerContext from '../../context/bannerContext';
 import Status from '../Status';
+import filterContext from '../../context/filterContext';
 interface LoginAuth {
   status: Number;
   tutorID: Number;
   token: string;
 }
-function JobTicket({navigation, route}: any) {
+function JobTicket({ navigation, route }: any) {
   const focus = useIsFocused();
-
+  const filter = useContext(filterContext);
+  const { setCategory, setSubjects, setState, setCity } = filter;
   let data = route.params;
 
   const bannerCont = useContext(bannerContext);
 
-  let {jobTicketBanner, setJobTicketBanner} = bannerCont;
+  let { jobTicketBanner, setJobTicketBanner } = bannerCont;
   let loginData: LoginAuth;
   const [isSearchItems, setIsSearchItems] = useState(false);
   const [loading, setLoading] = useState(false);
   const [refresh, setRefresh] = useState(false);
   const tutor = useContext(TutorDetailsContext);
   const [modalVisible, setModalVisible] = useState(false);
-  let {tutorDetails, updateTutorDetails} = tutor;
+  let { tutorDetails, updateTutorDetails } = tutor;
   const [currentTab, setCurrentTab]: any = useState([
     {
       index: 0,
@@ -103,17 +105,118 @@ function JobTicket({navigation, route}: any) {
     }
   }, [refresh]);
 
-  const [tutorId, setTutorId] = useState<Number | null>(null);
-  console.log('tutorId======>', tutorId);
+  const [tutorId, setTutorId] = useState<Number | null>(null)
 
   const getTutorId = async () => {
     const data: any = await AsyncStorage.getItem('loginAuth');
     loginData = JSON.parse(data);
 
-    let {tutorID} = loginData;
+    let { tutorID } = loginData;
     setTutorId(tutorID);
   };
 
+  const getCategory = () => {
+    axios
+      .get(`${Base_Uri}getCategories`)
+      .then(({ data }) => {
+        let { categories } = data;
+
+        let myCategories =
+          categories &&
+          categories.length > 0 &&
+          categories.map((e: any, i: Number) => {
+            if (e.category_name) {
+              return {
+                subject: e.category_name,
+                id: e.id,
+              };
+            }
+          });
+        setCategory(myCategories);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const getSubject = () => {
+    axios
+      .get(`${Base_Uri}getSubjects`)
+      .then(({ data }) => {
+        let { subjects } = data;
+
+        let mySubject =
+          subjects &&
+          subjects.length > 0 &&
+          subjects.map((e: any, i: Number) => {
+            if (e.name) {
+              return {
+                subject: e.name,
+                id: e.id,
+              };
+            }
+          });
+
+        setSubjects(mySubject);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const getStates = () => {
+    axios
+      .get(`${Base_Uri}getStates`)
+      .then(({ data }) => {
+        let { states } = data;
+
+        let myStates =
+          states &&
+          states.length > 0 &&
+          states.map((e: any, i: Number) => {
+            if (e.name) {
+              return {
+                subject: e.name,
+                id: e.id,
+              };
+            }
+          });
+        setState(myStates);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  const getCities = () => {
+    axios
+      .get(`${Base_Uri}getCities`)
+      .then(({ data }) => {
+        let { cities } = data;
+        let myCities =
+          cities &&
+          cities.length > 0 &&
+          cities.map((e: any, i: Number) => {
+            if (e.name) {
+              return {
+                subject: e.name,
+                id: e.id,
+              };
+            }
+          });
+        setCity(myCities);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    getCategory();
+    getSubject();
+    getStates();
+    getCities();
+  }, [refreshing]);
   let isVerified = false;
   const checkTutorStatus = async () => {
     // isVerified = true
@@ -123,8 +226,8 @@ function JobTicket({navigation, route}: any) {
 
     axios
       .get(`${Base_Uri}getTutorDetailByID/${tutorId}`)
-      .then(({data}) => {
-        let {tutorDetailById} = data;
+      .then(({ data }) => {
+        let { tutorDetailById } = data;
         let tutorDetails = tutorDetailById[0];
         let details = {
           full_name: tutorDetails?.full_name,
@@ -139,30 +242,30 @@ function JobTicket({navigation, route}: any) {
           status: tutorDetails?.status,
         };
         updateTutorDetails(details);
-
+        
         console.log(tutorDetailById[0].status, 'detailsss');
-        console.log(tutorDetailById[0].phoneNumber, 'detailsss');
+        console.log(tutorDetailById[0]?.open_dashboard, 'tutorDetailById[0]?.open_dashboard');
         // tutorDetailById[0].status == 'verified' &&
-        if (tutorDetailById[0]?.open_dashboard != 'yes') {
+        if (tutorDetailById[0].status == 'verified' && tutorDetailById[0]?.open_dashboard != 'yes') {
           axios
             .get(`${Base_Uri}api/update_dashboard_status/${tutorId}`)
-            .then(({data}) => {
-              // setModalVisible(true)
-              let {tutorDetailById} = data;
-              let tutorDetails = tutorDetailById[0];
-              let details = {
-                full_name: tutorDetails?.full_name,
-                email: tutorDetails?.email,
-                displayName: tutorDetails?.displayName,
-                gender: tutorDetails?.gender,
-                phoneNumber: tutorDetails?.phoneNumber,
-                age: tutorDetails?.age,
-                nric: tutorDetails?.nric,
-                tutorImage: tutorDetails?.tutorImage,
-                tutorId: tutorDetails?.id,
-                status: tutorDetails?.status,
-              };
-              updateTutorDetails(details);
+            .then(({ data }) => {
+              setModalVisible(true)
+              // let { tutorDetailById } = data;
+              // let tutorDetails = tutorDetailById[0];
+              // let details = {
+              //   full_name: tutorDetails?.full_name,
+              //   email: tutorDetails?.email,
+              //   displayName: tutorDetails?.displayName,
+              //   gender: tutorDetails?.gender,
+              //   phoneNumber: tutorDetails?.phoneNumber,
+              //   age: tutorDetails?.age,
+              //   nric: tutorDetails?.nric,
+              //   tutorImage: tutorDetails?.tutorImage,
+              //   tutorId: tutorDetails?.id,
+              //   status: tutorDetails?.status,
+              // };
+              // updateTutorDetails(details);
             })
             .catch((error: any) => {
               console.log('errror========>', error);
@@ -179,15 +282,15 @@ function JobTicket({navigation, route}: any) {
   };
 
   const getTicketsData = async () => {
-    // setLoading(true);
+    setLoading(true);
     let filter: any = await AsyncStorage.getItem('filter');
 
-    console.log(filter, 'filter');
 
     if (filter) {
       filter = JSON.parse(filter);
+      console.log(filter, 'filter');
 
-      let {Category, subject, mode, state, city} = filter;
+      let { Category, subject, mode, state, city } = filter;
       let categoryID = Category.id ?? 'noFilter';
       let subjectID = subject.id ?? 'noFilter';
       let myMode = mode.subject ?? 'noFilter';
@@ -196,14 +299,14 @@ function JobTicket({navigation, route}: any) {
 
       axios
         .get(`${Base_Uri}ticketsAPI/${tutorDetails?.tutorId}`)
-        .then(({data}) => {
-          let {tickets} = data;
+        .then(({ data }) => {
+          let { tickets } = data;
           setOpenData(
             tickets?.filter((e: any, i: number) => {
               return (
                 (myMode == 'noFilter' ||
                   e?.mode?.toString()?.toLowerCase() ==
-                    myMode?.toString()?.toLowerCase()) &&
+                  myMode?.toString()?.toLowerCase()) &&
                 (subjectID == 'noFilter' || e?.subject_id == subjectID) &&
                 (categoryID == 'noFilter' || e?.categoryID == categoryID) &&
                 (myCity == 'noFilter' || e?.cityID == myCity) &&
@@ -264,35 +367,35 @@ function JobTicket({navigation, route}: any) {
       let tutor_id = tutorData?.tutorID;
       axios
         .get(`${Base_Uri}ticketsAPI/${tutor_id}`)
-        .then(async ({data}) => {
-          let {tickets} = data;
+        .then(async ({ data }) => {
+          let { tickets } = data;
           setOpenData(tickets);
-          axios
-            .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
-            .then(({data}) => {
-              let {getTutorOffers} = data;
+          // axios
+          //   .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
+          //   .then(({data}) => {
+          //     let {getTutorOffers} = data;
 
-              // const isDataUpdated = JSON.stringify(openData) !== JSON.stringify(tickets);
+          // const isDataUpdated = JSON.stringify(openData) !== JSON.stringify(tickets);
 
-              // const filteredTickets = tickets.filter(
-              //   (ticket: any) =>
-              //     !getTutorOffers.some(
-              //       (offer: any) => offer.ticket_id == ticket.ticketID,
-              //     ),
-              // );
-              // setOpenData(
-              //   filteredTickets.length > 0 ? filteredTickets : openData
-              // );
-              // setOpenData(filteredTickets);
-              setLoading(false);
-            })
-            .catch(error => {
-              ToastAndroid.show(
-                'Internal Server Error getTutorOffers1',
-                ToastAndroid.SHORT,
-              );
-              setLoading(false);
-            });
+          // const filteredTickets = tickets.filter(
+          //   (ticket: any) =>
+          //     !getTutorOffers.some(
+          //       (offer: any) => offer.ticket_id == ticket.ticketID,
+          //     ),
+          // );
+          // setOpenData(
+          //   filteredTickets.length > 0 ? filteredTickets : openData
+          // );
+          // setOpenData(filteredTickets);
+          //   setLoading(false);
+          // })
+          // .catch(error => {
+          //   ToastAndroid.show(
+          //     'Internal Server Error getTutorOffers1',
+          //     ToastAndroid.SHORT,
+          //   );
+          //   setLoading(false);
+          // });
         })
         .catch(error => {
           setLoading(false);
@@ -305,7 +408,7 @@ function JobTicket({navigation, route}: any) {
   };
 
   const getAppliedData = async () => {
-    // setLoading(true)
+    setLoading(true)
     let tutorData: any = await AsyncStorage.getItem('loginAuth');
     tutorData = JSON.parse(tutorData);
     let tutor_id = tutorData?.tutorID;
@@ -314,24 +417,24 @@ function JobTicket({navigation, route}: any) {
     if (status) {
       axios
         .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
-        .then(({data}) => {
-          let {getTutorOffers} = data;
+        .then(({ data }) => {
+          let { getTutorOffers } = data;
           let tutorOffer =
             getTutorOffers &&
             getTutorOffers.length > 0 &&
             getTutorOffers.filter((e: any, i: number) => {
+              console.log();
               return (
-                e?.status.toString().toLowerCase() ==
+                e?.ticket_status.toString().toLowerCase() ==
                 status.option.toString().toLowerCase()
               );
             });
-
           setAppliedData(tutorOffer);
           setLoading(false);
         })
-        .catch(error => {
+        .catch((error) => {
           ToastAndroid.show(
-            'Internal Server Error getTutorOffers',
+            'Internal Server Error getTutorOffers filter DATA',
             ToastAndroid.SHORT,
           );
           setLoading(false);
@@ -341,8 +444,8 @@ function JobTicket({navigation, route}: any) {
 
     axios
       .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
-      .then(({data}) => {
-        let {getTutorOffers} = data;
+      .then(({ data }) => {
+        let { getTutorOffers } = data;
         setAppliedData(getTutorOffers);
         setLoading(false);
       })
@@ -357,7 +460,7 @@ function JobTicket({navigation, route}: any) {
 
   useEffect(() => {
     getTutorId();
-  }, []);
+  }, [focus]);
 
   useEffect(() => {
     if (tutorId) {
@@ -365,11 +468,11 @@ function JobTicket({navigation, route}: any) {
       getTicketsData();
       getAppliedData();
     }
-  }, [route, tutorId]);
+  }, [route, refresh, tutorId]);
 
   const HandelGoToDashboard = () => {
     setModalVisible(false);
-    // navigation.navigate('Home')
+    navigation.navigate('Home')
     navigation.reset({
       index: 0,
       routes: [
@@ -423,7 +526,7 @@ function JobTicket({navigation, route}: any) {
     setFoundName(filteredItems);
   };
 
-  const renderOpenData: any = ({item}: any) => {
+  const renderOpenData: any = ({ item }: any) => {
     return (
       <>
         <TouchableOpacity
@@ -448,18 +551,18 @@ function JobTicket({navigation, route}: any) {
             }}>
             <View>
               <Text style={styles.textType3}>{item?.jtuid}</Text>
-              <Text style={[styles.textType1, {lineHeight: 30}]}>
+              <Text style={[styles.textType1, { lineHeight: 30 }]}>
                 RM {item?.price}
               </Text>
               <View
-                style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
+                style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
                 <Feather name="map-pin" size={18} color={'#298CFF'} />
-                <Text style={[styles.textType3, {color: '#003E9C'}]}>
+                <Text style={[styles.textType3, { color: '#003E9C' }]}>
                   {item?.city}
                 </Text>
               </View>
             </View>
-            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
               <Text
                 style={[
                   styles.textType3,
@@ -502,7 +605,7 @@ function JobTicket({navigation, route}: any) {
               <Text
                 style={[
                   styles.textType1,
-                  {fontSize: 18, textTransform: 'capitalize'},
+                  { fontSize: 18, textTransform: 'capitalize' },
                 ]}>
                 {item?.subject_name}
               </Text>
@@ -528,7 +631,7 @@ function JobTicket({navigation, route}: any) {
               <Text
                 style={[
                   styles.textType1,
-                  {fontSize: 18, textTransform: 'capitalize'},
+                  { fontSize: 18, textTransform: 'capitalize' },
                 ]}>
                 {item?.tutorPereference}
               </Text>
@@ -553,14 +656,14 @@ function JobTicket({navigation, route}: any) {
               <Text
                 style={[
                   styles.textType1,
-                  {fontSize: 18, textTransform: 'capitalize'},
+                  { fontSize: 18, textTransform: 'capitalize' },
                 ]}>
                 {item?.categoryName}
               </Text>
             </View>
           </View>
 
-          <View style={{flexDirection: 'row', gap: 10, marginTop: 15}}>
+          <View style={{ flexDirection: 'row', gap: 10, marginTop: 15 }}>
             <View
               style={{
                 backgroundColor: '#E6F2FF',
@@ -579,7 +682,7 @@ function JobTicket({navigation, route}: any) {
                 <Text
                   style={[
                     styles.textType3,
-                    {color: '#298CFF', textTransform: 'capitalize'},
+                    { color: '#298CFF', textTransform: 'capitalize' },
                   ]}>
                   {item?.classDayType}
                 </Text>
@@ -600,7 +703,7 @@ function JobTicket({navigation, route}: any) {
                   gap: 10,
                 }}>
                 <AntDesign name="clockcircleo" size={20} color={'#298CFF'} />
-                <Text style={[styles.textType3, {color: '#298CFF'}]}>
+                <Text style={[styles.textType3, { color: '#298CFF' }]}>
                   {item?.classTime}
                 </Text>
               </View>
@@ -610,10 +713,41 @@ function JobTicket({navigation, route}: any) {
       </>
     );
   };
-  const renderCloseData = ({item}: any) => {
+  const renderCloseData = ({ item }: any) => {
     return (
       <>
         <Text
+          style={[
+            styles.textType3,
+            {
+              color: item.offer_status === 'pending' ? '#000000' : '#FFFFFF',
+              backgroundColor: (() => {
+                switch (item.offer_status) {
+                  case 'pending':
+                    return '#FEBC2A';
+                  case 'approved':
+                    return '#1FC07D';
+                  case 'reject':
+                    return '#FF0000';
+                  default:
+                    return '#298CFF33'; // Default background color if the status is not recognized
+                }
+              })(),
+              paddingVertical: 5,
+              paddingHorizontal: 15,
+              borderTopLeftRadius: 16,
+              borderTopRightRadius: 16,
+              marginLeft: 20,
+              width: 120,
+              textAlign: 'center',
+              textTransform: 'capitalize',
+            },
+          ]}
+        >
+          {item.offer_status}
+        </Text>
+
+        {/* <Text
           style={[
             styles.textType3,
             {
@@ -630,7 +764,7 @@ function JobTicket({navigation, route}: any) {
             },
           ]}>
           {item.offer_status}
-        </Text>
+        </Text> */}
         <TouchableOpacity
           activeOpacity={0.8}
           style={{
@@ -655,23 +789,23 @@ function JobTicket({navigation, route}: any) {
               <Text
                 style={[
                   styles.textType1,
-                  {lineHeight: 30, textTransform: 'capitalize'},
+                  { lineHeight: 30, textTransform: 'capitalize' },
                 ]}>
                 RM {item?.price}
               </Text>
               <View
-                style={{flexDirection: 'row', gap: 10, alignItems: 'center'}}>
+                style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
                 <Feather name="map-pin" size={18} color={'#298CFF'} />
                 <Text
                   style={[
                     styles.textType3,
-                    {color: '#003E9C', textTransform: 'capitalize'},
+                    { color: '#003E9C', textTransform: 'capitalize' },
                   ]}>
                   {item?.city}
                 </Text>
               </View>
             </View>
-            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
               <Text
                 style={[
                   styles.textType3,
@@ -714,7 +848,7 @@ function JobTicket({navigation, route}: any) {
               <Text
                 style={[
                   styles.textType1,
-                  {fontSize: 18, textTransform: 'capitalize'},
+                  { fontSize: 18, textTransform: 'capitalize' },
                 ]}>
                 {item?.subject_name}
               </Text>
@@ -739,7 +873,7 @@ function JobTicket({navigation, route}: any) {
               <Text
                 style={[
                   styles.textType1,
-                  {fontSize: 18, textTransform: 'capitalize'},
+                  { fontSize: 18, textTransform: 'capitalize' },
                 ]}>
                 {item?.tutorPereference}
               </Text>
@@ -764,14 +898,14 @@ function JobTicket({navigation, route}: any) {
               <Text
                 style={[
                   styles.textType1,
-                  {fontSize: 18, textTransform: 'capitalize'},
+                  { fontSize: 18, textTransform: 'capitalize' },
                 ]}>
                 {item?.categoryName}
               </Text>
             </View>
           </View>
 
-          <View style={{flexDirection: 'row', gap: 10, marginTop: 15}}>
+          <View style={{ flexDirection: 'row', gap: 10, marginTop: 15 }}>
             <View
               style={{
                 backgroundColor: '#E6F2FF',
@@ -790,7 +924,7 @@ function JobTicket({navigation, route}: any) {
                 <Text
                   style={[
                     styles.textType3,
-                    {color: '#298CFF', textTransform: 'capitalize'},
+                    { color: '#298CFF', textTransform: 'capitalize' },
                   ]}>
                   {item?.classDayType}
                 </Text>
@@ -814,7 +948,7 @@ function JobTicket({navigation, route}: any) {
                 <Text
                   style={[
                     styles.textType3,
-                    {color: '#298CFF', textTransform: 'capitalize'},
+                    { color: '#298CFF', textTransform: 'capitalize' },
                   ]}>
                   {item?.classTime}
                 </Text>
@@ -828,9 +962,9 @@ function JobTicket({navigation, route}: any) {
 
   const firstRoute = useCallback(() => {
     return (
-      <View style={{marginVertical: 20, marginBottom: 10}}>
+      <View style={{ marginVertical: 20, marginBottom: 10 }}>
         {/* Search */}
-        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <View
             style={{
               width: '100%',
@@ -847,7 +981,7 @@ function JobTicket({navigation, route}: any) {
             <TouchableOpacity onPress={() => navigation}>
               <Image
                 source={require('../../Assets/Images/search.png')}
-                style={{width: 15, height: 15}}
+                style={{ width: 15, height: 15 }}
               />
             </TouchableOpacity>
             <TextInput
@@ -874,10 +1008,10 @@ function JobTicket({navigation, route}: any) {
             keyExtractor={(items: any, index: number): any => index}
           />
         ) : (
-          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <Image
               source={require('../../Assets/Images/nojobticketavailable.png')}
-              style={{width: 300, height: 300}}
+              style={{ width: 300, height: 300 }}
             />
           </View>
         )}
@@ -887,9 +1021,9 @@ function JobTicket({navigation, route}: any) {
 
   const secondRoute = useCallback(() => {
     return (
-      <View style={{marginVertical: 20, marginBottom: 10}}>
+      <View style={{ marginVertical: 20, marginBottom: 10 }}>
         {/* Search */}
-        <View style={{justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <View
             style={{
               width: '100%',
@@ -906,12 +1040,12 @@ function JobTicket({navigation, route}: any) {
               placeholder="Search"
               placeholderTextColor="black"
               onChangeText={e => searchApplied(e)}
-              style={{width: '90%', padding: 8, color: 'black'}}
+              style={{ width: '90%', padding: 8, color: 'black' }}
             />
             <TouchableOpacity onPress={() => navigation}>
               <Image
                 source={require('../../Assets/Images/search.png')}
-                style={{width: 20, height: 20}}
+                style={{ width: 20, height: 20 }}
               />
             </TouchableOpacity>
           </View>
@@ -924,7 +1058,7 @@ function JobTicket({navigation, route}: any) {
             keyExtractor={(items: any, index: number): any => index}
           />
         ) : (
-          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             {/* <Text
               style={{
                 fontWeight: 'bold',
@@ -937,7 +1071,7 @@ function JobTicket({navigation, route}: any) {
 
             <Image
               source={require('../../Assets/Images/nojobavailable.png')}
-              style={{width: 300, height: 300}}
+              style={{ width: 300, height: 300 }}
             />
           </View>
         )}
@@ -950,7 +1084,7 @@ function JobTicket({navigation, route}: any) {
     setOpenPPModal(true);
     axios
       .get(`${Base_Uri}api/bannerAds`)
-      .then(({data}) => {})
+      .then(({ data }) => { })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
@@ -987,7 +1121,7 @@ function JobTicket({navigation, route}: any) {
 
   const closeBannerModal = async () => {
     if (jobTicketBanner.displayOnce == 'on') {
-      let bannerData = {...jobTicketBanner};
+      let bannerData = { ...jobTicketBanner };
 
       let stringData = JSON.stringify(bannerData);
 
@@ -1005,7 +1139,7 @@ function JobTicket({navigation, route}: any) {
     //   <Image source={require('../../Assets/Images/loader.gif')}/>
     // </View>
 
-    <View style={{backgroundColor: Theme.white, height: '100%'}}>
+    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header
         tab={currentTab}
         title="Job Ticket"
@@ -1019,7 +1153,7 @@ function JobTicket({navigation, route}: any) {
         }
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled>
-        <View style={{paddingHorizontal: 15, marginTop: 20}}>
+        <View style={{ paddingHorizontal: 15, marginTop: 20 }}>
           <CustomTabView
             currentTab={currentTab}
             firstRoute={firstRoute}
@@ -1033,7 +1167,7 @@ function JobTicket({navigation, route}: any) {
       {Object.keys(jobTicketBanner).length > 0 &&
         (jobTicketBanner.tutorStatusCriteria == 'All' ||
           tutorDetails.status == 'verified') && (
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             <Modal
               visible={openPPModal}
               animationType="fade"
@@ -1070,7 +1204,7 @@ function JobTicket({navigation, route}: any) {
                   </TouchableOpacity>
                   {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
                   <Image
-                    source={{uri: jobTicketBanner.bannerImages}}
+                    source={{ uri: jobTicketBanner.bannerImages }}
                     style={{
                       width: Dimensions.get('screen').width / 1.05,
                       height: '90%',
@@ -1092,7 +1226,7 @@ function JobTicket({navigation, route}: any) {
           <View
             style={[
               styles.modalContainer,
-              {padding: 30, marginHorizontal: 40},
+              { padding: 30, marginHorizontal: 40 },
             ]}>
             <Text
               style={{
@@ -1149,7 +1283,7 @@ function JobTicket({navigation, route}: any) {
           }}>
           <Image
             source={require('../../Assets/Images/SIFU.gif')}
-            style={{width: 150, height: 150}}
+            style={{ width: 150, height: 150 }}
           />
           {/* <ActivityIndicator size={'large'} color={Theme.darkGray} /> */}
         </View>

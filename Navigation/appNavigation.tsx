@@ -47,7 +47,7 @@ import {Base_Uri} from '../constant/BaseUri';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
-function BottomNavigation({route}: any) {
+function BottomNavigation({navigation,route}: any) {
   // const [tutorDetail, setTutorDetail] = useState<any>();
 
   const tutorDetailsCont = useContext(TutorDetailsContext);
@@ -66,7 +66,13 @@ function BottomNavigation({route}: any) {
         .get(`${Base_Uri}getTutorDetailByID/${tutorData?.tutorID}`)
         .then(res => {
           console.log('res---->', res.data.tutorDetailById);
-
+          if(res.data.tutorDetailById == null){
+            AsyncStorage.removeItem('loginAuth');
+            navigation.replace('Login');
+            setTutorDetail('')
+            ToastAndroid.show('Terminated', ToastAndroid.SHORT);
+            return;
+          }
           let tutorData = res.data;
           if (tutorData) {
             let allData = tutorData?.tutorDetailById[0];

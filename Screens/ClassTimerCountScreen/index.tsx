@@ -180,7 +180,7 @@ function ClassTimerCount({ navigation, route }: any) {
                 },
                 maxWidth: 250,
                 maxHeight: 250,
-                quality: 0.3,
+                quality: 0.8,
             };
 
             launchCamera(options, (res: any) => {
@@ -246,19 +246,19 @@ function ClassTimerCount({ navigation, route }: any) {
             <Header backBtn navigation={navigation} containerStyle={{ height: 50 }} />
 
 
-            <Text style={{ textAlign: "center", color: Theme.black, marginTop: 20, fontSize: 18, fontFamily: 'Circular Std Black'}} >Class in progress...</Text>
+            <Text style={{ textAlign: "center", color: Theme.black, marginTop: 20, fontSize: 18, fontFamily: 'Circular Std Medium'}} >Class in progress...</Text>
 
             <TouchableOpacity onPress={() => { handleClockOut() }} >
                 <ActivityIndicator size={220} color={Theme.darkGray} style={{ marginTop: 30 }} />
 
                 <View style={{ alignItems: "center", position: "relative", top: -130 }} >
-                    <Text style={{ textAlign: "center", fontSize: 14, color: Theme.black }} >Timer</Text>
+                    <Text style={{ textAlign: "center", fontSize: 14, color: Theme.black,fontFamily: 'Circular Std Medium' }} >Timer</Text>
                     {!backTime && <Timer show={"true"} />}
                 </View>
             </TouchableOpacity>
 
             <View style={{ width: "100%", alignItems: "center", position: "absolute", bottom: 60 }} >
-                <Text style={{ textAlign: "center", fontSize: 20,fontWeight:'600' ,color: Theme.black, width: "50%" ,fontFamily: 'Circular Std Black'}} >Click on the timer to clock out</Text>
+                <Text style={{ textAlign: "center", fontSize: 20,fontWeight:'600' ,color: Theme.black, width: "50%" ,fontFamily: 'Circular Std Medium'}} >Click on the timer to clock out</Text>
 
             </View>
         </View>

@@ -34,9 +34,9 @@ const Login = ({ navigation }: any) => {
       setLoading(false);
       ToastAndroid.show('Request timeout: Please check your internet connection', ToastAndroid.SHORT);
     }, 30000);
-
+    const phoneNumberWithCountryCode = "+60" + phoneNumber;
     axios
-      .get(`${Base_Uri}loginAPI/${phoneNumber}`,{
+      .get(`${Base_Uri}loginAPI/${phoneNumberWithCountryCode}`,{
           // Set the timeout for the API call
       timeout: 30000, // 30 seconds
       })
@@ -83,7 +83,7 @@ const Login = ({ navigation }: any) => {
         A verification code will be sent to{'\n'}this mobile Number
       </Text>
       <View style={styles.container}>
-        {/* <View style={[styles.phoneNumberView, { flexDirection: 'row', alignItems: 'center', gap: 20, paddingHorizontal: 15, paddingVertical: 5 }]}>
+        <View style={[styles.phoneNumberView, { flexDirection: 'row', alignItems: 'center', gap: 20, paddingHorizontal: 15, paddingVertical: 5 }]}>
           <Image source={require('../../Assets/Images/malalogo.png')} style={{ width: 30, height: 30 }} resizeMode='contain' />
           <Text style={styles.textType3}>+60</Text>
           <TextInput
@@ -95,8 +95,8 @@ const Login = ({ navigation }: any) => {
               setPhoneNumber(text);
             }}
           />
-        </View> */}
-         <PhoneInput
+        </View>
+         {/* <PhoneInput
           ref={phoneInput}
           placeholder="Enter Your Number"
           defaultValue={phoneNumber}
@@ -116,7 +116,7 @@ const Login = ({ navigation }: any) => {
           onChangeFormattedText={text => {
             setPhoneNumber(text);
           }}
-        /> 
+        />  */}
       </View>
       {/* Submit Button */}
 

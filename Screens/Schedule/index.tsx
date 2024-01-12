@@ -30,25 +30,13 @@ import scheduleContext from '../../context/scheduleContext';
 import AntDesig from 'react-native-vector-icons/AntDesign';
 import bannerContext from '../../context/bannerContext';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
+import Feather from 'react-native-vector-icons/Feather';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 // import { ScrollView } from "react-native-gesture-handler"
 
 function Schedule({ navigation, route }: any) {
-  // type ISchedule = {
-  //   imageUrl: any;
-  //   name: String;
-  //   Subject: String;
-  //   date: any;
-  //   startTime: any;
-  //   endTime: any;
-  //   status: String;
-  //   selected?: Boolean;
-  // }[];
-
-  // let upComingCont = useContext(upcomingClassContext)
-  // const { upcomingClass, setUpcomingClass } = upComingCont
-  // let data = upcomingClass
-
   let data = route.params;
 
   let focus = useIsFocused();
@@ -577,6 +565,8 @@ function Schedule({ navigation, route }: any) {
   }
 
   const renderScheduleData = ({ item, index }: any): any => {
+    console.log("item",item);
+    
     let nowDate: Date = new Date();
     let date = nowDate.getDate();
     let month = nowDate.getMonth();
@@ -640,7 +630,7 @@ function Schedule({ navigation, route }: any) {
                   {item?.studentName}
                 </Text>
                 <View style={{ flexDirection: 'row', gap: 10, alignItems: "center" }}>
-                  <Image source={require('../../Assets/Images/mapicon.png')} />
+                <Feather name="map-pin" size={18} color={'#298CFF'} />
                   <Text style={[styles.textType3, { color: '#003E9C' }]}>
                     {item?.city}
                   </Text>
@@ -659,21 +649,21 @@ function Schedule({ navigation, route }: any) {
         <View style={{ paddingVertical: 20, }}>
           <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
             <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 10 }}>
-              <Image source={require('../../Assets/Images/subIcon.png')} />
+            <AntDesig name="copy1" size={20} color={'#298CFF'} />
               <Text style={styles.textType3}>Subject</Text>
             </View>
             <Text style={[styles.textType1, { fontSize: 18 }]}> {item.subjectName ?? item?.subject_name}</Text>
           </View>
           <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
             <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 10 }}>
-              <Image source={require('../../Assets/Images/scheduleicccon.png')} />
+            <AntDesig name="carryout" size={20} color={'#298CFF'} />
               <Text style={styles.textType3}>Day</Text>
             </View>
             <Text style={[styles.textType1, { fontSize: 18 }]}>{convertDateDayFormat(item.date)}</Text>
           </View>
           <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
             <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 10 }}>
-              <Image source={require('../../Assets/Images/timeee.png')} />
+            <AntDesig name="clockcircleo" size={20} color={'#298CFF'} />
               <Text style={styles.textType3}>Time</Text>
             </View>
             <Text style={[styles.textType1, { fontSize: 18 }]}>{startTime12Hour} - {endTime12Hour}
@@ -681,7 +671,8 @@ function Schedule({ navigation, route }: any) {
           </View>
           <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
             <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 10 }}>
-              <Image source={require('../../Assets/Images/level.png')} />
+              {/* <Image source={require('../../Assets/Images/level.png')} /> */}
+              <MaterialIcons name="schedule-send" size={20} color={'#298CFF'} />
               <Text style={styles.textType3}>Status</Text>
             </View>
             <Text style={[styles.textType1, { fontSize: 18 }]}>{item.status}

@@ -55,7 +55,7 @@ const getModalValue = () => {
         
       <View style={{marginTop: 8}}>
         {title &&
-        <Text style={{fontSize: 14, fontWeight: 'bold', color: 'black',fontFamily: 'Circular Std Black'}}>
+        <Text style={{fontSize: 14, fontWeight: 'bold', color: 'black',fontFamily: 'Circular Std Medium'}}>
           {title}
         </Text>
         }
@@ -63,7 +63,7 @@ const getModalValue = () => {
           <Text
             style={{
               color: Theme.gray,
-              fontFamily: 'Circular Std Black',
+              fontFamily: 'Circular Std Medium',
               fontSize: 12,
             }}>
             {subTitle}
@@ -96,7 +96,7 @@ const getModalValue = () => {
             <Text
               style={{
                 color: 'black',
-                fontFamily: 'Circular Std Black',
+                fontFamily: 'Circular Std Medium',
                 fontSize: 14,
               }}>
               {value ? value : reportType ? reportType : placeHolder && placeHolder}
@@ -147,7 +147,7 @@ const getModalValue = () => {
                 fontSize: 18,
                 // fontWeight: 'bold',
                 color: 'black',
-                fontFamily: 'Circular Std Black',
+                fontFamily: 'Circular Std Medium',
                 marginBottom: 15,
               }}>
               {modalHeading}

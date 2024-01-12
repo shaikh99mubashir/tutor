@@ -163,7 +163,11 @@ const OpenDetails = ({ route, navigation }: any) => {
                     flexDirection: 'row',
                     gap: 10,
                   }}>
-                  <Image source={require('../../Assets/Images/SD.png')} />
+                  <FontAwesome
+                        name="graduation-cap"
+                        size={18}
+                        color={'#298CFF'}
+                      />
                   <Text style={styles.textType3}>Student Detail</Text>
                 </View>
                 <Text style={[styles.textType1, { fontSize: 18 }]}>
@@ -184,7 +188,11 @@ const OpenDetails = ({ route, navigation }: any) => {
                     flexDirection: 'row',
                     gap: 10,
                   }}>
-                  <Image source={require('../../Assets/Images/no.png')} />
+                  <Feather
+                        name="hash"
+                        size={18}
+                        color={'#298CFF'}
+                      />
                   <Text style={styles.textType3}>No. of Sessions</Text>
                 </View>
                 <Text

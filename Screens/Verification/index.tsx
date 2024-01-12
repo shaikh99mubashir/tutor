@@ -123,6 +123,12 @@ console.log('data=============>Verification',data);
           axios
             .get(`${Base_Uri}getTutorDetailByID/${data?.tutorID}`)
             .then(res => {
+              if(res.data.tutorDetailById== null){
+                AsyncStorage.removeItem('loginAuth');
+                navigation.replace('Login');
+                ToastAndroid.show('Terminated', ToastAndroid.SHORT);
+                return
+              }
               let tutorData = res.data;
               console.log('tutorData',tutorData);
               
