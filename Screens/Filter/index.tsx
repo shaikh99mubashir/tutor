@@ -25,9 +25,6 @@ const Filter = ({ navigation, route }: any) => {
 
 
   let data = route.params
-
-
-
   const filter = useContext(filterContext)
 
   let { subjects, city, state, category } = filter
@@ -100,9 +97,7 @@ const Filter = ({ navigation, route }: any) => {
 
   }
 
-  const handleSearchData = (text: string, type: string) => {
-    console.log("type,text=====",type,text);
-    
+  const handleSearchData = (text: string, type: string) => { 
     if (type == "category") {
       let myData = category && category.length > 0 && category.filter((e: any, i: number) => {
 
@@ -171,21 +166,57 @@ const Filter = ({ navigation, route }: any) => {
 
     navigation.navigate("Job Ticket", selectedStatus)
 
-    console.log('====================================',selectedStatus);
   }
 
   const resetStatusFilter = async () => {
-
-
     await AsyncStorage.removeItem("statusFilter")
     ToastAndroid.show("Filter has been succesfully reset", ToastAndroid.SHORT)
-
-
     navigation.navigate("Job Ticket", "reset")
-
-
-
   }
+  const [alreadyFilterStatus, setAlreadyFilterStatus] = useState('')
+  const getStatusFilter = async () => {
+    try {
+      const data = await AsyncStorage.getItem("statusFilter");
+      if (data) {
+        const parsedData = JSON.parse(data);
+        let filterName = parsedData.option
+        setAlreadyFilterStatus(filterName)
+      } else {
+        // console.log("No status filter found in AsyncStorage");
+      }
+    } catch (error) {
+      // console.error("Error retrieving status filter from AsyncStorage:", error);
+    }
+  }
+  const [filterCategory,setFilterCategory] = useState('')
+  const [filterSubject,setFilterSubject] = useState('')
+  const [filterMode,setFilterMode] = useState('')
+  const [filterState,setFilterState] = useState('')
+  const [filterCity,setFilterCity] = useState('')
+  const getJobFilter = async () => {
+    try {
+      const data = await AsyncStorage.getItem("filter");
+  
+      if (data) {
+        const parsedData = JSON.parse(data);
+        setFilterCategory(parsedData?.Category?.subject)
+        setFilterSubject(parsedData?.subject?.subject)
+        setFilterMode(parsedData?.mode?.subject)
+        setFilterState( parsedData?.state?.subject)
+        setFilterCity( parsedData?.city?.subject)
+        console.log("Job Filter:", parsedData?.state?.subject);
+      } else {
+        console.log("No job filter found in AsyncStorage");
+      }
+    } catch (error) {
+      console.error("Error retrieving job filter from AsyncStorage:", error);
+    }
+  }
+
+    useEffect(() => {
+      getJobFilter();
+      getStatusFilter();
+    }, []);
 
 
 
@@ -198,7 +229,7 @@ const Filter = ({ navigation, route }: any) => {
           <DropDownModalView
             title="Status"
             selectedValue={setSelectedStatus}
-            placeHolder="Select Status"
+            placeHolder={alreadyFilterStatus ? alreadyFilterStatus : 'Select Status'}
             option={status}
             modalHeading="Select Status"
           />
@@ -213,7 +244,7 @@ const Filter = ({ navigation, route }: any) => {
               selectedSubject={selectedCategory}
               ddTitle="Category"
               headingStyle={{ color: Theme.black, fontWeight: "700" }}
-              dropdownPlace={"Select Category"}
+              dropdownPlace={filterCategory ? filterCategory :"Select Category"}
               dropdownContainerStyle={{
                 paddingVertical: 15,
               }}
@@ -225,22 +256,23 @@ const Filter = ({ navigation, route }: any) => {
               searchData={searchSubjectData}
               searchFunc={handleSearchData}
               selectedSubject={selectedSubject}
-              ddTitle="Subject" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select Subject"}
+              ddTitle="Subject" headingStyle={{ color: Theme.black, fontWeight: "700" }} 
+              dropdownPlace={filterSubject ? filterSubject : "Select Subject"}
               dropdownContainerStyle={{ paddingVertical: 15, }} subject={subjects} categoryShow={"subject"} />
             <CustomDropDown
               setSelectedSubject={setSelectedMode}
               selectedSubject={selectedMode}
-              ddTitle="Mode" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select Mode"} dropdownContainerStyle={{ paddingVertical: 15, }} subject={classMode} categoryShow={"subject"} />
+              ddTitle="Mode" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={filterMode ? filterMode : "Select Mode"} dropdownContainerStyle={{ paddingVertical: 15, }} subject={classMode} categoryShow={"subject"} />
             <CustomDropDown setSelectedSubject={setSelectedState}
               selectedSubject={selectedState} search={"state"} searchData={searchStateData}
-              searchFunc={handleSearchData} ddTitle="State" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select State"} dropdownContainerStyle={{ paddingVertical: 15, }} subject={state} categoryShow={"subject"} />
+              searchFunc={handleSearchData} ddTitle="State" headingStyle={{ color: Theme.black, fontWeight: "700" }}
+               dropdownPlace={filterState ? filterState : "Select State"} dropdownContainerStyle={{ paddingVertical: 15, }} subject={state} categoryShow={"subject"} />
             <CustomDropDown ddTitle="City"
               search={"city"} searchData={searchCityData}
               searchFunc={handleSearchData}
               setSelectedSubject={setSelectedCity}
-
               selectedSubject={selectedCity}
-              headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={"Select City"} dropdownContainerStyle={{ paddingVertical: 15, }} subject={city} categoryShow={"subject"} />
+              headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={filterCity ? filterCity : "Select City"} dropdownContainerStyle={{ paddingVertical: 15, }} subject={city} categoryShow={"subject"} />
           </View>}
       </ScrollView>
       <View style={{ width: "100%", alignItems: "center" }} >

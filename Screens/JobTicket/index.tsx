@@ -242,30 +242,11 @@ function JobTicket({ navigation, route }: any) {
           status: tutorDetails?.status,
         };
         updateTutorDetails(details);
-        
-        console.log(tutorDetailById[0].status, 'detailsss');
-        console.log(tutorDetailById[0]?.open_dashboard, 'tutorDetailById[0]?.open_dashboard');
-        // tutorDetailById[0].status == 'verified' &&
         if (tutorDetailById[0].status == 'verified' && tutorDetailById[0]?.open_dashboard != 'yes') {
           axios
             .get(`${Base_Uri}api/update_dashboard_status/${tutorId}`)
             .then(({ data }) => {
               setModalVisible(true)
-              // let { tutorDetailById } = data;
-              // let tutorDetails = tutorDetailById[0];
-              // let details = {
-              //   full_name: tutorDetails?.full_name,
-              //   email: tutorDetails?.email,
-              //   displayName: tutorDetails?.displayName,
-              //   gender: tutorDetails?.gender,
-              //   phoneNumber: tutorDetails?.phoneNumber,
-              //   age: tutorDetails?.age,
-              //   nric: tutorDetails?.nric,
-              //   tutorImage: tutorDetails?.tutorImage,
-              //   tutorId: tutorDetails?.id,
-              //   status: tutorDetails?.status,
-              // };
-              // updateTutorDetails(details);
             })
             .catch((error: any) => {
               console.log('errror========>', error);
@@ -314,43 +295,6 @@ function JobTicket({ navigation, route }: any) {
               );
             }),
           );
-
-          // axios
-          //   .get(`${Base_Uri}getTutorOffers/${tutorDetails?.tutorId}`)
-          //   .then(({ data }) => {
-          //     let { getTutorOffers } = data;
-
-          //     const isDataUpdated = JSON.stringify(openData) !== JSON.stringify(tickets);
-
-          //     const filteredTickets = tickets.filter(
-          //       (ticket: any) =>
-          //         // !getTutorOffers.some((offer: any) => offer.id === ticket.id),
-          //         !getTutorOffers.some(
-          //           (offer: any) => offer.ticket_id == ticket.ticketID,
-          //         ),
-          //     );
-          //     setOpenData(
-          //       filteredTickets.length > 0 ?
-          //       filteredTickets.filter((e: any, i: number) => {
-          //         return (
-          //           (myMode == 'noFilter' ||
-          //             e?.mode?.toString()?.toLowerCase() ==
-          //             myMode?.toString()?.toLowerCase()) &&
-          //           (subjectID == 'noFilter' || e?.subject_id == subjectID) &&
-          //           (categoryID == 'noFilter' ||
-          //             e?.categoryID == categoryID) &&
-          //           (myCity == 'noFilter' || e?.cityID == myCity) &&
-          //           (myState == 'noFilter' || e?.stateID == myState)
-          //         );
-          //       })
-          //       : openData
-          //     );
-          //     setLoading(false);
-          //   })
-          //   .catch(error => {
-          //     ToastAndroid.show('Internal Server Error getTutorOffers2', ToastAndroid.SHORT);
-          //     setLoading(false);
-          //   });
         })
         .catch(error => {
           setLoading(false);
@@ -370,32 +314,6 @@ function JobTicket({ navigation, route }: any) {
         .then(async ({ data }) => {
           let { tickets } = data;
           setOpenData(tickets);
-          // axios
-          //   .get(`${Base_Uri}getTutorOffers/${tutor_id}`)
-          //   .then(({data}) => {
-          //     let {getTutorOffers} = data;
-
-          // const isDataUpdated = JSON.stringify(openData) !== JSON.stringify(tickets);
-
-          // const filteredTickets = tickets.filter(
-          //   (ticket: any) =>
-          //     !getTutorOffers.some(
-          //       (offer: any) => offer.ticket_id == ticket.ticketID,
-          //     ),
-          // );
-          // setOpenData(
-          //   filteredTickets.length > 0 ? filteredTickets : openData
-          // );
-          // setOpenData(filteredTickets);
-          //   setLoading(false);
-          // })
-          // .catch(error => {
-          //   ToastAndroid.show(
-          //     'Internal Server Error getTutorOffers1',
-          //     ToastAndroid.SHORT,
-          //   );
-          //   setLoading(false);
-          // });
         })
         .catch(error => {
           setLoading(false);
@@ -423,9 +341,8 @@ function JobTicket({ navigation, route }: any) {
             getTutorOffers &&
             getTutorOffers.length > 0 &&
             getTutorOffers.filter((e: any, i: number) => {
-              console.log();
               return (
-                e?.ticket_status.toString().toLowerCase() ==
+                e?.offer_status.toString().toLowerCase() ==
                 status.option.toString().toLowerCase()
               );
             });
@@ -727,7 +644,7 @@ function JobTicket({ navigation, route }: any) {
                     return '#FEBC2A';
                   case 'approved':
                     return '#1FC07D';
-                  case 'reject':
+                  case 'rejected':
                     return '#FF0000';
                   default:
                     return '#298CFF33'; // Default background color if the status is not recognized

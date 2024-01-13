@@ -214,47 +214,49 @@ function Schedule({ navigation, route }: any) {
               })
               .filter(Boolean)
             : [];
-
-        axios
-          .get(`${Base_Uri}getClassAttendedTime/${tutorID}`)
-          .then(({ data }) => {
-            let { classAttendedTime } = data;
-
-            let Date = selectedDate.getDate();
-            let month = selectedDate.getMonth();
-            let year = selectedDate.getFullYear();
-
-            classAttendedTime =
-              classAttendedTime && classAttendedTime.length > 0
-                ? classAttendedTime
-                  .map((e: any, i: number) => {
-                    let getDate: any = moment(e.date);
-
-                    let convertDate = getDate.toDate();
-
-                    let scheduleDate = convertDate.getDate();
-                    let scheduleMonth = convertDate.getMonth();
-                    let scheduleYear = convertDate.getFullYear();
-
-                    if (
-                      Date == scheduleDate &&
-                      month == scheduleMonth &&
-                      year == scheduleYear
-                    ) {
-                      return {
-                        ...e,
-                        imageUrl: require('../../Assets/Images/student.png'),
-                      };
-                    } else {
-                      return false;
-                    }
-                  })
-                  .filter(Boolean)
-                : [];
             setLoading(false);
-            let dataToSend = [...classSchedulesTime, ...classAttendedTime];
+            let dataToSend = [...classSchedulesTime,];
             setScheduleData(dataToSend);
-          });
+        // axios
+        //   .get(`${Base_Uri}getClassAttendedTime/${tutorID}`)
+        //   .then(({ data }) => {
+        //     let { classAttendedTime } = data;
+
+        //     let Date = selectedDate.getDate();
+        //     let month = selectedDate.getMonth();
+        //     let year = selectedDate.getFullYear();
+
+        //     classAttendedTime =
+        //       classAttendedTime && classAttendedTime.length > 0
+        //         ? classAttendedTime
+        //           .map((e: any, i: number) => {
+        //             let getDate: any = moment(e.date);
+
+        //             let convertDate = getDate.toDate();
+
+        //             let scheduleDate = convertDate.getDate();
+        //             let scheduleMonth = convertDate.getMonth();
+        //             let scheduleYear = convertDate.getFullYear();
+
+        //             if (
+        //               Date == scheduleDate &&
+        //               month == scheduleMonth &&
+        //               year == scheduleYear
+        //             ) {
+        //               return {
+        //                 ...e,
+        //                 imageUrl: require('../../Assets/Images/student.png'),
+        //               };
+        //             } else {
+        //               return false;
+        //             }
+        //           })
+        //           .filter(Boolean)
+        //         : [];
+        //     setLoading(false);
+        //     let dataToSend = [...classSchedulesTime, ...classAttendedTime];
+        //     setScheduleData(dataToSend);
+        //   });
       })
       .catch(error => {
         setLoading(false);
@@ -675,7 +677,7 @@ function Schedule({ navigation, route }: any) {
               <MaterialIcons name="schedule-send" size={20} color={'#298CFF'} />
               <Text style={styles.textType3}>Status</Text>
             </View>
-            <Text style={[styles.textType1, { fontSize: 18 }]}>{item.status}
+            <Text style={[styles.textType1, { fontSize: 18,textTransform:'capitalize' }]}>{item.status}
             </Text>
           </View>
         </View>

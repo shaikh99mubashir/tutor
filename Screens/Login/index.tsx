@@ -87,7 +87,7 @@ const Login = ({ navigation }: any) => {
           <Image source={require('../../Assets/Images/malalogo.png')} style={{ width: 30, height: 30 }} resizeMode='contain' />
           <Text style={styles.textType3}>+60</Text>
           <TextInput
-            placeholder='Enter Your Mobile Number'
+            placeholder='Enter Your Mobile Numberr'
             placeholderTextColor={Theme.black}
             keyboardType='number-pad'
             style={[styles.textType3, { color: 'black' }]}
