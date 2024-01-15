@@ -662,7 +662,7 @@ const Profile = ({ navigation }: any) => {
               }}>
               <TextInput
                 editable
-                style={{ color: "black" }}
+                style={{ color: "black",textTransform:'capitalize', }}
                 keyboardType='numeric'
                 onChangeText={text => setAge(text)}
                 placeholder={tutorDetail?.age ? tutorDetail?.age.toString() : "not provided"}

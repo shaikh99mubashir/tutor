@@ -618,7 +618,7 @@ function Home({navigation, route}: any) {
       getCancelledHours();
       getAssignedTicket();
     }
-  }, [cummulativeCommission, refreshing]);
+  }, [cummulativeCommission, refreshing,tutorId]);
   // useEffect(() => {
   //   if (tutorId && tutorData.cummulativeCommission && tutorData.attendedHours) {
   //     getScheduledHours();
@@ -1284,7 +1284,7 @@ function Home({navigation, route}: any) {
                         styles.textType1,
                         {color: 'white', fontSize: 30, lineHeight: 40},
                       ]}>
-                      RM {cummulativeCommission}
+                      RM {cummulativeCommission ? cummulativeCommission : '0.00'}
                     </Text>
                     <Text
                       style={[
@@ -1330,7 +1330,7 @@ function Home({navigation, route}: any) {
                         styles.textType1,
                         {fontSize: 30, lineHeight: 38},
                       ]}>
-                      {students?.length}
+                      {students?.length ? students?.length : '0'}
                     </Text>
                     <Image
                       source={require('../../Assets/Images/studenticonCopy.png')}
@@ -1371,7 +1371,7 @@ function Home({navigation, route}: any) {
                         styles.textType1,
                         {fontSize: 30, lineHeight: 40},
                       ]}>
-                      {attendedHours}
+                      {attendedHours ? attendedHours : '0.0'}
                     </Text>
                   </View>
                 </View>
@@ -1407,165 +1407,14 @@ function Home({navigation, route}: any) {
                         styles.textType1,
                         {fontSize: 30, lineHeight: 40},
                       ]}>
-                      {schedulesHours}
+                      {schedulesHours ? schedulesHours : '0.0'}
                     </Text>
                   </View>
                 </View>
               </View>
             </View>
           </View>
-          {/* <TouchableOpacity
-              activeOpacity={0.8}
-              onPress={() => navigation.navigate('Notifications')}
-              style={[
-                styles.firstBox,
-                {
-                  backgroundColor: Theme.lightGray,
-                  justifyContent: 'space-between',
-                  paddingHorizontal: 20,
-                  flexDirection: 'row',
-                  marginTop: 15,
-                },
-              ]}>
-              <Text style={[styles.text, { color: Theme.black, fontSize: 16 }]}>
-                Notifications
-              </Text>
-              <View
-                style={{
-                  borderRadius: 100,
-                  backgroundColor: Theme.red,
-                  width: 25,
-                  height: 25,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <Text style={[styles.text, { fontSize: 10, color: Theme.white }]}>
-                  {notification.length + scheduleNotification.length > 0
-                    ? notification.length + scheduleNotification.length
-                    : 0}
-                </Text>
-              </View>
-            </TouchableOpacity> */}
-          {/* <View style={{ marginTop: 25 }}>
-            <Text style={[styles.heading, { fontSize: 16 }]}>
-              Monthly Summary
-            </Text>
-            <Text
-              style={[
-                styles.text,
-                { fontSize: 14, color: Theme.gray, fontWeight: '500' },
-              ]}>
-              {currentMonth}
-            </Text>
-          </View> */}
-          {/* attended hours */}
-          {/* <View style={{ flexDirection: 'row', marginTop: 15 }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                width: '50%',
-                alignItems: 'center',
-              }}>
-              <View
-                style={{ backgroundColor: 'pink', padding: 10, borderRadius: 8 }}>
-                <Image
-                  source={require('../../Assets/Images/timer-or-chronometer-tool.png')}
-                  style={{ width: 20, height: 20 }}
-                />
-              </View>
-              <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-                <Text style={[styles.text, { fontSize: 12 }]}>
-                  Attended hours
-                </Text>
-                <Text style={[styles.text, { fontSize: 16, fontWeight: '700' }]}>
-                  {attendedHours}
-                </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                width: '50%',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-              }}>
-              <View
-                style={{
-                  backgroundColor: '#c1a7b0',
-                  padding: 10,
-                  borderRadius: 8,
-                }}>
-                <Image
-                  source={require('../../Assets/Images/student.png')}
-                  style={{ width: 20, height: 20 }}
-                />
-              </View>
-              <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-                <Text style={[styles.text, { fontSize: 12 }]}>
-                  Active Student
-                </Text>
-                <Text style={[styles.text, { fontSize: 16, fontWeight: '700' }]}>
-                  {students?.length}
-                </Text>
-              </View>
-            </View>
-          </View> */}
-          {/*Schedule hours & cancel hours  */}
-          {/* <View style={{ flexDirection: 'row', marginTop: 20 }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                width: '50%',
-                alignItems: 'center',
-              }}>
-              <View
-                style={{
-                  backgroundColor: '#e9ccb1',
-                  padding: 10,
-                  borderRadius: 8,
-                }}>
-                <Image
-                  source={require('../../Assets/Images/scheduled.png')}
-                  style={{ width: 20, height: 20 }}
-                />
-              </View>
-              <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-                <Text style={[styles.text, { fontSize: 12 }]}>
-                  Schedule hours
-                </Text>
-                <Text style={[styles.text, { fontSize: 16, fontWeight: '700' }]}>
-                  {schedulesHours}
-                </Text>
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                width: '50%',
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-              }}>
-              <View
-                style={{
-                  backgroundColor: '#e8e6b9',
-                  padding: 10,
-                  borderRadius: 8,
-                }}>
-                <Image
-                  source={require('../../Assets/Images/ClockiconCopy.png')}
-                  style={{ width: 20, height: 20 }}
-                />
-              </View>
-              <View style={{ justifyContent: 'center', marginLeft: 10 }}>
-                <Text style={[styles.text, { fontSize: 12 }]}>
-                  Cancelled hours
-                </Text>
-                <Text style={[styles.text, { fontSize: 16, fontWeight: '700' }]}>
-                  {cancelledHours}
-                </Text>
-              </View>
-            </View>
-          </View> */}
+        
 
           <Text
             style={[

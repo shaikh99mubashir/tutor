@@ -50,9 +50,9 @@ const StudentsDetails = ({ navigation, route }: any) => {
     // let longitude = -74.005974
 
     if (Platform.OS === 'ios') {
-      url = `http://maps.apple.com/?ll=${data.studentLatitude},${data.studentLongitude}`;
+      url = `http://maps.apple.com/?ll=${data?.studentLatitude},${data?.studentLongitude}`;
     } else {
-      url = `https://www.google.com/maps/search/?api=1&query=${data.studentLatitude},${data.studentLongitude}`;
+      url = `https://www.google.com/maps/search/?api=1&query=${data?.studentLatitude},${data?.studentLongitude}`;
     }
 
     Linking.openURL(url);
@@ -91,6 +91,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                   fontSize: 14,
                   fontWeight: '600',
                   marginTop: 5,
+                  textTransform:'capitalize',
                 }}>
                 {data.studentName}
               </Text>
@@ -131,6 +132,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                   fontSize: 14,
                   fontWeight: '600',
                   marginTop: 5,
+                  textTransform:'capitalize',
                 }}>
                 {data.studentGender ? data.studentGender : "not provided"}
               </Text>
@@ -152,7 +154,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                   fontWeight: '600',
                   marginTop: 5,
                 }}>
-                {data.studentAge ? data.studentAge : "not provided"}
+                {data.studentAge ? `${ data.studentAge} y/o`  : "not provided"}
               </Text>
             </View>
             <View style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
@@ -170,6 +172,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                   fontSize: 14,
                   fontWeight: '600',
                   marginTop: 5,
+                  textTransform:'capitalize',
                 }}>
                 {data.studentStatus ? data.studentStatus : "Newly Active"}
               </Text>
@@ -222,6 +225,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                   fontSize: 14,
                   fontWeight: '600',
                   marginTop: 5,
+                  textTransform:'capitalize',
                 }}>
                 {data.studentName}
               </Text>
@@ -282,6 +286,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                   fontSize: 14,
                   fontWeight: '600',
                   marginTop: 5,
+                  textTransform:'capitalize',
                 }}>
                 {data.studentAddress1 ?? data.studentAddress2}
               </Text>

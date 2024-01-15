@@ -33,6 +33,7 @@ import TutorDetailsContext from '../../context/tutorDetailsContext';
 import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import StudentContext from '../../context/studentContext';
 
 // import { ScrollView } from "react-native-gesture-handler"
 
@@ -51,10 +52,10 @@ function Schedule({ navigation, route }: any) {
 
   let { scheduleData, setScheduleData } = context;
   let { upcomingClass, setUpcomingClass } = context;
-
+  const studentAndSubjectContext = useContext(StudentContext);
   const [loading, setLoading] = useState(false);
   // const [scheduleData, setScheduleData] = useState<any>([]);
-
+  const [tutorId, setTutorId] = useState<Number | null>(null);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedData, setSelectedData] = useState({});
 
@@ -63,13 +64,14 @@ function Schedule({ navigation, route }: any) {
   const [show, setShow] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
   const [refresh, setRefresh] = useState(false);
-
-  const onRefresh = React.useCallback(() => {
+  const {students, subjects, updateStudent, updateSubject} = studentAndSubjectContext
+    const onRefresh = React.useCallback(() => {
     // setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
       setOpenPPModal(true);
       setRefresh(!refresh);
+      getTutorId();
     }, 2000);
   }, [refresh]);
 
@@ -839,6 +841,69 @@ function Schedule({ navigation, route }: any) {
 
     return `${dayName}, ${day} ${monthNames[monthIndex]} ${year}`;
   }
+
+
+
+  const getTutorId = async () => {
+    interface LoginAuth {
+      status: Number;
+      tutorID: Number;
+      token: string;
+    }
+    const data: any = await AsyncStorage.getItem('loginAuth');
+    let loginData: LoginAuth = JSON.parse(data);
+
+    let {tutorID} = loginData;
+    setTutorId(tutorID);
+  };
+
+  const getTutorStudents = () => {
+    axios
+      .get(`${Base_Uri}getTutorStudents/${tutorId}`)
+      .then(({data}) => {
+        const {tutorStudents} = data;
+        console.log(tutorStudents);
+
+        updateStudent(tutorStudents);
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+      });
+  };
+
+  const getTutorSubjects = () => {
+    axios
+      .get(`${Base_Uri}getTutorSubjects/${tutorId}`)
+      .then(({data}) => {
+        let {tutorSubjects} = data;
+
+        let mySubject =
+          tutorSubjects &&
+          tutorSubjects.length > 0 &&
+          tutorSubjects.map((e: any, i: Number) => {
+            if (e?.name) {
+              console.log('E.name', e?.name);
+
+              return {
+                subject: e.name,
+                id: e.id,
+              };
+            }
+          });
+        console.log('mySubject=====?>', mySubject);
+        updateSubject(mySubject);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    if (tutorId) {
+      getTutorStudents();
+      getTutorSubjects();
+    }
+  }, [tutorId, refreshing]);
 
   return (
     //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>

@@ -1627,6 +1627,7 @@ const ReportSubmissionHistory = ({navigation}: any) => {
                           fontSize: 12,
                           fontWeight: '600',
                           paddingVertical: 10,
+                          textTransform:'capitalize',
                         }}>
                         {item.studentName}
                       </Text>

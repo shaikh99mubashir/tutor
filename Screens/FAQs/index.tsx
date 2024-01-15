@@ -59,7 +59,7 @@ const FAQs = ({ navigation }: any) => {
         + "It is calculated based on 'Attended Hours'.\n\n"
         + "7. Apps are not working properly?\n"
         + "Contact us via WhatsApp or call Ms. Atirah at +60146437500.\n\n"
-        + "Read full guidelines and SOP via link below: \n(https://sifututor.my/tutor/tutor-guidelines/)",
+        + "Read full guidelines and SOP via link below: \n (https://sifututor.my/tutor/tutor-guidelines/)",
       open: false,
     }
   ]);

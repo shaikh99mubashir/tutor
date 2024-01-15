@@ -31,6 +31,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import bannerContext from '../../context/bannerContext';
 import Status from '../Status';
 import filterContext from '../../context/filterContext';
+import CustomLoader from '../../Component/CustomLoader';
+import BackToDashboard from '../../Component/BackToDashboard';
 interface LoginAuth {
   status: Number;
   tutorID: Number;
@@ -80,9 +82,9 @@ function JobTicket({ navigation, route }: any) {
     setCurrentTab(newTabs);
 
     // Trigger the refresh when switching between the first and second route
-    if (switchingFirstToSecond || switchingSecondToFirst) {
-      onRefresh();
-    }
+    // if (switchingFirstToSecond || switchingSecondToFirst) {
+    //   onRefresh();
+    // }
   };
 
   const [openData, setOpenData] = useState<any>([]);
@@ -1133,7 +1135,7 @@ function JobTicket({ navigation, route }: any) {
             </Modal>
           </View>
         )}
-      <Modal visible={modalVisible} animationType="fade" transparent={true}>
+      {/* <Modal visible={modalVisible} animationType="fade" transparent={true}>
         <View
           style={{
             flex: 1,
@@ -1188,9 +1190,13 @@ function JobTicket({ navigation, route }: any) {
             </View>
           </View>
         </View>
-      </Modal>
-
-      <Modal visible={loading} animationType="fade" transparent={true}>
+      </Modal> */}
+      <BackToDashboard
+        modalVisible={modalVisible}
+        handleGoToDashboard={HandelGoToDashboard}
+      />
+      <CustomLoader visible={loading} />
+      {/* <Modal visible={loading} animationType="fade" transparent={true}>
         <View
           style={{
             flex: 1,
@@ -1202,9 +1208,8 @@ function JobTicket({ navigation, route }: any) {
             source={require('../../Assets/Images/SIFU.gif')}
             style={{ width: 150, height: 150 }}
           />
-          {/* <ActivityIndicator size={'large'} color={Theme.darkGray} /> */}
         </View>
-      </Modal>
+      </Modal> */}
     </View>
   );
 }

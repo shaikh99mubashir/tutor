@@ -9,7 +9,7 @@ import {
   ToastAndroid,
   Image,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Header from '../../Component/Header';
 import { Theme } from '../../constant/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -18,6 +18,7 @@ import { Base_Uri } from '../../constant/BaseUri';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import TutorDetailsContext from '../../context/tutorDetailsContext';
 
 const OpenDetails = ({ route, navigation }: any) => {
   const data = route.params;
@@ -26,6 +27,10 @@ const OpenDetails = ({ route, navigation }: any) => {
   const [openDetailItem, setopenDetailItem] = useState({
     comment: '',
   });
+
+  const tutor = useContext(TutorDetailsContext);
+  let { tutorDetails, updateTutorDetails } = tutor;
+  console.log('====================================tutorDetails', tutorDetails.status);
   const [loading, setLoading] = useState(false);
 
   // console.log(openDetailItem.comment, "comment")
@@ -46,7 +51,7 @@ const OpenDetails = ({ route, navigation }: any) => {
     // console.log('idddddddddddddd',data.id)
     console.log(subjectId, "subjectId")
     console.log(ticketID, "ticketID")
-    console.log(tutor_id , "tutor_id")
+    console.log(tutor_id, "tutor_id")
     console.log(comment, "comment")
 
     setLoading(true);
@@ -115,10 +120,10 @@ const OpenDetails = ({ route, navigation }: any) => {
               <View
                 style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
                 <Feather
-                        name="map-pin"
-                        size={18}
-                        color={'#fff'}
-                      />
+                  name="map-pin"
+                  size={18}
+                  color={'#fff'}
+                />
                 <Text style={[styles.textType3, { color: 'white' }]}>
                   {data?.city}
                 </Text>
@@ -164,10 +169,10 @@ const OpenDetails = ({ route, navigation }: any) => {
                     gap: 10,
                   }}>
                   <FontAwesome
-                        name="graduation-cap"
-                        size={18}
-                        color={'#298CFF'}
-                      />
+                    name="graduation-cap"
+                    size={18}
+                    color={'#298CFF'}
+                  />
                   <Text style={styles.textType3}>Student Detail</Text>
                 </View>
                 <Text style={[styles.textType1, { fontSize: 18 }]}>
@@ -189,10 +194,10 @@ const OpenDetails = ({ route, navigation }: any) => {
                     gap: 10,
                   }}>
                   <Feather
-                        name="hash"
-                        size={18}
-                        color={'#298CFF'}
-                      />
+                    name="hash"
+                    size={18}
+                    color={'#298CFF'}
+                  />
                   <Text style={styles.textType3}>No. of Sessions</Text>
                 </View>
                 <Text
@@ -233,10 +238,10 @@ const OpenDetails = ({ route, navigation }: any) => {
                     gap: 10,
                   }}>
                   <AntDesign
-                        name="copy1"
-                        size={20}
-                        color={'#298CFF'}
-                      />
+                    name="copy1"
+                    size={20}
+                    color={'#298CFF'}
+                  />
                   <Text style={styles.textType3}>Subject</Text>
                 </View>
                 <Text style={[styles.textType1, { fontSize: 18 }]}>
@@ -257,11 +262,11 @@ const OpenDetails = ({ route, navigation }: any) => {
                     flexDirection: 'row',
                     gap: 10,
                   }}>
-                   <FontAwesome
-                        name="user-o"
-                        size={18}
-                        color={'#298CFF'}
-                      />
+                  <FontAwesome
+                    name="user-o"
+                    size={18}
+                    color={'#298CFF'}
+                  />
                   <Text style={styles.textType3}>Pref. Tutor</Text>
                 </View>
                 <Text style={[styles.textType1, { fontSize: 18 }]}>
@@ -283,11 +288,11 @@ const OpenDetails = ({ route, navigation }: any) => {
                     flexDirection: 'row',
                     gap: 10,
                   }}>
-                   <FontAwesome
-                        name="level-up"
-                        size={18}
-                        color={'#298CFF'}
-                      />
+                  <FontAwesome
+                    name="level-up"
+                    size={18}
+                    color={'#298CFF'}
+                  />
                   <Text style={styles.textType3}>Level</Text>
                 </View>
                 <Text style={[styles.textType1, { fontSize: 18 }]}>
@@ -298,21 +303,21 @@ const OpenDetails = ({ route, navigation }: any) => {
               <View style={{ flexDirection: 'row', gap: 10, paddingTop: 15, borderTopWidth: 1, borderTopColor: 'gray' }}>
                 <View style={{ backgroundColor: "#E6F2FF", paddingVertical: 10, borderRadius: 10 }}>
                   <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 10, paddingHorizontal: 10 }}>
-                  <AntDesign
-                        name="calendar"
-                        size={20}
-                        color={'#298CFF'}
-                      />
+                    <AntDesign
+                      name="calendar"
+                      size={20}
+                      color={'#298CFF'}
+                    />
                     <Text style={[styles.textType3, { color: '#298CFF' }]}>{data?.classDay}</Text>
                   </View>
                 </View>
                 <View style={{ backgroundColor: "#E6F2FF", paddingVertical: 10, borderRadius: 10, paddingHorizontal: 10 }}>
                   <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 10 }}>
-                  <AntDesign
-                        name="clockcircleo"
-                        size={20}
-                        color={'#298CFF'}
-                      />
+                    <AntDesign
+                      name="clockcircleo"
+                      size={20}
+                      color={'#298CFF'}
+                    />
                     <Text style={[styles.textType3, { color: '#298CFF' }]}>{data?.classTime}</Text>
                   </View>
                 </View>
@@ -401,37 +406,14 @@ const OpenDetails = ({ route, navigation }: any) => {
                 RM {data.price}/subject
               </Text>
             </View> */}
-            {/* Special Need */}
-            {data.specialRequest && 
-            <View style={{ marginVertical: 20}}>
-              <Text
-                style={styles.textType1}>
-               Special Need
-              </Text>
-              <View
-                style={{
-                  backgroundColor: Theme.lightGray,
-                  paddingHorizontal: 10,
-                  paddingVertical: 12,
-                  borderRadius: 10,
-                  marginVertical: 5,
-                }}>
+            {/*Adress */}
+
+            {data.specialRequest &&
+              <View style={{ marginVertical: 20 }}>
                 <Text
-                  style={styles.textType3}>
-                  {data.specialRequest}
+                  style={styles.textType1}>
+                  Special Need
                 </Text>
-              </View>
-            </View>
-            }
-            {/* Avaiable student */}
-           {data?.jobTicketExtraStudents.length>0 && 
-            <View style={{ marginVertical: 15 }}>
-            <Text
-                style={styles.textType1}>
-              Extra Students
-              </Text>
-              
-              {data?.jobTicketExtraStudents?.map((e: any, i: number) => (
                 <View
                   style={{
                     backgroundColor: Theme.lightGray,
@@ -441,64 +423,111 @@ const OpenDetails = ({ route, navigation }: any) => {
                     marginVertical: 5,
                   }}>
                   <Text
-                    style={{
-                      color: Theme.black,
-                      fontSize: 14,
-                      fontWeight: '400',
-                      marginTop: 5,
-                      fontFamily: 'Circular Std Medium',
-                    }}>
-                    Student Name : {e?.student_name}
-                  </Text>
-                  <Text
-                    style={{
-                      color: Theme.black,
-                      fontSize: 14,
-                      fontWeight: '400',
-                      marginTop: 5,
-                      fontFamily: 'Circular Std Medium',
-                    }}>
-                    Age : {e?.student_age}
-                  </Text>
-                  <Text
-                    style={{
-                      color: Theme.black,
-                      fontSize: 14,
-                      fontWeight: '400',
-                      marginTop: 5,
-                      fontFamily: 'Circular Std Medium',
-                    }}>
-                    Gender : {e?.student_gender}
-                  </Text>
-                  <Text
-                    style={{
-                      color: Theme.black,
-                      fontSize: 14,
-                      fontWeight: '400',
-                      marginTop: 5,
-                      fontFamily: 'Circular Std Black',
-                    }}>
-                    Birth Year : {e?.year_of_birth}
-                  </Text>
-                  <Text
-                    style={{
-                      color: Theme.black,
-                      fontSize: 14,
-                      fontWeight: '400',
-                      marginTop: 5,
-                      fontFamily: 'Circular Std Medium',
-                    }}>
-                    Special Need : {e?.special_need}
+                    style={styles.textType3}>
+                    {data.specialRequest}
                   </Text>
                 </View>
-              ))}
-            </View>
+              </View>
+            }
+            {/* Special Need */}
+
+            {tutorDetails?.status == 'verified' && data?.mode == 'physical' && data?.studentAddress &&
+              <View style={{ marginVertical: 5 }}>
+                <Text
+                  style={styles.textType1}>
+                  Student Address
+                </Text>
+                <View
+                  style={{
+                    backgroundColor: Theme.lightGray,
+                    paddingHorizontal: 10,
+                    paddingVertical: 12,
+                    borderRadius: 10,
+                    marginVertical: 5,
+                  }}>
+                  <Text
+                    style={styles.textType3}>
+                    {data.studentAddress}
+                  </Text>
+                </View>
+              </View>
+            }
+            {/* Avaiable student */}
+            {data?.jobTicketExtraStudents.length > 0 &&
+              <View style={{ marginVertical: 15 }}>
+                <Text
+                  style={styles.textType1}>
+                  Extra Students
+                </Text>
+
+                {data?.jobTicketExtraStudents?.map((e: any, i: number) => (
+                  <View
+                    style={{
+                      backgroundColor: Theme.lightGray,
+                      paddingHorizontal: 10,
+                      paddingVertical: 12,
+                      borderRadius: 10,
+                      marginVertical: 5,
+                    }}>
+                    <Text
+                      style={{
+                        color: Theme.black,
+                        fontSize: 14,
+                        fontWeight: '400',
+                        marginTop: 5,
+                        fontFamily: 'Circular Std Medium',
+                      }}>
+                      Student Name : {e?.student_name}
+                    </Text>
+                    <Text
+                      style={{
+                        color: Theme.black,
+                        fontSize: 14,
+                        fontWeight: '400',
+                        marginTop: 5,
+                        fontFamily: 'Circular Std Medium',
+                      }}>
+                      Age : {e?.student_age}
+                    </Text>
+                    <Text
+                      style={{
+                        color: Theme.black,
+                        fontSize: 14,
+                        fontWeight: '400',
+                        marginTop: 5,
+                        fontFamily: 'Circular Std Medium',
+                      }}>
+                      Gender : {e?.student_gender}
+                    </Text>
+                    <Text
+                      style={{
+                        color: Theme.black,
+                        fontSize: 14,
+                        fontWeight: '400',
+                        marginTop: 5,
+                        fontFamily: 'Circular Std Black',
+                      }}>
+                      Birth Year : {e?.year_of_birth}
+                    </Text>
+                    <Text
+                      style={{
+                        color: Theme.black,
+                        fontSize: 14,
+                        fontWeight: '400',
+                        marginTop: 5,
+                        fontFamily: 'Circular Std Medium',
+                      }}>
+                      Special Need : {e?.special_need}
+                    </Text>
+                  </View>
+                ))}
+              </View>
             }
             {/* Comment */}
-            <View style={{ marginBottom: 100, marginTop:20 }}>
-            <Text
+            <View style={{ marginBottom: 100, marginTop: 20 }}>
+              <Text
                 style={styles.textType1}>
-               Comment
+                Comment
               </Text>
               <View
                 style={[

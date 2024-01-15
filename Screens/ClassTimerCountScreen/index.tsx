@@ -240,26 +240,41 @@ function ClassTimerCount({ navigation, route }: any) {
     return (
         loading ? <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }} >
             <ActivityIndicator size="large" color={"black"} />
-        </View> : <View style={{ flex: 1, backgroundColor: Theme.white }} >
+        </View> : 
+        <View style={{ flex: 1, backgroundColor: Theme.white,  }} >
 
 
-            <Header backBtn navigation={navigation} containerStyle={{ height: 50 }} />
+            <Header backBtn navigation={navigation} title='Class In Progress' containerStyle={{ height: 60 }} />
 
 
-            <Text style={{ textAlign: "center", color: Theme.black, marginTop: 20, fontSize: 18, fontFamily: 'Circular Std Medium'}} >Class in progress...</Text>
+           
 
-            <TouchableOpacity onPress={() => { handleClockOut() }} >
+            {/* <TouchableOpacity onPress={() => { handleClockOut() }} >
                 <ActivityIndicator size={220} color={Theme.darkGray} style={{ marginTop: 30 }} />
 
                 <View style={{ alignItems: "center", position: "relative", top: -130 }} >
                     <Text style={{ textAlign: "center", fontSize: 14, color: Theme.black,fontFamily: 'Circular Std Medium' }} >Timer</Text>
                     {!backTime && <Timer show={"true"} />}
                 </View>
+            </TouchableOpacity> */}
+            {/* <Text style={{ textAlign: "center", color: Theme.black, marginTop: 20, fontSize: 18, fontFamily: 'Circular Std Medium'}} >Class in progress...</Text> */}
+
+
+            
+            <TouchableOpacity onPress={() => { handleClockOut() }} activeOpacity={0.8} style={{alignItems:'center', justifyContent:'center',flex:1,}}>
+                <Image source={require('../../Assets/Images/Timmmer1.png')} resizeMode="contain" style={{width:350, height:350 }}/>
+                <View style={{ alignItems: 'center',position: 'absolute', top: '45%', left: '34%',justifyContent:'center'  }}>
+                <>
+                <Text style={{ textAlign: "center", fontSize: 16, color: Theme.black,fontFamily: 'Circular Std Medium' }} >
+                    Timer
+                </Text>
+                    {!backTime && <Timer show={"true"} />}
+                </>
+                </View>
             </TouchableOpacity>
 
-            <View style={{ width: "100%", alignItems: "center", position: "absolute", bottom: 60 }} >
-                <Text style={{ textAlign: "center", fontSize: 20,fontWeight:'600' ,color: Theme.black, width: "50%" ,fontFamily: 'Circular Std Medium'}} >Click on the timer to clock out</Text>
-
+            <View style={{ width: "100%", alignItems: "center", position: "absolute",  bottom: 60, left:'3%' }} >
+                <Text style={{ textAlign: "center", fontSize: 20,fontWeight:'600', color: Theme.black ,fontFamily: 'Circular Std Medium', lineHeight:25}} >Click on the Timer to {'\n'} Clock Out</Text>
             </View>
         </View>
     )
