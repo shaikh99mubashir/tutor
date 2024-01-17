@@ -1,4 +1,4 @@
-import { FlatList, Image, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { FlatList, Image, RefreshControl, ScrollView, StyleSheet, Text, ToastAndroid, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Theme } from '../../constant/theme'
 import Header from '../../Component/Header'
@@ -7,10 +7,13 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import axios from 'axios'
+import { Base_Uri } from '../../constant/BaseUri'
+import CustomLoader from '../../Component/CustomLoader'
 
 
 
-const AttendedClassRecords = ({navigation}:any) => {
+const AttendedClassRecords = ({navigation,route}:any) => {
     const [refreshing, setRefreshing] = React.useState(false);
     const [loading, setLoading] = useState(false);
     const [refresh, setRefresh] = useState(false);
@@ -56,6 +59,7 @@ const AttendedClassRecords = ({navigation}:any) => {
       useEffect(()=>{
         check()
       },[])
+
     const onRefresh = React.useCallback(() => {
       if (!refreshing) {
         // setRefreshing(true);
@@ -67,7 +71,73 @@ const AttendedClassRecords = ({navigation}:any) => {
         }, 2000);
       }
     }, [refresh]);
+    const [tutorRecord, setTutorRecord] = useState([])
+    const attendedClassApiCall = async () => {
+      setLoading(true)
+      interface LoginAuth {
+        status: Number;
+        tutorID: Number;
+        token: string;
+      }
+      const login: any = await AsyncStorage.getItem('loginAuth');
+      let loginData: LoginAuth = JSON.parse(login);
+      let { tutorID } = loginData;
+      console.log("tutorID",tutorID);
 
+      let recordsStatus: any = await AsyncStorage.getItem('ClassRecordsFilter');
+      let status = JSON.parse(recordsStatus);
+      console.log("status",status);
+      
+      if (status) {
+        axios
+          .get(`${Base_Uri}getClassAttendedTime/${tutorID}`)
+          .then(({ data }) => {
+            let { classAttendedTime } = data;
+            console.log("classAttendedTime",classAttendedTime);
+            
+            let records =
+              classAttendedTime &&
+              classAttendedTime.length > 0 &&
+              classAttendedTime.filter((e: any, i: number) => {
+                console.log("e",e);
+                return (
+                  e?.status.toString().toLowerCase() ==
+                  status.option.toString().toLowerCase()
+                );
+              });
+
+              console.log("records",records);
+              
+            setTutorRecord(records);
+            setLoading(false);
+          })
+          .catch((error) => {
+            ToastAndroid.show(
+              'Internal Server Error getClassAttendedTime filter DATA',
+              ToastAndroid.SHORT,
+            );
+            setLoading(false);
+          });
+        return;
+      }
+      
+      axios
+          .get(`${Base_Uri}getClassAttendedTime/${tutorID}`)
+          .then(({ data }) => {
+              console.log("data",data.classAttendedTime);
+              setTutorRecord(data?.classAttendedTime)
+              setLoading(false)
+          })
+          .catch((error)=>{
+            console.log("error",error);
+            setLoading(false)
+          })
+    }
+
+    useEffect(()=>{
+      check()
+      attendedClassApiCall()
+    },[route])
     const renderRecords = ({ item }: any) => {
         return (
           <>
@@ -75,14 +145,14 @@ const AttendedClassRecords = ({navigation}:any) => {
               style={[
                 styles.textType3,
                 {
-                  color: item.offer_status === 'pending' ? '#000000' : '#FFFFFF',
+                  color: item.status === 'pending' ? '#000000' : '#FFFFFF',
                   backgroundColor: (() => {
-                    switch (item.offer_status) {
+                    switch (item.status) {
                       case 'pending':
                         return '#FEBC2A';
                       case 'attended':
                         return '#1FC07D';
-                      case 'rejected':
+                      case 'incomplete':
                         return '#FF0000';
                       default:
                         return '#298CFF33'; // Default background color if the status is not recognized
@@ -99,7 +169,7 @@ const AttendedClassRecords = ({navigation}:any) => {
                 },
               ]}
             >
-              {item.offer_status}
+              {item.status}
             </Text>
             <TouchableOpacity
               activeOpacity={0.8}
@@ -121,13 +191,13 @@ const AttendedClassRecords = ({navigation}:any) => {
                   borderBottomColor: Theme.lightGray,
                 }}>
                 <View>
-                  <Text style={styles.textType3}>{item?.jtuid}</Text>
+                  <Text style={styles.textType3}>{item?.jtid}</Text>
                   <Text
                     style={[
                       styles.textType1,
                       { lineHeight: 30, textTransform: 'capitalize' },
                     ]}>
-                    RM {item?.price}
+                    Est. {item?.totalPrice} RM
                   </Text>
                   <View
                     style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
@@ -154,7 +224,7 @@ const AttendedClassRecords = ({navigation}:any) => {
                         textTransform: 'capitalize',
                       },
                     ]}>
-                    {item?.mode}
+                    {item?.classMode}
                   </Text>
                 </View>
               </View>
@@ -186,7 +256,7 @@ const AttendedClassRecords = ({navigation}:any) => {
                       styles.textType1,
                       { fontSize: 18, textTransform: 'capitalize' },
                     ]}>
-                    {item?.subject_name}
+                    {item?.subjectName}
                   </Text>
                 </View>
                 <View
@@ -211,7 +281,7 @@ const AttendedClassRecords = ({navigation}:any) => {
                       styles.textType1,
                       { fontSize: 18, textTransform: 'capitalize' },
                     ]}>
-                    {item?.tutorPereference}
+                    {item?.studentName}
                   </Text>
                 </View>
                 <View
@@ -236,7 +306,7 @@ const AttendedClassRecords = ({navigation}:any) => {
                       styles.textType1,
                       { fontSize: 18, textTransform: 'capitalize' },
                     ]}>
-                    {item?.categoryName}
+                    {item?.level}
                   </Text>
                 </View>
               </View>
@@ -262,7 +332,7 @@ const AttendedClassRecords = ({navigation}:any) => {
                         styles.textType3,
                         { color: '#298CFF', textTransform: 'capitalize' },
                       ]}>
-                      {item?.classDayType}
+                      {item?.classDate}
                     </Text>
                   </View>
                 </View>
@@ -286,7 +356,7 @@ const AttendedClassRecords = ({navigation}:any) => {
                         styles.textType3,
                         { color: '#298CFF', textTransform: 'capitalize' },
                       ]}>
-                      {item?.classTime}
+                      {item?.totalTime} Hrs
                     </Text>
                   </View>
                 </View>
@@ -299,7 +369,6 @@ const AttendedClassRecords = ({navigation}:any) => {
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
     <Header
       title="Records"
-      filter
       recordsFilter
       backBtn
       navigation={navigation}
@@ -311,6 +380,7 @@ const AttendedClassRecords = ({navigation}:any) => {
       }
       showsVerticalScrollIndicator={false}
       nestedScrollEnabled>
+        <CustomLoader visible={loading} />
       <View style={{ paddingHorizontal: 15, marginTop: 20 }}>
         {/* Search */}
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -348,9 +418,9 @@ const AttendedClassRecords = ({navigation}:any) => {
           </View>
         </View>
 
-        {dummyData.length > 0 ? (
+        {tutorRecord.length > 0 ? (
           <FlatList
-            data={dummyData}
+            data={tutorRecord}
             renderItem={renderRecords}
             scrollEnabled={true}
             nestedScrollEnabled={true}

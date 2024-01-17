@@ -150,7 +150,6 @@ const Students = ({ navigation }: any) => {
     axios
       .get(`${Base_Uri}api/bannerAds`)
       .then(({ data }) => {
-        console.log('res', data.bannerAds);
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);

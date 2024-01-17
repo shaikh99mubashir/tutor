@@ -23,6 +23,7 @@ import { Base_Uri } from '../../constant/BaseUri';
 import StudentContext from '../../context/studentContext';
 import DateTimePicker from "@react-native-community/datetimepicker"
 import moment from 'moment';
+import CustomLoader from '../../Component/CustomLoader';
 
 
 const ReportSubmission = ({ navigation, route }: any):any => {
@@ -433,9 +434,11 @@ console.log("data",data);
 
 
   return (
-    loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
-      <ActivityIndicator size={"large"} color={Theme.black} />
-    </View> : <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+    // loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+    //   <ActivityIndicator size={"large"} color={Theme.black} />
+    // </View> : 
+    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+       <CustomLoader visible={loading} />
       <Header title="Report Submission" backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <View style={{ paddingHorizontal: 15, marginBottom: 100 }}>

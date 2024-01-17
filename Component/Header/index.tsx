@@ -27,13 +27,12 @@ const Header = (Props: any) => {
     myStyle,
     tab,
     containerStyle,
-    recordsFilter
+    recordsFilter,
   } = Props;
-  console.log("recordsFilter header",recordsFilter);
-  
+
   const routeToFilter = () => {
 
-    let selectedTab = tab?.filter((e: any, i: number) => {
+    let selectedTab = tab.filter((e: any, i: number) => {
 
       return e.selected
 
@@ -46,8 +45,8 @@ const Header = (Props: any) => {
     }
   }
 
-  const routetoRecordsFilter = () => {
-    navigation.navigate('Filter',"recordFilter")
+  const  routeToRecordFilter = () =>{
+    navigation.navigate('Filter', "tutorrecords")
   }
 
 
@@ -113,12 +112,28 @@ const Header = (Props: any) => {
                 alignItems: 'flex-end',
               }}
               activeOpacity={0.8}
-              onPress={  recordsFilter ? () =>routetoRecordsFilter() : () => routeToFilter()}>
+              onPress={() => routeToFilter()}>
               <Image source={require('../../Assets/Images/funnel.png')} style={{ width: 20, height: 20 }} resizeMode='contain' />
 
             </TouchableOpacity>
           </View>
-        ) : addClass ? (
+        ) : 
+        recordsFilter ? (
+          <View style={{ flex: 1 }}>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'flex-end',
+              }}
+              activeOpacity={0.8}
+              onPress={() => routeToRecordFilter()}>
+              <Image source={require('../../Assets/Images/funnel.png')} style={{ width: 20, height: 20 }} resizeMode='contain' />
+
+            </TouchableOpacity>
+          </View>
+        ) : 
+        addClass ? (
           <View style={{ flex: 1 }}>
             <TouchableOpacity
               style={{
@@ -145,7 +160,6 @@ const Header = (Props: any) => {
             }}
             activeOpacity={0.8}
             onPress={() => navigation.navigate('AddClass')}>
-            {/* <Image source={require('../../Assets/Images/plus2.png')} style={{width:20, height:20}} resizeMode='contain'/> */}
             <Icon name={"plus"} size={14} color={Theme.white} />
           </TouchableOpacity>
         </View> : (

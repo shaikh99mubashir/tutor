@@ -62,13 +62,22 @@ function AddClass({navigation}: any) {
 
   const [tutorStudents, setTutorStudents] = useState([]);
   var focus = useIsFocused();
-  const getTutorStudents = () => {
+  const getTutorStudents = async () => {
     console.log('runnning');
     setLoading(true);
+    interface LoginAuth {
+      status: Number;
+      tutorID: Number;
+      token: string;
+    }
+    const login: any = await AsyncStorage.getItem('loginAuth');
+    let loginData: LoginAuth = JSON.parse(login);
+    let { tutorID } = loginData;
+    console.log("tutorID",tutorID);
     console.log("tutorDetails?.tutorId",tutorDetails?.tutorId);
     
     axios
-      .get(`${Base_Uri}getTutorStudents/${tutorDetails?.tutorId}`)
+      .get(`${Base_Uri}getTutorStudents/${tutorID}`)
       .then(({data}) => {
         const {tutorStudents} = data;
         console.log(tutorStudents, 'tutorsStudents');

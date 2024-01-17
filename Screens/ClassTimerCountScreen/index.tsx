@@ -179,9 +179,9 @@ function ClassTimerCount({ navigation, route }: any) {
                     skipBackup: true,
                     path: 'images',
                 },
-                maxWidth: 250,
-                maxHeight: 250,
-                quality: 0.8,
+                maxWidth: 600,
+                maxHeight: 200,
+                quality: 1.0,
             };
 
             launchCamera(options, (res: any) => {
@@ -261,19 +261,19 @@ function ClassTimerCount({ navigation, route }: any) {
             {/* <Text style={{ textAlign: "center", color: Theme.black, marginTop: 20, fontSize: 18, fontFamily: 'Circular Std Medium'}} >Class in progress...</Text> */}
 
 
-            
-            <TouchableOpacity onPress={() => { handleClockOut() }} activeOpacity={0.8} style={{alignItems:'center', justifyContent:'center',flex:1,}}>
+            <View style={{alignItems:'center', justifyContent:'center',flex:1,}}>       
                 <Image source={require('../../Assets/Images/Timmmer1.png')} resizeMode="contain" style={{width:350, height:350 }}/>
                 <View style={{ alignItems: 'center',position: 'absolute', top: '45%', left: '34%',justifyContent:'center'  }}>
                 <>
+            <TouchableOpacity onPress={() =>  handleClockOut()} activeOpacity={0.8} >
                 <Text style={{ textAlign: "center", fontSize: 16, color: Theme.black,fontFamily: 'Circular Std Medium' }} >
                     Timer
                 </Text>
                     {!backTime && <Timer show={"true"} />}
+            </TouchableOpacity>
                 </>
                 </View>
-            </TouchableOpacity>
-
+            </View>     
             <View style={{ width: "100%", alignItems: "center", position: "absolute",  bottom: 60, left:'3%' }} >
                 <Text style={{ textAlign: "center", fontSize: 20,fontWeight:'600', color: Theme.black ,fontFamily: 'Circular Std Medium', lineHeight:25}} >Click on the Timer to {'\n'} Clock Out</Text>
             </View>

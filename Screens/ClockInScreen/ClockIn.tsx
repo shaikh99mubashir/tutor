@@ -54,9 +54,9 @@ function ClockIn({navigation, route}: any) {
           skipBackup: true,
           path: 'images',
         },
-        maxWidth: 250,
-        maxHeight: 250,
-        quality: 0.8,
+        maxWidth: 600,
+        maxHeight: 200,
+        quality: 1.0,
       };
 
       launchCamera(options, (res: any) => {
