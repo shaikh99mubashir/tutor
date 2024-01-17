@@ -23,6 +23,7 @@ import { Base_Uri } from '../../constant/BaseUri';
 import bannerContext from '../../context/bannerContext';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomLoader from '../../Component/CustomLoader';
 
 function Index({ navigation }: any) {
   let bannerCont = useContext(bannerContext);
@@ -298,7 +299,8 @@ function Index({ navigation }: any) {
             </Modal>
           </View>
         )}
-      <Modal visible={loading} animationType="fade" transparent={true}>
+          <CustomLoader visible={loading} />
+      {/* <Modal visible={loading} animationType="fade" transparent={true}>
         <View
           style={{
             flex: 1,
@@ -307,7 +309,7 @@ function Index({ navigation }: any) {
           }}>
           <ActivityIndicator size={'large'} color={Theme.darkGray} />
         </View>
-      </Modal>
+      </Modal> */}
     </ScrollView>
   );
 }

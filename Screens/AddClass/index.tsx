@@ -9,6 +9,7 @@ import {
   ToastAndroid,
   ActivityIndicator,
   Modal,
+  StyleSheet,
 } from 'react-native';
 import {Theme} from '../../constant/theme';
 import CustomDropDown from '../../Component/CustomDropDown';
@@ -21,6 +22,7 @@ import StudentContext from '../../context/studentContext';
 import scheduleContext from '../../context/scheduleContext';
 import {useIsFocused} from '@react-navigation/native';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
+import CustomLoader from '../../Component/CustomLoader';
 
 function AddClass({navigation}: any) {
   const [student, setStudent] = useState([]);
@@ -56,13 +58,15 @@ function AddClass({navigation}: any) {
   const tutorDetailCont = useContext(TutorDetailsContext);
   const {tutorDetails} = tutorDetailCont;
 
-  console.log(tutorDetails, 'tutorDetails');
+  // console.log(tutorDetails, 'tutorDetails');
 
   const [tutorStudents, setTutorStudents] = useState([]);
   var focus = useIsFocused();
   const getTutorStudents = () => {
-    // console.log('runnning');
+    console.log('runnning');
     setLoading(true);
+    console.log("tutorDetails?.tutorId",tutorDetails?.tutorId);
+    
     axios
       .get(`${Base_Uri}getTutorStudents/${tutorDetails?.tutorId}`)
       .then(({data}) => {
@@ -83,9 +87,10 @@ function AddClass({navigation}: any) {
         console.log(myStudents, 'staudents');
 
         setStudent(myStudents);
+        setLoading(false);
         setTimeout(() => {
           setLoading(false);
-        }, 1000);
+        }, 5000);
       })
       .catch(error => {
         console.log('error', error);
@@ -101,7 +106,7 @@ function AddClass({navigation}: any) {
   const getSubject = () => {
     setSelectedSubject('');
     setSubject([]);
-
+    console.log('====================================selectedStudent?.studentID',selectedStudent?.studentID);
     axios
       .get(`${Base_Uri}api/getStudentSubjects/${selectedStudent?.studentID}`)
       .then(({data}) => {
@@ -118,21 +123,6 @@ function AddClass({navigation}: any) {
               remaining_classes: e.remaining_classes,
               classFrequency: e.classFrequency,
             }));
-        // let mySubject =
-        //   studentSubjects &&
-        //   studentSubjects.length > 0 &&
-        //   studentSubjects.map((e: any, i: Number) => {
-        //     console.log('e.tutor_id',e.tutor_id);
-
-        //       if ( tutorId == e.tutor_id && e.subject) {
-        //         return {
-        //           subject: e.name,
-        //           id: e.id,
-        //         };
-        //       }
-
-        //   });
-
         setSubject(mySubject);
       })
       .catch(error => {
@@ -151,31 +141,24 @@ function AddClass({navigation}: any) {
     setTutorId(tutorID);
   };
 
-  const getStudents = async () => {
-    let myStudents =
-      students &&
-      students.length > 0 &&
-      students.map((e: any, i: Number) => {
-        if (e.studentName) {
-          return {
-            ...e,
-            subject: e.studentName,
-          };
-        }
-      });
-    setStudent(myStudents);
-  };
+  // const getStudents = async () => {
+  //   let myStudents =
+  //     students &&
+  //     students.length > 0 &&
+  //     students.map((e: any, i: Number) => {
+  //       if (e.studentName) {
+  //         return {
+  //           ...e,
+  //           subject: e.studentName,
+  //         };
+  //       }
+  //     });
+  //   setStudent(myStudents);
+  // };
 
   useEffect(() => {
     getTutorID();
   }, []);
-
-  // useEffect(() => {
-  //   if (tutorId) {
-  //     // console.log("getStudents==> tutorId==",tutorId);
-  //     getStudents();
-  //   }
-  // }, [tutorId,focus]);
 
   useEffect(() => {
     if (selectedStudent) {
@@ -537,7 +520,7 @@ function AddClass({navigation}: any) {
       {student && student.length !== 0 ? (
         <>
           <View style={{padding: 20, flex: 1}}>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}>
               <View>
                 <CustomDropDown
                   ddTitle={'Student'}
@@ -582,13 +565,32 @@ function AddClass({navigation}: any) {
                 )}
               </View>
 
-              {selectedSubject?.subject && (
-                <Text style={{color: 'black'}}>
-                  {selectedSubject?.subject} Total classes are{' '}
-                  {selectedSubject?.classFrequency}. you have to schedule
-                  remaining classes {selectedSubject?.remaining_classes}
+              {selectedSubject?.subject && (    
+              <View style={{ marginVertical: 10 }}>
+                <Text
+                  style={[styles.textType1,{fontSize:16}]}>
+                  Class Details
                 </Text>
-              )}
+                <View
+                  style={{
+                    backgroundColor: Theme.white,
+                    elevation:2,
+                    paddingHorizontal: 10,
+                    paddingVertical: 12,
+                    borderRadius: 10,
+                    marginVertical: 5,
+                  }}>
+                    <Text style={styles.textType3}>
+                  {selectedSubject?.subject} Total classes are{' '}
+                  <Text style={{fontWeight:'600'}}>{selectedSubject?.classFrequency}</Text>. you have to schedule
+                  remaining classes <Text style={{fontWeight:'600'}}> {selectedSubject?.remaining_classes} </Text>
+                </Text>
+                  
+                </View>
+              </View>
+             )}
+                
+             
 
               <View style={{marginBottom: 100}}>
                 <FlatList data={classes} renderItem={renderClasses} />
@@ -664,10 +666,9 @@ function AddClass({navigation}: any) {
           <Text style={{color: 'black'}}> You have No Students</Text>
         </View>
       )}
-      {/* <View style={{alignItems:'center',justifyContent:"center", flex:1}}>
-      {student.length == 0 ? "" : }
-      </View> */}
-          <Modal visible={loading} animationType="fade" transparent={true}>
+    
+        <CustomLoader visible={loading} />
+        {/* <Modal visible={loading} animationType="fade" transparent={true}>
         <View
           style={{
             flex: 1,
@@ -676,9 +677,40 @@ function AddClass({navigation}: any) {
           }}>
           <ActivityIndicator size={'large'} color={Theme.darkGray} />
         </View>
-      </Modal>
+      </Modal> */}
     </View>
   );
 }
 
 export default AddClass;
+const styles = StyleSheet.create({
+  textAreaContainer: {
+    // borderColor: COLORS.grey20,
+    // borderWidth: 1,
+    // padding: 5,
+    borderRadius: 10,
+  },
+  textArea: {
+    borderRadius: 10,
+    height: 150,
+    justifyContent: 'flex-start',
+    textAlignVertical: 'top',
+    fontFamily: 'Circular Std',
+  },
+
+  textType1: {
+    fontWeight: '500',
+    fontSize: 24,
+    color: Theme.Dune,
+    fontFamily: 'Circular Std Medium',
+    lineHeight: 24,
+    fontStyle: 'normal',
+  },
+  textType3: {
+    color: Theme.Dune,
+    fontWeight: '500',
+    fontSize: 16,
+    fontFamily: 'Circular Std',
+    fontStyle: 'normal',
+  },
+});

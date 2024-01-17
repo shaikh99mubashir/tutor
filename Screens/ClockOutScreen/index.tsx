@@ -20,6 +20,7 @@ import noteContext from '../../context/noteContext';
 import {CommonActions, useIsFocused} from '@react-navigation/native';
 import TutorDetailForm from '../TutorDetailForm';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
+import CustomLoader from '../../Component/CustomLoader';
 
 function ClockOut({navigation, route}: any) {
   const [loading, setLoading] = useState(false);
@@ -98,8 +99,6 @@ function ClockOut({navigation, route}: any) {
         },
       })
       .then(res => {
-        console.log('res------------>',res?.data);
-        
         axios
           .get(`${Base_Uri}api/tutorFirstReportListing/${tutorID}`)
           .then(({data}:any) => {
@@ -164,11 +163,7 @@ function ClockOut({navigation, route}: any) {
     totalMinutes = Math.round((Number(minutes) / 100) * 60);
   }
 
-  return loading ? (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <ActivityIndicator size="large" color="black" />
-    </View>
-  ) : (
+  return (
     <View style={{flex: 1, alignItems: 'center'}}>
       <Header backBtn navigation={navigation} title={'Clock Out'} />
       {currentLocation.latitude && currentLocation.longitude && (
@@ -252,6 +247,7 @@ function ClockOut({navigation, route}: any) {
           </Text>
         </TouchableOpacity>
       </TouchableOpacity>
+      <CustomLoader visible={loading} />
     </View>
   );
 }

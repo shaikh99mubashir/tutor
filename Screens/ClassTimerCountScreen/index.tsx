@@ -10,6 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import noteContext from "../../context/noteContext"
 import { useIsFocused } from "@react-navigation/native"
 import moment from "moment"
+import CustomLoader from "../../Component/CustomLoader"
 
 
 function ClassTimerCount({ navigation, route }: any) {
@@ -238,9 +239,9 @@ function ClassTimerCount({ navigation, route }: any) {
 
 
     return (
-        loading ? <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }} >
-            <ActivityIndicator size="large" color={"black"} />
-        </View> : 
+        // loading ? <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }} >
+        //     <ActivityIndicator size="large" color={"black"} />
+        // </View> : 
         <View style={{ flex: 1, backgroundColor: Theme.white,  }} >
 
 
@@ -276,6 +277,7 @@ function ClassTimerCount({ navigation, route }: any) {
             <View style={{ width: "100%", alignItems: "center", position: "absolute",  bottom: 60, left:'3%' }} >
                 <Text style={{ textAlign: "center", fontSize: 20,fontWeight:'600', color: Theme.black ,fontFamily: 'Circular Std Medium', lineHeight:25}} >Click on the Timer to {'\n'} Clock Out</Text>
             </View>
+            <CustomLoader visible={loading} />
         </View>
     )
 }

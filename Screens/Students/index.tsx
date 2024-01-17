@@ -23,6 +23,7 @@ import StudentContext from '../../context/studentContext';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import bannerContext from '../../context/bannerContext';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
+import CustomLoader from '../../Component/CustomLoader';
 const Students = ({ navigation }: any) => {
 
   const context = useContext(StudentContext)
@@ -178,9 +179,11 @@ const Students = ({ navigation }: any) => {
 
 
   return (
-    loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
-      <ActivityIndicator size="large" color={Theme.black} />
-    </View> : <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+    // loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+    //   <ActivityIndicator size="large" color={Theme.black} />
+    // </View> : 
+    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+        <CustomLoader visible={loading} />
       <Header title="Student" backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <View style={{ paddingHorizontal: 15 }}>
@@ -202,7 +205,7 @@ const Students = ({ navigation }: any) => {
                 placeholder="Search"
                 placeholderTextColor="black"
                 onChangeText={e => searchStudent(e)}
-                style={{ width: '90%', padding: 8, color: 'black',fontFamily: 'Circular Std Black' }}
+                style={{ width: '90%', padding: 8, fontFamily: 'Circular Std' }}
               />
               <TouchableOpacity onPress={() => navigation}>
                 <Image

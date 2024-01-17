@@ -16,6 +16,7 @@ import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
 import {Base_Uri} from '../../constant/BaseUri';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomLoader from '../../Component/CustomLoader';
 
 function ClockIn({navigation, route}: any) {
   let item = route.params;
@@ -118,11 +119,7 @@ function ClockIn({navigation, route}: any) {
     }
   };
 
-  return loading ? (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <ActivityIndicator size={'large'} color={'Black'} />
-    </View>
-  ) : (
+  return (
     <View style={{flex: 1, alignItems: 'center'}}>
       <Header backBtn navigation={navigation} title={'Clock In'} />
       {currentLocation.latitude && currentLocation.longitude && (
@@ -209,6 +206,7 @@ function ClockIn({navigation, route}: any) {
           </Text>
         </TouchableOpacity>
       </TouchableOpacity>
+      <CustomLoader visible={loading} />
     </View>
   );
 }

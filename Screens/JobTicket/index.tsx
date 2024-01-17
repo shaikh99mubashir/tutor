@@ -53,7 +53,7 @@ function JobTicket({ navigation, route }: any) {
   const [refresh, setRefresh] = useState(false);
   const tutor = useContext(TutorDetailsContext);
   const [modalVisible, setModalVisible] = useState(false);
-  let { tutorDetails, updateTutorDetails } = tutor;
+  let { tutorDetails, updateTutorDetails,setTutorDetail } = tutor;
   const [currentTab, setCurrentTab]: any = useState([
     {
       index: 0,
@@ -231,6 +231,13 @@ function JobTicket({ navigation, route }: any) {
       .then(({ data }) => {
         let { tutorDetailById } = data;
         let tutorDetails = tutorDetailById[0];
+        if(data.tutorDetailById== null){
+          AsyncStorage.removeItem('loginAuth');
+          navigation.replace('Login');
+          setTutorDetail('')
+          ToastAndroid.show('Terminated', ToastAndroid.SHORT);
+          return;
+        }
         let details = {
           full_name: tutorDetails?.full_name,
           email: tutorDetails?.email,
@@ -267,8 +274,6 @@ function JobTicket({ navigation, route }: any) {
   const getTicketsData = async () => {
     setLoading(true);
     let filter: any = await AsyncStorage.getItem('filter');
-
-
     if (filter) {
       filter = JSON.parse(filter);
       console.log(filter, 'filter');
@@ -328,7 +333,7 @@ function JobTicket({ navigation, route }: any) {
   };
 
   const getAppliedData = async () => {
-    setLoading(true)
+    // setLoading(true)
     let tutorData: any = await AsyncStorage.getItem('loginAuth');
     tutorData = JSON.parse(tutorData);
     let tutor_id = tutorData?.tutorID;
@@ -665,25 +670,6 @@ function JobTicket({ navigation, route }: any) {
         >
           {item.offer_status}
         </Text>
-
-        {/* <Text
-          style={[
-            styles.textType3,
-            {
-              color: '#003E9C',
-              backgroundColor: '#298CFF33',
-              paddingVertical: 5,
-              paddingHorizontal: 15,
-              borderTopLeftRadius: 16,
-              borderTopRightRadius: 16,
-              marginLeft: 20,
-              width: 120,
-              textAlign: 'center',
-              textTransform: 'capitalize',
-            },
-          ]}>
-          {item.offer_status}
-        </Text> */}
         <TouchableOpacity
           activeOpacity={0.8}
           style={{

@@ -6,6 +6,7 @@ import AntDesign from "react-native-vector-icons/EvilIcons"
 import DateTimePicker from "@react-native-community/datetimepicker"
 import axios from "axios";
 import { Base_Uri } from "../../constant/BaseUri";
+import CustomLoader from "../../Component/CustomLoader";
 
 function EditPostpondClass({ navigation, route }: any) {
 
@@ -176,9 +177,6 @@ function EditPostpondClass({ navigation, route }: any) {
     }
 
     return (
-        loading ? <View style={{  justifyContent: "center", alignItems: "center" }} >
-            <ActivityIndicator size="large" color={Theme.black} />
-        </View> :
          <KeyboardAvoidingView style={{ flex: 1, backgroundColor: Theme.white }}>
             <View>
                 <CustomHeader title="Edit Class" backBtn navigation={navigation} />
@@ -273,6 +271,7 @@ function EditPostpondClass({ navigation, route }: any) {
                     </Text>
                 </TouchableOpacity>
             </View>
+            <CustomLoader visible={loading} />
         </KeyboardAvoidingView>
     )
 }

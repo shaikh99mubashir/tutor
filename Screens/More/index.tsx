@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import {Base_Uri} from '../../constant/BaseUri';
 import axios from 'axios';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 function More({navigation}: any) {
   const context = useContext(TutorDetailsContext);
@@ -57,8 +58,6 @@ function More({navigation}: any) {
         console.log(tutorDetailById, 'iddd');
 
         let tutorDetails = tutorDetailById[0];
-
-        // console.log(tutorDetails,"detailsss")
 
         let details = {
           full_name: tutorDetails?.full_name,
@@ -356,6 +355,49 @@ function More({navigation}: any) {
               />
             </TouchableOpacity>
           )}
+          {/*AttendedClassRecords */}
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => navigation.navigate('AttendedClassRecords')}
+            style={{
+              paddingVertical: 15,
+              borderBottomWidth: 1,
+              borderBottomColor: '#eee',
+              flexDirection: 'row',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <View
+              style={{
+                width: '90%',
+                flexDirection: 'row',
+                gap: 15,
+                alignItems: 'center',
+              }}>
+              <View
+                style={{
+                  backgroundColor: Theme.Dune,
+                  padding: 10,
+                  borderRadius: 10,
+                }}>
+                <AntDesign name="copy1" size={15} color={'#fff'} />
+              </View>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: '600',
+                  color: Theme.black,
+                  fontFamily: 'Circular Std Book',
+                }}>
+                Attended Class Records
+              </Text>
+            </View>
+            <Image
+              source={require('../../Assets/Images/right.png')}
+              style={{width: 20, height: 20}}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
           {/*Faq */}
           <TouchableOpacity
             activeOpacity={0.8}
@@ -402,47 +444,7 @@ function More({navigation}: any) {
               resizeMode="contain"
             />
           </TouchableOpacity>
-          {/* Report Submission */}
-          {/* <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => navigation.navigate('ReportSubmission')}
-            style={{
-              paddingVertical: 15,
-              borderBottomWidth: 1,
-              borderBottomColor: '#eee',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <View
-              style={{
-                width: '90%',
-                flexDirection: 'row',
-                gap: 15,
-                alignItems: 'center',
-              }}>
-              <View
-                style={{
-                  backgroundColor: 'gray',
-                  padding: 10,
-                  borderRadius: 10,
-                }}>
-                <Image
-                  source={require('../../Assets/Images/faq.png')}
-                  style={{ height: 15, width: 15 }}
-                />
-              </View>
-              <Text
-                style={{ fontSize: 16, fontWeight: '600', color: Theme.black }}>
-                ReportSubmission
-              </Text>
-            </View>
-            <Image
-              source={require('../../Assets/Images/right.png')}
-              style={{ width: 20, height: 20 }}
-              resizeMode="contain"
-            />
-          </TouchableOpacity> */}
+         
           {/*Logout */}
           <TouchableOpacity
             onPress={handleFilterPress}

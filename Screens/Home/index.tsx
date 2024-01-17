@@ -32,6 +32,7 @@ import bannerContext from '../../context/bannerContext';
 import messaging from '@react-native-firebase/messaging';
 import scheduleNotificationContext from '../../context/scheduleNotificationContext';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import CustomLoader from '../../Component/CustomLoader';
 function Home({navigation, route}: any) {
   let key = route.key;
 
@@ -100,28 +101,10 @@ function Home({navigation, route}: any) {
     month: 'long',
   });
 
-  const [upCommingClasses, setUpCommingClasses] = useState([
-    // {
-    //   id: 1,
-    //   image: require('../../Assets/Images/mapicon.png'),
-    //   name: 'testing1',
-    //   title: 'Add Math (DEGREE) Online',
-    //   time: '12:00 PM to 7:00 PM',
-    //   date: '20 May 2023',
-    // },
-    // {
-    //   id: 2,
-    //   image: require('../../Assets/Images/woman.png'),
-    //   name: 'testing2',
-    //   title: 'Add History (DEGREE) Online',
-    //   time: '12:00 PM to 7:00 PM',
-    //   date: '20 May 2023',
-    // },
-  ]);
+  const [upCommingClasses, setUpCommingClasses] = useState([]);
   const [notificationLenght, setNotificationLength] = useState(0);
   const [tutorId, setTutorId] = useState<Number | null>(null);
   const [classInProcess, setClassInProcess] = useState({});
-  // console.log("</ class ", classInProcess?.item?.studentName);
 
   const [tutorData, setTutorData] = useState({
     cummulativeCommission: '',
@@ -190,10 +173,6 @@ function Home({navigation, route}: any) {
             return e.status == 'new';
           });
         setNotification(tutorNotification);
-        // // setNotificationLength(tutorNotification.length > 0 ? tutorNotification.length : 0);
-        // length =
-        //   length + tutorNotification.length > 0 ? tutorNotification.length : 0;
-        // setNotificationLength(length);
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
@@ -396,8 +375,6 @@ function Home({navigation, route}: any) {
           progressReportListing.filter((e: any, i: number) => {
             return e.tutorID == tutorID;
           });
-
-        // console.log(tutorReport, "reoirt")
         setProgressReport(
           tutorReport && tutorReport.length > 0 ? tutorReport : [],
         );
@@ -429,11 +406,8 @@ function Home({navigation, route}: any) {
           return;
         }
         let {tutorDetailById} = data;
-        console.log(tutorDetailById, 'iddd');
 
         let tutorDetails = tutorDetailById[0];
-
-        // console.log(tutorDetails,"detailsss")
 
         let details = {
           full_name: tutorDetails?.full_name,
@@ -460,7 +434,6 @@ function Home({navigation, route}: any) {
       .get(`${Base_Uri}api/classScheduleStatusNotifications/${tutorId}`)
       .then(res => {
         let {data} = res;
-
         setScheduleNotification(data.record);
       })
       .catch(error => {
@@ -489,7 +462,6 @@ function Home({navigation, route}: any) {
     axios
       .get(`${Base_Uri}getAttendedHours/${tutorId}`)
       .then(({data}) => {
-        // setTutorData({ ...tutorData, attendedHours: data.attendedHours });
         setAttendedHours(data.attendedHours);
       })
       .catch(error => {
@@ -502,7 +474,6 @@ function Home({navigation, route}: any) {
       .get(`${Base_Uri}getScheduledHours/${tutorId}`)
       .then(({data}) => {
         setScheduledHours(data.scheduledHours);
-        // setTutorData({ ...tutorData, scheduledHours: data.scheduledHours });
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
@@ -510,35 +481,23 @@ function Home({navigation, route}: any) {
   };
 
   const getCancelledHours = () => {
-    // console.log(tutorId, 'iddd');
-
     axios
       .get(`${Base_Uri}getCancelledHours/${tutorId}`)
       .then(({data}) => {
-        // console.log(cancelledHours, 'hoursss');
-
         setCancelledHours(data.cancelledHours);
-        // setTutorData({ ...tutorData, cancelledHours: data.cancelledHours });
       })
       .catch(error => {
-        // console.log(error,"errror")
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
   const [assignedTickets, setAssignedTickets] = useState();
   const getAssignedTicket = () => {
-    // console.log(tutorId, 'iddd');
-
     axios
       .get(`${Base_Uri}getAssignedTickets/${tutorId}`)
       .then(({data}) => {
-        // console.log(data, 'getAssignedTicket');
         setAssignedTickets(data.assignedTickets);
-        // setCancelledHours(data.cancelledHours);
-        // setTutorData({ ...tutorData, cancelledHours: data.cancelledHours });
       })
       .catch(error => {
-        // console.log(error,"errror")
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
@@ -548,8 +507,6 @@ function Home({navigation, route}: any) {
       .get(`${Base_Uri}getTutorStudents/${tutorId}`)
       .then(({data}) => {
         const {tutorStudents} = data;
-        console.log(tutorStudents);
-
         setTutorStudents(tutorStudents);
         updateStudent(tutorStudents);
       })
@@ -569,15 +526,12 @@ function Home({navigation, route}: any) {
           tutorSubjects.length > 0 &&
           tutorSubjects.map((e: any, i: Number) => {
             if (e?.name) {
-              console.log('E.name', e?.name);
-
               return {
                 subject: e.name,
                 id: e.id,
               };
             }
           });
-        console.log('mySubject=====?>', mySubject);
         updateSubject(mySubject);
       })
       .catch(error => {
@@ -619,27 +573,6 @@ function Home({navigation, route}: any) {
       getAssignedTicket();
     }
   }, [cummulativeCommission, refreshing,tutorId]);
-  // useEffect(() => {
-  //   if (tutorId && tutorData.cummulativeCommission && tutorData.attendedHours) {
-  //     getScheduledHours();
-  //   }
-  // }, [attendedHours, refreshing]);
-  // useEffect(() => {
-  //   if (
-  //     tutorId &&
-  //     tutorData.cummulativeCommission &&
-  //     tutorData.attendedHours &&
-  //     tutorData.scheduledHours
-  //   ) {
-  //     getCancelledHours();
-  //   }
-  // }, [schedulesHours, refreshing]);
-  // useEffect(() => {
-  //   if (tutorId) {
-  //     getTutorStudents();
-  //     getTutorSubjects()
-  //   }
-  // }, [cancelledHours, refreshing]);
 
   const routeToScheduleScreen = async (item: any) => {
     interface LoginAuth {
@@ -922,7 +855,6 @@ function Home({navigation, route}: any) {
       }
   };
 
-  // console.log(cancelledHours, "cancelledHour")
 
   const closeBannerModal = async () => {
     if (homePageBanner.displayOnce == 'on') {
@@ -958,14 +890,6 @@ function Home({navigation, route}: any) {
     return `${twelveHour}:${minuteStr} ${period}`;
   }
 
-  // function convertDateFormat(date: string): string {
-  //   const formattedDate = new Date(date).toLocaleDateString('en-US', {
-  //     day: '2-digit',
-  //     month: 'short',
-  //     year: 'numeric',
-  //   });
-  //   return formattedDate;
-  // }
   let imageUrl = tutorDetails?.tutorImage?.includes('https')
     ? tutorDetails.tutorImage
     : `${Base_Uri}public/tutorImage/${tutorDetails.tutorImage}`;
@@ -1000,7 +924,9 @@ function Home({navigation, route}: any) {
   //   </View>
   // ) : (
     <View style={{flex: 1, backgroundColor: Theme.GhostWhite}}>
-          <Modal visible={refreshing} animationType="fade" transparent={true}>
+        <CustomLoader visible={!cancelledHours} />
+        <CustomLoader visible={refreshing} />
+      {/* <Modal visible={refreshing} animationType="fade" transparent={true}>
         <View
           style={{
             flex: 1,
@@ -1009,7 +935,7 @@ function Home({navigation, route}: any) {
           }}>
           <ActivityIndicator size={'large'} color={Theme.darkGray} />
         </View>
-      </Modal>
+      </Modal> */}
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -1031,12 +957,12 @@ function Home({navigation, route}: any) {
                 alignItems: 'center',
                 justifyContent: 'space-between',
               }}>
-              <View style={{}}>
+              <View style={{ width:'70%', }}>
                 <Text style={styles.textType3}>Welcome Back!</Text>
                 <Text
                   style={[
                     styles.textType1,
-                    {fontWeight: '700', lineHeight: 30},
+                    {fontWeight: '700', lineHeight: 30,},
                   ]}>
                   {tutorDetails?.displayName ?? tutorDetails?.full_name}
                 </Text>

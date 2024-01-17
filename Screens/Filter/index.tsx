@@ -25,6 +25,9 @@ const Filter = ({ navigation, route }: any) => {
 
 
   let data = route.params
+
+  console.log("data",data);
+  
   const filter = useContext(filterContext)
 
   let { subjects, city, state, category } = filter
@@ -50,6 +53,17 @@ const Filter = ({ navigation, route }: any) => {
     },
     {
       option: "Rejected"
+    }
+  ])
+  const [classAttendedStatus, setClassAttendedStatus] = useState([
+    {
+      option: "Attended"
+    },
+    {
+      option: "Pending"
+    },
+    {
+      option: "In Complete"
     }
   ])
 
@@ -168,6 +182,22 @@ const Filter = ({ navigation, route }: any) => {
 
   }
 
+  const applyRecordStatusFilter = async () => {
+    if (!selectedStatus) {
+
+      ToastAndroid.show("Kindly Select Status", ToastAndroid.SHORT)
+      return
+    }
+
+    let data = JSON.stringify(selectedStatus)
+
+    await AsyncStorage.setItem("ClassRecordsFilter", data)
+
+    ToastAndroid.show("Filter has been succesfully Applied", ToastAndroid.SHORT)
+
+    navigation.navigate("AttendedClassRecords", selectedStatus)
+  }
+
   const resetStatusFilter = async () => {
     await AsyncStorage.removeItem("statusFilter")
     ToastAndroid.show("Filter has been succesfully reset", ToastAndroid.SHORT)
@@ -230,7 +260,7 @@ const Filter = ({ navigation, route }: any) => {
             title="Status"
             selectedValue={setSelectedStatus}
             placeHolder={alreadyFilterStatus ? alreadyFilterStatus : 'Select Status'}
-            option={status}
+            option={data == 'recordFilter' ? classAttendedStatus : status}
             modalHeading="Select Status"
           />
         </View>
@@ -293,7 +323,8 @@ const Filter = ({ navigation, route }: any) => {
               padding: 10,
               borderRadius: 10,
             }}
-            onPress={() => data ? applyStatusFilter() : applyFilter()}
+            // onPress={() => data ? applyStatusFilter() : applyFilter()}
+            onPress={() => data == 'recordFilter' ? applyRecordStatusFilter(): data == 'applied' ? applyStatusFilter() : applyFilter()}
           >
             <Text style={{ color: 'white', fontWeight: '700', fontSize: 12 }}>
               Apply

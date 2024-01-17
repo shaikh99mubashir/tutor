@@ -1,0 +1,391 @@
+import { FlatList, Image, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Theme } from '../../constant/theme'
+import Header from '../../Component/Header'
+import { TextInput } from 'react-native'
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage'
+
+
+
+const AttendedClassRecords = ({navigation}:any) => {
+    const [refreshing, setRefreshing] = React.useState(false);
+    const [loading, setLoading] = useState(false);
+    const [refresh, setRefresh] = useState(false);
+    const dummyData = [
+        {
+          id: 1,
+          offer_status: 'pending',
+          jtuid: 'JTU123',
+          price: 50,
+          city: 'Sample City',
+          mode: 'online',
+          subject_name: 'Sample Subject',
+          tutorPereference: 'Sample Tutor',
+          categoryName: 'Sample Level',
+          classDayType: 'Monday',
+          classTime: '3:00 PM',
+        },
+        {
+          id: 2,
+          offer_status: 'attended',
+          jtuid: 'JTU456',
+          price: 75,
+          city: 'Another City',
+          mode: 'offline',
+          subject_name: 'Another Subject',
+          tutorPereference: 'Another Tutor',
+          categoryName: 'Another Level',
+          classDayType: 'Wednesday',
+          classTime: '5:00 PM',
+        },
+        // Add more objects as needed
+      ];
+      const check = async () =>{
+        try {
+            let recordStatus: any = await AsyncStorage.getItem('ClassRecordsFilter');
+            let status = JSON.parse(recordStatus);
+            console.log('status recordAttendedClassRecords', status);
+          } catch (error) {
+            console.error('Error retrieving data from AsyncStorage:', error);
+          }
+
+      }
+      useEffect(()=>{
+        check()
+      },[])
+    const onRefresh = React.useCallback(() => {
+      if (!refreshing) {
+        // setRefreshing(true);
+        setLoading(true);
+        setTimeout(() => {
+          setRefreshing(false);
+          setLoading(false);
+          setRefresh(refresh ? false : true);
+        }, 2000);
+      }
+    }, [refresh]);
+
+    const renderRecords = ({ item }: any) => {
+        return (
+          <>
+            <Text
+              style={[
+                styles.textType3,
+                {
+                  color: item.offer_status === 'pending' ? '#000000' : '#FFFFFF',
+                  backgroundColor: (() => {
+                    switch (item.offer_status) {
+                      case 'pending':
+                        return '#FEBC2A';
+                      case 'attended':
+                        return '#1FC07D';
+                      case 'rejected':
+                        return '#FF0000';
+                      default:
+                        return '#298CFF33'; // Default background color if the status is not recognized
+                    }
+                  })(),
+                  paddingVertical: 5,
+                  paddingHorizontal: 15,
+                  borderTopLeftRadius: 16,
+                  borderTopRightRadius: 16,
+                  marginLeft: 20,
+                  width: 120,
+                  textAlign: 'center',
+                  textTransform: 'capitalize',
+                },
+              ]}
+            >
+              {item.offer_status}
+            </Text>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              style={{
+                borderWidth: 1,
+                borderRadius: 20,
+                marginBottom: 10,
+                padding: 20,
+                borderColor: Theme.lightGray,
+                backgroundColor: Theme.white,
+              }}>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  borderBottomWidth: 2,
+                  paddingBottom: 20,
+                  borderBottomColor: Theme.lightGray,
+                }}>
+                <View>
+                  <Text style={styles.textType3}>{item?.jtuid}</Text>
+                  <Text
+                    style={[
+                      styles.textType1,
+                      { lineHeight: 30, textTransform: 'capitalize' },
+                    ]}>
+                    RM {item?.price}
+                  </Text>
+                  <View
+                    style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
+                    <Feather name="map-pin" size={18} color={'#298CFF'} />
+                    <Text
+                      style={[
+                        styles.textType3,
+                        { color: '#003E9C', textTransform: 'capitalize' },
+                      ]}>
+                      {item?.city}
+                    </Text>
+                  </View>
+                </View>
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                  <Text
+                    style={[
+                      styles.textType3,
+                      {
+                        color: '#003E9C',
+                        backgroundColor: '#298CFF33',
+                        paddingVertical: 5,
+                        paddingHorizontal: 30,
+                        borderRadius: 30,
+                        textTransform: 'capitalize',
+                      },
+                    ]}>
+                    {item?.mode}
+                  </Text>
+                </View>
+              </View>
+    
+              <View
+                style={{
+                  paddingVertical: 20,
+                  borderBottomWidth: 2,
+                  borderBottomColor: Theme.lightGray,
+                }}>
+                <View
+                  style={{
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}>
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'row',
+                      gap: 10,
+                    }}>
+                    <AntDesign name="copy1" size={18} color={'#298CFF'} />
+                    <Text style={styles.textType3}>Subject</Text>
+                  </View>
+                  <Text
+                    style={[
+                      styles.textType1,
+                      { fontSize: 18, textTransform: 'capitalize' },
+                    ]}>
+                    {item?.subject_name}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginTop: 10,
+                  }}>
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'row',
+                      gap: 10,
+                    }}>
+                    <FontAwesome name="user-o" size={18} color={'#298CFF'} />
+                    <Text style={styles.textType3}>Student</Text>
+                  </View>
+                  <Text
+                    style={[
+                      styles.textType1,
+                      { fontSize: 18, textTransform: 'capitalize' },
+                    ]}>
+                    {item?.tutorPereference}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    justifyContent: 'space-between',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    marginTop: 10,
+                  }}>
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'row',
+                      gap: 10,
+                    }}>
+                    <FontAwesome name="level-up" size={18} color={'#298CFF'} />
+                    <Text style={styles.textType3}>Level</Text>
+                  </View>
+                  <Text
+                    style={[
+                      styles.textType1,
+                      { fontSize: 18, textTransform: 'capitalize' },
+                    ]}>
+                    {item?.categoryName}
+                  </Text>
+                </View>
+              </View>
+    
+              <View style={{ flexDirection: 'row', gap: 10, marginTop: 15 }}>
+                <View
+                  style={{
+                    backgroundColor: '#E6F2FF',
+                    paddingVertical: 10,
+                    borderRadius: 10,
+                  }}>
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'row',
+                      gap: 10,
+                      paddingHorizontal: 10,
+                    }}>
+                    <AntDesign name="calendar" size={20} color={'#298CFF'} />
+                    <Text
+                      style={[
+                        styles.textType3,
+                        { color: '#298CFF', textTransform: 'capitalize' },
+                      ]}>
+                      {item?.classDayType}
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    backgroundColor: '#E6F2FF',
+                    paddingVertical: 10,
+                    borderRadius: 10,
+                    paddingHorizontal: 10,
+                  }}>
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'row',
+                      gap: 10,
+                    }}>
+                    <AntDesign name="clockcircleo" size={20} color={'#298CFF'} />
+                    <Text
+                      style={[
+                        styles.textType3,
+                        { color: '#298CFF', textTransform: 'capitalize' },
+                      ]}>
+                      {item?.classTime}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            </TouchableOpacity>
+          </>
+        );
+      };
+  return (
+    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+    <Header
+      title="Records"
+      filter
+      recordsFilter
+      backBtn
+      navigation={navigation}
+    />
+
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      showsVerticalScrollIndicator={false}
+      nestedScrollEnabled>
+      <View style={{ paddingHorizontal: 15, marginTop: 20 }}>
+        {/* Search */}
+        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+          <View
+            style={{
+              width: '100%',
+              backgroundColor: Theme.lightGray,
+              borderRadius: 10,
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingVertical: 4,
+              paddingHorizontal: 15,
+              marginBottom: 15,
+              gap: 10,
+            }}>
+            <TouchableOpacity activeOpacity={0.8}>
+              <Image
+                source={require('../../Assets/Images/search.png')}
+                style={{ width: 15, height: 15 }}
+              />
+            </TouchableOpacity>
+            <TextInput
+              placeholder="Search"
+              placeholderTextColor="black"
+            //   onChangeText={e => searchText(e)}
+              style={{
+                width: '90%',
+                padding: 8,
+                color: 'black',
+                fontFamily: 'Circular Std Book',
+                fontSize: 16,
+              }}
+            />
+          </View>
+        </View>
+
+        {dummyData.length > 0 ? (
+          <FlatList
+            data={dummyData}
+            renderItem={renderRecords}
+            scrollEnabled={true}
+            nestedScrollEnabled={true}
+            keyExtractor={(items: any, index: number): any => index}
+          />
+        ) : (
+          <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+            <Image
+              source={require('../../Assets/Images/nojobticketavailable.png')}
+              style={{ width: 300, height: 300 }}
+            />
+          </View>
+        )}
+      </View>
+        </ScrollView>
+        </View>
+  )
+}
+
+export default AttendedClassRecords
+
+const styles = StyleSheet.create({
+    textType1: {
+        fontWeight: '500',
+        fontSize: 24,
+        color: Theme.Dune,
+        fontFamily: 'Circular Std Medium',
+        lineHeight: 24,
+        fontStyle: 'normal',
+      },
+      textType3: {
+        color: Theme.Dune,
+        fontWeight: '500',
+        fontSize: 16,
+        fontFamily: 'Circular Std',
+        fontStyle: 'normal',
+      },
+})

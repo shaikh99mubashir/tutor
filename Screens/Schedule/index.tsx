@@ -34,6 +34,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import StudentContext from '../../context/studentContext';
+import CustomLoader from '../../Component/CustomLoader';
 
 // import { ScrollView } from "react-native-gesture-handler"
 
@@ -630,7 +631,7 @@ function Schedule({ navigation, route }: any) {
                 <Text style={styles.textType3}>
                   {item?.jtuid}
                 </Text>
-                <Text style={[styles.textType1, { lineHeight: 30 }]}>
+                <Text style={[styles.textType1, { lineHeight: 30, textTransform:'capitalize' }]}>
                   {item?.studentName}
                 </Text>
                 <View style={{ flexDirection: 'row', gap: 10, alignItems: "center" }}>
@@ -1057,7 +1058,8 @@ function Schedule({ navigation, route }: any) {
             </Modal>
           </View>
         )}
-      <Modal visible={loading} animationType="fade" transparent={true}>
+          <CustomLoader visible={loading} />
+      {/* <Modal visible={loading} animationType="fade" transparent={true}>
         <View
           style={{
             flex: 1,
@@ -1066,7 +1068,7 @@ function Schedule({ navigation, route }: any) {
           }}>
           <ActivityIndicator size={'large'} color={Theme.darkGray} />
         </View>
-      </Modal>
+      </Modal> */}
     </View>
   );
 }

@@ -29,6 +29,7 @@ import reportSubmissionContext from '../../context/reportSubmissionContext';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import bannerContext from '../../context/bannerContext';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
+import CustomLoader from '../../Component/CustomLoader';
 const ReportSubmissionHistory = ({navigation}: any) => {
   // const [reportSubmission, setreportSubmission] = useState([]);
   // const [progressReport, setProgressReport] = useState([]);
@@ -1529,11 +1530,7 @@ const ReportSubmissionHistory = ({navigation}: any) => {
       }
   };
 
-  return loading ? (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <ActivityIndicator size="large" color={Theme.black} />
-    </View>
-  ) : pdfUri ? (
+  return pdfUri ? (
     <View style={{flex: 1}}>
       <Pdf
         source={{uri: pdfUri}}
@@ -1684,6 +1681,7 @@ const ReportSubmissionHistory = ({navigation}: any) => {
             </View>
           )}
         </View>
+        <CustomLoader visible={loading} />
       </ScrollView>
       {Object.keys(reportSubmissionBanner).length > 0 &&
         (reportSubmissionBanner.tutorStatusCriteria == 'All' ||

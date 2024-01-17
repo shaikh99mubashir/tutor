@@ -29,6 +29,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import DropDownModalView from '../../Component/DropDownModalView';
 import bannerContext from '../../context/bannerContext';
 import ModalImg from '../../Component/Modal/modal';
+import CustomLoader from '../../Component/CustomLoader';
 
 
 const Profile = ({ navigation }: any) => {
@@ -791,7 +792,7 @@ const Profile = ({ navigation }: any) => {
         </View>
       </View>
 
-      <Modal visible={loading} animationType="fade" transparent={true}>
+      {/* <Modal visible={loading} animationType="fade" transparent={true}>
         <View
           style={{
             flex: 1,
@@ -800,9 +801,9 @@ const Profile = ({ navigation }: any) => {
           }}>
           <ActivityIndicator size={'large'} color={Theme.darkGray} />
         </View>
-      </Modal>
+      </Modal> */}
 
-
+    <CustomLoader visible={loading} />
 
     </View>
   );

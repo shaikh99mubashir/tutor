@@ -26,22 +26,28 @@ const Header = (Props: any) => {
     noLogo,
     myStyle,
     tab,
-    containerStyle
+    containerStyle,
+    recordsFilter
   } = Props;
-
+  console.log("recordsFilter header",recordsFilter);
+  
   const routeToFilter = () => {
 
-    let selectedTab = tab.filter((e: any, i: number) => {
+    let selectedTab = tab?.filter((e: any, i: number) => {
 
       return e.selected
 
     })
 
-    if (selectedTab[0].name == "Applied") {
+    if (selectedTab[0]?.name == "Applied") {
       navigation.navigate('Filter', "applied")
     } else {
       navigation.navigate('Filter')
     }
+  }
+
+  const routetoRecordsFilter = () => {
+    navigation.navigate('Filter',"recordFilter")
   }
 
 
@@ -107,7 +113,7 @@ const Header = (Props: any) => {
                 alignItems: 'flex-end',
               }}
               activeOpacity={0.8}
-              onPress={() => routeToFilter()}>
+              onPress={  recordsFilter ? () =>routetoRecordsFilter() : () => routeToFilter()}>
               <Image source={require('../../Assets/Images/funnel.png')} style={{ width: 20, height: 20 }} resizeMode='contain' />
 
             </TouchableOpacity>

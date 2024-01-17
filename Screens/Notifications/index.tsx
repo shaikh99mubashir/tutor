@@ -22,6 +22,7 @@ import notificationContext from '../../context/notificationContext';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import scheduleContext from '../../context/scheduleContext';
 import scheduleNotificationContext from '../../context/scheduleNotificationContext';
+import CustomLoader from '../../Component/CustomLoader';
 const height = Dimensions.get('screen').height;
 const Notifications = ({ navigation }: any) => {
   // const [notification, setNotification] = useState<any>([]);
@@ -51,8 +52,10 @@ const Notifications = ({ navigation }: any) => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    setLoading(true)
     setTimeout(() => {
       setRefreshing(false);
+      setLoading(false)
       setRefresh(!refresh)
     }, 2000);
   }, [refresh]);
@@ -175,11 +178,7 @@ const Notifications = ({ navigation }: any) => {
 
 
 
-  return loading ? (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <ActivityIndicator size="large" color="black" />
-    </View>
-  ) : (
+  return (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="Notifications" backBtn navigation={navigation} />
       <ScrollView
@@ -277,6 +276,7 @@ const Notifications = ({ navigation }: any) => {
           </View>
         )}
       </ScrollView>
+      <CustomLoader visible={loading} />
     </View>
   );
 };

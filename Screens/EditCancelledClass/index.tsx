@@ -7,6 +7,7 @@ import CustomHeader from "../../Component/Header";
 import AntDesign from "react-native-vector-icons/EvilIcons"
 import axios from "axios";
 import { Base_Uri } from "../../constant/BaseUri";
+import CustomLoader from "../../Component/CustomLoader";
 
 function EditCancelledClass({ navigation, route }: any) {
 
@@ -43,9 +44,9 @@ console.log(cancelledReason,"reason")
 
 
     return (
-        loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
-            <ActivityIndicator size="large" color={Theme.black} />
-        </View> :
+        // loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+        //     <ActivityIndicator size="large" color={Theme.black} />
+        // </View> :
          <KeyboardAvoidingView behavior="height" style={{ flex: 1, backgroundColor: Theme.white }} >
             <View>
                 <CustomHeader title="Edit Class" backBtn navigation={navigation} />
@@ -128,6 +129,7 @@ console.log(cancelledReason,"reason")
                     </View>
 
                 </View>
+                <CustomLoader visible={loading} />
             </ScrollView>
             <View style={{ width: "92%", alignItems: "center", marginBottom: 20,alignSelf:'center' }} >
                 <TouchableOpacity onPress={() => editTutorCancelledClass()} style={{ backgroundColor: Theme.darkGray, padding: 15, borderRadius: 10, width: "95%" }} >
