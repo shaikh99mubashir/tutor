@@ -86,7 +86,7 @@ const Signup = ({ navigation, route }: any) => {
 
     setLoading(true);
     console.log(formData, 'formData');
-
+    console.log("data.tutorDetailById[0]?.id",data.tutorDetailById[0]?.id);
     axios
       .post(`${Base_Uri}api/appTutorRegister`, formData, {
         headers: {
@@ -101,7 +101,8 @@ const Signup = ({ navigation, route }: any) => {
             'You have been successfully registered as tutor Login to continue',
             ToastAndroid.SHORT,
           );
-          // navigation.navigate('Login', data);
+            
+
           navigation.reset({
             index: 0,
             routes: [

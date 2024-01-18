@@ -71,6 +71,7 @@ function BottomNavigation({navigation,route}: any) {
           let tutorData = res.data;
           if (tutorData) {
             let allData = tutorData?.tutorDetailById[0];
+            
             setTutorDetail(allData);
           }
           return;
@@ -82,13 +83,14 @@ function BottomNavigation({navigation,route}: any) {
     getTutorData();
   }, []);
 
+  
   const initialRoute =
     tutorDetails?.status == 'unverified' ? 'JobTicket' : 'Home';
 
   const hideTabs =
     tutorDetails?.status == 'unverified' ? ['Schedule', 'Home', 'inbox'] : [];
 
-  console.log(tutorDetails, 'tutorDetails');
+  console.log(tutorDetails?.open_dashboard, '<---tutorDetails');
 
   return (
     <Tab.Navigator
@@ -149,7 +151,7 @@ function BottomNavigation({navigation,route}: any) {
           }}
         />
         {hideTabs.includes('Schedule') ||
-        tutorDetails?.status !== 'verified' ? null : (
+        tutorDetails?.status != 'verified' && tutorDetails?.open_dashboard != 'yes' ? null : (
           <Tab.Screen
             name="Schedule"
             component={Schedule}
@@ -199,7 +201,7 @@ function BottomNavigation({navigation,route}: any) {
           />
         )}
         {hideTabs.includes('Home') ||
-        tutorDetails?.status !== 'verified' ? null : (
+        tutorDetails?.status != 'verified' && tutorDetails?.open_dashboard != 'yes' ? null : (
           <Tab.Screen
             name="Home"
             component={Home}
@@ -246,7 +248,7 @@ function BottomNavigation({navigation,route}: any) {
           />
         )}
         {hideTabs.includes('inbox') ||
-        tutorDetails?.status !== 'verified' ? null : (
+        tutorDetails?.status != 'verified' && tutorDetails?.open_dashboard != 'yes' ? null : (
           <Tab.Screen
             name="inbox"
             component={Index}

@@ -429,7 +429,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
         ) : (
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <Image
-              source={require('../../Assets/Images/nojobticketavailable.png')}
+              source={require('../../Assets/Images/rnf-01.png')}
               style={{ width: 300, height: 300 }}
             />
           </View>

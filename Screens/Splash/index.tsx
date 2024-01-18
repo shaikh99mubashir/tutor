@@ -113,14 +113,12 @@ const Splash = ({navigation}: any) => {
               navigation.replace('Main', {
                 screen: 'Home',
               });
-              console.log(tutorData?.tutorDetailById[0]?.status, 'splash');
               return;
             }
             if (tutorData?.tutorDetailById[0]?.status === 'verified') {
               navigation.replace('Main', {
                 screen: 'Home',
               });
-              console.log(tutorData?.tutorDetailById[0]?.status, 'splash');
               return;
             }
             if (

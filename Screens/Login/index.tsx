@@ -34,7 +34,9 @@ const Login = ({ navigation }: any) => {
       setLoading(false);
       ToastAndroid.show('Request timeout: Please check your internet connection', ToastAndroid.SHORT);
     }, 30000);
-    const phoneNumberWithCountryCode = "+60" + phoneNumber;
+    const phoneNumberWithCountryCode = "+92" + phoneNumber;
+    console.log("phoneNumberWithCountryCode",phoneNumberWithCountryCode);
+    
     axios
       .get(`${Base_Uri}loginAPI/${phoneNumberWithCountryCode}`,{
           // Set the timeout for the API call
@@ -85,7 +87,7 @@ const Login = ({ navigation }: any) => {
       <View style={styles.container}>
         <View style={[styles.phoneNumberView, { flexDirection: 'row', alignItems: 'center', gap: 20, paddingHorizontal: 15, paddingVertical: 5 }]}>
           <Image source={require('../../Assets/Images/malalogo.png')} style={{ width: 30, height: 30 }} resizeMode='contain' />
-          <Text style={styles.textType3}>+60</Text>
+          <Text style={styles.textType3}>+92</Text>
           <TextInput
             placeholder='Enter Your Mobile Numberr'
             placeholderTextColor={Theme.black}

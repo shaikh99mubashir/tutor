@@ -23,7 +23,7 @@ import axios from 'axios';
 import messaging from '@react-native-firebase/messaging';
 const Verification = ({ navigation, route }: any) => {
   let data = route.params;
-console.log('data=============>Verification',data);
+  console.log('data=============>Verification', data);
 
   const [user, setUser] = useState(false);
   const CELL_COUNT = 6;
@@ -98,12 +98,12 @@ console.log('data=============>Verification',data);
 
     setLoading(true);
     console.log('Value', value);
-    
-    axios   
+
+    axios
       .get(`${Base_Uri}verificationCode/${value}`)
-      .then(({ data }:any) => {
-        // console.log('data.tutorID',data.tutorID);
-        
+      .then(({ data }: any) => {
+        console.log('data.tutorID',data.tutorID);
+
         if (data?.status !== 200) {
           setLoading(false);
           ToastAndroid.show(data?.errorMessage, ToastAndroid.SHORT);
@@ -122,21 +122,23 @@ console.log('data=============>Verification',data);
           sendDeviceTokenToDatabase(data.tutorID)
           axios
             .get(`${Base_Uri}getTutorDetailByID/${data?.tutorID}`)
-            .then(res => {
-              if(res.data.tutorDetailById== null){
+            .then((res) => {
+              console.log("res.data verification", res.data);
+
+              if (res.data.tutorDetailById == null) {
                 AsyncStorage.removeItem('loginAuth');
                 navigation.replace('Login');
                 ToastAndroid.show('Terminated', ToastAndroid.SHORT);
                 return
               }
               let tutorData = res.data;
-              console.log('tutorData',tutorData);
-              
+              console.log('tutorData', tutorData);
+
               if (
                 tutorData?.tutorDetailById[0]?.full_name == null && tutorData?.tutorDetailById[0]?.email == null
               ) {
                 navigation.replace('Signup', tutorData)
-               
+
               }
               else if(tutorData?.tutorDetailById[0]?.status === 'unverified' || tutorData?.tutorDetailById[0]?.status === 'verified'){
                

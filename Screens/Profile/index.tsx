@@ -249,10 +249,10 @@ const Profile = ({ navigation }: any) => {
           // }
           if (image) {
               imageUrl = image;
-            } else if (tutorDetail.tutorImage.includes('https')) {
-              imageUrl = tutorDetail.tutorImage;
+            } else if (tutorDetail?.tutorImage?.includes('https')) {
+              imageUrl = tutorDetail?.tutorImage;
             } else {
-              imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`;
+              imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail?.tutorImage}`;
             }
           console.log('imageUrl', imageUrl);
           ToastAndroid.show(
@@ -416,13 +416,13 @@ const Profile = ({ navigation }: any) => {
   }
 
 
-  if (image) {
-    imageUrl = image;
-  } else if (tutorDetail.tutorImage.includes('https')) {
-    imageUrl = tutorDetail.tutorImage;
-  } else {
-    imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`;
-  }
+  // if (image) {
+  //   imageUrl = image;
+  // } else if (tutorDetail?.tutorImage?.includes('https')) {
+  //   imageUrl = tutorDetail?.tutorImage;
+  // } else {
+  //   imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail?.tutorImage}`;
+  // }
 
    if (image) {
     imageUrl = image;

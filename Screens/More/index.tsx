@@ -356,6 +356,7 @@ function More({navigation}: any) {
             </TouchableOpacity>
           )}
           {/*AttendedClassRecords */}
+          {tutorDetails?.status == 'verified' && (
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => navigation.navigate('AttendedClassRecords')}
@@ -398,6 +399,7 @@ function More({navigation}: any) {
               resizeMode="contain"
             />
           </TouchableOpacity>
+          )}
           {/*Faq */}
           <TouchableOpacity
             activeOpacity={0.8}

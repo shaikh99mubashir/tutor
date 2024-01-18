@@ -1179,7 +1179,7 @@ function JobTicket({ navigation, route }: any) {
       </Modal> */}
       <BackToDashboard
         modalVisible={modalVisible}
-        handleGoToDashboard={HandelGoToDashboard}
+        handleGoToDashboard={() =>HandelGoToDashboard ()}
       />
       <CustomLoader visible={loading} />
       {/* <Modal visible={loading} animationType="fade" transparent={true}>

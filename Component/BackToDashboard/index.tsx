@@ -2,7 +2,7 @@ import { Modal, View, Text, TouchableOpacity,StyleSheet } from 'react-native';
 import React from 'react'
 import { Theme } from '../../constant/theme';
 
-const BackToDashboard = ({modalVisible, HandelGoToDashboard}:any) => {
+const BackToDashboard = ({modalVisible, handleGoToDashboard}:any) => {
   return (
     <Modal visible={modalVisible} animationType="fade" transparent={true}>
         <View
@@ -36,7 +36,7 @@ const BackToDashboard = ({modalVisible, HandelGoToDashboard}:any) => {
                 marginBottom: 20,
               }}>
               <TouchableOpacity
-                onPress={() => HandelGoToDashboard()}
+                onPress={handleGoToDashboard}
                 activeOpacity={0.8}
                 style={{
                   borderWidth: 1,
