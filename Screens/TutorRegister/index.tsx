@@ -24,6 +24,9 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import ModalImg from '../../Component/Modal/modal';
 const Signup = ({ navigation, route }: any) => {
   let data = route.params;
+
+  console.log("Signup datta",data);
+  
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [fullName, setFullName] = useState('');

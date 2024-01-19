@@ -94,7 +94,7 @@ const Splash = ({navigation}: any) => {
         axios
           .get(`${Base_Uri}getTutorDetailByID/${tutorData?.tutorID}`)
           .then(res => {
-            console.log('res---->',res.data.tutorDetailById);
+            // console.log('res---->',res.data.tutorDetailById);
             
             if(res.data.tutorDetailById== null){
               AsyncStorage.removeItem('loginAuth');
@@ -106,8 +106,18 @@ const Splash = ({navigation}: any) => {
 
             let tutorData = res.data;
             setTutorDetail(tutorData?.tutorDetailById[0]);
-            console.log('tutorData',tutorData);
+            // console.log('tutorData',tutorData);
             
+            if (
+                !tutorData.tutorDetailById[0]?.full_name &&
+                !tutorData.tutorDetailById[0]?.email
+              ) {
+                AsyncStorage.removeItem('loginAuth');
+                navigation.replace('Login');
+                setTutorDetail('')
+                return
+              }
+
             if (tutorData?.tutorDetailById[0]?.status === 'unverified') {
               // navigation.replace('JobTicket');
               navigation.replace('Main', {

@@ -272,7 +272,7 @@ function JobTicket({ navigation, route }: any) {
   };
 
   const getTicketsData = async () => {
-    setLoading(true);
+    // setLoading(true);
     let filter: any = await AsyncStorage.getItem('filter');
     if (filter) {
       filter = JSON.parse(filter);
@@ -388,9 +388,19 @@ function JobTicket({ navigation, route }: any) {
 
   useEffect(() => {
     if (tutorId) {
+      setLoading(true)
       checkTutorStatus();
       getTicketsData();
       getAppliedData();
+
+      const intervalId = setInterval(() => {
+        checkTutorStatus();
+        getTicketsData();
+        getAppliedData();
+      }, 30000); // 60000 milliseconds = 1 minute
+  
+      // Clean up the interval when the component unmounts or dependencies change
+      return () => clearInterval(intervalId);
     }
   }, [route, refresh, tutorId]);
 

@@ -667,7 +667,7 @@ function AddClass({ navigation }: any) {
               />
             )}
           </View>
-
+          {MAX_CLASSES > 0 && MAX_CLASSES > classes.length && (
           <View
             style={{
               width: '100%',
@@ -689,6 +689,7 @@ function AddClass({ navigation }: any) {
               </Text>
             </TouchableOpacity>
           </View>
+          )}
         </>
       ) : (
         // <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
