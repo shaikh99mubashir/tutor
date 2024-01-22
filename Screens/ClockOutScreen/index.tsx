@@ -99,6 +99,20 @@ function ClockOut({navigation, route}: any) {
         },
       })
       .then(res => {
+        ToastAndroid.show(res?.data?.errorMsg, ToastAndroid.SHORT);
+        if(res?.data?.errorMsg) {
+            // navigation.replace('Schedule');
+          navigation.navigate('Schedule');
+          console.log("running",res?.data?.errorMsg);
+          
+          // navigation.dispatch(
+          //   CommonActions.reset({
+          //     index: 0,
+          //     routes: [{name: 'Schedule'}],
+          //   }),
+          // );
+          return
+        }
         axios
           .get(`${Base_Uri}api/tutorFirstReportListing/${tutorID}`)
           .then(({data}:any) => {

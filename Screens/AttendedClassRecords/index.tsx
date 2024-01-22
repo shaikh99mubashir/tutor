@@ -383,7 +383,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
         <CustomLoader visible={loading} />
       <View style={{ paddingHorizontal: 15, marginTop: 20 }}>
         {/* Search */}
-        <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+        {/* <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <View
             style={{
               width: '100%',
@@ -416,7 +416,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
               }}
             />
           </View>
-        </View>
+        </View> */}
 
         {tutorRecord.length > 0 ? (
           <FlatList

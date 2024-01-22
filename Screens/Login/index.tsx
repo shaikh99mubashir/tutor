@@ -49,13 +49,13 @@ const Login = ({ navigation }: any) => {
           setLoading(false);
           console.log(data.status);
           
-          ToastAndroid.show(data.userStatus, ToastAndroid.SHORT);
+          ToastAndroid.show(data.msg, ToastAndroid.SHORT);
           return;
         }
         if (data?.status == 200) {
           // ToastAndroid.show(data.tutorDeviceToken, ToastAndroid.SHORT);
           ToastAndroid.show(
-            'Verification Code Successfully send to this mobile number',
+            'Enter verification code to continue.',
             ToastAndroid.SHORT,
           );
           navigation.navigate('Verification', data);

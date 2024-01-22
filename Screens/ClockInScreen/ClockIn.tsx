@@ -90,6 +90,8 @@ function ClockIn({navigation, route}: any) {
             type: assets[0].type,
             name: assets[0].fileName,
           });
+          // console.log("formData clock in",formData );
+          
           setLoading(true);
           axios
             .post(`${Base_Uri}api/attendedClassClockInTwo`, formData, {

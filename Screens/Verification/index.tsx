@@ -23,7 +23,7 @@ import axios from 'axios';
 import messaging from '@react-native-firebase/messaging';
 const Verification = ({ navigation, route }: any) => {
   let data = route.params;
-  console.log('data=============>Verification', data);
+  // console.log('data=============>Verification', data);
 
   const [user, setUser] = useState(false);
   const CELL_COUNT = 6;
@@ -124,7 +124,7 @@ const Verification = ({ navigation, route }: any) => {
             .get(`${Base_Uri}getTutorDetailByID/${data?.tutorID}`)
             .then((res) => {
               console.log("res.data verification", res.data);
-
+              
               if (res.data.tutorDetailById == null) {
                 AsyncStorage.removeItem('loginAuth');
                 navigation.replace('Login');
@@ -132,20 +132,27 @@ const Verification = ({ navigation, route }: any) => {
                 return
               }
               let tutorData = res.data;
-              console.log('tutorData', tutorData);
+              console.log(" tutorData?.tutorDetailById[0]?.status", tutorData?.tutorDetailById[0]?.status );
+              // console.log('tutorData', tutorData);
 
               if (
                 tutorData?.tutorDetailById[0]?.full_name == null && tutorData?.tutorDetailById[0]?.email == null
               ) {
                 navigation.replace('Signup', tutorData)
-
               }
               else if(tutorData?.tutorDetailById[0]?.status === 'unverified' || tutorData?.tutorDetailById[0]?.status === 'verified'){
                
-                navigation.replace('Main', {
-                  screen: 'Home',
+                // navigation.replace('Main', {
+                //   screen: 'Home',
+                // });
+                console.log('====================================');
+                console.log("running");
+                console.log('============   ========================');
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'Main' }],
                 });
-                ToastAndroid.show(`Login Successfully ${data.tutorID}`, ToastAndroid.SHORT);
+                ToastAndroid.show(`Login Successfully`, ToastAndroid.SHORT);
               }
               // else (tutorData?.tutorDetailById[0]?.status === 'unverified' || tutorData?.tutorDetailById[0]?.status === 'verified') 
               // {

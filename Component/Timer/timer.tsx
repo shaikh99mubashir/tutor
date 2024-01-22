@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react"
-import { Text } from "react-native";
+import { Text,View } from "react-native";
 import { Theme } from "../../constant/theme";
 import noteContext from "../../context/noteContext"
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -40,8 +40,14 @@ function Timer({ show }: any):any {
 
 
     return (
-
-        show == "true" && <Text style={{ textAlign: "center", fontSize: 35, color: Theme.black, fontWeight: "800",fontFamily: 'Circular Std Medium' }} >{hour.toString().length == 1 ? `0${hour}` : hour}:{minutes.toString().length == 1 ? `0${minutes}` : minutes}:{seconds.toString().length == 1 ? `0${seconds}` : seconds}<Text style={{ fontSize: 16, color: Theme.gray, fontWeight: "500",fontFamily: 'Circular Std Medium' }} >s</Text> </Text>
+        <View style={{alignItems:'center',justifyContent:'center'}}>
+            <Text style={{fontSize: 16, color: Theme.black,fontFamily: 'Circular Std Medium', left:-10 }} >
+            Timer
+        </Text>    
+        {
+            show == "true" && <Text style={{ textAlign: "center", fontSize: 35, color: Theme.black, fontWeight: "800",fontFamily: 'Circular Std Medium' }} >{hour.toString().length == 1 ? `0${hour}` : hour}:{minutes.toString().length == 1 ? `0${minutes}` : minutes}:{seconds.toString().length == 1 ? `0${seconds}` : seconds}<Text style={{ fontSize: 16, color: Theme.gray, fontWeight: "500",fontFamily: 'Circular Std Medium' }} >s</Text> </Text>
+        }
+        </View>
 
     )
 
