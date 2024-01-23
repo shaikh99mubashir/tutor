@@ -323,7 +323,7 @@ console.log("data",data);
     // formData.append("studentID", data.studentID)
     // formData.append("studentID", student.studentID)
     // formData.append("subjectID", data.subjectID)
-  console.log(data.class_schedule_id, "data.class_schedule_id")
+  console.log(data?.class_schedule_id, "data.class_schedule_id")
   // console.log(data.studentID, "data.studentID")
   // console.log(student.studentID, "student.studentID")
 
@@ -331,39 +331,45 @@ console.log("data",data);
 
 
     if (evaluation.option == "Progress Report") {
-
-      if (!tutorId || !student.studentID || !selectedMonth || !perQ1 || !perQ2 || !perQ3 || !perQ4
+      console.log("tutorId",tutorId);
+      console.log("student.studentID",student.studentID);
+      console.log("selectedMonth",selectedMonth);
+      
+      if (!tutorId || !data?.studentID || !selectedMonth || !perQ1 || !perQ2 || !perQ3 || !perQ4
         || !attQ1 || !attQ2 || !attQ3 || !attQ4 || !rulQ1 || !rulQ2 || !rulQ3 || !rulQ4) {
         ToastAndroid.show("Required Fields are missing", ToastAndroid.SHORT)
         return
       }
 
+      console.log("working");
+      
       setLoading(true)
 
       let formData = new FormData()
-
+        console.log("form data progress report",formData);
+        
       formData.append("tutorID", tutorId)
-      formData.append("studentID", student.studentID)
-      formData.append("subjectID", subject.id)
-      formData.append("reportType", evaluation.option)
-      formData.append("month", selectedMonth.option)
+      formData.append("studentID", data?.studentID)
+      formData.append("subjectID", data?.subjectID)
+      formData.append("reportType", evaluation?.option)
+      formData.append("month", selectedMonth?.option)
       formData.append("rate_student_understanding_on_this_subject", perQ1?.option)
       formData.append("how_is_the_student_performance_on_homework", perQ2?.option)
       formData.append("how_well_student_participates_in_learning_session", perQ3?.option)
       formData.append("how_well_student_answers", perQ4?.option)
-      formData.append('how_you_can_rate_student_attendance_for_3_months', attQ1.option)
-      formData.append('how_well_do_you_interact_with_studyent_during_class', attQ2.option)
-      formData.append('how_well_the_student_manages_his_time_tomplete_his_homework', attQ3.option)
-      formData.append('how_well_the_student_respondes_when_corrected', attQ4.option)
-      formData.append('rate_the_student_performance_in_quizzes', rulQ1.option)
-      formData.append('how_well_the_student_prepares_for_test_and_assignment', rulQ2.option)
-      formData.append('rate_student_learning_preferences_willingness_to_learn_and_inter', rulQ4.option)
-      formData.append('did_you_hold_or_carried_out_any_form_of_examination_for_the_stud', rulQ4.option)
-      formData.append('how_do_you_rate_student_performance_based_on_this_test', observation.obv1)
-      formData.append('which_topic_has_the_student_showed_some_significant_improvement', observation.obv2)
-      formData.append('can_you_determine_and_name_the_topic_that_the_student_should_imp', observation.obv3)
-      formData.append('please_elaborate_your_plan_for_the_student_in_3_months_time_from', observation.obv4)
-
+      formData.append('how_you_can_rate_student_attendance_for_3_months', attQ1?.option)
+      formData.append('how_well_do_you_interact_with_studyent_during_class', attQ2?.option)
+      formData.append('how_well_the_student_manages_his_time_tomplete_his_homework', attQ3?.option)
+      formData.append('how_well_the_student_respondes_when_corrected', attQ4?.option)
+      formData.append('rate_the_student_performance_in_quizzes', rulQ1?.option)
+      formData.append('how_well_the_student_prepares_for_test_and_assignment', rulQ2?.option)
+      formData.append('rate_student_learning_preferences_willingness_to_learn_and_inter', rulQ4?.option)
+      formData.append('did_you_hold_or_carried_out_any_form_of_examination_for_the_stud', rulQ4?.option)
+      formData.append('how_do_you_rate_student_performance_based_on_this_test', observation?.obv1)
+      formData.append('which_topic_has_the_student_showed_some_significant_improvement', observation?.obv2)
+      formData.append('can_you_determine_and_name_the_topic_that_the_student_should_imp', observation?.obv3)
+      formData.append('please_elaborate_your_plan_for_the_student_in_3_months_time_from', observation?.obv4)
+      console.log("form data progress report===========>",formData);
 
       axios.post(`${Base_Uri}api/progressReport`, formData, {
         headers: {
@@ -380,6 +386,8 @@ console.log("data",data);
       })
       return
     }
+
+    
     if (!tutorId || !data.studentID || !data.subjectID || !evaluation?.option || !knowledgeAnswer?.option || !understandingAnswer?.option || !analysisAnswer?.option) {
       ToastAndroid.show("Required Fields are missing", ToastAndroid.SHORT)
       return
@@ -392,20 +400,19 @@ console.log("data",data);
     let formData = new FormData()
 
     formData.append("tutorID", tutorId)
-    formData.append("scheduleID", data.class_schedule_id)
-    formData.append("studentID", data.studentID)
+    formData.append("scheduleID", data?.class_schedule_id)
+    formData.append("studentID", data?.studentID)
     // formData.append("studentID", student.studentID)
-    formData.append("subjectID", data.subjectID)
+    formData.append("subjectID", data?.subjectID)
     // formData.append("subjectID", subject.id)
     // formData.append("currentDate", year + '/' + month + '/' + day)
     formData.append("currentDate", formattedDateFirstClass)
-    formData.append("reportType", evaluation.option)
-    formData.append("knowledge", knowledgeAnswer.option)
-    formData.append("understanding", understandingAnswer.option)
-    formData.append("analysis", analysisAnswer.option)
-    formData.append("additionalAssisment", questions.addationalAssessments)
-    formData.append("plan", questions.plan)
-    console.log('formData',formData);
+    formData.append("reportType", evaluation?.option)
+    formData.append("knowledge", knowledgeAnswer?.option)
+    formData.append("understanding", understandingAnswer?.option)
+    formData.append("analysis", analysisAnswer?.option)
+    formData.append("additionalAssisment", questions?.addationalAssessments)
+    formData.append("plan", questions?.plan)
     
     axios.post(`${Base_Uri}api/tutorFirstReport`, formData, {
       headers: {

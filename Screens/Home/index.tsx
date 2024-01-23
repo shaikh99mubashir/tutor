@@ -236,7 +236,7 @@ function Home({navigation, route}: any) {
     }
   }, [tutorId]);
 
-  console.log(tutorDetails, 'details');
+  // console.log(tutorDetails, 'details');
 
   useEffect(() => {
     getTutorId();

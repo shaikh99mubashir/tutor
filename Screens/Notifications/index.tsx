@@ -144,36 +144,22 @@ const Notifications = ({ navigation }: any) => {
         //   .catch(error => {
         //     ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
         //   });
-
       }).catch((error) => {
-
         ToastAndroid.show("Nework Error", ToastAndroid.SHORT)
       })
-
     } else {
-
       item.status = "attended"
       item.id = item?.class_schedule_id
-      navigation.navigate("EditAttendedClass", { data: item })
-
-
+      // navigation.navigate("EditAttendedClass", { data: item })
       axios.get(`${Base_Uri}api/updateNotificationStatus/${item.notificationID}/old`).then((res) => {
-
         let updateNotifications = notification.filter((e: any, i: number) => {
           return e.notificationID !== item?.notificationID
         })
-
         setNotification(updateNotifications)
-
       }).catch((error) => {
-
         ToastAndroid.show("Nework Error", ToastAndroid.SHORT)
       })
-
-
-
     }
-
   }
 
 
@@ -224,7 +210,7 @@ const Notifications = ({ navigation }: any) => {
                             fontWeight: '600',
                             marginTop: 5,
                             width: '75%',
-                            fontFamily: 'Circular Std Black'
+                            fontFamily: 'Circular Std Medium'
                           }}>
                           {item.notificationType ?? "Update Schedule Classs"}
                         </Text>
@@ -235,7 +221,7 @@ const Notifications = ({ navigation }: any) => {
                           fontSize: 14,
                           fontWeight: '600',
                           marginTop: 10,
-                          fontFamily: 'Circular Std Black'
+                          fontFamily: 'Circular Std Medium'
                         }}>
                         {item.notificationMessage ?? `Update Schedule Class, Tutor Name: ${tutorDetails?.full_name}, Student Name: ${item?.studentName}, Subject Name: ${item?.subjectName}`}
                       </Text>
@@ -245,7 +231,7 @@ const Notifications = ({ navigation }: any) => {
                           fontSize: 12,
                           fontWeight: '600',
                           marginTop: 5,
-                          fontFamily: 'Circular Std Black'
+                          fontFamily: 'Circular Std Medium'
                         }}>
                         {item.notificationProgressReportMonth}
                       </Text>
@@ -272,7 +258,7 @@ const Notifications = ({ navigation }: any) => {
               height: height / 1.5,
             }}>
             <AntDesign name="copy1" size={20} color={Theme.gray} />
-            <Text style={{ color: Theme.gray,fontFamily: 'Circular Std Black' }}>There are no Notifications</Text>
+            <Text style={{ color: Theme.gray,fontFamily: 'Circular Std Medium' }}>There are no Notifications</Text>
           </View>
         )}
       </ScrollView>
