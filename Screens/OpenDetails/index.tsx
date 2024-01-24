@@ -333,7 +333,6 @@ const OpenDetails = ({ route, navigation }: any) => {
                     <AntDesign
                       name="calendar"
                       size={20}
-                      
                       color={'#298CFF'}
                     />
                     <Text style={[styles.textType3, { color: '#298CFF' }]}>{data?.classDay}</Text>
