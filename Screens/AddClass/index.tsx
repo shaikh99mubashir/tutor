@@ -681,8 +681,11 @@ function AddClass({ navigation }: any) {
                 backgroundColor: Theme.darkGray,
                 padding: 15,
                 borderRadius: 10,
-                width: '95%',
-              }}>
+                width: '90%',
+                opacity: classes.length > 0 ? 1 : 0.7,
+              }}
+              disabled={classes.length === 0}
+              >
               <Text
                 style={{ textAlign: 'center', fontSize: 14, color: Theme.white }}>
                 Confirm Class

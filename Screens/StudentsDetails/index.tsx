@@ -38,7 +38,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
 
     const url = Platform.OS === 'ios'
       ? `whatsapp://send?phone=${data.studentWhatsapp}`
-      : `whatsapp://send?text=Hello&phone=${"+921234567890"}`;
+      : `whatsapp://send?text=Hello&phone=${"+601234567890"}`;
 
     Linking.openURL(url);
   }

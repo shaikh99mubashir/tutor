@@ -72,14 +72,14 @@ function ClockOut({navigation, route}: any) {
   // }, [])
 
   // console.log(tutorID, 'iddddd');
-  console.log(items?.studentName, 'items?.class_schedule_id');
-  console.log(items?.studentID, 'items?.class_schedule_id');
-  console.log(items?.subjectID, 'items?.class_schedule_id');
+  // console.log(items?.studentName, 'items?.class_schedule_id');
+  // console.log(items?.studentID, 'items?.class_schedule_id');
+  // console.log(items?.subjectID, 'items?.class_schedule_id');
   const handleClockOutPress = async () => {
     setLoading(true);
     let formData = new FormData();
 
-    console.log(data?.class_schedule_id, 'data?.class_schedule_id');
+    // console.log(data?.class_schedule_id, 'data?.class_schedule_id');
 
     formData.append('id', data?.classAttendedID);
     formData.append('class_schedule_id', data?.class_schedule_id);
@@ -103,7 +103,7 @@ function ClockOut({navigation, route}: any) {
         if(res?.data?.errorMsg) {
             // navigation.replace('Schedule');
           navigation.navigate('Schedule');
-          console.log("running",res?.data?.errorMsg);
+          // console.log("running",res?.data?.errorMsg);
           
           // navigation.dispatch(
           //   CommonActions.reset({
@@ -123,7 +123,7 @@ function ClockOut({navigation, route}: any) {
               tutorReportListing &&
               tutorReportListing?.length > 0 &&
               tutorReportListing.filter((e: any, i: number) => {
-                console.log('e========>',e);
+                // console.log('e========>',e);
                 
                 return items.class_schedule_id == e.scheduleID;
               });

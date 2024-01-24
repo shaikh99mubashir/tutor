@@ -21,9 +21,10 @@ import { Theme } from '../../constant/theme';
 import { Base_Uri } from '../../constant/BaseUri';
 import axios from 'axios';
 import messaging from '@react-native-firebase/messaging';
+import CustomLoader from '../../Component/CustomLoader';
 const Verification = ({ navigation, route }: any) => {
   let data = route.params;
-  // console.log('data=============>Verification', data);
+  // console.log('data=============>Verification', data?.tutorDetail?.phoneNumber);
 
   const [user, setUser] = useState(false);
   const CELL_COUNT = 6;
@@ -123,7 +124,7 @@ const Verification = ({ navigation, route }: any) => {
           axios
             .get(`${Base_Uri}getTutorDetailByID/${data?.tutorID}`)
             .then((res) => {
-              console.log("res.data verification", res.data);
+              // console.log("res.data verification", res.data);
               
               if (res.data.tutorDetailById == null) {
                 AsyncStorage.removeItem('loginAuth');
@@ -145,9 +146,6 @@ const Verification = ({ navigation, route }: any) => {
                 // navigation.replace('Main', {
                 //   screen: 'Home',
                 // });
-                console.log('====================================');
-                console.log("running");
-                console.log('============   ========================');
                 navigation.reset({
                   index: 0,
                   routes: [{ name: 'Main' }],
@@ -211,17 +209,16 @@ const Verification = ({ navigation, route }: any) => {
 
   const handleResendPress = () => {
     let { UserDetail } = data;
-    console.log('UserDetail.phoneNumber', UserDetail.phoneNumber);
-
+    console.log('UserDetail.phoneNumber', data?.tutorDetail?.phoneNumber);
     setResendLoading(true);
 
     axios
-      .get(`${Base_Uri}loginAPI/${UserDetail.phoneNumber}`)
+      .get(`${Base_Uri}loginAPI/${data?.tutorDetail?.phoneNumber}`)
       .then(({ data }) => {
         if (data?.status == 200) {
           setResendLoading(false);
           ToastAndroid.show(
-            'Verification Code Successfully resend',
+            'Verification Code Resend Successfully',
             ToastAndroid.SHORT,
           );
           return;
@@ -250,13 +247,12 @@ const Verification = ({ navigation, route }: any) => {
         noSignUp
         title="Verification"
       />
-      <View style={{ marginVertical: 10, paddingHorizontal: 15 }}>
+      <View style={{ marginVertical: 10, paddingHorizontal: 15,marginTop:30 }}>
         <Text
           style={{
-            fontFamily: 'Poppins-Regular',
+            fontFamily: 'Circular Std Medium',
             color: Theme.gray,
             fontSize: 16,
-            fontWeight: 'bold',
             textAlign: 'center',
           }}>
           Enter Verification Code
@@ -291,26 +287,28 @@ const Verification = ({ navigation, route }: any) => {
             style={{
               color: Theme.gray,
               fontSize: 15,
-              fontFamily: 'Poppins-Regular',
+              fontFamily: 'Circular Std Medium',
             }}>
             If you didn,t receive a code!
-            {resendLoading ? (
+            {/* {resendLoading ? (
+              <View style={{margin:10}}>
               <ActivityIndicator color={Theme.black} size="small" />
-            ) : (
+              </View>
+            ) : ( */}
               <Text
                 style={{
                   color: Theme.darkGray,
                   fontSize: 15,
-                  fontFamily: 'Poppins-SemiBold',
+                  fontFamily: 'Circular Std Medium',
                 }}>
                 {' '}
                 Resend{' '}
               </Text>
-            )}
+            {/* )} */}
           </Text>
         </TouchableOpacity>
       </View>
-
+      <CustomLoader visible={resendLoading} />   
       {/* Verify Button */}
       <View
         style={{
@@ -335,7 +333,7 @@ const Verification = ({ navigation, route }: any) => {
               style={{
                 color: 'white',
                 fontSize: 18,
-                fontFamily: 'Poppins-Regular',
+                fontFamily: 'Circular Std Medium',
               }}>
               Verify
             </Text>
@@ -365,6 +363,7 @@ const styles = StyleSheet.create({
     borderColor: Theme.darkGray,
     justifyContent: 'center',
     alignItems: 'center',
+    fontFamily: 'Circular Std Medium',
   },
   codeFieldRoot: {
     marginTop: 20,

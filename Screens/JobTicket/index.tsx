@@ -1074,8 +1074,8 @@ function JobTicket({ navigation, route }: any) {
             firstRoute={firstRoute}
             secondRoute={secondRoute}
             activateTab={activateTab}
-            firstRouteTitle="Open"
-            secondRouteTitle="Applied"
+            firstRouteTitle="Latest"
+            secondRouteTitle={`Applied (${appliedData.length ? appliedData.length : 0})`}
           />
         </View>
       </ScrollView>

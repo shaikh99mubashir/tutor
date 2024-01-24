@@ -224,6 +224,31 @@ const OpenDetails = ({ route, navigation }: any) => {
                 marginTop: 10,
                 borderRadius: 12,
               }}>
+                 <View
+                style={{
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    gap: 12,
+                    paddingBottom:15,
+                  }}>
+                  <FontAwesome
+                    name="level-up"
+                    size={22}
+                    color={'#298CFF'}
+                  />
+                  <Text style={styles.textType3}>Level</Text>
+                </View>
+                <Text style={[styles.textType1, { fontSize: 18 }]}>
+                {data?.categoryName}
+                </Text>
+              </View>
               <View
                 style={{
                   justifyContent: 'space-between',
@@ -239,7 +264,7 @@ const OpenDetails = ({ route, navigation }: any) => {
                   }}>
                   <AntDesign
                     name="copy1"
-                    size={20}
+                    size={18}
                     color={'#298CFF'}
                   />
                   <Text style={styles.textType3}>Subject</Text>
@@ -248,12 +273,14 @@ const OpenDetails = ({ route, navigation }: any) => {
                   {data?.subject_name}
                 </Text>
               </View>
+             
               <View
                 style={{
                   justifyContent: 'space-between',
                   flexDirection: 'row',
                   alignItems: 'center',
                   marginTop: 10,
+                  paddingBottom:15
                 }}>
                 <View
                   style={{
@@ -269,11 +296,11 @@ const OpenDetails = ({ route, navigation }: any) => {
                   />
                   <Text style={styles.textType3}>Pref. Tutor</Text>
                 </View>
-                <Text style={[styles.textType1, { fontSize: 18 }]}>
+                <Text style={[styles.textType1, { fontSize: 18 ,textTransform:'capitalize'}]}>
                   {data?.tutorPereference}
                 </Text>
               </View>
-              <View
+              {/* <View
                 style={{
                   justifyContent: 'space-between',
                   flexDirection: 'row',
@@ -298,7 +325,7 @@ const OpenDetails = ({ route, navigation }: any) => {
                 <Text style={[styles.textType1, { fontSize: 18 }]}>
                   {data?.categoryName}
                 </Text>
-              </View>
+              </View> */}
 
               <View style={{ flexDirection: 'row', gap: 10, paddingTop: 15, borderTopWidth: 1, borderTopColor: 'gray' }}>
                 <View style={{ backgroundColor: "#E6F2FF", paddingVertical: 10, borderRadius: 10 }}>
@@ -306,6 +333,7 @@ const OpenDetails = ({ route, navigation }: any) => {
                     <AntDesign
                       name="calendar"
                       size={20}
+                      
                       color={'#298CFF'}
                     />
                     <Text style={[styles.textType3, { color: '#298CFF' }]}>{data?.classDay}</Text>

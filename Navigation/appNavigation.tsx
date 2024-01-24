@@ -90,7 +90,7 @@ function BottomNavigation({navigation,route}: any) {
   const hideTabs =
     tutorDetails?.status == 'unverified' ? ['Schedule', 'Home', 'inbox'] : [];
 
-  console.log(tutorDetails?.open_dashboard, '<---tutorDetails');
+  console.log(tutorDetails, '<---tutorDetails');
 
   return (
     <Tab.Navigator

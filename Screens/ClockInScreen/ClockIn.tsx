@@ -20,7 +20,7 @@ import CustomLoader from '../../Component/CustomLoader';
 
 function ClockIn({navigation, route}: any) {
   let item = route.params;
-  console.log('item setUpcomingClass',item);
+  // console.log('item setUpcomingClass',item);
   
   const [loading, setLoading] = useState(false);
 
@@ -69,7 +69,9 @@ function ClockIn({navigation, route}: any) {
 
           let startMinutes = new Date().getHours();
           let startSeconds = new Date().getMinutes();
-
+          console.log("startMinutes",startMinutes);
+          console.log("startSeconds",startSeconds);
+          
           let data: any = {
             id: item?.id,
             class_schedule_id: item?.class_schedule_id,
@@ -77,6 +79,8 @@ function ClockIn({navigation, route}: any) {
             startSeconds: startSeconds,
             hasIncentive: item?.hasIncentive ? item?.hasIncentive : 0,
           };
+          // console.log("data clockin",data);
+          
 
           let formData = new FormData();
 
