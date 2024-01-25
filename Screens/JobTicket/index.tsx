@@ -53,7 +53,7 @@ function JobTicket({ navigation, route }: any) {
   const [refresh, setRefresh] = useState(false);
   const tutor = useContext(TutorDetailsContext);
   const [modalVisible, setModalVisible] = useState(false);
-  let { tutorDetails, updateTutorDetails,setTutorDetail } = tutor;
+  let { tutorDetails, updateTutorDetails, setTutorDetail } = tutor;
   const [currentTab, setCurrentTab]: any = useState([
     {
       index: 0,
@@ -231,7 +231,7 @@ function JobTicket({ navigation, route }: any) {
       .then(({ data }) => {
         let { tutorDetailById } = data;
         let tutorDetails = tutorDetailById[0];
-        if(data.tutorDetailById== null){
+        if (data.tutorDetailById == null) {
           AsyncStorage.removeItem('loginAuth');
           navigation.replace('Login');
           setTutorDetail('')
@@ -398,7 +398,7 @@ function JobTicket({ navigation, route }: any) {
         getTicketsData();
         getAppliedData();
       }, 30000); // 60000 milliseconds = 1 minute
-  
+
       // Clean up the interval when the component unmounts or dependencies change
       return () => clearInterval(intervalId);
     }
@@ -472,6 +472,7 @@ function JobTicket({ navigation, route }: any) {
             marginBottom: 10,
             padding: 20,
             borderColor: Theme.lightGray,
+            borderBottomColor: Theme.lightGray,
             backgroundColor: Theme.white,
           }}>
           <View
@@ -479,22 +480,14 @@ function JobTicket({ navigation, route }: any) {
               flexDirection: 'row',
               justifyContent: 'space-between',
               width: '100%',
-              borderBottomWidth: 2,
-              paddingBottom: 20,
-              borderBottomColor: Theme.lightGray,
+              borderColor: Theme.lightGray,
             }}>
             <View>
               <Text style={styles.textType3}>{item?.jtuid}</Text>
               <Text style={[styles.textType1, { lineHeight: 30 }]}>
                 RM {item?.price}
               </Text>
-              <View
-                style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
-                <Feather name="map-pin" size={18} color={'#298CFF'} />
-                <Text style={[styles.textType3, { color: '#003E9C' }]}>
-                  {item?.city}
-                </Text>
-              </View>
+
             </View>
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
               <Text
@@ -513,7 +506,16 @@ function JobTicket({ navigation, route }: any) {
               </Text>
             </View>
           </View>
-
+          <View
+            style={{
+              flexDirection: 'row', gap: 10, alignItems: 'center', borderBottomWidth: 2,
+              paddingBottom: 20, borderColor: Theme.lightGray,
+            }}>
+            <Feather name="map-pin" size={18} color={'#298CFF'} />
+            <Text style={[styles.textType3, { color: '#003E9C' }]}>
+              {item?.city}
+            </Text>
+          </View>
           <View
             style={{
               paddingVertical: 20,
@@ -695,30 +697,19 @@ function JobTicket({ navigation, route }: any) {
               flexDirection: 'row',
               justifyContent: 'space-between',
               width: '100%',
-              borderBottomWidth: 2,
-              paddingBottom: 20,
-              borderBottomColor: Theme.lightGray,
+
+
             }}>
             <View>
               <Text style={styles.textType3}>{item?.jtuid}</Text>
               <Text
                 style={[
                   styles.textType1,
-                  { lineHeight: 30, textTransform: 'capitalize' },
+                  { lineHeight: 30, },
                 ]}>
                 RM {item?.price}
               </Text>
-              <View
-                style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
-                <Feather name="map-pin" size={18} color={'#298CFF'} />
-                <Text
-                  style={[
-                    styles.textType3,
-                    { color: '#003E9C', textTransform: 'capitalize' },
-                  ]}>
-                  {item?.city}
-                </Text>
-              </View>
+
             </View>
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
               <Text
@@ -737,7 +728,20 @@ function JobTicket({ navigation, route }: any) {
               </Text>
             </View>
           </View>
-
+          <View
+            style={{
+              flexDirection: 'row', gap: 10, alignItems: 'center', borderBottomWidth: 2,
+              borderBottomColor: Theme.lightGray, paddingBottom: 15,
+            }}>
+            <Feather name="map-pin" size={18} color={'#298CFF'} />
+            <Text
+              style={[
+                styles.textType3,
+                { color: '#003E9C', textTransform: 'capitalize' },
+              ]}>
+              {item?.city}
+            </Text>
+          </View>
           <View
             style={{
               paddingVertical: 20,
@@ -1189,7 +1193,7 @@ function JobTicket({ navigation, route }: any) {
       </Modal> */}
       <BackToDashboard
         modalVisible={modalVisible}
-        handleGoToDashboard={() =>HandelGoToDashboard ()}
+        handleGoToDashboard={() => HandelGoToDashboard()}
       />
       <CustomLoader visible={loading} />
       {/* <Modal visible={loading} animationType="fade" transparent={true}>

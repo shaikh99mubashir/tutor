@@ -117,7 +117,7 @@ function ClockOut({navigation, route}: any) {
           .get(`${Base_Uri}api/tutorFirstReportListing/${tutorID}`)
           .then(({data}:any) => {
             let {tutorReportListing} = data;
-            console.log('tutorReportListing',tutorReportListing);
+            // console.log('tutorReportListing',tutorReportListing);
             
             let thisClass =
               tutorReportListing &&
