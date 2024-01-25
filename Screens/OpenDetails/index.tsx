@@ -155,6 +155,32 @@ const OpenDetails = ({ route, navigation }: any) => {
                 marginTop: 10,
                 borderRadius: 12,
               }}>
+                <View
+                style={{
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  paddingBottom:15,
+                }}>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    gap: 10,
+                
+                  }}>
+                  <FontAwesome
+                    name="user-o"
+                    size={18}
+                    color={'#298CFF'}
+                  />
+                  <Text style={styles.textType3}>Student Name</Text>
+                </View>
+                <Text style={[styles.textType1, { fontSize: 18,textTransform:'capitalize' }]}>
+                  {data?.studentName}
+                </Text>
+              </View>
               <View
                 style={{
                   justifyContent: 'space-between',
@@ -166,7 +192,7 @@ const OpenDetails = ({ route, navigation }: any) => {
                     alignItems: 'center',
                     justifyContent: 'center',
                     flexDirection: 'row',
-                    gap: 10,
+                    gap: 8,
                   }}>
                   <FontAwesome
                     name="graduation-cap"
