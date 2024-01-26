@@ -919,13 +919,16 @@ function JobTicket({ navigation, route }: any) {
         </View>
 
         {openData.length > 0 ? (
+          <View>
+
           <FlatList
             data={searchText && foundName.length > 0 ? foundName : openData}
             renderItem={renderOpenData}
             scrollEnabled={true}
             nestedScrollEnabled={true}
             keyExtractor={(items: any, index: number): any => index}
-          />
+            />
+            </View>
         ) : (
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <Image
@@ -970,12 +973,15 @@ function JobTicket({ navigation, route }: any) {
           </View>
         </View>
         {appliedData && appliedData.length > 0 ? (
+          <View>
+
           <FlatList
             data={searchText && foundName.length > 0 ? foundName : appliedData}
             renderItem={renderCloseData}
             nestedScrollEnabled={true}
             keyExtractor={(items: any, index: number): any => index}
-          />
+            />
+            </View>
         ) : (
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             {/* <Text

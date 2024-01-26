@@ -245,8 +245,10 @@ function Index({ navigation }: any) {
       <View>
         <CustomHeader title="Inbox" />
       </View>
-
+      <View>
       <FlatList data={inboxData} renderItem={renderInboxData} />
+      </View>
+
       {Object.keys(inboxBanner).length > 0 &&
         (inboxBanner.tutorStatusCriteria == 'All' ||
           tutorDetails.status == 'verified') && (

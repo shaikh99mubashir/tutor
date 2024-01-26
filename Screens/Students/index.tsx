@@ -216,6 +216,7 @@ const Students = ({ navigation }: any) => {
           </View>
 
           {students && students.length > 0 ? (
+            <View>
             <FlatList
               data={searchText && foundName.length > 0 ? foundName : students}
               nestedScrollEnabled
@@ -263,6 +264,7 @@ const Students = ({ navigation }: any) => {
                 );
               }}
             />
+            </View>
           ) : (
             <View style={{ marginTop: 35 }}>
               <Text

@@ -50,9 +50,9 @@ const AttendedClassRecords = ({navigation,route}:any) => {
         try {
             let recordStatus: any = await AsyncStorage.getItem('ClassRecordsFilter');
             let status = JSON.parse(recordStatus);
-            console.log('status recordAttendedClassRecords', status);
+            // console.log('status recordAttendedClassRecords', status);
           } catch (error) {
-            console.error('Error retrieving data from AsyncStorage:', error);
+            // console.error('Error retrieving data from AsyncStorage:', error);
           }
 
       }
@@ -82,18 +82,18 @@ const AttendedClassRecords = ({navigation,route}:any) => {
       const login: any = await AsyncStorage.getItem('loginAuth');
       let loginData: LoginAuth = JSON.parse(login);
       let { tutorID } = loginData;
-      console.log("tutorID",tutorID);
+      // console.log("tutorID",tutorID);
 
       let recordsStatus: any = await AsyncStorage.getItem('ClassRecordsFilter');
       let status = JSON.parse(recordsStatus);
-      console.log("status",status);
+      // console.log("status",status);
       
       if (status) {
         axios
           .get(`${Base_Uri}getClassAttendedTime/${tutorID}`)
           .then(({ data }) => {
             let { classAttendedTime } = data;
-            console.log("classAttendedTime",classAttendedTime);
+            // console.log("classAttendedTime",classAttendedTime);
             
             let records =
               classAttendedTime &&
@@ -106,7 +106,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                 );
               });
 
-              console.log("records",records);
+              // console.log("records",records);
               
             setTutorRecord(records);
             setLoading(false);
@@ -124,12 +124,13 @@ const AttendedClassRecords = ({navigation,route}:any) => {
       axios
           .get(`${Base_Uri}getClassAttendedTime/${tutorID}`)
           .then(({ data }) => {
-              console.log("data",data.classAttendedTime);
+              // console.log("data",data.classAttendedTime);
               setTutorRecord(data?.classAttendedTime)
               setLoading(false)
           })
           .catch((error)=>{
-            console.log("error",error);
+            // console.log("error",error);
+            ToastAndroid.show('Network Error', ToastAndroid.LONG);
             setLoading(false)
           })
     }
@@ -419,6 +420,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
         </View> */}
 
         {tutorRecord.length > 0 ? (
+          <View>
           <FlatList
             data={tutorRecord}
             renderItem={renderRecords}
@@ -426,6 +428,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
             nestedScrollEnabled={true}
             keyExtractor={(items: any, index: number): any => index}
           />
+          </View>
         ) : (
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <Image

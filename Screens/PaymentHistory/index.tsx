@@ -284,6 +284,7 @@ const PaymentHistory = ({ navigation }: any) => {
           <ScrollView refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           } >
+            <View>
             <FlatList
               refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -292,6 +293,7 @@ const PaymentHistory = ({ navigation }: any) => {
               renderItem={renderItem}
               keyExtractor={item => item.id.toString()}
             />
+            </View>
           </ScrollView>
         </View>
       ) : (

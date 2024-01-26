@@ -83,7 +83,7 @@ const ReportSubmissionHistory = ({navigation}: any) => {
         })
         .catch(error => {
           setLoading(false);
-          console.log('error');
+          ToastAndroid.show('Network Error', ToastAndroid.LONG);
         });
     }
   };
@@ -119,6 +119,7 @@ const ReportSubmissionHistory = ({navigation}: any) => {
         .catch(error => {
           setLoading(false);
           console.log('error');
+          ToastAndroid.show('Network Error', ToastAndroid.LONG);
         });
     }
   };
@@ -133,9 +134,6 @@ const ReportSubmissionHistory = ({navigation}: any) => {
   const [searchText, setSearchText] = useState('');
   const searchStudent = (e: any) => {
     setSearchText(e);
-
-    console.log(e, 'eee');
-
     if (e.length == 0) {
       setSearchText('');
       setFoundName([]);
@@ -1589,6 +1587,7 @@ const ReportSubmissionHistory = ({navigation}: any) => {
           </View>
 
           {allReports && allReports.length > 0 ? (
+            <View>
             <FlatList
               data={foundName.length > 0 ? foundName : allReports}
               nestedScrollEnabled
@@ -1672,6 +1671,7 @@ const ReportSubmissionHistory = ({navigation}: any) => {
                 );
               }}
             />
+            </View>
           ) : (
             <View style={{marginTop: 35}}>
               <Text

@@ -173,6 +173,7 @@ const Notifications = ({ navigation }: any) => {
         }
         showsVerticalScrollIndicator={false} nestedScrollEnabled>
         {notification && scheduleNotification && totalNotifications?.length > 0 ? (
+          <View>
           <FlatList
 
             data={totalNotifications || []}
@@ -248,6 +249,7 @@ const Notifications = ({ navigation }: any) => {
               );
             }}
           />
+          </View>
         ) : (
           <View
             style={{

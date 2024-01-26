@@ -43,88 +43,177 @@ function ClockIn({navigation, route}: any) {
     getCurrentLocation();
   }, []);
 
+  // const handleClockInPress = async () => {
+  //   const granted = await PermissionsAndroid.request(
+  //     PermissionsAndroid.PERMISSIONS.CAMERA,
+  //   );
+  //   if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+  //     const options: any = {
+  //       title: 'Select Picture',
+  //       storageOptions: {
+  //         skipBackup: true,
+  //         path: 'images',
+  //       },
+  //       maxWidth: 600,
+  //       maxHeight: 200,
+  //       quality: 1.0,
+  //     };
+
+  //     launchCamera(options, (res: any) => {
+  //       if (res.didCancel) {
+  //         console.log('User cancelled image picker');
+  //       } else if (res.error) {
+  //         console.log('ImagePicker Error:', res.error);
+  //       } else {
+  //         let {assets} = res;
+
+  //         let startMinutes = new Date().getHours();
+  //         let startSeconds = new Date().getMinutes();
+  //         console.log("startMinutes",startMinutes);
+  //         console.log("startSeconds",startSeconds);
+          
+  //         let data: any = {
+  //           id: item?.id,
+  //           class_schedule_id: item?.class_schedule_id,
+  //           startMinutes: startMinutes,
+  //           startSeconds: startSeconds,
+  //           hasIncentive: item?.hasIncentive ? item?.hasIncentive : 0,
+  //         };
+  //         let formData = new FormData();
+
+  //         formData.append('id', data.id);
+  //         formData.append('class_schedule_id', data.class_schedule_id);
+  //         formData.append('startMinutes', data.startMinutes);
+  //         formData.append('startSeconds', data.startSeconds);
+  //         formData.append('hasIncentive', data.hasIncentive);
+  //         formData.append('startTimeProofImage', {
+  //           uri: assets[0].uri,
+  //           type: assets[0].type,
+  //           name: assets[0].fileName,
+  //         });
+          
+  //         setLoading(true);
+  //         axios
+  //           .post(`${Base_Uri}api/attendedClassClockInTwo`, formData, {
+  //             headers: {
+  //               'Content-Type': 'multipart/form-data',
+  //             },
+  //           })
+  //           .then(res => {
+  //             setLoading(false);
+  //             data.data = res?.data;
+  //             data.item = item;
+  //             let storageData: any = {...data};
+  //             storageData = JSON.stringify(storageData);
+  //             AsyncStorage.setItem('classInProcess', storageData);
+  //             navigation.replace('ClassTimerCount', data);
+  //           })
+  //           .catch(error => {
+  //             setLoading(false);
+  //             console.log(error, 'error');
+  //           });
+  //       }
+  //     });
+  //   }
+  // };
+
   const handleClockInPress = async () => {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.CAMERA,
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      const options: any = {
-        title: 'Select Picture',
-        storageOptions: {
-          skipBackup: true,
-          path: 'images',
-        },
-        maxWidth: 600,
-        maxHeight: 200,
-        quality: 1.0,
-      };
-
-      launchCamera(options, (res: any) => {
-        if (res.didCancel) {
-          console.log('User cancelled image picker');
-        } else if (res.error) {
-          console.log('ImagePicker Error:', res.error);
-        } else {
-          let {assets} = res;
-
-          let startMinutes = new Date().getHours();
-          let startSeconds = new Date().getMinutes();
-          console.log("startMinutes",startMinutes);
-          console.log("startSeconds",startSeconds);
-          
-          let data: any = {
-            id: item?.id,
-            class_schedule_id: item?.class_schedule_id,
-            startMinutes: startMinutes,
-            startSeconds: startSeconds,
-            hasIncentive: item?.hasIncentive ? item?.hasIncentive : 0,
-          };
-          // console.log("data clockin",data);
-          
-
-          let formData = new FormData();
-
-          formData.append('id', data.id);
-          formData.append('class_schedule_id', data.class_schedule_id);
-          formData.append('startMinutes', data.startMinutes);
-          formData.append('startSeconds', data.startSeconds);
-          formData.append('hasIncentive', data.hasIncentive);
-          formData.append('startTimeProofImage', {
-            uri: assets[0].uri,
-            type: assets[0].type,
-            name: assets[0].fileName,
-          });
-          // console.log("formData clock in",formData );
-          
-          setLoading(true);
-          axios
-            .post(`${Base_Uri}api/attendedClassClockInTwo`, formData, {
-              headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-            })
-            .then(res => {
-              // console.log(res?.data, 'resssss');
-
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+      );
+  
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        const options: any = {
+          title: 'Select Picture',
+          storageOptions: {
+            skipBackup: true,
+            path: 'images',
+          },
+          maxWidth: 600,
+          maxHeight: 200,
+          quality: 1.0,
+        };
+  
+        launchCamera(options, async (res: any) => {
+          if (res.didCancel) {
+            console.log('User cancelled image picker');
+            ToastAndroid.show('User cancelled image picker', ToastAndroid.LONG);
+          } else if (res.error) {
+            console.log('ImagePicker Error:', res.error);
+            ToastAndroid.show(`ImagePicker Error: ${res.error}`, ToastAndroid.LONG);
+          } else {
+            try {
+              let { assets } = res;
+  
+              let startMinutes = new Date().getHours();
+              let startSeconds = new Date().getMinutes();
+              console.log("startMinutes", startMinutes);
+              console.log("startSeconds", startSeconds);
+  
+              let data: any = {
+                id: item?.id,
+                class_schedule_id: item?.class_schedule_id,
+                startMinutes: startMinutes,
+                startSeconds: startSeconds,
+                hasIncentive: item?.hasIncentive ? item?.hasIncentive : 0,
+              };
+  
+              let formData = new FormData();
+  
+              formData.append('id', data.id);
+              formData.append('class_schedule_id', data.class_schedule_id);
+              formData.append('startMinutes', data.startMinutes);
+              formData.append('startSeconds', data.startSeconds);
+              formData.append('hasIncentive', data.hasIncentive);
+  
+              // Ensure assets array is not empty before accessing its properties
+              if (assets && assets.length > 0) {
+                formData.append('startTimeProofImage', {
+                  uri: assets[0].uri,
+                  type: assets[0].type,
+                  name: assets[0].fileName,
+                });
+              } else {
+                console.log('No image selected');
+                ToastAndroid.show('No image selected', ToastAndroid.LONG);
+                return;
+              }
+  
+              setLoading(true);
+  
+              const response = await axios.post(`${Base_Uri}api/attendedClassClockInTwo`, formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              });
+  
               setLoading(false);
-              data.data = res?.data;
+  
+              data.data = response?.data;
               data.item = item;
-              console.log('res data', data);
-
-              let storageData: any = {...data};
+  
+              let storageData: any = { ...data };
               storageData = JSON.stringify(storageData);
               AsyncStorage.setItem('classInProcess', storageData);
               navigation.replace('ClassTimerCount', data);
-            })
-            .catch(error => {
+            } catch (error) {
               setLoading(false);
-              console.log(error, 'error');
-            });
-        }
-      });
+              console.log('Error in Axios request:', error);
+              ToastAndroid.show(`Error in handleClockOut: ${error}`, ToastAndroid.LONG);
+            }
+          }
+        });
+      } else {
+        console.log('Camera permission denied');
+        ToastAndroid.show('Camera permission denied', ToastAndroid.LONG);
+      }
+    } catch (permissionError) {
+      console.log('Error requesting camera permission:', permissionError);
+      ToastAndroid.show(`Error in handleClockOut: ${permissionError}`, ToastAndroid.LONG);
     }
   };
-
+  
   return (
     <View style={{flex: 1, alignItems: 'center'}}>
       <Header backBtn navigation={navigation} title={'Clock In'} />

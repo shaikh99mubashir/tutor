@@ -183,7 +183,6 @@ const Profile = ({ navigation }: any) => {
 
   let imageUrl;
   const updateTutorDetail = async () => {
-
     const expression: RegExp = /^[A -Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     const userEmail: any = tutorDetail.email;
     const result: boolean = expression.test(userEmail); // true
@@ -226,9 +225,6 @@ const Profile = ({ navigation }: any) => {
         .then(({ data }) => {
           setLoading(false);
           let { response } = data;
-
-          // console.log(data, "dataaaa")
-
           let { tutorImage } = response;
           setImage(tutorImage);
           tutorDetail.tutorImage = tutorImage;
@@ -237,16 +233,6 @@ const Profile = ({ navigation }: any) => {
           setType("")
           setName("")
           
-
-          // if (image) {
-          //   imageUrl = image;
-          // } else if (!tutorDetail.tutorImage) {
-          //   imageUrl = defaultAvatar;
-          // } else if (tutorDetail.tutorImage.includes('https')) {
-          //   imageUrl = tutorDetail.tutorImage;
-          // } else {
-          //   imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`;
-          // }
           if (image) {
               imageUrl = image;
             } else if (tutorDetail?.tutorImage?.includes('https')) {
@@ -307,7 +293,7 @@ const Profile = ({ navigation }: any) => {
           setLoading(false);
           console.log(error);
           ToastAndroid.show(
-            'Tutor Details update unsuccessfull',
+            `Tutor Details update unsuccessfull ${error}`,
             ToastAndroid.SHORT,
           );
         });
@@ -316,7 +302,7 @@ const Profile = ({ navigation }: any) => {
     }
   };
 
-  console.log(`file://${name}`)
+  // console.log(`file://${name}`)
 
   // let imageUrl = image
   //   ? image

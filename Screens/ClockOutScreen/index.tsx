@@ -1,5 +1,5 @@
-import React, {useEffect, useState, useContext} from 'react';
-import MapView, {Marker} from 'react-native-maps';
+import React, { useEffect, useState, useContext } from 'react';
+import MapView, { Marker } from 'react-native-maps';
 import {
   View,
   Text,
@@ -10,19 +10,19 @@ import {
   ToastAndroid,
   ActivityIndicator,
 } from 'react-native';
-import {Theme} from '../../constant/theme';
+import { Theme } from '../../constant/theme';
 import Header from '../../Component/Header';
-import {launchCamera} from 'react-native-image-picker';
+import { launchCamera } from 'react-native-image-picker';
 import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
-import {Base_Uri} from '../../constant/BaseUri';
+import { Base_Uri } from '../../constant/BaseUri';
 import noteContext from '../../context/noteContext';
-import {CommonActions, useIsFocused} from '@react-navigation/native';
+import { CommonActions, useIsFocused } from '@react-navigation/native';
 import TutorDetailForm from '../TutorDetailForm';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import CustomLoader from '../../Component/CustomLoader';
 
-function ClockOut({navigation, route}: any) {
+function ClockOut({ navigation, route }: any) {
   const [loading, setLoading] = useState(false);
   const contexts = useContext(noteContext);
 
@@ -75,79 +75,150 @@ function ClockOut({navigation, route}: any) {
   // console.log(items?.studentName, 'items?.class_schedule_id');
   // console.log(items?.studentID, 'items?.class_schedule_id');
   // console.log(items?.subjectID, 'items?.class_schedule_id');
+
+
+
+  // const handleClockOutPress = async () => {
+  //   setLoading(true);
+  //   let formData = new FormData();
+  //   formData.append('id', data?.classAttendedID);
+  //   formData.append('class_schedule_id', data?.class_schedule_id);
+  //   formData.append('endMinutes', data?.endHour);
+  //   formData.append('endSeconds', data?.endMinutes);
+  //   formData.append('hasIncentive', data?.hasIncentive);
+  //   formData.append('endTimeProofImage', {
+  //     uri: data?.uri,
+  //     type: data?.type,
+  //     name: data?.filename,
+  //   });
+  //   setLoading(true);
+  //   axios
+  //     .post(`${Base_Uri}api/attendedClassClockOutTwo`, formData, {
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data',
+  //       },
+  //     })
+  //     .then(res => {
+  //       ToastAndroid.show(res?.data?.errorMsg, ToastAndroid.SHORT);
+  //       if (res?.data?.errorMsg) {
+  //         navigation.navigate('Schedule');
+  //         return
+  //       }
+  //       axios
+  //         .get(`${Base_Uri}api/tutorFirstReportListing/${tutorID}`)
+  //         .then(({ data }: any) => {
+  //           let { tutorReportListing } = data;
+  //           let thisClass =
+  //             tutorReportListing &&
+  //             tutorReportListing?.length > 0 &&
+  //             tutorReportListing.filter((e: any, i: number) => {
+  //               return items.class_schedule_id == e.scheduleID;
+  //             });
+  //           console.log('thisClass', thisClass);
+
+  //           if (thisClass && thisClass.length > 0) {
+  //             navigation.dispatch(
+  //               CommonActions.reset({
+  //                 index: 0,
+  //                 routes: [{ name: 'BackToDashboard' }],
+  //               }),
+  //             );
+  //             setLoading(false);
+  //           } else {
+  //             navigation.replace('ReportSubmission', items);
+  //             setLoading(false);
+  //           }
+  //         });
+  //     })
+  //     .catch(error => {
+  //       setLoading(false);
+  //       ToastAndroid.show('Class Clockout Failed', ToastAndroid.SHORT);
+  //       console.log(error, 'errorrrrr');
+  //     });
+  // };
+
+
+
   const handleClockOutPress = async () => {
-    setLoading(true);
-    let formData = new FormData();
+    try {
+      setLoading(true);
 
-    // console.log(data?.class_schedule_id, 'data?.class_schedule_id');
-
-    formData.append('id', data?.classAttendedID);
-    formData.append('class_schedule_id', data?.class_schedule_id);
-    formData.append('endMinutes', data?.endHour);
-    formData.append('endSeconds', data?.endMinutes);
-    formData.append('hasIncentive', data?.hasIncentive);
-    formData.append('endTimeProofImage', {
-      uri: data?.uri,
-      type: data?.type,
-      name: data?.filename,
-    });
-    setLoading(true);
-    axios
-      .post(`${Base_Uri}api/attendedClassClockOutTwo`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then(res => {
-        ToastAndroid.show(res?.data?.errorMsg, ToastAndroid.SHORT);
-        if(res?.data?.errorMsg) {
-            // navigation.replace('Schedule');
-          navigation.navigate('Schedule');
-          // console.log("running",res?.data?.errorMsg);
-          
-          // navigation.dispatch(
-          //   CommonActions.reset({
-          //     index: 0,
-          //     routes: [{name: 'Schedule'}],
-          //   }),
-          // );
-          return
-        }
-        axios
-          .get(`${Base_Uri}api/tutorFirstReportListing/${tutorID}`)
-          .then(({data}:any) => {
-            let {tutorReportListing} = data;
-            // console.log('tutorReportListing',tutorReportListing);
-            
-            let thisClass =
-              tutorReportListing &&
-              tutorReportListing?.length > 0 &&
-              tutorReportListing.filter((e: any, i: number) => {
-                // console.log('e========>',e);
-                
-                return items.class_schedule_id == e.scheduleID;
-              });
-              console.log('thisClass',thisClass);
-              
-            if (thisClass && thisClass.length > 0) {
-              navigation.dispatch(
-                CommonActions.reset({
-                  index: 0,
-                  routes: [{name: 'BackToDashboard'}],
-                }),
-              );
-              setLoading(false);
-            } else {
-              navigation.replace('ReportSubmission', items );
-              setLoading(false);
-            }
-          });
-      })
-      .catch(error => {
+      if (!data) {
+        console.log('Data is undefined or null');
+        ToastAndroid.show('Data is undefined or null', ToastAndroid.LONG);
         setLoading(false);
-        ToastAndroid.show('Class Clockout Failed', ToastAndroid.SHORT);
-        console.log(error, 'errorrrrr');
-      });
+        return;
+      }
+
+      let formData = new FormData();
+      formData.append('id', data.classAttendedID);
+      formData.append('class_schedule_id', data.class_schedule_id);
+      formData.append('endMinutes', data.endHour);
+      formData.append('endSeconds', data.endMinutes);
+      formData.append('hasIncentive', data.hasIncentive);
+
+      if (data.uri && data.type && data.filename) {
+        formData.append('endTimeProofImage', {
+          uri: data.uri,
+          type: data.type,
+          name: data.filename,
+        });
+      } else {
+        console.log('Missing image properties');
+        ToastAndroid.show('Missing image properties', ToastAndroid.LONG);
+        setLoading(false);
+        return;
+      }
+
+      const clockOutResponse = await axios.post(
+        `${Base_Uri}api/attendedClassClockOutTwo`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      );
+
+      ToastAndroid.show(clockOutResponse?.data?.errorMsg, ToastAndroid.SHORT);
+
+      if (clockOutResponse?.data?.errorMsg) {
+        navigation.navigate('Schedule');
+        return;
+      }
+
+      const tutorReportResponse = await axios.get(
+        `${Base_Uri}api/tutorFirstReportListing/${tutorID}`
+      );
+
+      const { data: tutorReportData } = tutorReportResponse;
+
+      let { tutorReportListing } = tutorReportData;
+
+      let thisClass =
+        tutorReportListing &&
+        tutorReportListing?.length > 0 &&
+        tutorReportListing.filter((e: any, i: number) => {
+          return items.class_schedule_id == e.scheduleID;
+        });
+
+      if (thisClass && thisClass.length > 0) {
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: 'BackToDashboard' }],
+          })
+        );
+      } else {
+        navigation.replace('ReportSubmission', items);
+      }
+
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      ToastAndroid.show(`Error in handleClockOutPress: ${error}`, ToastAndroid.LONG);
+      console.log('Error in handleClockOutPress:', error);
+    }
   };
 
   let totalHours;
@@ -178,11 +249,11 @@ function ClockOut({navigation, route}: any) {
   }
 
   return (
-    <View style={{flex: 1, alignItems: 'center'}}>
+    <View style={{ flex: 1, alignItems: 'center' }}>
       <Header backBtn navigation={navigation} title={'Clock Out'} />
       {currentLocation.latitude && currentLocation.longitude && (
         <MapView
-          style={{height: '100%', width: '100%'}}
+          style={{ height: '100%', width: '100%' }}
           region={{
             latitude: currentLocation.latitude,
             longitude: currentLocation.longitude,
@@ -209,8 +280,8 @@ function ClockOut({navigation, route}: any) {
           position: 'absolute',
           width: '90%',
         }}>
-        <View style={{marginTop: 10, flexDirection: 'row'}}>
-          <Text style={{color: Theme.gray, textTransform: 'uppercase',fontFamily: 'Circular Std Black'}}>
+        <View style={{ marginTop: 10, flexDirection: 'row' }}>
+          <Text style={{ color: Theme.gray, textTransform: 'uppercase', fontFamily: 'Circular Std Black' }}>
             Time:
           </Text>
           <Text
@@ -240,9 +311,9 @@ function ClockOut({navigation, route}: any) {
           </Text>
         </View>
 
-        <View style={{flexDirection: 'row'}}>
-          <Text style={{color: Theme.gray,fontFamily: 'Circular Std Black'}}> Duration:</Text>
-          <Text style={{color: Theme.black, fontWeight: '600',fontFamily: 'Circular Std Black'}}>
+        <View style={{ flexDirection: 'row' }}>
+          <Text style={{ color: Theme.gray, fontFamily: 'Circular Std Black' }}> Duration:</Text>
+          <Text style={{ color: Theme.black, fontWeight: '600', fontFamily: 'Circular Std Black' }}>
             {' '}
             {data.hour} hours {data.minutes} minutes
           </Text>
@@ -256,7 +327,7 @@ function ClockOut({navigation, route}: any) {
             borderRadius: 10,
             marginTop: 10,
           }}>
-          <Text style={{textAlign: 'center', fontSize: 16, color: 'white',fontFamily: 'Circular Std Black'}}>
+          <Text style={{ textAlign: 'center', fontSize: 16, color: 'white', fontFamily: 'Circular Std Black' }}>
             Clock Out
           </Text>
         </TouchableOpacity>

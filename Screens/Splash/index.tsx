@@ -31,7 +31,7 @@ const Splash = ({navigation}: any) => {
         messaging()
           .subscribeToTopic('all_devices')
           .then(() => {
-            console.log(token, 'token');
+            // console.log(token, 'token');
 
             let formData = new FormData();
 
@@ -46,7 +46,7 @@ const Splash = ({navigation}: any) => {
               })
               .then(res => {
                 let data = res.data;
-                console.log(data, 'tokenResponse');
+                // console.log(data, 'tokenResponse');
               })
               .catch(error => {
                 console.log(error, 'error');
@@ -64,23 +64,20 @@ const Splash = ({navigation}: any) => {
       });
   };
 
-  // useEffect(() => {
-  //   if (tutorId) {
-  //     sendDeviceTokenToDatabase();
-  //   }
-  // }, [tutorId]);
 
-  useEffect(() => {
-    try {
-      let tutorData: any = AsyncStorage.getItem('tutorData');
-      tutorData = JSON.parse(tutorData);
-      setTutorDetail(tutorData);
-      console.log('Bottom Navigation tutor data', tutorData);
-    } catch (error) {
+  // useEffect(() => {
+  //   try {
+  //     let tutorData: any = AsyncStorage.getItem('tutorData');
+  //     tutorData = JSON.parse(tutorData);
+  //     console.log("tutorData=====>",tutorData);
       
-      console.error('Error retrieving or parsing tutor data:', error);
-    }
-  }, []);
+  //     setTutorDetail(tutorData);
+  //     console.log('Bottom Navigation tutor data', tutorData);
+  //   } catch (error) {
+      
+  //     console.error('Error retrieving or parsing tutor data:', error);
+  //   }
+  // }, []);
 
   const navigateToHomeScreen = () => {
     setTimeout(async () => {
@@ -89,12 +86,12 @@ const Splash = ({navigation}: any) => {
 
       if (authData) {
         let tutorData:any = JSON.parse(authData);
-        console.log('tutorData', tutorData?.tutorID);
+        console.log('tutorData----->', tutorData?.tutorID);
         sendDeviceTokenToDatabase(tutorData?.tutorID)
         axios
           .get(`${Base_Uri}getTutorDetailByID/${tutorData?.tutorID}`)
           .then(res => {
-            // console.log('res---->',res.data.tutorDetailById);
+            console.log('res---->',res.data.tutorDetailById);
             
             if(res.data.tutorDetailById== null){
               AsyncStorage.removeItem('loginAuth');

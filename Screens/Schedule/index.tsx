@@ -1000,11 +1000,13 @@ function Schedule({ navigation, route }: any) {
               </View>
             </View>
           ) : (
+            <View>
             <FlatList
               nestedScrollEnabled={true}
               data={upcomingClass.length > 0 ? upcomingClass : scheduleData}
               renderItem={renderScheduleData}
             />
+            </View>
           )}
         </View>
 
