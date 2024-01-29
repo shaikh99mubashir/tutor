@@ -43,7 +43,7 @@ const Login = ({ navigation }: any) => {
       timeout: 30000, // 30 seconds
       })
       .then(({ data }) => {
-        console.log('data===>',data);
+        // console.log('data===>',data);
         clearTimeout(timeoutId);
         if (data?.status == 404) {
           setLoading(false);

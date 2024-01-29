@@ -24,7 +24,7 @@ import messaging from '@react-native-firebase/messaging';
 import CustomLoader from '../../Component/CustomLoader';
 const Verification = ({ navigation, route }: any) => {
   let data = route.params;
-  // console.log('data=============>Verification', data?.tutorDetail?.phoneNumber);
+  // console.log('data=============>Verification', data?.tutorDetail.id);
 
   const [user, setUser] = useState(false);
   const CELL_COUNT = 6;
@@ -98,20 +98,28 @@ const Verification = ({ navigation, route }: any) => {
     }
 
     setLoading(true);
-    console.log('Value', value);
+    let formData = new FormData();
 
-    axios
-      .get(`${Base_Uri}verificationCode/${value}`)
+    formData.append("code", value);
+    formData.append("id",  data?.tutorDetail?.id);
+    console.log("form DAtat", formData);
+    
+    axios.post(`${Base_Uri}api/verificationCode`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
       .then(({ data }: any) => {
-        console.log('data.tutorID',data.tutorID);
-
+        console.log('data.tutorID',data);
+        
         if (data?.status !== 200) {
+          console.log('Running');
           setLoading(false);
           ToastAndroid.show(data?.errorMessage, ToastAndroid.SHORT);
           return;
         }
         if (data?.status == 200) {
-          console.log('data.tutorID', data.tutorID);
+          console.log('data.tutorID Running', data.tutorID);
 
           setLoading(false);
          
