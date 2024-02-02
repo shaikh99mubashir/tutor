@@ -283,7 +283,8 @@ const Profile = ({ navigation }: any) => {
 
           setTutorDetail({ ...tutorDetail, displayName: tutorDetail.displayName, email: tutorDetail.email, nric: tutorDetail.nric, age: tutorDetail.age })
 
-
+          console.log("response ============>",response);
+          
           ToastAndroid.show(
             'Successfully Update Tutor Details',
             ToastAndroid.SHORT,
@@ -678,7 +679,7 @@ const Profile = ({ navigation }: any) => {
               <TextInput
                 editable
                 style={{ color: "black" }}
-                onChangeText={text => setNric(nric)}
+                onChangeText={text => setNric(text)}
                 placeholder={tutorDetail?.nric ? tutorDetail.nric : "not provided"}
                 placeholderTextColor={Theme.black}
               />

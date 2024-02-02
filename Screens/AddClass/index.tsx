@@ -44,6 +44,8 @@ function AddClass({ navigation }: any) {
   const context = useContext(StudentContext);
   const { students, subjects } = context;
   const { updateStudent } = studentAndSubjectContext;
+  console.log("subject ?????",subject);
+  
   const [classes, setClasses] = useState<any>([
     {
       tutorID: tutorId,
@@ -514,6 +516,11 @@ function AddClass({ navigation }: any) {
       .catch(error => {
         setLoading(false);
         console.log(error, 'error');
+        if (error.response) {
+          console.error('Server Response:', error.response.data);
+          console.error('Status Code:', error.response.status);
+          console.error('Headers:', error.response.headers);
+        }
         ToastAndroid.show(
           'Sorry classes added unsuccessfull',
           ToastAndroid.SHORT,

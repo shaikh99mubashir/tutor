@@ -214,7 +214,19 @@ function ClockOut({ navigation, route }: any) {
       }
 
       setLoading(false);
-    } catch (error) {
+    } catch (error:any) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        console.log('Server responded with data:', error.response.data);
+        console.log('Status code:', error.response.status);
+        console.log('Headers:', error.response.headers);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.log('No response received:', error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error setting up the request:', error.message);
+      }
       setLoading(false);
       ToastAndroid.show(`Error in handleClockOutPress: ${error}`, ToastAndroid.LONG);
       console.log('Error in handleClockOutPress:', error);

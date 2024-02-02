@@ -31,7 +31,7 @@ const Splash = ({navigation}: any) => {
         messaging()
           .subscribeToTopic('all_devices')
           .then(() => {
-            // console.log(token, 'token');
+            console.log(token, 'token');
 
             let formData = new FormData();
 
