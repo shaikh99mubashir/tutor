@@ -15,6 +15,7 @@ import {
   Linking,
 } from 'react-native';
 import { Theme } from '../../constant/theme';
+import notifee, {AndroidImportance} from '@notifee/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
@@ -229,7 +230,39 @@ function Home({ navigation, route }: any) {
         );
       });
   };
+  const requestPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+  };
 
+  async function DisplayNotification(remoteMessage: any) {
+    // Create a channel
+    const channelId = await notifee.createChannel({
+      id: 'default',
+      name: 'Default Channel',
+      importance: AndroidImportance.HIGH,
+    });
+
+    // Display a notification
+    await notifee.displayNotification({
+      title: remoteMessage.notification.title,
+      body: remoteMessage.notification.body,
+      android: {
+        channelId,
+      },
+    });
+  }
+
+  useEffect(() => {
+    getFCMToken();
+    requestPermission();
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+      DisplayNotification(remoteMessage);
+    });
+    return unsubscribe;
+  }, [focus]);
+
+
+  
   // useEffect(() => {
   //   if (tutorId) {
   //     sendDeviceTokenToDatabase();

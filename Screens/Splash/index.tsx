@@ -87,7 +87,7 @@ const Splash = ({navigation}: any) => {
       if (authData) {
         let tutorData:any = JSON.parse(authData);
         console.log('tutorData----->', tutorData?.tutorID);
-        sendDeviceTokenToDatabase(tutorData?.tutorID)
+        // sendDeviceTokenToDatabase(tutorData?.tutorID)
         axios
           .get(`${Base_Uri}getTutorDetailByID/${tutorData?.tutorID}`)
           .then(res => {
