@@ -508,10 +508,10 @@ function JobTicket({ navigation, route }: any) {
           </View>
           <View
             style={{
-              flexDirection: 'row', gap: 10, alignItems: 'center', borderBottomWidth: 2,
+              flexDirection: 'row', gap: 5, alignItems: 'center', borderBottomWidth: 2,
               paddingBottom: 20, borderColor: Theme.lightGray,
             }}>
-            <Feather name="map-pin" size={18} color={'#298CFF'} />
+            <Feather name="map-pin" size={18} color={'#003E9C'} />
             <Text style={[styles.textType3, { color: '#003E9C' }]}>
               {item?.city}
             </Text>

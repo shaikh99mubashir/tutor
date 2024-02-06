@@ -180,7 +180,7 @@ function ClockOut({ navigation, route }: any) {
         }
       );
 
-      ToastAndroid.show(clockOutResponse?.data?.errorMsg, ToastAndroid.SHORT);
+      ToastAndroid.show(clockOutResponse?.data?.result, ToastAndroid.SHORT);
 
       if (clockOutResponse?.data?.errorMsg) {
         navigation.navigate('Schedule');

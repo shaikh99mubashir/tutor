@@ -253,7 +253,6 @@ function Home({ navigation, route }: any) {
   }
 
   useEffect(() => {
-    getFCMToken();
     requestPermission();
     const unsubscribe = messaging().onMessage(async remoteMessage => {
       DisplayNotification(remoteMessage);

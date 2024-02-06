@@ -103,7 +103,7 @@ const Splash = ({navigation}: any) => {
 
             let tutorData = res.data;
             setTutorDetail(tutorData?.tutorDetailById[0]);
-            // console.log('tutorData',tutorData);
+            console.log('tutorData',tutorData);
             
             if (
                 !tutorData.tutorDetailById[0]?.full_name &&

@@ -207,7 +207,7 @@ const Profile = ({ navigation }: any) => {
         name: name,
       });
       formData.append('tutorID', tutorDetail?.tutorId);
-      formData.append('name', tutorDetail?.full_name);
+      formData.append('full_name', tutorDetail?.full_name);
       formData.append('email', tutorDetail?.email);
       formData.append('displayName', tutorDetail?.displayName);
       formData.append('gender', tutorDetail?.gender);

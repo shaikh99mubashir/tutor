@@ -634,8 +634,8 @@ function Schedule({ navigation, route }: any) {
                 <Text style={[styles.textType1, { lineHeight: 30, textTransform:'capitalize' }]}>
                   {item?.studentName}
                 </Text>
-                <View style={{ flexDirection: 'row', gap: 10, alignItems: "center" }}>
-                <Feather name="map-pin" size={18} color={'#298CFF'} />
+                <View style={{ flexDirection: 'row', gap: 5, alignItems: "center" }}>
+                <Feather name="map-pin" size={18} color={'#003E9C'} />
                   <Text style={[styles.textType3, { color: '#003E9C' }]}>
                     {item?.city}
                   </Text>
