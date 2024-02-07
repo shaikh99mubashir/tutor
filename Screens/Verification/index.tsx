@@ -141,7 +141,7 @@ const Verification = ({ navigation, route }: any) => {
                 return
               }
               let tutorData = res.data;
-              console.log(" tutorData?.tutorDetailById[0]?.status", tutorData?.tutorDetailById[0]?.status );
+              // console.log(" tutorData?.tutorDetailById[0]?.status", tutorData?.tutorDetailById[0]?.status );
               // console.log('tutorData', tutorData);
 
               if (
@@ -149,7 +149,7 @@ const Verification = ({ navigation, route }: any) => {
               ) {
                 navigation.replace('Signup', tutorData)
               }
-              else if(tutorData?.tutorDetailById[0]?.status === 'unverified' || tutorData?.tutorDetailById[0]?.status === 'verified'){
+              else if(tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'unverified' || tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'verified'){
                
                 // navigation.replace('Main', {
                 //   screen: 'Home',

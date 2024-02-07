@@ -674,7 +674,7 @@ function AddClass({ navigation }: any) {
               />
             )}
           </View>
-          {MAX_CLASSES > 0 && MAX_CLASSES > classes.length && (
+          {MAX_CLASSES > 0 && MAX_CLASSES >= classes.length && (
           <View
             style={{
               width: '100%',

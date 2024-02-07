@@ -33,8 +33,8 @@ function ClockOut({ navigation, route }: any) {
   const data = route?.params;
   const items = route?.params;
 
-  console.log(items, 'items check');
-  console.log(data, 'data check scheduleData');
+  // console.log(items, 'items check');
+  // console.log(data, 'data check scheduleData');
 
   const focus = useIsFocused();
 
@@ -151,17 +151,17 @@ function ClockOut({ navigation, route }: any) {
       }
 
       let formData = new FormData();
-      formData.append('id', data.classAttendedID);
-      formData.append('class_schedule_id', data.class_schedule_id);
-      formData.append('endMinutes', data.endHour);
-      formData.append('endSeconds', data.endMinutes);
-      formData.append('hasIncentive', data.hasIncentive);
+      formData.append('id', data?.classAttendedID);
+      formData.append('class_schedule_id', data?.class_schedule_id);
+      formData.append('endMinutes', data?.endHour);
+      formData.append('endSeconds', data?.endMinutes);
+      formData.append('hasIncentive', data?.hasIncentive);
 
-      if (data.uri && data.type && data.filename) {
+      if (data?.uri && data?.type && data?.filename) {
         formData.append('endTimeProofImage', {
-          uri: data.uri,
-          type: data.type,
-          name: data.filename,
+          uri: data?.uri,
+          type: data?.type,
+          name: data?.filename,
         });
       } else {
         console.log('Missing image properties');

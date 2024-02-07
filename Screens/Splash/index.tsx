@@ -90,7 +90,7 @@ const Splash = ({navigation}: any) => {
         // sendDeviceTokenToDatabase(tutorData?.tutorID)
         axios
           .get(`${Base_Uri}getTutorDetailByID/${tutorData?.tutorID}`)
-          .then(res => {
+          .then((res:any) => {
             console.log('res---->',res.data.tutorDetailById);
             
             if(res.data.tutorDetailById== null){
@@ -115,23 +115,32 @@ const Splash = ({navigation}: any) => {
                 return
               }
 
-            if (tutorData?.tutorDetailById[0]?.status === 'unverified') {
+            if (tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'unverified' || tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'verified') {
               // navigation.replace('JobTicket');
               navigation.replace('Main', {
                 screen: 'Home',
               });
-              return;
             }
-            if (tutorData?.tutorDetailById[0]?.status === 'verified') {
-              navigation.replace('Main', {
-                screen: 'Home',
-              });
-              return;
+            else{
+              AsyncStorage.removeItem('loginAuth');
+              navigation.replace('Login');
+              setTutorDetail('')
+              console.log(
+                tutorData?.tutorDetailById[0]?.status,
+                'terminated or block',
+              );
             }
+            // if (tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'verified') {
+            //   navigation.replace('Main', {
+            //     screen: 'Home',
+            //   });
+            //   return;
+            // }
             if (
-              tutorData?.tutorDetailById[0]?.status === 'terminated' ||
-              tutorData?.tutorDetailById[0]?.status === 'resigned' ||
-              tutorData?.tutorDetailById[0]?.status === 'inactive' || 
+              tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'terminated' ||
+              tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'resigned' ||
+              tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'inactive' || 
+              tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'new' || 
               tutorDetails == undefined
             ) {
               AsyncStorage.removeItem('loginAuth');

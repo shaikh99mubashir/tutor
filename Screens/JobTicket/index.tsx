@@ -251,7 +251,7 @@ function JobTicket({ navigation, route }: any) {
           status: tutorDetails?.status,
         };
         updateTutorDetails(details);
-        if (tutorDetailById[0].status == 'verified' && tutorDetailById[0]?.open_dashboard != 'yes') {
+        if (tutorDetailById[0].status.toLowerCase() == 'verified' && tutorDetailById[0]?.open_dashboard != 'yes') {
           axios
             .get(`${Base_Uri}api/update_dashboard_status/${tutorId}`)
             .then(({ data }) => {
@@ -1091,7 +1091,7 @@ function JobTicket({ navigation, route }: any) {
       </ScrollView>
       {Object.keys(jobTicketBanner).length > 0 &&
         (jobTicketBanner.tutorStatusCriteria == 'All' ||
-          tutorDetails.status == 'verified') && (
+          tutorDetails.status.toLowerCase() == 'verified') && (
           <View style={{ flex: 1 }}>
             <Modal
               visible={openPPModal}
