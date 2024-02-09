@@ -163,7 +163,7 @@ function More({navigation}: any) {
             />
           </TouchableOpacity>
           {/* notification */}
-          {tutorDetails?.status == 'verified' && (
+          {tutorDetails?.status?.toLowerCase() == 'verified' && (
             <TouchableOpacity
               onPress={() => navigation.navigate('Notifications')}
               activeOpacity={0.8}
@@ -212,7 +212,7 @@ function More({navigation}: any) {
             </TouchableOpacity>
           )}
           {/* Students */}
-          {tutorDetails?.status == 'verified' && (
+          {tutorDetails?.status?.toLowerCase() == 'verified' && (
             <TouchableOpacity
               onPress={() => navigation.navigate('Students')}
               activeOpacity={0.8}
@@ -260,7 +260,7 @@ function More({navigation}: any) {
             </TouchableOpacity>
           )}
           {/* Payment History */}
-          {tutorDetails?.status == 'verified' && (
+          {tutorDetails?.status?.toLowerCase() == 'verified' && (
             <TouchableOpacity
               onPress={() => navigation.navigate('PaymentHistory')}
               activeOpacity={0.8}
@@ -308,7 +308,7 @@ function More({navigation}: any) {
             </TouchableOpacity>
           )}
           {/*Report Submission History */}
-          {tutorDetails?.status == 'verified' && (
+          {tutorDetails?.status?.toLowerCase() == 'verified' && (
             <TouchableOpacity
               onPress={() => navigation.navigate('ReportSubmissionHistory')}
               activeOpacity={0.8}
@@ -356,7 +356,7 @@ function More({navigation}: any) {
             </TouchableOpacity>
           )}
           {/*AttendedClassRecords */}
-          {tutorDetails?.status == 'verified' && (
+          {tutorDetails?.status?.toLowerCase() == 'verified' && (
           <TouchableOpacity
             activeOpacity={0.8}
             onPress={() => navigation.navigate('AttendedClassRecords')}

@@ -8,6 +8,7 @@ import {
   PermissionsAndroid,
   ToastAndroid,
   ActivityIndicator,
+  ErrorUtils ,
 } from 'react-native';
 import {Theme} from '../../constant/theme';
 import Header from '../../Component/Header';
@@ -142,6 +143,8 @@ function ClockIn({navigation, route}: any) {
   
 
   const handleClockInPress = async () => {
+    console.log('running');
+    
     try {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -158,18 +161,18 @@ function ClockIn({navigation, route}: any) {
           maxHeight: 200,
           quality: 1.0,
         };
-  
+        console.log('running1111111111');
         launchCamera(options, async (res: any) => {
-          if (res.didCancel) {
+          if (res?.didCancel) {
             console.log('User cancelled image picker');
             ToastAndroid.show('User cancelled image picker', ToastAndroid.LONG);
-          } else if (res.error) {
+          } else if (res?.error) {
             console.log('ImagePicker Error:', res.error);
             ToastAndroid.show(`ImagePicker Error: ${res.error}`, ToastAndroid.LONG);
           } else {
             try {
               let { assets } = res;
-  
+              console.log('running22222222222222222');
               let startMinutes = new Date().getHours();
               let startSeconds = new Date().getMinutes();
   
@@ -188,14 +191,13 @@ function ClockIn({navigation, route}: any) {
               }
   
               let formData = new FormData();
+              formData.append('id', data?.id);
+              formData.append('class_schedule_id', data?.class_schedule_id);
+              formData.append('startMinutes', data?.startMinutes);
+              formData.append('startSeconds', data?.startSeconds);
+              formData.append('hasIncentive', data?.hasIncentive);
   
-              formData.append('id', data.id);
-              formData.append('class_schedule_id', data.class_schedule_id);
-              formData.append('startMinutes', data.startMinutes);
-              formData.append('startSeconds', data.startSeconds);
-              formData.append('hasIncentive', data.hasIncentive);
-  
-              if (assets && assets.length > 0) {
+              if (assets && assets?.length > 0) {
                 formData.append('startTimeProofImage', {
                   uri: assets[0].uri,
                   type: assets[0].type,
@@ -220,12 +222,27 @@ function ClockIn({navigation, route}: any) {
               data.data = response?.data;
               data.item = item;
               let storageData: any = { ...data };
+              console.log("Storage datat",storageData);
+              
               storageData = JSON.stringify(storageData);
               AsyncStorage.setItem('classInProcess', storageData);
               navigation.replace('ClassTimerCount', data);
             } catch (error:any) {
+              if (error.response) {
+                // The request was made and the server responded with a status code
+                console.log('Server responded with data:', error.response.data);
+                console.log('Status code:', error.response.status);
+                console.log('Headers:', error.response.headers);
+              } else if (error.request) {
+                // The request was made but no response was received
+                console.log('No response received:', error.request);
+              } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error setting up the request:', error.message);
+              }
               setLoading(false);
               console.log('Error in Axios request:', error);
+              console.log('Error in capturing image:', error);
               ToastAndroid.show(`Error in Axios request: ${error.message}`, ToastAndroid.LONG);
             }
           }
@@ -239,6 +256,11 @@ function ClockIn({navigation, route}: any) {
       ToastAndroid.show(`Error requesting camera permission: ${permissionError.message}`, ToastAndroid.LONG);
     }
   };
+
+  ErrorUtils.setGlobalHandler((error, isFatal) => {
+    console.log('Global error:', error);
+    // You can add additional logic here, like logging the error or displaying a message to the user.
+  });
   
   return (
     <View style={{flex: 1, alignItems: 'center'}}>

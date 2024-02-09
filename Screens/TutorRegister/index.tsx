@@ -97,29 +97,34 @@ const Signup = ({ navigation, route }: any) => {
         },
       })
       .then(({ data }) => {
-        console.log('data signup===>', data);
-
+        console.log('data signup===>', data.Msg);
+        if(data?.Msg){
+          ToastAndroid.show(
+           `${data?.Msg}`,
+            ToastAndroid.SHORT,
+          );
+          setLoading(false);
+          return
+        }
         if (data.status == 200) {
           ToastAndroid.show(
             'You have been successfully registered as tutor Login to continue',
             ToastAndroid.SHORT,
           );
-            
-
           navigation.reset({
             index: 0,
             routes: [
               {
-                name: 'Main', // Change 'Login' to 'Main'
+                name: 'Main',
                 params: {
                   screen: 'Home',
                 },
               },
             ],
           });
-          // navigation.replace('Main', {
-          //   screen: 'Home',
-          // });
+          navigation.replace('Main', {
+            screen: 'Home',
+          });
           ToastAndroid.show('Register Successfully Successfully', ToastAndroid.SHORT);
           setLoading(false);
         }
