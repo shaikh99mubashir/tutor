@@ -257,11 +257,6 @@ function ClockIn({navigation, route}: any) {
     }
   };
 
-  ErrorUtils.setGlobalHandler((error, isFatal) => {
-    console.log('Global error:', error);
-    // You can add additional logic here, like logging the error or displaying a message to the user.
-  });
-  
   return (
     <View style={{flex: 1, alignItems: 'center'}}>
       <Header backBtn navigation={navigation} title={'Clock In'} />
@@ -337,6 +332,7 @@ function ClockIn({navigation, route}: any) {
         </View>
         <TouchableOpacity
           onPress={() => handleClockInPress()}
+          activeOpacity={0.8}
           style={{
             backgroundColor: Theme.darkGray,
             width: '100%',

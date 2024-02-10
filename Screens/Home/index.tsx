@@ -989,7 +989,7 @@ function Home({ navigation, route }: any) {
                 alignItems: 'center',
                 justifyContent: 'space-between',
               }}>
-              <View style={{ width: '70%', }}>
+              <View style={{ width: '60%', }}>
                 <Text style={styles.textType3}>Welcome Back!</Text>
                 <Text
                   style={[

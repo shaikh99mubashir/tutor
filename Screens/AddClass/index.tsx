@@ -600,7 +600,7 @@ function AddClass({ navigation }: any) {
                 )}
               </View>
 
-              {selectedSubject?.subject && (
+              {/* {selectedSubject?.subject && (
                 <View style={{ marginVertical: 10 }}>
                   <Text
                     style={[styles.textType1, { fontSize: 16 }]}>
@@ -623,7 +623,7 @@ function AddClass({ navigation }: any) {
 
                   </View>
                 </View>
-              )}
+              )} */}
 
 
           
@@ -632,7 +632,7 @@ function AddClass({ navigation }: any) {
                 </View>
         
             </ScrollView>
-            {MAX_CLASSES > 0 && MAX_CLASSES > classes.length && (
+            {/* {MAX_CLASSES > 0 && MAX_CLASSES > classes.length && ( */}
               <View
                 style={{
                   width: '100%',
@@ -662,7 +662,7 @@ function AddClass({ navigation }: any) {
                   </Text>
                 </TouchableOpacity>
               </View>
-            )}
+            {/* )} */}
 
             {show && (
               <DateTimePicker
@@ -674,7 +674,7 @@ function AddClass({ navigation }: any) {
               />
             )}
           </View>
-          {MAX_CLASSES > 0 && MAX_CLASSES >= classes.length && (
+          {/* {MAX_CLASSES > 0 && MAX_CLASSES >= classes.length && ( */}
           <View
             style={{
               width: '100%',
@@ -699,7 +699,7 @@ function AddClass({ navigation }: any) {
               </Text>
             </TouchableOpacity>
           </View>
-          )}
+          {/* )} */}
         </>
       ) : (
         // <View style={{alignItems: 'center', justifyContent: 'center', flex: 1}}>
