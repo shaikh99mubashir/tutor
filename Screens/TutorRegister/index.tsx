@@ -8,6 +8,7 @@ import {
   TextInput,
   Image,
   ScrollView,
+  Linking,
 } from 'react-native';
 import React, { useRef, useState, useEffect, useContext } from 'react';
 import PhoneInput from 'react-native-phone-number-input';
@@ -418,7 +419,10 @@ const Signup = ({ navigation, route }: any) => {
                 ''
               )}
             </TouchableOpacity>
-            <Text style={[styles.textType3, { textAlign: 'center' }]} >I agree to the <Text style={[styles.textType3, { textAlign: 'center', color: Theme.darkGray }]}>Terms and services</Text></Text>
+            <TouchableOpacity activeOpacity={0.8} onPress={() => Linking.openURL('https://sifututor.my/terms-of-use/')}>
+            <Text style={[styles.textType3, { textAlign: 'center' }]} >I agree to the 
+            <Text style={[styles.textType3, { textAlign: 'center', color: Theme.darkGray }]}>Terms and services</Text></Text>
+            </TouchableOpacity>
           </View>
         </View>
       </ScrollView>

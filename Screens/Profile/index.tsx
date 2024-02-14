@@ -65,11 +65,9 @@ const Profile = ({ navigation }: any) => {
   const context = useContext(TutorDetailsContext);
 
   let tutorDetail = context?.tutorDetails
-
   let tutorDetails = context?.tutorDetails
+  console.log('tutorDetails',tutorDetails);
   console.log('tutorDetail',tutorDetail);
-  
-
   let bannerCont = useContext(bannerContext)
 
   let { profileBanner, setProfileBanner }:any = bannerCont
@@ -183,16 +181,26 @@ const Profile = ({ navigation }: any) => {
 
   let imageUrl;
   const updateTutorDetail = async () => {
-    const expression: RegExp = /^[A -Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-    const userEmail: any = tutorDetail.email;
-    const result: boolean = expression.test(userEmail); // true
-    if (!result) {
-      ToastAndroid.show('Enter correct email', ToastAndroid.SHORT);
-      return;
-    }
-
+    
+    // const expression: RegExp = /^[A -Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+    // const userEmail: any = tutorDetail.email;
+    // const result: boolean = expression.test(userEmail); // true
+    // if (!result) {
+    //   ToastAndroid.show('Enter correct email', ToastAndroid.SHORT);
+    //   return;
+    // }
+    let authData:any = await AsyncStorage.getItem('loginAuth');
+    let tutorData: any = JSON.parse(authData);
+    console.log('tutorData',tutorData.tutorID);
+    
+    
+    console.log('tutorDetail?.id',tutorDetail?.id);
     if (uri && name && type) {
-
+      console.log("uri",uri);
+      console.log("type",type);
+      console.log("name",uri);
+      console.log('If running',tutorDetail?.tutorId);
+      
       setLoading(true)
 
       tutorDetail.displayName = dispalyName ? dispalyName : tutorDetail.displayName
@@ -206,7 +214,10 @@ const Profile = ({ navigation }: any) => {
         type: type,
         name: name,
       });
-      formData.append('tutorID', tutorDetail?.tutorId);
+      // formData.append('tutorID', tutorDetail?.tutorId);
+      console.log("tutorID",tutorDetail?.tutorId);
+      
+      formData.append('id', tutorData.tutorID);
       formData.append('full_name', tutorDetail?.full_name);
       formData.append('email', tutorDetail?.email);
       formData.append('displayName', tutorDetail?.displayName);
@@ -226,12 +237,16 @@ const Profile = ({ navigation }: any) => {
           setLoading(false);
           let { response } = data;
           let { tutorImage } = response;
+          console.log("response", response);
+          
           setImage(tutorImage);
           tutorDetail.tutorImage = tutorImage;
           setTutorDetail({ ...tutorDetail, tutorImage: tutorImage });
           setUri("")
           setType("")
           setName("")
+          
+          console.log("image",image);
           
           if (image) {
               imageUrl = image;
@@ -255,15 +270,17 @@ const Profile = ({ navigation }: any) => {
           );
         });
     } else {
-
+      console.log('Else running profile');
       setLoading(true)
       tutorDetail.displayName = dispalyName ? dispalyName : tutorDetail.displayName
       tutorDetail.email = email ? email : tutorDetail.email
       tutorDetail.age = age ? age : tutorDetail.age
       tutorDetail.nric = nric ? nric : tutorDetail.nric
-
+      console.log("tutorDetail?.tutorId",tutorDetail?.tutorId);
+      
       let formData = new FormData();
-      formData.append('tutorID', tutorDetail?.tutorId);
+      // formData.append('tutorID', tutorDetail?.tutorId);
+      formData.append('id', tutorData.tutorID);
       formData.append('name', tutorDetail?.full_name);
       formData.append('email', tutorDetail?.email);
       formData.append('displayName', tutorDetail?.displayName);
@@ -280,11 +297,7 @@ const Profile = ({ navigation }: any) => {
         .then(({ data }) => {
           setLoading(false);
           let { response } = data;
-
           setTutorDetail({ ...tutorDetail, displayName: tutorDetail.displayName, email: tutorDetail.email, nric: tutorDetail.nric, age: tutorDetail.age })
-
-          console.log("response ============>",response);
-          
           ToastAndroid.show(
             'Successfully Update Tutor Details',
             ToastAndroid.SHORT,
@@ -298,8 +311,6 @@ const Profile = ({ navigation }: any) => {
             ToastAndroid.SHORT,
           );
         });
-
-
     }
   };
 
@@ -322,7 +333,7 @@ const Profile = ({ navigation }: any) => {
     axios
       .get(`${Base_Uri}api/bannerAds`)
       .then(({ data }) => {
-        console.log('res', data.bannerAds);
+        // console.log('res', data.bannerAds);
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
@@ -414,12 +425,16 @@ const Profile = ({ navigation }: any) => {
    if (image) {
     imageUrl = image;
   } else if (!tutorDetail?.tutorImage) {
-    imageUrl =  tutorDetails?.tutorDetailById[0]?.tutorImage
+    imageUrl =  tutorDetails?.tutorDetailById?.tutorImage
+    // imageUrl =  tutorDetails?.tutorDetailById[0]?.tutorImage
   } else if (tutorDetail?.tutorImage?.includes('https')) {
     imageUrl = tutorDetail?.tutorImage;
   } else {
     imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail?.tutorImage}`;
   }
+
+  // console.log("tutorDetails?.tutorDetailById[0]?.tutorImage",tutorDetails?.tutorDetailById[0]?.tutorImage);
+  
   
 
 

@@ -175,7 +175,6 @@ const Notifications = ({ navigation }: any) => {
         {notification && scheduleNotification && totalNotifications?.length > 0 ? (
           <View>
           <FlatList
-
             data={totalNotifications || []}
             nestedScrollEnabled={true}
             renderItem={({ item, index }: any) => {
