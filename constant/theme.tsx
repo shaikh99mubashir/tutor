@@ -15,7 +15,8 @@ const Theme = {
     GhostWhite:'#F5F9FF',
     jobticketBG:'rgba(9, 97, 245, 0.05)',
     dune:'#333',
-    ironsidegrey:'(255,102,102,0.05)'
+    ironsidegrey:'(255,102,102,0.05)',
+    liteBlue: '#f7f7f7'
 
 }
 

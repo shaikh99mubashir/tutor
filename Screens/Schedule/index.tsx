@@ -643,7 +643,7 @@ function Schedule({ navigation, route }: any) {
               </View>
             </View>
             <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-              <Text style={[styles.textType3, { color: '#003E9C', backgroundColor: '#298CFF33', paddingVertical: 5, paddingHorizontal: 30, borderRadius: 30 }]}>
+              <Text style={[styles.textType3, { color: '#003E9C',textTransform:'capitalize' ,backgroundColor: '#298CFF33', paddingVertical: 5, paddingHorizontal: 30, borderRadius: 30 }]}>
                 {item?.mode}
               </Text>
             </View>

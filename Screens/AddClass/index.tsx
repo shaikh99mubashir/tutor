@@ -130,7 +130,8 @@ function AddClass({navigation}: any) {
               remaining_classes: e.remaining_classes,
               classFrequency: e.classFrequency,
               total_hours: e.total_hours,
-              reamining_hours: e.reamining_hours
+              reamining_hours: e.reamining_hours,
+              perHour: e.quantity,
             }));
         setSubject(mySubject);
       })
@@ -159,14 +160,14 @@ function AddClass({navigation}: any) {
       getSubject();
     }
   }, [selectedStudent]);
-
+  const MAX_CLASSES = selectedSubject?.remaining_classes;
+  const perHour = selectedSubject?.perHour;
   const onChange = (event: any, selectedDate: any) => {
     setShow(false);
     const currentDate = selectedDate;
     let hours = currentDate.getHours();
     let minutes = currentDate.getMinutes();
     let data;
-    console.log('data', data);
 
     if (mode == 'date') {
       data = classes.map((e: any, i: Number) => {
@@ -182,9 +183,13 @@ function AddClass({navigation}: any) {
     } else if (mode == 'time' && clickedStartTime) {
       data = classes.map((e: any, i: Number) => {
         if (i == indexClicked) {
+          const start = new Date(currentDate); // Create a new Date object for the start time
+          const end = new Date(start.getTime() + perHour * 60 * 60 * 1000); 
           return {
             ...e,
-            startTime: currentDate,
+            // startTime: currentDate,
+            startTime: start,
+            endTime: end,
           };
         } else {
           return e;
@@ -202,7 +207,7 @@ function AddClass({navigation}: any) {
         }
       });
     }
-
+    console.log('data', data);
     setValue(currentDate);
     setClasses(data);
     setShow(false);
@@ -210,7 +215,6 @@ function AddClass({navigation}: any) {
   };
 
   const setClassDate = (mode: any, index: Number, startTime?: Boolean) => {
-    console.log('startTime==>', startTime);
     if (startTime) {
       setClickedStartTime(true);
     }
@@ -234,7 +238,7 @@ function AddClass({navigation}: any) {
   const [hideMoreClassesButton, setHideMoreClassesButton] = useState(true);
   const [noOfClasses, setNoOFClasses] = useState(0);
   // const MAX_CLASSES = selectedSubject?.remaining_classes || undefined;
-  const MAX_CLASSES = selectedSubject?.reamining_hours;
+
   // console.log("classes.length", classes.length, "selectedSubject?.remaining_classes", selectedSubject?.remaining_classes);
   // useEffect(()=>{
   //   if (MAX_CLASSES == 0) {
@@ -249,13 +253,20 @@ function AddClass({navigation}: any) {
   //     setHideMoreClassesButton(true)
   //   }
   // },[])
-  // if (MAX_CLASSES <= 0 || MAX_CLASSES <= index ) {
-  //   return null; // Don't render the class
-  // }
+
   const renderClasses = ({item, index}: any) => {
-    // if (MAX_CLASSES <= 0 || MAX_CLASSES <= index ) {
-  //   return null; // Don't render the class
-  // }
+    if (MAX_CLASSES <= 0 || MAX_CLASSES <= index) {
+      return null;
+    }
+
+    const calculateEndTime = (startTime: string) => {
+      const start = startTime !== '-' ? new Date(startTime) : new Date();
+      const end = new Date(start.getTime() + perHour * 60 * 60 * 1000); // Assuming perHour is defined somewhere
+      return end.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'});
+    };
+    const startTime = item?.startTime !== '-' ? item?.startTime : '00:00'; // Default start time
+    const endTimeFormatted = calculateEndTime(startTime);
+
     return (
       <View>
         <View
@@ -266,33 +277,25 @@ function AddClass({navigation}: any) {
             alignItems: 'center',
             marginTop: 20,
             borderTopWidth: 1,
-            borderTopColor: 'lightGray',
+            borderTopColor: '#ececec',
             paddingTop: 15,
           }}>
           <Text
-            style={{
-              color: Theme.black,
-              fontSize: 18,
-              fontWeight: '700',
-            }}>
-            Class {index + 1}
+              style={[styles.textType1, {fontSize: 18, fontWeight:'600'}]}>
+            Session {index + 1}
           </Text>
-          <TouchableOpacity onPress={() => handleFilterPress(index)}>
+          <TouchableOpacity style={{paddingRight:15, }} onPress={() => handleFilterPress(index)}>
             <Image
               source={require('../../Assets/Images/delicon.png')}
               resizeMode="contain"
-              style={{width: 20, height: 20}}
+              style={{width: 20, height: 20,}}
             />
           </TouchableOpacity>
         </View>
         <View>
           <Text
-            style={{
-              color: Theme.black,
-              fontSize: 14,
-              fontWeight: '700',
-              marginTop: 10,
-            }}>
+            style={[styles.textType1, {fontSize: 16,marginTop: 10,fontWeight:'600'}]}
+            >
             Date
           </Text>
 
@@ -301,12 +304,13 @@ function AddClass({navigation}: any) {
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
-              backgroundColor: '#E6F2FF',
-              padding: 10,
+              backgroundColor: Theme.liteBlue,
+              padding: 20,
               marginTop: 5,
-              borderRadius: 5,
+              borderRadius: 15,
+              
             }}>
-            <Text style={{color: Theme.black, fontSize: 16, fontWeight: '500'}}>
+            <Text style={{color: Theme.gray, fontSize: 16, fontWeight: '500', fontFamily:'Circular Std Medium'}}>
               {item?.date !== '-' ? item?.date?.toString().slice(0, 15) : '-'}
             </Text>
             <TouchableOpacity
@@ -319,15 +323,11 @@ function AddClass({navigation}: any) {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop:10,fontWeight:'600'}}>
           <View style={{width: '49%'}}>
             <Text
-              style={{
-                color: Theme.black,
-                fontSize: 14,
-                fontWeight: '700',
-                marginTop: 10,
-              }}>
+              style={[styles.textType1, {fontSize: 16}]}
+              >
               Start Time
             </Text>
             <View
@@ -335,13 +335,14 @@ function AddClass({navigation}: any) {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                backgroundColor: '#E6F2FF',
-                padding: 10,
+                // backgroundColor: '#E6F2FF',
+                backgroundColor: Theme.liteBlue,
+                padding: 20,
                 marginTop: 5,
-                borderRadius: 5,
+                borderRadius: 15,
               }}>
               <Text
-                style={{color: Theme.black, fontSize: 16, fontWeight: '500'}}>
+                style={{color: Theme.gray, fontSize: 16, fontWeight: '500', fontFamily:'Circular Std Medium',}}>
                 {item?.startTime !== '-'
                   ? new Date(item?.startTime).toLocaleTimeString([], {
                       hour: '2-digit',
@@ -362,12 +363,7 @@ function AddClass({navigation}: any) {
 
           <View style={{width: '49%'}}>
             <Text
-              style={{
-                color: Theme.black,
-                fontSize: 14,
-                fontWeight: '700',
-                marginTop: 10,
-              }}>
+                style={[styles.textType1, {fontSize: 16,fontWeight:'600'}]}>
               End Time
             </Text>
             <View
@@ -375,23 +371,27 @@ function AddClass({navigation}: any) {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                backgroundColor: '#E6F2FF',
-                padding: 10,
+                backgroundColor: Theme.liteBlue,
+                padding: 20,
                 marginTop: 5,
-                borderRadius: 5,
+                borderRadius: 15,
               }}>
               <Text
-                style={{color: Theme.black, fontSize: 16, fontWeight: '500'}}>
-                {item?.endTime !== '-'
+                style={{color: Theme.gray, fontSize: 16, fontWeight: '500', fontFamily:'Circular Std Medium'}}>
+                {/* {item?.endTime !== '-'
                   ? new Date(item?.endTime).toLocaleTimeString([], {
                       hour: '2-digit',
                       minute: '2-digit',
                     })
-                  : '00:00 AM'}
+                  : '00:00 AM'} */}
+                {endTimeFormatted == 'Invalid Date'
+                  ? '00:00 AM'
+                  : endTimeFormatted}
               </Text>
               <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => setClassDate('time', index)}>
+                // onPress={() => setClassDate('time', index)}
+              >
                 <Image
                   source={require('../../Assets/Images/ClockiconCopy.png')}
                   style={{width: 20, height: 20}}
@@ -425,21 +425,7 @@ function AddClass({navigation}: any) {
     handleCloseModal();
   };
 
-  // classes.map((classesObject:any, classesIndex:number) => {
-
-  //   console.log(`Start Time: ${classesObject.startTime}, End Time: ${classesObject.endTime}`);
-  // });
-
-  // if (classesObject.startTime.getTime() < currentTime.getTime()) {
-  //   console.log("classesObject.startTime",classesObject.startTime.getTime());
-  //   console.log("currentTime",currentTime.getTime());
-
-  //     console.log(`Class at index ${classesIndex} cannot be added as its start time is in the past.`);
-  //     ToastAndroid.show(`Class at index ${classesIndex + 1} cannot be added as its start time is in the past.`, ToastAndroid.SHORT);
-  // } else
   const addClass = () => {
-    console.log('====================================running');
-    console.log('classes', classes);
     let newClass = {
       tutorID: tutorId,
       studentID: selectedStudent?.studentID,
@@ -449,20 +435,15 @@ function AddClass({navigation}: any) {
       // date: new Date(),
       date: new Date(),
     };
-    console.log('selected Subject', selectedSubject);
     if (classes.length > 0) {
-      classes.map((classesObject: any, classesIndex: number) => {
+      classes?.map((classesObject: any, classesIndex: number) => {
         const currentTime = new Date();
-        const timeDifference =
-        classesObject.endTime.getTime() - classesObject.startTime.getTime();
-        if (timeDifference < 30 * 60000) {
-          console.log(
-            `Class No ${classesIndex} cannot be added as its start time is less than 30 minutes from now.`,
-          );
+        const startTime = classesObject?.startTime;
+        if (startTime == '-') {
           ToastAndroid.show(
-            `Class No ${
+            `Please select both start time and end time for Class No ${
               classesIndex + 1
-            } cannot be added as its start time is less than 30 minutes from now.`,
+            }.`,
             ToastAndroid.SHORT,
           );
           return;
@@ -470,27 +451,20 @@ function AddClass({navigation}: any) {
         setClasses([...classes, newClass]);
       });
     } else {
-      console.log('class add hoo gai');
       setClasses([...classes, newClass]);
     }
   };
 
   const confirmClass = () => {
     setLoading(true);
-
     if (classes.length > 0) {
-      classes.map((classesObject: any, classesIndex: number) => {
-        const currentTime = new Date();
-        const timeDifference =
-        classesObject.endTime.getTime() - classesObject.startTime.getTime();
-        if (timeDifference < 30 * 60000) {
-          console.log(
-            `Class No ${classesIndex} cannot be added as its start time is less than 30 minutes from now.`,
-          );
+      classes?.map((classesObject: any, classesIndex: number) => {
+        const startTime = classesObject?.startTime;
+        if (startTime == '-') {
           ToastAndroid.show(
-            `Class No ${
+            `Please select both start time and end time for Class No ${
               classesIndex + 1
-            } cannot be added as its start time is less than 30 minutes from now.`,
+            }.`,
             ToastAndroid.SHORT,
           );
           return;
@@ -651,14 +625,14 @@ function AddClass({navigation}: any) {
                     // backgroundColor: Theme.lightGray,
                     paddingVertical: 17,
                     borderColor: Theme.gray,
-                    borderWidth: 1,
+                    // borderWidth: 1,
                   }}
                   dropdownPlace={'Select Student'}
                   subject={student}
                   headingStyle={{
                     color: Theme.black,
-                    fontSize: 14,
-                    fontWeight: '700',
+                    fontSize: 16,
+                    fontWeight: '600',
                   }}
                 />
 
@@ -670,41 +644,47 @@ function AddClass({navigation}: any) {
                     dropdownContainerStyle={{
                       paddingVertical: 17,
                       borderColor: Theme.gray,
-                      borderWidth: 1,
+                      // borderWidth: 1,
                     }}
                     dropdownPlace={'Select Subject '}
                     subject={subject}
                     headingStyle={{
                       color: Theme.black,
-                      fontSize: 14,
-                      fontWeight: '700',
+                      fontSize: 16,
+                      fontWeight: '600',
                     }}
                   />
                 )}
               </View>
 
               {selectedSubject?.subject && (
-                <View style={{ marginVertical: 10 }}>
-                  <Text
-                    style={[styles.textType1, { fontSize: 16 }]}>
-                    Class Details
+                <View style={{marginVertical: 10}}>
+                  <Text style={[styles.textType1, {fontSize: 16,fontWeight:'600'}]}>
+                    Session Details
                   </Text>
                   <View
                     style={{
-                      backgroundColor: Theme.lightGray,
-                      elevation: 2,
-                      paddingHorizontal: 10,
-                      paddingVertical: 12,
+                      backgroundColor: Theme.liteBlue,
+                      // elevation: 2,
+                      // paddingHorizontal: 10,
+                      // paddingVertical: 12,
+                      padding:20,
+                      
                       borderRadius: 10,
                       marginVertical: 5,
                     }}>
-                    <Text style={styles.textType3}>
-                      {selectedSubject?.subject} Total Hours are{' '}
-                      <Text style={{ fontWeight: '600' }}>{selectedSubject?.total_hours}</Text>. You can schedule
-                      Your reamining Hours <Text style={{ fontWeight: '600' }}> {selectedSubject?.reamining_hours}</Text>
-                      {/* <Text style={{ fontWeight: '600' }}> {classes.length} / {MAX_CLASSES}  </Text> */}
+                    <Text style={[styles.textType3,{lineHeight:23,color:'gray'}]}>
+                      {selectedSubject?.subject} Total Session are{' '}
+                      <Text style={{fontWeight: '600'}}>
+                        {selectedSubject?.classFrequency}
+                      </Text>
+                      . You can schedule Your reamining Session are
+                      <Text style={{fontWeight: '600', fontFamily:'Circular Std Medium'}}>
+                        {' '}
+                        {classes.length} / {MAX_CLASSES}{' '}
+                      </Text>
+                      {/* <Text style={{ fontWeight: '600' }}> {selectedSubject?.reamining_hours}</Text> */}
                     </Text>
-
                   </View>
                 </View>
               )}
@@ -713,37 +693,37 @@ function AddClass({navigation}: any) {
                 <FlatList data={classes} renderItem={renderClasses} />
               </View>
             </ScrollView>
-            {/* {MAX_CLASSES > 0 && MAX_CLASSES > classes.length && ( */}
-            <View
-              style={{
-                width: '100%',
-                alignItems: 'center',
-                marginTop: 20,
-                marginBottom: 60,
-              }}>
-              <TouchableOpacity
-                onPress={() => addClass()}
+            {MAX_CLASSES > 0 && MAX_CLASSES > classes.length && (
+              <View
                 style={{
-                  backgroundColor: Theme.gray,
-                  padding: 15,
-                  borderRadius: 10,
                   width: '100%',
+                  alignItems: 'center',
+                  marginTop: 20,
+                  marginBottom: 60,
                 }}>
-                {/* {selectedSubject?.remaining_classes
+                <TouchableOpacity
+                  onPress={() => addClass()}
+                  style={{
+                    backgroundColor: Theme.gray,
+                    padding: 15,
+                    borderRadius: 10,
+                    width: '100%',
+                  }}>
+                  {/* {selectedSubject?.remaining_classes
                   } */}
 
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    fontSize: 14,
-                    color: Theme.white,
-                  }}>
-                  {/* {classes.length > 0  ? 'Add More Classes' : 'Add Classes'} */}
-                  {classes.length > 0 ? 'Add More Classes' : 'Add Classes'}
-                </Text>
-              </TouchableOpacity>
-            </View>
-            {/* )} */}
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontSize: 16,
+                      color: Theme.white,
+                      fontFamily:'Circular Std Medium'
+                    }}>
+                    {classes.length > 0 ? 'Add More Classes' : 'Add Classes'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
 
             {show && (
               <DateTimePicker
@@ -755,31 +735,36 @@ function AddClass({navigation}: any) {
               />
             )}
           </View>
-          {/* {MAX_CLASSES > 0 && MAX_CLASSES >= classes.length && ( */}
-          <View
-            style={{
-              width: '100%',
-              alignItems: 'center',
-              position: 'absolute',
-              bottom: 20,
-            }}>
-            <TouchableOpacity
-              onPress={() => confirmClass()}
+          {MAX_CLASSES > 0 && MAX_CLASSES >= classes.length && (
+            <View
               style={{
-                backgroundColor: Theme.darkGray,
-                padding: 15,
-                borderRadius: 10,
-                width: '90%',
-                opacity: classes.length > 0 ? 1 : 0.7,
-              }}
-              disabled={classes.length === 0}>
-              <Text
-                style={{textAlign: 'center', fontSize: 14, color: Theme.white}}>
-                Confirm Class
-              </Text>
-            </TouchableOpacity>
-          </View>
-          {/* )} */}
+                width: '100%',
+                alignItems: 'center',
+                position: 'absolute',
+                bottom: 20,
+              }}>
+              <TouchableOpacity
+                onPress={() => confirmClass()}
+                style={{
+                  backgroundColor: Theme.darkGray,
+                  padding: 15,
+                  borderRadius: 10,
+                  width: '90%',
+                  opacity: classes.length > 0 ? 1 : 0.7,
+                }}
+                disabled={classes.length === 0}>
+                <Text
+                  style={{
+                    textAlign: 'center',
+                    fontSize: 16,
+                    color: Theme.white,
+                    fontFamily:'Circular Std Medium'
+                  }}>
+                  Confirm Class
+                </Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </>
       ) : (
         <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>
@@ -806,11 +791,11 @@ function AddClass({navigation}: any) {
             <Text
               style={{
                 color: Theme.darkGray,
-                fontSize: 14,
+                fontSize: 18,
                 fontWeight: 'bold',
-                fontFamily: 'Circular Std Book',
+                fontFamily: 'Circular Std Medium',
               }}>
-              Remove this Class ?
+              Remove this Class?
             </Text>
             <View
               style={{
@@ -837,8 +822,8 @@ function AddClass({navigation}: any) {
                 }}>
                 <Text
                   style={{
-                    fontSize: 14,
-                    fontFamily: 'Circular Std Book',
+                    fontSize: 16,
+                    fontFamily: 'Circular Std Medium',
                     color: cancel ? 'white' : Theme.darkGray,
                   }}>
                   No
@@ -862,8 +847,8 @@ function AddClass({navigation}: any) {
                   style={{
                     color: apply ? Theme.darkGray : 'white',
 
-                    fontSize: 14,
-                    fontFamily: 'Circular Std Book',
+                    fontSize: 16,
+                    fontFamily: 'Circular Std Medium',
                   }}>
                   Yes
                 </Text>
@@ -904,7 +889,7 @@ const styles = StyleSheet.create({
     color: Theme.Dune,
     fontWeight: '500',
     fontSize: 16,
-    fontFamily: 'Circular Std',
+    fontFamily: 'Circular Std Medium',
     fontStyle: 'normal',
   },
   modalContainer: {
@@ -1045,3 +1030,46 @@ const styles = StyleSheet.create({
 //     </View>
 //   </View>
 // </View>
+
+// classes.map((classesObject:any, classesIndex:number) => {
+
+//   console.log(`Start Time: ${classesObject.startTime}, End Time: ${classesObject.endTime}`);
+// });
+
+// if (classesObject.startTime.getTime() < currentTime.getTime()) {
+//   console.log("classesObject.startTime",classesObject.startTime.getTime());
+//   console.log("currentTime",currentTime.getTime());
+
+//     console.log(`Class at index ${classesIndex} cannot be added as its start time is in the past.`);
+//     ToastAndroid.show(`Class at index ${classesIndex + 1} cannot be added as its start time is in the past.`, ToastAndroid.SHORT);
+// } else
+// kam sa kaam 30 min wali calss bana gi
+// const timeDifference = classesObject?.endTime?.getTime() - classesObject?.startTime?.getTime();
+// if (timeDifference < 30 * 60000) {
+//   console.log(
+//     `Class No ${classesIndex} cannot be added as its start time is less than 30 minutes from now.`,
+//   );
+//   ToastAndroid.show(
+//     `Class No ${
+//       classesIndex + 1
+//     } cannot be added as its start time is less than 30 minutes from now.`,
+//     ToastAndroid.SHORT,
+//   );
+//   return;
+// }
+
+
+
+//   const start = item?.startTime !== '-' ? new Date(item?.startTime) : new Date(); // Use current time if start time is unavailable
+//   const quantity = perHour; // Replace with your quantity value
+
+// // Calculate end time
+// const end = new Date(start.getTime() + quantity * 60 * 60 * 1000); // Multiply quantity by milliseconds in an hour
+
+// // Format end time
+// const endTimeFormatted = end.toLocaleTimeString([], {
+//     hour: '2-digit',
+//     minute: '2-digit',
+// });
+
+// console.log(endTimeFormatted);
