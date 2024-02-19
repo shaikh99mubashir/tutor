@@ -1191,7 +1191,7 @@ function Home({ navigation, route }: any) {
                 </View>
                 <View
                   style={{
-                    backgroundColor: Theme.lightGray,
+                    backgroundColor: Theme.liteBlue,
                     paddingHorizontal: 15,
                     marginTop: 10,
                     borderTopStartRadius: 15,
@@ -1236,7 +1236,7 @@ function Home({ navigation, route }: any) {
               <View style={{ width: '49%' }}>
                 <View
                   style={{
-                    backgroundColor: Theme.lightGray,
+                    backgroundColor: Theme.liteBlue,
                     paddingHorizontal: 15,
                     borderTopStartRadius: 15,
                     borderTopEndRadius: 15,
@@ -1271,7 +1271,7 @@ function Home({ navigation, route }: any) {
                 </View>
                 <View
                   style={{
-                    backgroundColor: Theme.lightGray,
+                    backgroundColor: Theme.liteBlue,
                     paddingHorizontal: 15,
                     marginTop: 10,
                     borderTopStartRadius: 15,
@@ -1506,7 +1506,7 @@ const styles = StyleSheet.create({
             //   style={[
             //     styles.firstBox,
             //     {
-            //       backgroundColor: Theme.lightGray,
+            //       backgroundColor: Theme.liteBlue,
             //       justifyContent: 'space-between',
             //       paddingHorizontal: 20,
             //       flexDirection: 'row',
@@ -1540,7 +1540,7 @@ const styles = StyleSheet.create({
               style={[
                 styles.firstBox,
                 {
-                  backgroundColor: Theme.lightGray,
+                  backgroundColor: Theme.liteBlue,
                   justifyContent: 'space-between',
                   paddingHorizontal: 15,
                   flexDirection: 'row',

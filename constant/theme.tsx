@@ -16,7 +16,9 @@ const Theme = {
     jobticketBG:'rgba(9, 97, 245, 0.05)',
     dune:'#333',
     ironsidegrey:'(255,102,102,0.05)',
-    liteBlue: '#f7f7f7'
+    ironsidegrey1:'#666666',
+    liteBlue: '#f7f7f7',
+    lightGreen:'rgba(31, 192, 125, 0.20)'
 
 }
 

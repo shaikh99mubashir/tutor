@@ -11,6 +11,7 @@ import noteContext from "../../context/noteContext"
 import { useIsFocused } from "@react-navigation/native"
 import moment from "moment"
 import CustomLoader from "../../Component/CustomLoader"
+import messaging from '@react-native-firebase/messaging';
 
 
 function ClassTimerCount({ navigation, route }: any) {
@@ -157,13 +158,94 @@ function ClassTimerCount({ navigation, route }: any) {
 
     let startTime = route.params
     let item = route.params
-    console.log("item=======Class TimmerCount Screen", item);
-    console.log('item?.data?.studentName', item?.item?.studentName);
-    console.log('item?.item?.studentID', item?.item?.studentID);
-    console.log('item?.item?.subjectID', item?.item?.subjectID);
+    // console.log("item=======Class TimmerCount Screen", item?.item?.totalTime);
+    const totalTime = item?.item?.totalTime;
+    console.log("totalTime",totalTime);
 
-    const [endTime, setEndTime] = useState("2:00 Pm")
-    const [loading, setLoading] = useState(false)
+    const notificationTime = calculateNotificationTime(totalTime);
+    function calculateNotificationTime(totalTime:any) {
+        // Split totalTime into hours and minutes
+        const [hours, minutes] = totalTime.split('.');
+        
+        // Convert hours and minutes to numbers
+        const totalHours = parseInt(hours, 10);
+        const totalMinutes = parseInt(minutes || 0, 10);
+        
+        // Calculate total minutes
+        const total = totalHours * 60 + totalMinutes;
+        
+        // Subtract 5 minutes for notification time
+        const notificationTotal = total - 5;
+        
+        // Calculate notification hours and minutes
+        const notificationHours = Math.floor(notificationTotal / 60);
+        const notificationMinutes = notificationTotal % 60;
+        
+        return { hours: notificationHours, minutes: notificationMinutes };
+      }
+      console.log("notificationTime",notificationTime);
+      
+    //   sendNotification(notificationTime)
+      function sendNotification() {
+        messaging()
+        .requestPermission()
+        .then(() => {
+          // Retrieve the FCM token
+          return messaging().getToken();
+        })
+        .then(token => {
+          messaging()
+            .subscribeToTopic('all_devices')
+            .then(() => {
+              console.log(token, 'token=====>');
+  
+              let formData = new FormData();
+  
+              formData.append('title', 'Clock Out Time');
+              formData.append('message', 'Few Minutes Left in your Ongoining Class');
+              formData.append('deviceToken', token);
+  
+              axios
+                .post(`${Base_Uri}api/SendNotification`, formData, {
+                  headers: {
+                    'Content-Type': 'multipart/form-data',
+                  },
+                })
+                .then(res => {
+                  let data = res.data;
+                  console.log(data, 'tokenResponse');
+                })
+                .catch(error => {
+                  console.log(error, 'error');
+                });
+            })
+            .catch(error => {
+              console.error('Failed to subscribe to topic: all_devices', error);
+            });
+        })
+        .catch(error => {
+          console.error(
+            'Error requesting permission or retrieving token:',
+            error,
+          );
+        });
+      }
+      useEffect(() => {
+        // Calculate the total minutes in the notification time
+        const totalMinutes = notificationTime.hours * 60 + notificationTime.minutes;
+        // Calculate the current time in minutes
+        const now = new Date();
+        const currentMinutes = now.getHours() * 60 + now.getMinutes();
+        // Specify the interval before which you want to trigger the notification (e.g., 2 hours)
+        const notificationInterval = totalTime * 60; // 2 hours in minutes
+        // Calculate the remaining minutes until the specified interval
+        const remainingMinutes = totalMinutes - notificationInterval;
+        // Check if the remaining minutes match the specified interval
+        if (currentMinutes >= remainingMinutes && currentMinutes < totalMinutes) {
+          sendNotification();
+        }
+      }, [notificationTime])
+      
 
 
     // const handleClockOut = async () => {
@@ -338,7 +420,7 @@ function ClassTimerCount({ navigation, route }: any) {
                 <Text style={{ textAlign: "center", fontSize: 20, fontWeight: '600', color: Theme.black, fontFamily: 'Circular Std Medium', lineHeight: 25 }} >Click on the Timer to </Text>
                 <Text style={{ textAlign: "center", fontSize: 20, fontWeight: '600', color: Theme.black, fontFamily: 'Circular Std Medium', lineHeight: 25 }} >Clock Out</Text>
             </View>
-            <CustomLoader visible={loading} />
+            {/* <CustomLoader visible={loading} /> */}
         </View>
     )
 }

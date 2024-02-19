@@ -320,7 +320,7 @@ const Verification = ({ navigation, route }: any) => {
       <View
         style={{
           // width: Dimensions.get('window').width / 1.1,
-          borderWidth: 1,
+          // borderWidth: 1,
           borderRadius: 5,
           marginHorizontal: 15,
           marginVertical: 20,
@@ -366,7 +366,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 4,
     backgroundColor: Theme.darkGray,
-    borderWidth: 1,
+    // borderWidth: 1,
     borderColor: Theme.darkGray,
     justifyContent: 'center',
     alignItems: 'center',

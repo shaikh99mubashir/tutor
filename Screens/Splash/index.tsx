@@ -31,7 +31,7 @@ const Splash = ({navigation}: any) => {
         messaging()
           .subscribeToTopic('all_devices')
           .then(() => {
-            console.log(token, 'token');
+            console.log(token, 'token=====>');
 
             let formData = new FormData();
 
@@ -90,6 +90,7 @@ const Splash = ({navigation}: any) => {
         // sendDeviceTokenToDatabase(tutorData?.tutorID)
         axios
           .get(`${Base_Uri}getTutorDetailByID/${tutorData?.tutorID}`)
+          // .get(`${Base_Uri}getTutorDetailByID/2`)
           .then((res:any) => {
             console.log('res---->',res.data.tutorDetailById);
             
@@ -183,7 +184,23 @@ const Splash = ({navigation}: any) => {
           })
           .catch(error => {
             console.log('error', error);
-            ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+            if (error.response) {
+              // The request was made and the server responded with a status code
+              console.log('Server responded with data:', error.response.data);
+              console.log('Status code:', error.response.status);
+              console.log('Headers:', error.response.headers);
+            } else if (error.request) {
+              // The request was made but no response was received
+              console.log('No response received:', error.request);
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              console.log('Error setting up the request:', error.message);
+            }
+            AsyncStorage.removeItem('loginAuth');
+            navigation.replace('Login');
+            setTutorDetail('')
+            ToastAndroid.show('Session Expire', ToastAndroid.SHORT);
+            // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
           });
         return;
       }

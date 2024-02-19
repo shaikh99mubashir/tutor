@@ -13,6 +13,8 @@ import {Theme} from '../../constant/theme';
 import Header from '../../Component/Header';
 import DropDownPicker from 'react-native-dropdown-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 const DropDownModalView = ({
   navigation,
@@ -25,7 +27,6 @@ const DropDownModalView = ({
   subTitle,
   style,
 }: any) => {
-
   const [serviceDD, setServiceDD] = useState(false);
   const [reportType, setReportType] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
@@ -36,35 +37,38 @@ const DropDownModalView = ({
   };
 
   const setReportTypeChange = (value: any) => {
-    selectedValue(value)
+    selectedValue(value);
     setReportType(value?.option);
     setModalVisible(false);
     setServiceDD(!serviceDD);
   };
 
-const getModalValue = () => {
-
-  setModalVisible(false);
-
-}
-
+  const getModalValue = () => {
+    setModalVisible(false);
+  };
 
   return (
     <>
       {/* Report Type */}
-        
+
       <View style={{marginTop: 8}}>
-        {title &&
-        <Text style={{fontSize: 14, fontWeight: 'bold', color: 'black',fontFamily: 'Circular Std Medium'}}>
-          {title}
-        </Text>
-        }
+        {title && (
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: 'bold',
+              color: 'black',
+              fontFamily: 'Circular Std Medium',
+            }}>
+            {title}
+          </Text>
+        )}
         {subTitle && (
           <Text
             style={{
               color: Theme.gray,
               fontFamily: 'Circular Std Medium',
-              fontSize: 12,
+              fontSize: 14,
             }}>
             {subTitle}
           </Text>
@@ -76,16 +80,16 @@ const getModalValue = () => {
             marginTop: 5,
             flexDirection: 'row',
             justifyContent: 'space-between',
-            paddingVertical: 10,
-            paddingHorizontal: 15,
-            borderWidth: 1,
-            borderTopLeftRadius: 5,
-            borderTopRightRadius: 5,
-            borderBottomLeftRadius: 5,
-            borderBottomRightRadius: 5,
-            borderColor: Theme.gray,
+            paddingVertical: 15,
+            paddingHorizontal: 20,
+            borderRadius:15,
+            // borderTopLeftRadius: 5,
+            // borderTopRightRadius: 5,
+            // borderBottomLeftRadius: 5,
+            // borderBottomRightRadius: 5,
+            backgroundColor:Theme.liteBlue,
             alignItems: 'center',
-            ...style
+            ...style,
           }}>
           <View
             style={{
@@ -97,9 +101,13 @@ const getModalValue = () => {
               style={{
                 color: 'black',
                 fontFamily: 'Circular Std Medium',
-                fontSize: 14,
+                fontSize: 16,
               }}>
-              {value ? value : reportType ? reportType : placeHolder && placeHolder}
+              {value
+                ? value
+                : reportType
+                ? reportType
+                : placeHolder && placeHolder}
             </Text>
 
             {serviceDD ? (
@@ -118,7 +126,11 @@ const getModalValue = () => {
         </TouchableOpacity>
       </View>
 
-      <Modal onRequestClose={()=>setModalVisible(false)} visible={modalVisible} animationType="slide" transparent={true}>
+      <Modal
+        onRequestClose={() => setModalVisible(false)}
+        visible={modalVisible}
+        animationType="slide"
+        transparent={true}>
         <View
           style={{
             flex: 1,
@@ -128,7 +140,7 @@ const getModalValue = () => {
           }}>
           <View
             style={{
-              backgroundColor: 'white',
+              backgroundColor: Theme.liteBlue,
               padding: 20,
               borderTopRightRadius: 15,
               borderTopLeftRadius: 15,
@@ -137,44 +149,90 @@ const getModalValue = () => {
               height: '40%',
               width: '100%',
             }}>
-              <ScrollView showsVerticalScrollIndicator={false}>
-            <TouchableOpacity style={{padding:10,backgroundColor:"white", justifyContent:'flex-end',alignItems:'flex-end'}} onPress={() => getModalValue()}>
-              {/* <Text >X</Text> */}
-              <AntDesign name="closecircleo" size={20} color={'black'} />
-            </TouchableOpacity>
-            <Text
-              style={{
-                fontSize: 18,
-                // fontWeight: 'bold',
-                color: 'black',
-                fontFamily: 'Circular Std Medium',
-                marginBottom: 15,
-              }}>
-              {modalHeading}
-            </Text>
-            {option &&
-              option.map((e: any, i: number) => {
-                return (
-                  <TouchableOpacity
-                    key={i}
-                    onPress={() => setReportTypeChange(e)}
-                    style={{marginVertical: 5}}>
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        // fontWeight: 'bold',
-                        color: 'black',
-                        borderBottomWidth:1,
-                        paddingBottom:8,
-                        borderBottomColor:'#eee',
-                       
-                      }}>
-                      {e.option}
-                    </Text>
-                  </TouchableOpacity>
-                );
-              })}
-          </ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <TouchableOpacity
+                style={{
+                  padding: 10,
+                  backgroundColor: Theme.liteBlue,
+                  justifyContent: 'flex-end',
+                  alignItems: 'flex-end',
+                }}
+                onPress={() => getModalValue()}>
+                {/* <Text >X</Text> */}
+                <AntDesign name="closecircleo" size={20} color={'black'} />
+              </TouchableOpacity>
+              <Text
+                style={{
+                  fontSize: 18,
+                  // fontWeight: 'bold',
+                  color: 'black',
+                  fontFamily: 'Circular Std Medium',
+                  marginBottom: 15,
+                }}>
+                {modalHeading}
+              </Text>
+              {option &&
+                option.map((e: any, i: number) => {
+                  return (
+                    <>
+                    <View  style={{
+                          paddingTop:10
+                        }}></View>
+                      <TouchableOpacity
+                        key={i}
+                        onPress={() => setReportTypeChange(e)}
+                        style={{
+                          marginVertical: 5,
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          width: '100%',
+                          gap:10
+                        }}>
+                          {['Pending', 'Approved', 'Rejected','Dispute','InComplete','Attended'].includes(e.option) && (
+                        <Text>
+                          <FontAwesome
+                            name="dot-circle-o"
+                            size={22}
+                            color={(() => {
+                              switch (e.option) {
+                                case 'Pending':
+                                  return '#FEBC2A';
+                                case 'Dispute':
+                                  return 'orange';
+                                case 'Attended':
+                                  return '#1FC07D';
+                                case 'InComplete':
+                                  return '#FF0000';
+                                case 'Approved':
+                                  return '#1FC07D';
+                                case    'Rejected':
+                                  return '#FF0000';
+                                default:
+                                  return '#298CFF33';
+                              }
+                            })()}
+                          />
+                        </Text>
+                          )}
+                        <Text
+                          style={{
+                            fontSize: 16,
+                            color: 'black',
+                            fontFamily: 'Circular Std Medium',
+                          }}>
+                          {e.option}
+                        </Text>
+                      </TouchableOpacity>
+                      <View
+                        style={{
+                          borderBottomWidth: 1,
+                          borderBottomColor: '#eee',
+                          paddingBottom:10
+                        }}></View>
+                    </>
+                  );
+                })}
+            </ScrollView>
           </View>
         </View>
       </Modal>

@@ -472,7 +472,7 @@ console.log("data",data);
             </View>
             :
             <View style={{ marginTop: 8 }}>
-              <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black',fontFamily: 'Circular Std Medium' }}>
+              <Text style={{ fontSize: 16,  color: 'black',fontFamily: 'Circular Std Bold' }}>
                 First Class Date
               </Text>
               <View
@@ -481,19 +481,20 @@ console.log("data",data);
                   marginTop: 5,
                   flexDirection: 'row',
                   justifyContent: 'space-between',
-                  paddingVertical: 10,
+                  // borderWidth: 1,
+                  // borderTopLeftRadius: 5,
+                  // borderTopRightRadius: 5,
+                  // borderBottomLeftRadius: 5,
+                  // borderBottomRightRadius: 5,
+                  paddingVertical: 15,
                   paddingHorizontal: 15,
-                  borderWidth: 1,
-                  borderTopLeftRadius: 5,
-                  borderTopRightRadius: 5,
-                  borderBottomLeftRadius: 5,
-                  borderBottomRightRadius: 5,
-                  borderColor: Theme.gray,
+                  borderRadius:15,
+                  backgroundColor:Theme.liteBlue,
                   alignItems: 'center',
                 }}>
                 <Text
                   style={{
-                    color: Theme.gray,
+                    color: Theme.black,
                     fontFamily: 'Circular Std Medium',
                     fontSize: 16,
                   }}>
@@ -511,7 +512,7 @@ console.log("data",data);
             modalHeading="Student"
           /> */}
           <View style={{ marginTop: 8 }}>
-              <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black',fontFamily: 'Circular Std Medium' }}>
+              <Text style={{ fontSize: 16,  color: 'black',fontFamily: 'Circular Std Bold' }}>
                 Student
               </Text>
               <View
@@ -520,19 +521,15 @@ console.log("data",data);
                   marginTop: 5,
                   flexDirection: 'row',
                   justifyContent: 'space-between',
-                  paddingVertical: 10,
+                  paddingVertical: 15,
                   paddingHorizontal: 15,
-                  borderWidth: 1,
-                  borderTopLeftRadius: 5,
-                  borderTopRightRadius: 5,
-                  borderBottomLeftRadius: 5,
-                  borderBottomRightRadius: 5,
-                  borderColor: Theme.gray,
+                  borderRadius:15,
+                  backgroundColor:Theme.liteBlue,
                   alignItems: 'center',
                 }}>
                 <Text
                   style={{
-                    color: Theme.gray,
+                    color: Theme.black,
                     fontFamily: 'Circular Std Medium',
                     fontSize: 16,
                   }}>
@@ -550,7 +547,7 @@ console.log("data",data);
             modalHeading="Subject"
           /> */}
           <View style={{ marginTop: 8 }}>
-              <Text style={{ fontSize: 12, fontWeight: 'bold', color: 'black',fontFamily: 'Circular Std Medium' }}>
+              <Text style={{ fontSize: 16,  color: 'black',fontFamily: 'Circular Std Bold' }}>
                 Subject
               </Text>
               <View
@@ -559,19 +556,15 @@ console.log("data",data);
                   marginTop: 5,
                   flexDirection: 'row',
                   justifyContent: 'space-between',
-                  paddingVertical: 10,
+                  paddingVertical: 15,
                   paddingHorizontal: 15,
-                  borderWidth: 1,
-                  borderTopLeftRadius: 5,
-                  borderTopRightRadius: 5,
-                  borderBottomLeftRadius: 5,
-                  borderBottomRightRadius: 5,
-                  borderColor: Theme.gray,
+                  borderRadius:15,
+                  backgroundColor:Theme.liteBlue,
                   alignItems: 'center',
                 }}>
                 <Text
                   style={{
-                    color: Theme.gray,
+                    color: Theme.black,
                     fontFamily: 'Circular Std Medium',
                     fontSize: 16,
                   }}>
@@ -712,20 +705,14 @@ console.log("data",data);
           {evaluation.option == 'Progress Report' ? (
             <>
               <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: 'bold',
-                  color: 'black',
-                  marginTop: 8,
-                  fontFamily: 'Circular Std Medium'
-                }}>
+               style={{ fontSize: 16,  color: 'black',fontFamily: 'Circular Std Bold' }}>
                 4. Observation
               </Text>
               <Text
                 style={{
                   color: Theme.gray,
                   fontFamily: 'Circular Std Medium',
-                  fontSize: 12,
+                  fontSize: 14,
                 }}>
                 Did you (tutor) hold or carried out any form of eximination/test/quiz for student within this 3 months?
               </Text>
@@ -734,8 +721,8 @@ console.log("data",data);
                   styles.textAreaContainer,
                   {
                     width: '100%',
-                    borderWidth: 1,
-                    borderRadius: 10,
+                    // borderWidth: 1,
+                    borderRadius: 15,
                     marginTop: 5,
                   },
                 ]}>
@@ -761,7 +748,7 @@ console.log("data",data);
                 style={{
                   color: Theme.gray,
                   fontFamily: 'Circular Std Medium',
-                  fontSize: 12,
+                  fontSize: 14,
                   marginTop: 8,
                 }}>
                 How do you rate student's performance based on this test?
@@ -771,7 +758,7 @@ console.log("data",data);
                   styles.textAreaContainer,
                   {
                     width: '100%',
-                    borderWidth: 1,
+                    // borderWidth: 1,
                     borderRadius: 10,
                     marginTop: 5,
                   },
@@ -798,7 +785,7 @@ console.log("data",data);
                 style={{
                   color: Theme.gray,
                   fontFamily: 'Circular Std Medium',
-                  fontSize: 12,
+                  fontSize: 14,
                   marginTop: 8,
                 }}>
                 which topic(s) has the students showed some significant improvement?
@@ -808,7 +795,7 @@ console.log("data",data);
                   styles.textAreaContainer,
                   {
                     width: '100%',
-                    borderWidth: 1,
+                    // borderWidth: 1,
                     borderRadius: 10,
                     marginTop: 5,
                   },
@@ -835,7 +822,7 @@ console.log("data",data);
                 style={{
                   color: Theme.gray,
                   fontFamily: 'Circular Std Medium',
-                  fontSize: 12,
+                  fontSize: 14,
                   marginTop: 8,
                 }}>
                 Can you determine and name the topic(s) that the student should improve and focus on?
@@ -845,7 +832,7 @@ console.log("data",data);
                   styles.textAreaContainer,
                   {
                     width: '100%',
-                    borderWidth: 1,
+                    // borderWidth: 1,
                     borderRadius: 10,
                     marginTop: 5,
                   },
@@ -873,7 +860,7 @@ console.log("data",data);
             <>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: 16,
                   fontWeight: 'bold',
                   color: 'black',
                   marginTop: 8,
@@ -885,7 +872,7 @@ console.log("data",data);
                 style={{
                   color: Theme.gray,
                   fontFamily: 'Circular Std Medium',
-                  fontSize: 12,
+                  fontSize: 14,
                 }}>
                 What is the current score for the subject?
               </Text>
@@ -894,7 +881,7 @@ console.log("data",data);
                   styles.textAreaContainer,
                   {
                     width: '100%',
-                    borderWidth: 1,
+                    // borderWidth: 1,
                     borderRadius: 10,
                     marginTop: 5,
                   },
@@ -923,7 +910,7 @@ console.log("data",data);
                 style={{
                   color: Theme.gray,
                   fontFamily: 'Circular Std Medium',
-                  fontSize: 12,
+                  fontSize: 14,
                   marginTop: 8,
                 }}>
                 Elaborate your Plan to Help Student?
@@ -933,7 +920,7 @@ console.log("data",data);
                   styles.textAreaContainer,
                   {
                     width: '100%',
-                    borderWidth: 1,
+                    // borderWidth: 1,
                     borderRadius: 10,
                     marginTop: 5,
                   },
@@ -972,7 +959,7 @@ console.log("data",data);
         }}>
         <View
           style={{
-            borderWidth: 1,
+            // borderWidth: 1,
             borderColor: Theme.white,
             marginVertical: 20,
             width: '94%',
@@ -1013,8 +1000,9 @@ export default ReportSubmission;
 
 const styles = StyleSheet.create({
   textAreaContainer: {
-    borderWidth: 1,
-    padding: 5,
+    // borderWidth: 1,
+    backgroundColor:Theme.lightGray,
+    padding: 10,
   },
   textArea: {
     height: 120,

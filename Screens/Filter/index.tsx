@@ -81,6 +81,9 @@ const Filter = ({ navigation, route }: any) => {
     },
     {
       option: "InComplete"
+    },
+    {
+      option: "Dispute"
     }
   ])
 

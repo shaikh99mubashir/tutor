@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useContext } from 'react';
+import React, {useState, useCallback, useEffect, useContext} from 'react';
 import {
   View,
   Text,
@@ -14,16 +14,16 @@ import {
   Linking,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { Theme } from '../../constant/theme';
+import {Theme} from '../../constant/theme';
 import AntDesign from 'react-native-vector-icons/EvilIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 import CustomHeader from '../../Component/Header';
-import { Base_Uri } from '../../constant/BaseUri';
+import {Base_Uri} from '../../constant/BaseUri';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import { ToastAndroid } from 'react-native';
-import { useIsFocused, useRoute } from '@react-navigation/native';
+import {ToastAndroid} from 'react-native';
+import {useIsFocused, useRoute} from '@react-navigation/native';
 import upcomingClassContext from '../../context/upcomingClassContext';
 import moment from 'moment';
 import scheduleContext from '../../context/scheduleContext';
@@ -38,7 +38,7 @@ import CustomLoader from '../../Component/CustomLoader';
 
 // import { ScrollView } from "react-native-gesture-handler"
 
-function Schedule({ navigation, route }: any) {
+function Schedule({navigation, route}: any) {
   let data = route.params;
 
   let focus = useIsFocused();
@@ -47,12 +47,12 @@ function Schedule({ navigation, route }: any) {
   let bannerCont = useContext(bannerContext);
   const tutorDetailsContext = useContext(TutorDetailsContext);
 
-  let { tutorDetails } = tutorDetailsContext;
+  let {tutorDetails} = tutorDetailsContext;
 
-  let { schedulePageBannner, setSchedulePageBanner } = bannerCont;
+  let {schedulePageBannner, setSchedulePageBanner} = bannerCont;
 
-  let { scheduleData, setScheduleData } = context;
-  let { upcomingClass, setUpcomingClass } = context;
+  let {scheduleData, setScheduleData} = context;
+  let {upcomingClass, setUpcomingClass} = context;
   const studentAndSubjectContext = useContext(StudentContext);
   const [loading, setLoading] = useState(false);
   // const [scheduleData, setScheduleData] = useState<any>([]);
@@ -65,8 +65,9 @@ function Schedule({ navigation, route }: any) {
   const [show, setShow] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
   const [refresh, setRefresh] = useState(false);
-  const {students, subjects, updateStudent, updateSubject} = studentAndSubjectContext
-    const onRefresh = React.useCallback(() => {
+  const {students, subjects, updateStudent, updateSubject} =
+    studentAndSubjectContext;
+  const onRefresh = React.useCallback(() => {
     // setRefreshing(true);
     setTimeout(() => {
       setRefreshing(false);
@@ -124,7 +125,7 @@ function Schedule({ navigation, route }: any) {
     setOpenPPModal(true);
     axios
       .get(`${Base_Uri}api/bannerAds`)
-      .then(({ data }) => {
+      .then(({data}) => {
         console.log('res', data.bannerAds);
       })
       .catch(error => {
@@ -145,7 +146,7 @@ function Schedule({ navigation, route }: any) {
     }
     const login: any = await AsyncStorage.getItem('loginAuth');
     let loginData: LoginAuth = JSON.parse(login);
-    let { tutorID } = loginData;
+    let {tutorID} = loginData;
 
     if (upcomingClass && Object.keys(upcomingClass).length > 0) {
       axios
@@ -153,7 +154,7 @@ function Schedule({ navigation, route }: any) {
         .then(res => {
           let scheduledClasses = res.data;
 
-          let { classSchedulesTime } = scheduledClasses;
+          let {classSchedulesTime} = scheduledClasses;
           let checkRouteClass =
             classSchedulesTime &&
             classSchedulesTime.length > 0 &&
@@ -184,8 +185,8 @@ function Schedule({ navigation, route }: any) {
     }
     axios
       .get(`${Base_Uri}getClassSchedulesTime/${tutorID}`)
-      .then(({ data }) => {
-        let { classSchedulesTime } = data;
+      .then(({data}) => {
+        let {classSchedulesTime} = data;
 
         let Date = selectedDate.getDate();
         let month = selectedDate.getMonth();
@@ -194,32 +195,32 @@ function Schedule({ navigation, route }: any) {
         classSchedulesTime =
           classSchedulesTime && classSchedulesTime.length > 0
             ? classSchedulesTime
-              .map((e: any, i: number) => {
-                let getDate: any = moment(e.date);
+                .map((e: any, i: number) => {
+                  let getDate: any = moment(e.date);
 
-                let convertDate = getDate.toDate();
-                let scheduleDate = convertDate.getDate();
-                let scheduleMonth = convertDate.getMonth();
-                let scheduleYear = convertDate.getFullYear();
+                  let convertDate = getDate.toDate();
+                  let scheduleDate = convertDate.getDate();
+                  let scheduleMonth = convertDate.getMonth();
+                  let scheduleYear = convertDate.getFullYear();
 
-                if (
-                  Date == scheduleDate &&
-                  month == scheduleMonth &&
-                  year == scheduleYear
-                ) {
-                  return {
-                    ...e,
-                    imageUrl: require('../../Assets/Images/student.png'),
-                  };
-                } else {
-                  return false;
-                }
-              })
-              .filter(Boolean)
+                  if (
+                    Date == scheduleDate &&
+                    month == scheduleMonth &&
+                    year == scheduleYear
+                  ) {
+                    return {
+                      ...e,
+                      imageUrl: require('../../Assets/Images/student.png'),
+                    };
+                  } else {
+                    return false;
+                  }
+                })
+                .filter(Boolean)
             : [];
-            setLoading(false);
-            let dataToSend = [...classSchedulesTime,];
-            setScheduleData(dataToSend);
+        setLoading(false);
+        let dataToSend = [...classSchedulesTime];
+        setScheduleData(dataToSend);
         // axios
         //   .get(`${Base_Uri}getClassAttendedTime/${tutorID}`)
         //   .then(({ data }) => {
@@ -360,7 +361,7 @@ function Schedule({ navigation, route }: any) {
 
   const closeBannerModal = async () => {
     if (schedulePageBannner.displayOnce == 'on') {
-      let bannerData = { ...schedulePageBannner };
+      let bannerData = {...schedulePageBannner};
 
       let stringData = JSON.stringify(bannerData);
 
@@ -427,7 +428,7 @@ function Schedule({ navigation, route }: any) {
 
                 <TouchableOpacity
                   onPress={() => navigateToEditScreen('postponed')}
-                  style={{ width: '100%' }}>
+                  style={{width: '100%'}}>
                   <Text
                     style={[
                       styles.text,
@@ -444,7 +445,7 @@ function Schedule({ navigation, route }: any) {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => navigateToEditScreen('cancelled')}
-                  style={{ width: '100%' }}>
+                  style={{width: '100%'}}>
                   <Text
                     style={[
                       styles.text,
@@ -484,7 +485,7 @@ function Schedule({ navigation, route }: any) {
   };
 
   const routeToClockIn = async (item: any) => {
-    console.log("item", item);
+    console.log('item', item);
 
     const currentTime: any = new Date();
 
@@ -569,9 +570,9 @@ function Schedule({ navigation, route }: any) {
     return `${twelveHour}:${minuteStr} ${period}`;
   }
 
-  const renderScheduleData = ({ item, index }: any): any => {
-    console.log("item",item);
-    
+  const renderScheduleData = ({item, index}: any): any => {
+    console.log('item', item);
+
     let nowDate: Date = new Date();
     let date = nowDate.getDate();
     let month = nowDate.getMonth();
@@ -603,7 +604,7 @@ function Schedule({ navigation, route }: any) {
           marginTop: 20,
           borderRadius: 10,
         }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <View
             style={{
               flexDirection: 'row',
@@ -613,7 +614,7 @@ function Schedule({ navigation, route }: any) {
               paddingBottom: 20,
               borderBottomColor: Theme.lightGray,
             }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+            <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
               <View
                 style={{
                   borderWidth: 1,
@@ -625,62 +626,152 @@ function Schedule({ navigation, route }: any) {
                   justifyContent: 'center',
                   backgroundColor: Theme.darkGray,
                 }}>
-                <Image source={item.imageUrl} style={{ width: 35, height: 35 }} />
+                <Image source={item.imageUrl} style={{width: 35, height: 35}} />
               </View>
               <View>
-                <Text style={styles.textType3}>
-                  {item?.jtuid}
-                </Text>
-                <Text style={[styles.textType1, { lineHeight: 30, textTransform:'capitalize' }]}>
+                <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',color:'#1FC07D'}]}>{item?.jtuid}</Text>
+                <Text
+                  style={[
+                    styles.textType1,
+                    {lineHeight: 30, textTransform: 'capitalize',fontFamily: 'Circular Std Medium',width:150, fontSize:26},
+                  ]}>
                   {item?.studentName}
                 </Text>
-                <View style={{ flexDirection: 'row', gap: 5, alignItems: "center" }}>
+                {item?.mode.toLowerCase() == 'physical' && (
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      gap: 5,
+                      alignItems: 'center',
+                    }}>
+                    <Feather name="map-pin" size={18} color={'#003E9C'} />
+                    <Text
+                      style={[
+                        styles.textType3,
+                        {color: '#003E9C', fontFamily: 'Circular Std Medium'},
+                      ]}>
+                      {item?.city}
+                    </Text>
+                  </View>
+                )}
+                
+                {/* <View style={{ flexDirection: 'row', gap: 5, alignItems: "center" }}>
                 <Feather name="map-pin" size={18} color={'#003E9C'} />
                   <Text style={[styles.textType3, { color: '#003E9C' }]}>
                     {item?.city}
                   </Text>
-                </View>
+                </View> */}
               </View>
             </View>
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-              <Text style={[styles.textType3, { color: '#003E9C',textTransform:'capitalize' ,backgroundColor: '#298CFF33', paddingVertical: 5, paddingHorizontal: 30, borderRadius: 30 }]}>
+            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+              <Text
+                style={[
+                  styles.textType3,
+                  {
+                    // color: '#003E9C',
+                    // backgroundColor: '#298CFF33',
+                    color: item.mode == 'online'? Theme.darkGray : '#1FC07D',
+                    backgroundColor: item.mode == 'online'? '#298CFF33' : Theme.lightGreen,
+                    textTransform: 'capitalize',
+                    paddingVertical: 5,
+                    paddingHorizontal: 30,
+                    borderRadius: 30,
+                  },
+                ]}>
                 {item?.mode}
               </Text>
             </View>
           </View>
-
         </View>
 
-        <View style={{ paddingVertical: 20, }}>
-          <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
-            <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 10 }}>
-            <AntDesig name="copy1" size={20} color={'#298CFF'} />
-              <Text style={styles.textType3}>Subject</Text>
+        <View style={{paddingVertical: 20}}>
+          <View
+            style={{
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                gap: 10,
+              }}>
+              <AntDesig name="copy1" size={20} color={'#298CFF'} />
+              <Text style={[styles.textType3,{color:Theme.ironsidegrey1}]}>Subject</Text>
             </View>
-            <Text style={[styles.textType1, { fontSize: 18 }]}> {item.subjectName ?? item?.subject_name}</Text>
-          </View>
-          <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-            <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 10 }}>
-            <AntDesig name="carryout" size={20} color={'#298CFF'} />
-              <Text style={styles.textType3}>Day</Text>
-            </View>
-            <Text style={[styles.textType1, { fontSize: 18 }]}>{convertDateDayFormat(item.date)}</Text>
-          </View>
-          <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-            <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 10 }}>
-            <AntDesig name="clockcircleo" size={20} color={'#298CFF'} />
-              <Text style={styles.textType3}>Time</Text>
-            </View>
-            <Text style={[styles.textType1, { fontSize: 18 }]}>{startTime12Hour} - {endTime12Hour}
+            <Text style={[styles.textType1, {fontSize: 20}]}>
+              {' '}
+              {item.subjectName ?? item?.subject_name}
             </Text>
           </View>
-          <View style={{ justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-            <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 10 }}>
+          <View
+            style={{
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 10,
+            }}>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                gap: 10,
+              }}>
+              <AntDesig name="carryout" size={20} color={'#298CFF'} />
+              <Text style={[styles.textType3,{color:Theme.ironsidegrey1}]}>Day</Text>
+            </View>
+            <Text style={[styles.textType1, {fontSize: 20}]}>
+              {convertDateDayFormat(item.date)}
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 10,
+            }}>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                gap: 10,
+              }}>
+              <AntDesig name="clockcircleo" size={20} color={'#298CFF'} />
+              <Text style={[styles.textType3,{color:Theme.ironsidegrey1}]}>Time</Text>
+            </View>
+            <Text style={[styles.textType1, {fontSize: 20}]}>
+              {startTime12Hour} - {endTime12Hour}
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 10,
+            }}>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                gap: 10,
+              }}>
               {/* <Image source={require('../../Assets/Images/level.png')} /> */}
               <MaterialIcons name="schedule-send" size={20} color={'#298CFF'} />
-              <Text style={styles.textType3}>Status</Text>
+              <Text style={[styles.textType3,{color:Theme.ironsidegrey1}]}>Status</Text>
             </View>
-            <Text style={[styles.textType1, { fontSize: 18,textTransform:'capitalize' }]}>{item.status}
+            <Text
+              style={[
+                styles.textType1,
+                {fontSize: 20, textTransform: 'capitalize'},
+              ]}>
+              {item.status}
             </Text>
           </View>
         </View>
@@ -714,7 +805,7 @@ function Schedule({ navigation, route }: any) {
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => navigation.navigate('AttendedDetails')}>
-              <Text style={{ color: Theme.gray, marginTop: 10 }}>
+              <Text style={{color: Theme.gray, marginTop: 10}}>
                 View Details
               </Text>
             </TouchableOpacity>
@@ -739,7 +830,7 @@ function Schedule({ navigation, route }: any) {
                 padding: 10,
                 borderRadius: 10,
               }}>
-              <Text style={{ textAlign: 'center', fontSize: 14, color: 'white' }}>
+              <Text style={{textAlign: 'center', fontSize: 14, color: 'white'}}>
                 Edit
               </Text>
             </TouchableOpacity>
@@ -753,7 +844,7 @@ function Schedule({ navigation, route }: any) {
                   borderRadius: 10,
                 }}>
                 <Text
-                  style={{ textAlign: 'center', fontSize: 14, color: 'white' }}>
+                  style={{textAlign: 'center', fontSize: 14, color: 'white'}}>
                   Attend
                 </Text>
               </TouchableOpacity>
@@ -843,8 +934,6 @@ function Schedule({ navigation, route }: any) {
     return `${dayName}, ${day} ${monthNames[monthIndex]} ${year}`;
   }
 
-
-
   const getTutorId = async () => {
     interface LoginAuth {
       status: Number;
@@ -911,7 +1000,7 @@ function Schedule({ navigation, route }: any) {
     //     <ActivityIndicator size={'large'} color={Theme.black} />
     //   </View>
     // ) : (
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
+    <View style={{flex: 1, backgroundColor: 'white'}}>
       <CustomHeader
         title="Schedule"
         plus={scheduleData.length !== 0}
@@ -923,7 +1012,7 @@ function Schedule({ navigation, route }: any) {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         nestedScrollEnabled={true}>
-        <View style={{ padding: 20 }}>
+        <View style={{padding: 20}}>
           <TouchableOpacity
             onPress={() => setShow(true)}
             style={{
@@ -932,7 +1021,13 @@ function Schedule({ navigation, route }: any) {
               alignItems: 'center',
               gap: 5,
             }}>
-            <Text style={{ fontSize: 18, color: Theme.black, fontWeight: '700', fontFamily: 'Circular Std Black' }}>
+            <Text
+              style={{
+                fontSize: 18,
+                color: Theme.black,
+                fontWeight: '700',
+                fontFamily: 'Circular Std Black',
+              }}>
               {/* {selectedDate.toString().slice(4, 15)} */}
               {convertDateFormat(selectedDate)}
             </Text>
@@ -949,16 +1044,22 @@ function Schedule({ navigation, route }: any) {
           )}
 
           {scheduleData.length == 0 &&
-            Object.keys(upcomingClass).length == 0 ? (
+          Object.keys(upcomingClass).length == 0 ? (
             <View
               style={{
                 height: Dimensions.get('window').height - 250,
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-                <Image source={require('../../Assets/Images/noclassyet.png')} />
+              <Image source={require('../../Assets/Images/noclassyet.png')} />
               <Text
-                style={{ fontSize: 25, fontWeight: 'bold', color: Theme.black, fontFamily: 'Circular Std Black',marginTop:20 }}>
+                style={{
+                  fontSize: 25,
+                  fontWeight: 'bold',
+                  color: Theme.black,
+                  fontFamily: 'Circular Std Black',
+                  marginTop: 20,
+                }}>
                 No Class, Yet
               </Text>
               <Text
@@ -967,7 +1068,7 @@ function Schedule({ navigation, route }: any) {
                   color: Theme.gray,
                   textAlign: 'center',
                   marginTop: 10,
-                  fontFamily: 'Circular Std Black'
+                  fontFamily: 'Circular Std Black',
                 }}>
                 Look like you haven't added any class.
               </Text>
@@ -977,7 +1078,7 @@ function Schedule({ navigation, route }: any) {
                   borderColor: Theme.white,
                   marginVertical: 20,
                   width: '94%',
-                  marginTop:40
+                  marginTop: 40,
                 }}>
                 <TouchableOpacity
                   activeOpacity={0.8}
@@ -992,7 +1093,7 @@ function Schedule({ navigation, route }: any) {
                     style={{
                       color: 'white',
                       fontSize: 18,
-                      fontFamily: 'Circular Std Black'
+                      fontFamily: 'Circular Std Black',
                     }}>
                     Add Class
                   </Text>
@@ -1001,11 +1102,11 @@ function Schedule({ navigation, route }: any) {
             </View>
           ) : (
             <View>
-            <FlatList
-              nestedScrollEnabled={true}
-              data={upcomingClass.length > 0 ? upcomingClass : scheduleData}
-              renderItem={renderScheduleData}
-            />
+              <FlatList
+                nestedScrollEnabled={true}
+                data={upcomingClass.length > 0 ? upcomingClass : scheduleData}
+                renderItem={renderScheduleData}
+              />
             </View>
           )}
         </View>
@@ -1016,7 +1117,7 @@ function Schedule({ navigation, route }: any) {
       {Object.keys(schedulePageBannner).length > 0 &&
         (schedulePageBannner.tutorStatusCriteria == 'All' ||
           tutorDetails.status == 'verified') && (
-          <View style={{ flex: 1 }}>
+          <View style={{flex: 1}}>
             <Modal
               visible={openPPModal}
               animationType="fade"
@@ -1048,7 +1149,7 @@ function Schedule({ navigation, route }: any) {
                   </TouchableOpacity>
                   {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
                   <Image
-                    source={{ uri: schedulePageBannner.bannerImage }}
+                    source={{uri: schedulePageBannner.bannerImage}}
                     style={{
                       width: Dimensions.get('screen').width / 1.1,
                       height: '80%',
@@ -1060,7 +1161,7 @@ function Schedule({ navigation, route }: any) {
             </Modal>
           </View>
         )}
-          <CustomLoader visible={loading} />
+      <CustomLoader visible={loading} />
       {/* <Modal visible={loading} animationType="fade" transparent={true}>
         <View
           style={{
@@ -1157,12 +1258,18 @@ const styles = StyleSheet.create({
     color: Theme.black,
   },
   textType1: {
-    fontWeight: '500', fontSize: 24, color: Theme.Dune, fontFamily: 'Circular Std Medium', lineHeight: 24,
-    fontStyle: 'normal'
+    fontWeight: '500',
+    fontSize: 24,
+    color: Theme.Dune,
+    fontFamily: 'Circular Std Medium',
+    lineHeight: 24,
+    fontStyle: 'normal',
   },
   textType3: {
-    color: Theme.Dune, fontWeight: '500', fontSize: 16,
-    fontFamily: 'Circular Std',
+    color: Theme.Dune,
+    fontWeight: '500',
+    fontSize: 16,
+    fontFamily: 'Circular Std Medium',
     fontStyle: 'normal',
   },
 });

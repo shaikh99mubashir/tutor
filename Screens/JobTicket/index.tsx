@@ -483,8 +483,8 @@ function JobTicket({ navigation, route }: any) {
               borderColor: Theme.lightGray,
             }}>
             <View>
-              <Text style={styles.textType3}>{item?.jtuid}</Text>
-              <Text style={[styles.textType1, { lineHeight: 30 }]}>
+              <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium'}]}>{item?.jtuid}</Text>
+              <Text style={[styles.textType1, { lineHeight: 30,fontFamily: 'Circular Std Medium' }]}>
                 RM {item?.price}
               </Text>
 
@@ -494,8 +494,11 @@ function JobTicket({ navigation, route }: any) {
                 style={[
                   styles.textType3,
                   {
-                    color: '#003E9C',
-                    backgroundColor: '#298CFF33',
+                    // color: '#003E9C',
+                    // backgroundColor: '#298CFF33',
+                    color: item.mode == 'online'? Theme.darkGray : '#1FC07D',
+                    backgroundColor: item.mode == 'online'? '#298CFF33' : Theme.lightGreen,
+                    fontFamily: 'Circular Std Medium',
                     paddingVertical: 5,
                     paddingHorizontal: 30,
                     borderRadius: 30,
@@ -506,16 +509,19 @@ function JobTicket({ navigation, route }: any) {
               </Text>
             </View>
           </View>
+          {item?.mode.toLowerCase() == 'physical' &&
           <View
             style={{
-              flexDirection: 'row', gap: 5, alignItems: 'center', borderBottomWidth: 2,
-              paddingBottom: 20, borderColor: Theme.lightGray,
+              flexDirection: 'row', gap: 5, alignItems: 'center',
             }}>
             <Feather name="map-pin" size={18} color={'#003E9C'} />
-            <Text style={[styles.textType3, { color: '#003E9C' }]}>
+            <Text style={[styles.textType3, { color: '#003E9C',fontFamily: 'Circular Std Medium' }]}>
               {item?.city}
             </Text>
           </View>
+          } 
+          <View style={{ borderBottomWidth: 2,
+              paddingBottom: 20, borderColor: Theme.lightGray,}}></View>
           <View
             style={{
               paddingVertical: 20,
@@ -533,15 +539,15 @@ function JobTicket({ navigation, route }: any) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexDirection: 'row',
-                  gap: 10,
+                  gap: 8,
                 }}>
-                <AntDesign name="copy1" size={20} color={'#298CFF'} />
-                <Text style={styles.textType3}>Subject</Text>
+                <AntDesign name="copy1" size={18} color={'#298CFF'} />
+                <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',color:Theme.ironsidegrey1}]}>Subject</Text>
               </View>
               <Text
                 style={[
                   styles.textType1,
-                  { fontSize: 18, textTransform: 'capitalize' },
+                  { fontSize: 20, textTransform: 'capitalize',fontFamily: 'Circular Std Bold' },
                 ]}>
                 {item?.subject_name}
               </Text>
@@ -562,12 +568,12 @@ function JobTicket({ navigation, route }: any) {
                 }}>
                 {/* <Image source={require('../../Assets/Images/preftutor.png')} /> */}
                 <FontAwesome name="user-o" size={18} color={'#298CFF'} />
-                <Text style={styles.textType3}>Pref. Tutor</Text>
+                <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',color:Theme.ironsidegrey1}]}>Pref. Tutor</Text>
               </View>
               <Text
                 style={[
                   styles.textType1,
-                  { fontSize: 18, textTransform: 'capitalize' },
+                  { fontSize: 20, textTransform: 'capitalize',fontFamily: 'Circular Std Bold' },
                 ]}>
                 {item?.tutorPereference}
               </Text>
@@ -584,15 +590,15 @@ function JobTicket({ navigation, route }: any) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexDirection: 'row',
-                  gap: 10,
+                  gap: 12,
                 }}>
                 <FontAwesome name="level-up" size={18} color={'#298CFF'} />
-                <Text style={styles.textType3}>Level</Text>
+                <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',color:Theme.ironsidegrey1}]}>Level</Text>
               </View>
               <Text
                 style={[
                   styles.textType1,
-                  { fontSize: 18, textTransform: 'capitalize' },
+                  { fontSize: 20, textTransform: 'capitalize',fontFamily: 'Circular Std Bold' },
                 ]}>
                 {item?.categoryName}
               </Text>
@@ -618,7 +624,7 @@ function JobTicket({ navigation, route }: any) {
                 <Text
                   style={[
                     styles.textType3,
-                    { color: '#298CFF', textTransform: 'capitalize' },
+                    { color: '#298CFF', textTransform: 'capitalize',fontFamily: 'Circular Std Medium' },
                   ]}>
                   {item?.classDayType}
                 </Text>
@@ -639,7 +645,7 @@ function JobTicket({ navigation, route }: any) {
                   gap: 10,
                 }}>
                 <AntDesign name="clockcircleo" size={20} color={'#298CFF'} />
-                <Text style={[styles.textType3, { color: '#298CFF' }]}>
+                <Text style={[styles.textType3, { color: '#298CFF',fontFamily: 'Circular Std Medium' }]}>
                   {item?.classTime}
                 </Text>
               </View>
@@ -677,6 +683,7 @@ function JobTicket({ navigation, route }: any) {
               width: 120,
               textAlign: 'center',
               textTransform: 'capitalize',
+              fontFamily: 'Circular Std Medium'
             },
           ]}
         >
@@ -701,7 +708,7 @@ function JobTicket({ navigation, route }: any) {
 
             }}>
             <View>
-              <Text style={styles.textType3}>{item?.jtuid}</Text>
+              <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium'}]}>{item?.jtuid}</Text>
               <Text
                 style={[
                   styles.textType1,
@@ -716,8 +723,9 @@ function JobTicket({ navigation, route }: any) {
                 style={[
                   styles.textType3,
                   {
-                    color: '#003E9C',
-                    backgroundColor: '#298CFF33',
+                    color: item.mode == 'online'? Theme.darkGray : '#1FC07D',
+                    backgroundColor: item.mode == 'online'? '#298CFF33' : Theme.lightGreen,
+                    fontFamily: 'Circular Std Medium',
                     paddingVertical: 5,
                     paddingHorizontal: 30,
                     borderRadius: 30,
@@ -728,20 +736,23 @@ function JobTicket({ navigation, route }: any) {
               </Text>
             </View>
           </View>
+          {item?.mode.toLowerCase() == 'physical' &&
           <View
             style={{
-              flexDirection: 'row', gap: 10, alignItems: 'center', borderBottomWidth: 2,
-              borderBottomColor: Theme.lightGray, paddingBottom: 15,
+              flexDirection: 'row', gap: 10, alignItems: 'center', 
             }}>
             <Feather name="map-pin" size={18} color={'#298CFF'} />
             <Text
               style={[
                 styles.textType3,
-                { color: '#003E9C', textTransform: 'capitalize' },
+                { color: '#003E9C', textTransform: 'capitalize',fontFamily: 'Circular Std Medium' },
               ]}>
               {item?.city}
             </Text>
           </View>
+           }
+          <View style={{ borderBottomWidth: 2,
+              paddingBottom: 20, borderColor: Theme.lightGray,}}></View>
           <View
             style={{
               paddingVertical: 20,
@@ -762,12 +773,12 @@ function JobTicket({ navigation, route }: any) {
                   gap: 10,
                 }}>
                 <AntDesign name="copy1" size={18} color={'#298CFF'} />
-                <Text style={styles.textType3}>Subject</Text>
+                <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',color:Theme.ironsidegrey1}]}>Subject</Text>
               </View>
               <Text
                 style={[
                   styles.textType1,
-                  { fontSize: 18, textTransform: 'capitalize' },
+                  { fontSize: 20, textTransform: 'capitalize',fontFamily: 'Circular Std Bold' },
                 ]}>
                 {item?.subject_name}
               </Text>
@@ -787,12 +798,12 @@ function JobTicket({ navigation, route }: any) {
                   gap: 10,
                 }}>
                 <FontAwesome name="user-o" size={18} color={'#298CFF'} />
-                <Text style={styles.textType3}>Pref. Tutor</Text>
+                <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',color:Theme.ironsidegrey1}]}>Pref. Tutor</Text>
               </View>
               <Text
                 style={[
                   styles.textType1,
-                  { fontSize: 18, textTransform: 'capitalize' },
+                  { fontSize: 20, textTransform: 'capitalize',fontFamily: 'Circular Std Medium' },
                 ]}>
                 {item?.tutorPereference}
               </Text>
@@ -809,15 +820,15 @@ function JobTicket({ navigation, route }: any) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexDirection: 'row',
-                  gap: 10,
+                  gap: 12,
                 }}>
                 <FontAwesome name="level-up" size={18} color={'#298CFF'} />
-                <Text style={styles.textType3}>Level</Text>
+                <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',color:Theme.ironsidegrey1}]}>Level</Text>
               </View>
               <Text
                 style={[
                   styles.textType1,
-                  { fontSize: 18, textTransform: 'capitalize' },
+                  { fontSize: 20, textTransform: 'capitalize',fontFamily: 'Circular Std Medium' },
                 ]}>
                 {item?.categoryName}
               </Text>
@@ -843,7 +854,7 @@ function JobTicket({ navigation, route }: any) {
                 <Text
                   style={[
                     styles.textType3,
-                    { color: '#298CFF', textTransform: 'capitalize' },
+                    { color: '#298CFF', textTransform: 'capitalize',fontFamily: 'Circular Std Medium' },
                   ]}>
                   {item?.classDayType}
                 </Text>
@@ -867,7 +878,7 @@ function JobTicket({ navigation, route }: any) {
                 <Text
                   style={[
                     styles.textType3,
-                    { color: '#298CFF', textTransform: 'capitalize' },
+                    { color: '#298CFF', textTransform: 'capitalize',fontFamily: 'Circular Std Medium' },
                   ]}>
                   {item?.classTime}
                 </Text>

@@ -30,7 +30,6 @@ const OpenDetails = ({ route, navigation }: any) => {
 
   const tutor = useContext(TutorDetailsContext);
   let { tutorDetails, updateTutorDetails } = tutor;
-  console.log('====================================tutorDetails', tutorDetails.status);
   const [loading, setLoading] = useState(false);
 
   // console.log(openDetailItem.comment, "comment")
@@ -139,6 +138,7 @@ const OpenDetails = ({ route, navigation }: any) => {
                     paddingVertical: 5,
                     paddingHorizontal: 30,
                     borderRadius: 30,
+                    textTransform:'capitalize'
                   },
                 ]}>
                 {data?.mode}
@@ -150,7 +150,7 @@ const OpenDetails = ({ route, navigation }: any) => {
 
             <View
               style={{
-                backgroundColor: Theme.lightGray,
+                backgroundColor: Theme.liteBlue,
                 padding: 15,
                 marginTop: 10,
                 borderRadius: 12,
@@ -245,7 +245,7 @@ const OpenDetails = ({ route, navigation }: any) => {
 
             <View
               style={{
-                backgroundColor: Theme.lightGray,
+                backgroundColor: Theme.liteBlue,
                 padding: 15,
                 marginTop: 10,
                 borderRadius: 12,
@@ -353,7 +353,7 @@ const OpenDetails = ({ route, navigation }: any) => {
                 </Text>
               </View> */}
 
-              <View style={{ flexDirection: 'row', gap: 10, paddingTop: 15, borderTopWidth: 1, borderTopColor: 'gray' }}>
+              <View style={{ flexDirection: 'row', gap: 10, paddingTop: 15, borderTopWidth: 1, borderTopColor: '#eee' }}>
                 <View style={{ backgroundColor: "#E6F2FF", paddingVertical: 10, borderRadius: 10 }}>
                   <View style={{ alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 10, paddingHorizontal: 10 }}>
                     <AntDesign
@@ -469,7 +469,7 @@ const OpenDetails = ({ route, navigation }: any) => {
                 </Text>
                 <View
                   style={{
-                    backgroundColor: Theme.lightGray,
+                    backgroundColor: Theme.liteBlue,
                     paddingHorizontal: 10,
                     paddingVertical: 12,
                     borderRadius: 10,
@@ -485,14 +485,14 @@ const OpenDetails = ({ route, navigation }: any) => {
             {/* Special Need */}
 
             {tutorDetails?.status == 'verified' && data?.mode == 'physical' && data?.studentAddress &&
-              <View style={{ marginVertical: 5 }}>
+              <View style={{ marginVertical: 5,}}>
                 <Text
                   style={styles.textType1}>
                   Student Address
                 </Text>
                 <View
                   style={{
-                    backgroundColor: Theme.lightGray,
+                    backgroundColor: Theme.liteBlue,
                     paddingHorizontal: 10,
                     paddingVertical: 12,
                     borderRadius: 10,
@@ -516,7 +516,7 @@ const OpenDetails = ({ route, navigation }: any) => {
                 {data?.jobTicketExtraStudents?.map((e: any, i: number) => (
                   <View
                     style={{
-                      backgroundColor: Theme.lightGray,
+                      backgroundColor: Theme.liteBlue,
                       paddingHorizontal: 10,
                       paddingVertical: 12,
                       borderRadius: 10,
@@ -602,7 +602,7 @@ const OpenDetails = ({ route, navigation }: any) => {
                   style={[
                     styles.textArea,
                     {
-                      backgroundColor: Theme.lightGray,
+                      backgroundColor: Theme.liteBlue,
                       padding: 12,
                       color: Theme.black,
                     },

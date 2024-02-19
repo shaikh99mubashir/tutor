@@ -155,6 +155,8 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                         return '#1FC07D';
                       case 'incomplete':
                         return '#FF0000';
+                      case 'dispute':
+                        return 'orange';
                       default:
                         return '#298CFF33'; // Default background color if the status is not recognized
                     }
@@ -192,7 +194,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                   borderBottomColor: Theme.lightGray,
                 }}>
                 <View>
-                  <Text style={styles.textType3}>{item?.jtid}</Text>
+                  <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',}]}>{item?.jtid}</Text>
                   <Text
                     style={[
                       styles.textType1,
@@ -200,6 +202,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                     ]}>
                     Est. {item?.totalPrice} RM
                   </Text>
+                  {item?.classMode?.toLowerCase() == 'physical' &&
                   <View
                     style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
                     <Feather name="map-pin" size={18} color={'#298CFF'} />
@@ -211,14 +214,15 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                       {item?.city}
                     </Text>
                   </View>
+                }
                 </View>
                 <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                   <Text
                     style={[
                       styles.textType3,
                       {
-                        color: '#003E9C',
-                        backgroundColor: '#298CFF33',
+                        color: item.mode == 'online'? '#1FC07D' : Theme.darkGray,
+                    backgroundColor: item.mode == 'online'?   Theme.lightGreen :'#298CFF33',
                         paddingVertical: 5,
                         paddingHorizontal: 30,
                         borderRadius: 30,
@@ -255,7 +259,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                   <Text
                     style={[
                       styles.textType1,
-                      { fontSize: 18, textTransform: 'capitalize' },
+                      { fontSize: 20, textTransform: 'capitalize' },
                     ]}>
                     {item?.subjectName}
                   </Text>
@@ -280,7 +284,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                   <Text
                     style={[
                       styles.textType1,
-                      { fontSize: 18, textTransform: 'capitalize' },
+                      { fontSize: 20, textTransform: 'capitalize' },
                     ]}>
                     {item?.studentName}
                   </Text>
@@ -297,7 +301,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                       alignItems: 'center',
                       justifyContent: 'center',
                       flexDirection: 'row',
-                      gap: 10,
+                      gap: 12,
                     }}>
                     <FontAwesome name="level-up" size={18} color={'#298CFF'} />
                     <Text style={styles.textType3}>Level</Text>
@@ -305,7 +309,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                   <Text
                     style={[
                       styles.textType1,
-                      { fontSize: 18, textTransform: 'capitalize' },
+                      { fontSize: 20, textTransform: 'capitalize' },
                     ]}>
                     {item?.level}
                   </Text>
@@ -455,10 +459,10 @@ const styles = StyleSheet.create({
         fontStyle: 'normal',
       },
       textType3: {
-        color: Theme.Dune,
+        color: Theme.ironsidegrey1,
         fontWeight: '500',
         fontSize: 16,
-        fontFamily: 'Circular Std',
+        fontFamily: 'Circular Std Medium',
         fontStyle: 'normal',
       },
 })
