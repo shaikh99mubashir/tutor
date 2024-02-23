@@ -1171,7 +1171,7 @@ function Home({ navigation, route }: any) {
                   </View>
                   <View style={{ paddingBottom: 15 }}>
                     <Text style={[styles.textType3, { color: 'white' }]}>
-                      Estimate {'\n'}Commission
+                      Earning
                     </Text>
                     <Text
                       style={[
