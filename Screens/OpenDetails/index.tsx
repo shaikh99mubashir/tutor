@@ -81,7 +81,7 @@ const OpenDetails = ({ route, navigation }: any) => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
-  console.log('data=============>', data);
+  // console.log('data=============>', data);
 
   return (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
@@ -226,20 +226,25 @@ const OpenDetails = ({ route, navigation }: any) => {
                   />
                   <Text style={styles.textType3}>No. of Sessions</Text>
                 </View>
+             
                 <Text
                   style={[
                     styles.textType1,
                     {
                       color: '#003E9C',
                       backgroundColor: '#298CFF33',
-                      paddingVertical: 5,
-                      paddingHorizontal: 10,
-                      borderRadius: 30,
+                      paddingVertical: 2,
+                      // paddingHorizontal: 10,
+                      borderRadius: 50,
+                      textAlign:'center',
+                      width:30,
+                      height:30,
                       fontSize: 18,
                     },
                   ]}>
                   {data?.classFrequency}
                 </Text>
+               
               </View>
             </View>
 
@@ -326,32 +331,6 @@ const OpenDetails = ({ route, navigation }: any) => {
                   {data?.tutorPereference}
                 </Text>
               </View>
-              {/* <View
-                style={{
-                  justifyContent: 'space-between',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginTop: 10,
-                  paddingBottom: 15
-                }}>
-                <View
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    flexDirection: 'row',
-                    gap: 10,
-                  }}>
-                  <FontAwesome
-                    name="level-up"
-                    size={18}
-                    color={'#298CFF'}
-                  />
-                  <Text style={styles.textType3}>Level</Text>
-                </View>
-                <Text style={[styles.textType1, { fontSize: 18 }]}>
-                  {data?.categoryName}
-                </Text>
-              </View> */}
 
               <View style={{ flexDirection: 'row', gap: 10, paddingTop: 15, borderTopWidth: 1, borderTopColor: '#eee' }}>
                 <View style={{ backgroundColor: "#E6F2FF", paddingVertical: 10, borderRadius: 10 }}>
@@ -380,85 +359,7 @@ const OpenDetails = ({ route, navigation }: any) => {
 
             </View>
 
-            {/* <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-              {data?.classDay} at {data?.classTime} for {data?.quantity} hour(s)
-              of each class.
-            </Text>
-            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-              {data?.studentGender} Student {data?.student_age} y/o
-            </Text>
-            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-              {data?.subject_name} - {data?.session} sessions {data?.quantity}
-            </Text>
-            {data?.mode == 'physical' ? (
-              <>
-                <Text
-                  style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-                  {data?.classAddress}
-                </Text>
-                <Text
-                  style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-                  {data?.city}
-                </Text>
-                <Text
-                  style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-                  {data?.state}
-                </Text>
-                <Text
-                  style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-                  {data?.classPostalCode}
-                </Text>
-              </>
-            ) : (
-              ''
-            )} */}
-
-            {/* <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-              - Tutor Gender: {data?.tutorGender}
-            </Text> */}
-            {/* <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-              - PreferredDay/Time: {data?.classDay}
-            </Text>
-            <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-              - Mode: {data?.mode}
-            </Text>
-            {data?.remarks && (
-              <Text
-                style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-                - Remarks: {data?.remarks}
-              </Text>
-            )}
-            {data?.first8Hour && (
-              <Text
-                style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-                {data?.first8Hour}
-              </Text>
-            )}
-            {data?.above9Hour && (
-              <Text
-                style={{ color: Theme.gray, fontSize: 16, fontWeight: '600' }}>
-                {data?.above9Hour}
-              </Text>
-            )}
-            <View style={{ marginVertical: 15 }}>
-              <Text
-                style={{
-                  color: Theme.black,
-                  fontSize: 15,
-                  fontWeight: '600',
-                }}>
-                Estimated Commission
-              </Text>
-              <Text
-                style={{
-                  color: 'green',
-                  fontSize: 17,
-                  fontWeight: '600',
-                  marginTop: 5,
-                }}>
-                RM {data.price}/subject
-              </Text>
-            </View> */}
+           
             {/*Adress */}
 
             {data.specialRequest &&
@@ -476,7 +377,7 @@ const OpenDetails = ({ route, navigation }: any) => {
                     marginVertical: 5,
                   }}>
                   <Text
-                    style={styles.textType3}>
+                    style={[styles.textType3,{ fontFamily: 'Circular Std Book',}]}>
                     {data.specialRequest}
                   </Text>
                 </View>
@@ -499,7 +400,7 @@ const OpenDetails = ({ route, navigation }: any) => {
                     marginVertical: 5,
                   }}>
                   <Text
-                    style={styles.textType3}>
+                    style={[styles.textType3,{ fontFamily: 'Circular Std Book',}]}>
                     {data.studentAddress}
                   </Text>
                 </View>
@@ -528,7 +429,7 @@ const OpenDetails = ({ route, navigation }: any) => {
                         fontSize: 14,
                         fontWeight: '400',
                         marginTop: 5,
-                        fontFamily: 'Circular Std Medium',
+                        fontFamily: 'Circular Std Book',
                       }}>
                       Student Name : {e?.student_name}
                     </Text>
@@ -538,7 +439,7 @@ const OpenDetails = ({ route, navigation }: any) => {
                         fontSize: 14,
                         fontWeight: '400',
                         marginTop: 5,
-                        fontFamily: 'Circular Std Medium',
+                        fontFamily: 'Circular Std Book',
                       }}>
                       Age : {e?.student_age}
                     </Text>
@@ -548,7 +449,7 @@ const OpenDetails = ({ route, navigation }: any) => {
                         fontSize: 14,
                         fontWeight: '400',
                         marginTop: 5,
-                        fontFamily: 'Circular Std Medium',
+                        fontFamily: 'Circular Std Book',
                       }}>
                       Gender : {e?.student_gender}
                     </Text>
@@ -558,7 +459,7 @@ const OpenDetails = ({ route, navigation }: any) => {
                         fontSize: 14,
                         fontWeight: '400',
                         marginTop: 5,
-                        fontFamily: 'Circular Std Black',
+                        fontFamily: 'Circular Std Book',
                       }}>
                       Birth Year : {e?.year_of_birth}
                     </Text>
@@ -568,7 +469,7 @@ const OpenDetails = ({ route, navigation }: any) => {
                         fontSize: 14,
                         fontWeight: '400',
                         marginTop: 5,
-                        fontFamily: 'Circular Std Medium',
+                        fontFamily: 'Circular Std Book',
                       }}>
                       Special Need : {e?.special_need}
                     </Text>
@@ -605,6 +506,7 @@ const OpenDetails = ({ route, navigation }: any) => {
                       backgroundColor: Theme.liteBlue,
                       padding: 12,
                       color: Theme.black,
+                      fontFamily: 'Circular Std Book',
                     },
                   ]}
                   underlineColorAndroid="transparent"
@@ -670,7 +572,7 @@ const styles = StyleSheet.create({
   },
   textArea: {
     borderRadius: 10,
-    height: 150,
+    height: 100,
     justifyContent: 'flex-start',
     textAlignVertical: 'top',
     fontFamily: 'Circular Std',

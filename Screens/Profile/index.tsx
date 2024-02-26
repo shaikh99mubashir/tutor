@@ -214,9 +214,6 @@ const Profile = ({ navigation }: any) => {
         type: type,
         name: name,
       });
-      // formData.append('tutorID', tutorDetail?.tutorId);
-      console.log("tutorID",tutorDetail?.tutorId);
-      
       formData.append('id', tutorData.tutorID);
       formData.append('full_name', tutorDetail?.full_name);
       formData.append('email', tutorDetail?.email);
@@ -446,7 +443,7 @@ const Profile = ({ navigation }: any) => {
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="Profile" navigation={navigation} backBtn />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{ paddingHorizontal: 15, marginBottom: 100 }}>
+        <View style={{ paddingHorizontal: 15, marginBottom: 20}}>
           <View style={{ paddingVertical: 15, alignItems: 'center' }}>
           {/* {imageUrl == 1 ? <Image source={require('../../Assets/Images/avatar.png')} style={{ width: 80, height: 80, borderRadius: 50 }}/>
           : */}
@@ -488,7 +485,7 @@ const Profile = ({ navigation }: any) => {
             </Text>
             <View
               style={{
-                backgroundColor: Theme.lightGray,
+                backgroundColor: Theme.liteBlue,
                 paddingHorizontal: 10,
                 paddingVertical: 12,
                 borderRadius: 5,
@@ -517,7 +514,7 @@ const Profile = ({ navigation }: any) => {
             </Text>
             <View
               style={{
-                backgroundColor: Theme.lightGray,
+                backgroundColor: Theme.liteBlue,
                 paddingHorizontal: 10,
                 paddingVertical: 0,
                 borderRadius: 5,
@@ -553,7 +550,7 @@ const Profile = ({ navigation }: any) => {
             </Text>
             <View
               style={{
-                backgroundColor: Theme.lightGray,
+                backgroundColor: Theme.liteBlue,
                 paddingHorizontal: 10,
                 paddingVertical: 0,
                 borderRadius: 5,
@@ -589,7 +586,7 @@ const Profile = ({ navigation }: any) => {
             </Text>
             <View
               style={{
-                backgroundColor: Theme.lightGray,
+                backgroundColor: Theme.liteBlue,
                 paddingHorizontal: 10,
                 paddingVertical: 12,
                 borderRadius: 5,
@@ -618,7 +615,7 @@ const Profile = ({ navigation }: any) => {
             </Text>
             <View
               style={{
-                backgroundColor: Theme.lightGray,
+                backgroundColor: Theme.liteBlue,
                 // paddingHorizontal: 10,
                 paddingVertical: 0,
                 borderRadius: 5,
@@ -641,7 +638,7 @@ const Profile = ({ navigation }: any) => {
                 option={genderOption}
                 value={tutorDetail.gender}
                 modalHeading="Select Gender"
-                style={{ borderWidth: 0, marginTop: 0, fontSize: 18, color: 'black' }}
+                style={{ borderWidth: 0, marginTop: 0, fontSize: 18, color: 'black',}}
               />
             </View>
           </View>
@@ -657,7 +654,7 @@ const Profile = ({ navigation }: any) => {
             </Text>
             <View
               style={{
-                backgroundColor: Theme.lightGray,
+                backgroundColor: Theme.liteBlue,
                 paddingHorizontal: 10,
                 paddingVertical: 0,
                 borderRadius: 5,
@@ -668,7 +665,7 @@ const Profile = ({ navigation }: any) => {
                 style={{ color: "black",textTransform:'capitalize', }}
                 keyboardType='numeric'
                 onChangeText={text => setAge(text)}
-                placeholder={tutorDetail?.age ? tutorDetail?.age.toString() : "not provided"}
+                placeholder={tutorDetail?.age ? tutorDetail?.age.toString() : "Not Provided"}
                 placeholderTextColor={Theme.black}
               />
             </View>
@@ -685,7 +682,7 @@ const Profile = ({ navigation }: any) => {
             </Text>
             <View
               style={{
-                backgroundColor: Theme.lightGray,
+                backgroundColor: Theme.liteBlue,
                 paddingHorizontal: 10,
                 paddingVertical: 0,
                 borderRadius: 5,
@@ -695,7 +692,8 @@ const Profile = ({ navigation }: any) => {
                 editable
                 style={{ color: "black" }}
                 onChangeText={text => setNric(text)}
-                placeholder={tutorDetail?.nric ? tutorDetail.nric : "not provided"}
+                keyboardType='numeric'
+                placeholder={tutorDetail?.nric ? tutorDetail.nric : "Not Provided"}
                 placeholderTextColor={Theme.black}
               />
             </View>

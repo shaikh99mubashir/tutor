@@ -1171,14 +1171,14 @@ function Home({ navigation, route }: any) {
                   </View>
                   <View style={{ paddingBottom: 15 }}>
                     <Text style={[styles.textType3, { color: 'white' }]}>
-                      Earning
+                      Earnings
                     </Text>
                     <Text
                       style={[
                         styles.textType1,
                         { color: 'white', fontSize: 30, lineHeight: 40 },
                       ]}>
-                      RM {cummulativeCommission ? cummulativeCommission : '0.00'}
+                      RM {cummulativeCommission ? cummulativeCommission : '5000.00'}
                     </Text>
                     <Text
                       style={[
@@ -1212,6 +1212,7 @@ function Home({ navigation, route }: any) {
                       resizeMode="contain"
                     />
                   </View>
+                  <View style={{margin:10}}></View>
                   <View
                     style={{
                       paddingBottom: 20,

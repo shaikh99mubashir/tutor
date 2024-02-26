@@ -35,6 +35,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import StudentContext from '../../context/studentContext';
 import CustomLoader from '../../Component/CustomLoader';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 // import { ScrollView } from "react-native-gesture-handler"
 
@@ -221,46 +222,6 @@ function Schedule({navigation, route}: any) {
         setLoading(false);
         let dataToSend = [...classSchedulesTime];
         setScheduleData(dataToSend);
-        // axios
-        //   .get(`${Base_Uri}getClassAttendedTime/${tutorID}`)
-        //   .then(({ data }) => {
-        //     let { classAttendedTime } = data;
-
-        //     let Date = selectedDate.getDate();
-        //     let month = selectedDate.getMonth();
-        //     let year = selectedDate.getFullYear();
-
-        //     classAttendedTime =
-        //       classAttendedTime && classAttendedTime.length > 0
-        //         ? classAttendedTime
-        //           .map((e: any, i: number) => {
-        //             let getDate: any = moment(e.date);
-
-        //             let convertDate = getDate.toDate();
-
-        //             let scheduleDate = convertDate.getDate();
-        //             let scheduleMonth = convertDate.getMonth();
-        //             let scheduleYear = convertDate.getFullYear();
-
-        //             if (
-        //               Date == scheduleDate &&
-        //               month == scheduleMonth &&
-        //               year == scheduleYear
-        //             ) {
-        //               return {
-        //                 ...e,
-        //                 imageUrl: require('../../Assets/Images/student.png'),
-        //               };
-        //             } else {
-        //               return false;
-        //             }
-        //           })
-        //           .filter(Boolean)
-        //         : [];
-        //     setLoading(false);
-        //     let dataToSend = [...classSchedulesTime, ...classAttendedTime];
-        //     setScheduleData(dataToSend);
-        //   });
       })
       .catch(error => {
         setLoading(false);
@@ -485,7 +446,7 @@ function Schedule({navigation, route}: any) {
   };
 
   const routeToClockIn = async (item: any) => {
-    console.log('item', item);
+    // console.log('item', item);
 
     const currentTime: any = new Date();
 
@@ -569,10 +530,18 @@ function Schedule({navigation, route}: any) {
 
     return `${twelveHour}:${minuteStr} ${period}`;
   }
+  const [classInProcess, setClassInProcess]: any = useState({});
+  const getClassInProcess = async () => {
+    let data: any = await AsyncStorage.getItem('classInProcess');
+    data = JSON.parse(data);
+
+    setClassInProcess(data);
+  };
+  useEffect(() => {
+    getClassInProcess();
+  }, [focus, refreshing]);
 
   const renderScheduleData = ({item, index}: any): any => {
-    console.log('item', item);
-
     let nowDate: Date = new Date();
     let date = nowDate.getDate();
     let month = nowDate.getMonth();
@@ -590,19 +559,22 @@ function Schedule({navigation, route}: any) {
 
     const startTime12Hour = convertTo12HourFormat(item.startTime);
     const endTime12Hour = convertTo12HourFormat(item.endTime);
-
+    console.log(
+      '====================================classInProcess',
+      classInProcess?.data,
+    );
     return (
       <TouchableOpacity
         onPress={() => handleSelectPress(index, item)}
         style={{
           borderWidth: 1,
-          borderColor: item.selected ? Theme.darkGray : 'silver',
+          borderColor: item.selected ? Theme.darkGray : Theme.lightGray,
           // borderColor:  'silver',
           paddingHorizontal: 15,
           paddingVertical: 10,
           // backgroundColor: item.selected ? 'silver' : 'silver',
           marginTop: 20,
-          borderRadius: 10,
+          borderRadius: 20,
         }}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
           <View
@@ -610,7 +582,7 @@ function Schedule({navigation, route}: any) {
               flexDirection: 'row',
               justifyContent: 'space-between',
               width: '100%',
-              borderBottomWidth: 2,
+              borderBottomWidth: 1,
               paddingBottom: 20,
               borderBottomColor: Theme.lightGray,
             }}>
@@ -629,11 +601,23 @@ function Schedule({navigation, route}: any) {
                 <Image source={item.imageUrl} style={{width: 35, height: 35}} />
               </View>
               <View>
-                <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',color:'#1FC07D'}]}>{item?.jtuid}</Text>
+                <Text
+                  style={[
+                    styles.textType3,
+                    {fontFamily: 'Circular Std Medium', color: '#1FC07D'},
+                  ]}>
+                  {item?.jtuid}
+                </Text>
                 <Text
                   style={[
                     styles.textType1,
-                    {lineHeight: 30, textTransform: 'capitalize',fontFamily: 'Circular Std Medium',width:150, fontSize:26},
+                    {
+                      lineHeight: 30,
+                      textTransform: 'capitalize',
+                      fontFamily: 'Circular Std Medium',
+                      width: 150,
+                      fontSize: 20,
+                    },
                   ]}>
                   {item?.studentName}
                 </Text>
@@ -644,23 +628,20 @@ function Schedule({navigation, route}: any) {
                       gap: 5,
                       alignItems: 'center',
                     }}>
-                    <Feather name="map-pin" size={18} color={'#003E9C'} />
+                    <Feather name="map-pin" size={16} color={'#003E9C'} />
                     <Text
                       style={[
                         styles.textType3,
-                        {color: '#003E9C', fontFamily: 'Circular Std Medium'},
+                        {
+                          color: '#003E9C',
+                          fontFamily: 'Circular Std Medium',
+                          fontSize: 16,
+                        },
                       ]}>
                       {item?.city}
                     </Text>
                   </View>
                 )}
-                
-                {/* <View style={{ flexDirection: 'row', gap: 5, alignItems: "center" }}>
-                <Feather name="map-pin" size={18} color={'#003E9C'} />
-                  <Text style={[styles.textType3, { color: '#003E9C' }]}>
-                    {item?.city}
-                  </Text>
-                </View> */}
               </View>
             </View>
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
@@ -668,10 +649,9 @@ function Schedule({navigation, route}: any) {
                 style={[
                   styles.textType3,
                   {
-                    // color: '#003E9C',
-                    // backgroundColor: '#298CFF33',
-                    color: item.mode == 'online'? Theme.darkGray : '#1FC07D',
-                    backgroundColor: item.mode == 'online'? '#298CFF33' : Theme.lightGreen,
+                    color: item.mode == 'online' ? Theme.darkGray : '#1FC07D',
+                    backgroundColor:
+                      item.mode == 'online' ? '#298CFF33' : Theme.lightGreen,
                     textTransform: 'capitalize',
                     paddingVertical: 5,
                     paddingHorizontal: 30,
@@ -699,9 +679,11 @@ function Schedule({navigation, route}: any) {
                 gap: 10,
               }}>
               <AntDesig name="copy1" size={20} color={'#298CFF'} />
-              <Text style={[styles.textType3,{color:Theme.ironsidegrey1}]}>Subject</Text>
+              <Text style={[styles.textType3, {color: Theme.ironsidegrey1}]}>
+                Subject
+              </Text>
             </View>
-            <Text style={[styles.textType1, {fontSize: 20}]}>
+            <Text style={[styles.textType1, {fontSize: 18}]}>
               {' '}
               {item.subjectName ?? item?.subject_name}
             </Text>
@@ -721,9 +703,11 @@ function Schedule({navigation, route}: any) {
                 gap: 10,
               }}>
               <AntDesig name="carryout" size={20} color={'#298CFF'} />
-              <Text style={[styles.textType3,{color:Theme.ironsidegrey1}]}>Day</Text>
+              <Text style={[styles.textType3, {color: Theme.ironsidegrey1}]}>
+                Day
+              </Text>
             </View>
-            <Text style={[styles.textType1, {fontSize: 20}]}>
+            <Text style={[styles.textType1, {fontSize: 18}]}>
               {convertDateDayFormat(item.date)}
             </Text>
           </View>
@@ -742,9 +726,11 @@ function Schedule({navigation, route}: any) {
                 gap: 10,
               }}>
               <AntDesig name="clockcircleo" size={20} color={'#298CFF'} />
-              <Text style={[styles.textType3,{color:Theme.ironsidegrey1}]}>Time</Text>
+              <Text style={[styles.textType3, {color: Theme.ironsidegrey1}]}>
+                Time
+              </Text>
             </View>
-            <Text style={[styles.textType1, {fontSize: 20}]}>
+            <Text style={[styles.textType1, {fontSize: 18}]}>
               {startTime12Hour} - {endTime12Hour}
             </Text>
           </View>
@@ -764,43 +750,26 @@ function Schedule({navigation, route}: any) {
               }}>
               {/* <Image source={require('../../Assets/Images/level.png')} /> */}
               <MaterialIcons name="schedule-send" size={20} color={'#298CFF'} />
-              <Text style={[styles.textType3,{color:Theme.ironsidegrey1}]}>Status</Text>
+              <Text style={[styles.textType3, {color: Theme.ironsidegrey1}]}>
+                Status
+              </Text>
             </View>
             <Text
               style={[
                 styles.textType1,
-                {fontSize: 20, textTransform: 'capitalize'},
+                {fontSize: 18, textTransform: 'capitalize'},
               ]}>
               {item.status}
             </Text>
           </View>
         </View>
 
-        {/* <View style={{ marginTop: 10, flexDirection: 'row' }}>
-          <Text
-            style={{
-              fontSize: 14,
-              color: Theme.black,
-              fontWeight: '600',
-              textTransform: 'uppercase',
-            }}>
-            {item.subjectName ?? item?.subject_name}
-          </Text>
-        </View>
-
-        <Text style={{ color: Theme.gray, marginTop: 10 }}>
-          {convertDateDayFormat(item.date)}
-        </Text>
-        <Text style={{ color: Theme.gray }}>
-          {startTime12Hour} to {endTime12Hour}
-        </Text> */}
         <View
           style={{
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
           }}>
-          {/* <Text style={{ color: Theme.gray, marginTop: 10 }}>{item.status}</Text> */}
           {item.status == 'Attended' ? (
             <TouchableOpacity
               activeOpacity={0.8}
@@ -813,67 +782,74 @@ function Schedule({navigation, route}: any) {
             ''
           )}
         </View>
-        {item.selected && item?.status?.toLowerCase() == 'scheduled' && (
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: !flag ? 'center' : 'space-between',
-              width: '100%',
-              alignItems: 'center',
-              marginTop: 10,
-            }}>
-            <TouchableOpacity
-              onPress={() => handleEditPress(item)}
+
+        <>
+          {item.selected && item?.status?.toLowerCase() == 'scheduled' && (
+            <View
               style={{
-                backgroundColor: Theme.gray,
-                width: '48%',
-                padding: 10,
-                borderRadius: 10,
+                flexDirection: 'row',
+                justifyContent: !flag ? 'center' : 'space-between',
+                width: '100%',
+                alignItems: 'center',
+                marginTop: 10,
               }}>
-              <Text style={{textAlign: 'center', fontSize: 14, color: 'white'}}>
-                Edit
-              </Text>
-            </TouchableOpacity>
-            {flag && (
-              <TouchableOpacity
-                onPress={() => routeToClockIn(item)}
-                style={{
-                  backgroundColor: Theme.darkGray,
-                  width: '48%',
-                  padding: 10,
-                  borderRadius: 10,
-                }}>
-                <Text
-                  style={{textAlign: 'center', fontSize: 14, color: 'white'}}>
-                  Attend
-                </Text>
-              </TouchableOpacity>
-            )}
-          </View>
-        )}
-        {/* {item.selected && item.status == 'attended' && (
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              width: '100%',
-              alignItems: 'center',
-              marginTop: 10,
-            }}>
-            <TouchableOpacity
-              onPress={() => navigation.navigate('AttendedDetails', item)}
-              style={{
-                backgroundColor: Theme.darkGray,
-                width: '48%',
-                padding: 10,
-                borderRadius: 10,
-              }}>
-              <Text style={{textAlign: 'center', fontSize: 14, color: 'white'}}>
-                View
-              </Text>
-            </TouchableOpacity>
-          </View>
-        )} */}
+              {classInProcess && Object.keys(classInProcess).length > 0 ? 
+              (
+                <View style={{flexDirection:'row', alignItems: 'center', justifyContent: 'center', width:'100%', gap:10}}>
+                  <Text style={{textAlign: 'center',color:Theme.Dune}}>Class In Progress</Text>
+                  <Text
+                    style={[styles.text, { fontSize: 10, color: Theme.black }]}>
+                    <ActivityIndicator color={'black'} size="small" />
+                  </Text>
+                </View>
+              )
+              
+              : 
+              (
+                <>
+                  <TouchableOpacity
+                    onPress={() => handleEditPress(item)}
+                    style={{
+                      backgroundColor: Theme.gray,
+                      width: '48%',
+                      padding: 10,
+                      borderRadius: 10,
+                    }}>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        fontSize: 14,
+                        color: 'white',
+                      }}>
+                      Edit
+                    </Text>
+                  </TouchableOpacity>
+                  {flag && (
+                    <TouchableOpacity
+                      onPress={() => routeToClockIn(item)}
+                      style={{
+                        backgroundColor: Theme.darkGray,
+                        width: '48%',
+                        padding: 10,
+                        borderRadius: 10,
+                      }}>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          fontSize: 14,
+                          color: 'white',
+                        }}>
+                        Attend
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+                </>
+              ) 
+              
+              }
+            </View>
+          )}
+        </>
       </TouchableOpacity>
     );
   };

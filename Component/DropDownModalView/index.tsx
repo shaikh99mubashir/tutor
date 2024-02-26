@@ -102,6 +102,7 @@ const DropDownModalView = ({
                 color: 'black',
                 fontFamily: 'Circular Std Medium',
                 fontSize: 16,
+                textTransform:'capitalize'
               }}>
               {value
                 ? value
@@ -219,6 +220,7 @@ const DropDownModalView = ({
                             fontSize: 16,
                             color: 'black',
                             fontFamily: 'Circular Std Medium',
+                            textTransform:'capitalize'
                           }}>
                           {e.option}
                         </Text>
