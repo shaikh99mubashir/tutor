@@ -323,7 +323,7 @@ function AddClass({navigation}: any) {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop:10,fontWeight:'600'}}>
+        <View style={{flexDirection: 'row', justifyContent: 'space-between', marginTop:10,}}>
           <View style={{width: '49%'}}>
             <Text
               style={[styles.textType1, {fontSize: 16}]}
@@ -730,7 +730,7 @@ function AddClass({navigation}: any) {
                 testID="dateTimePicker"
                 value={value}
                 mode={mode}
-                is24Hour={true}
+                // is24Hour={true}
                 onChange={onChange}
               />
             )}

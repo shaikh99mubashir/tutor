@@ -108,10 +108,10 @@ const Signup = ({ navigation, route }: any) => {
           return
         }
         if (data.status == 200) {
-          ToastAndroid.show(
-            'You have been successfully registered as tutor Login to continue',
-            ToastAndroid.SHORT,
-          );
+          // ToastAndroid.show(
+          //   'You have been successfully registered as tutor Login to continue',
+          //   ToastAndroid.SHORT,
+          // );
           navigation.reset({
             index: 0,
             routes: [
@@ -126,7 +126,7 @@ const Signup = ({ navigation, route }: any) => {
           navigation.replace('Main', {
             screen: 'Home',
           });
-          ToastAndroid.show('Register Successfully Successfully', ToastAndroid.SHORT);
+          ToastAndroid.show('Register Successfully', ToastAndroid.SHORT);
           setLoading(false);
         }
       })
@@ -406,12 +406,12 @@ const Signup = ({ navigation, route }: any) => {
           </TouchableOpacity>
           <View style={{ marginTop: 10, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', }}>
             <TouchableOpacity
-              style={{ width: 14, height: 14, borderWidth: 1, borderRadius: 0, margin: 10 }}
+              style={{ width: 18, height: 18, borderWidth: 1, borderRadius: 0, margin: 10 }}
               onPress={() => setRememberMe(!rememberMe)}>
               {rememberMe ? (
                 <Icon
                   name="md-checkmark-sharp"
-                  size={11}
+                  size={15}
                   color="white"
                   style={{ backgroundColor: Theme.darkGray }}
                 />
