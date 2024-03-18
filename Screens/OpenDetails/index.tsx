@@ -416,6 +416,7 @@ const OpenDetails = ({ route, navigation }: any) => {
 
                 {data?.jobTicketExtraStudents?.map((e: any, i: number) => (
                   <View
+                  key={i}
                     style={{
                       backgroundColor: Theme.liteBlue,
                       paddingHorizontal: 10,
@@ -424,53 +425,55 @@ const OpenDetails = ({ route, navigation }: any) => {
                       marginVertical: 5,
                     }}>
                     <Text
-                      style={{
-                        color: Theme.black,
-                        fontSize: 14,
-                        fontWeight: '400',
-                        marginTop: 5,
-                        fontFamily: 'Circular Std Book',
-                      }}>
+                       style={styles.textType3}>
                       Student Name : {e?.student_name}
                     </Text>
                     <Text
-                      style={{
-                        color: Theme.black,
-                        fontSize: 14,
-                        fontWeight: '400',
-                        marginTop: 5,
-                        fontFamily: 'Circular Std Book',
-                      }}>
+                      // style={{
+                      //   color: Theme.black,
+                      //   fontSize: 14,
+                      //   fontWeight: '400',
+                      //   marginTop: 5,
+                      //   fontFamily: 'Circular Std Book',
+                      // }}
+                      style={styles.textType3}
+                      >
                       Age : {e?.student_age}
                     </Text>
                     <Text
-                      style={{
-                        color: Theme.black,
-                        fontSize: 14,
-                        fontWeight: '400',
-                        marginTop: 5,
-                        fontFamily: 'Circular Std Book',
-                      }}>
+                      // style={{
+                      //   color: Theme.black,
+                      //   fontSize: 14,
+                      //   fontWeight: '400',
+                      //   marginTop: 5,
+                      //   fontFamily: 'Circular Std Book',
+                      // }}
+                      style={styles.textType3}
+                      >
                       Gender : {e?.student_gender}
                     </Text>
                     <Text
-                      style={{
-                        color: Theme.black,
-                        fontSize: 14,
-                        fontWeight: '400',
-                        marginTop: 5,
-                        fontFamily: 'Circular Std Book',
-                      }}>
+                      // style={{
+                      //   color: Theme.black,
+                      //   fontSize: 14,
+                      //   fontWeight: '400',
+                      //   marginTop: 5,
+                      //   fontFamily: 'Circular Std Book',
+                      // }}
+                      style={styles.textType3}
+                      >
                       Birth Year : {e?.year_of_birth}
                     </Text>
                     <Text
-                      style={{
-                        color: Theme.black,
-                        fontSize: 14,
-                        fontWeight: '400',
-                        marginTop: 5,
-                        fontFamily: 'Circular Std Book',
-                      }}>
+                      // style={{
+                      //   color: Theme.black,
+                      //   fontSize: 14,
+                      //   fontWeight: '400',
+                      //   marginTop: 5,
+                      //   fontFamily: 'Circular Std Book',
+                      // }}
+                      style={styles.textType3}
+                      >
                       Special Need : {e?.special_need}
                     </Text>
                   </View>
@@ -569,13 +572,14 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     // padding: 5,
     borderRadius: 10,
+    fontFamily: 'Circular Std Medium',
   },
   textArea: {
     borderRadius: 10,
     height: 100,
     justifyContent: 'flex-start',
     textAlignVertical: 'top',
-    fontFamily: 'Circular Std',
+    fontFamily: 'Circular Std Medium',
   },
 
   textType1: {
@@ -588,9 +592,7 @@ const styles = StyleSheet.create({
   },
   textType3: {
     color: Theme.Dune,
-    fontWeight: '500',
     fontSize: 16,
-    fontFamily: 'Circular Std',
-    fontStyle: 'normal',
+    fontFamily: 'Circular Std Medium',
   },
 });

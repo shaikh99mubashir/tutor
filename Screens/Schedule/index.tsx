@@ -188,7 +188,8 @@ function Schedule({navigation, route}: any) {
       .get(`${Base_Uri}getClassSchedulesTime/${tutorID}`)
       .then(({data}) => {
         let {classSchedulesTime} = data;
-
+        console.log("classSchedulesTime0",classSchedulesTime);
+        
         let Date = selectedDate.getDate();
         let month = selectedDate.getMonth();
         let year = selectedDate.getFullYear();
@@ -219,7 +220,16 @@ function Schedule({navigation, route}: any) {
                 })
                 .filter(Boolean)
             : [];
-        setLoading(false);
+        // classSchedulesTime =
+        // classSchedulesTime && classSchedulesTime.length > 0
+        //   ? classSchedulesTime.map((e:any) => ({
+        //       ...e,
+        //       imageUrl: require("../../Assets/Images/student.png"),
+        //     }))
+        //   : [];
+      setLoading(false);
+        console.log("setScheduleData",setScheduleData);
+        
         let dataToSend = [...classSchedulesTime];
         setScheduleData(dataToSend);
       })
@@ -233,7 +243,7 @@ function Schedule({navigation, route}: any) {
     if (refresh || selectedDate || data || scheduleData.length == 0) {
       getScheduledData();
     }
-  }, [refresh, data, selectedDate]);
+  }, [refresh, data, selectedDate, focus]);
 
   const onChange = (event: any, selectedDate: any) => {
     const currentDate: any = selectedDate;
@@ -559,10 +569,7 @@ function Schedule({navigation, route}: any) {
 
     const startTime12Hour = convertTo12HourFormat(item.startTime);
     const endTime12Hour = convertTo12HourFormat(item.endTime);
-    console.log(
-      '====================================classInProcess',
-      classInProcess?.data,
-    );
+ 
     return (
       <TouchableOpacity
         onPress={() => handleSelectPress(index, item)}
@@ -586,7 +593,7 @@ function Schedule({navigation, route}: any) {
               paddingBottom: 20,
               borderBottomColor: Theme.lightGray,
             }}>
-            <View style={{flexDirection: 'row', alignItems: 'center', gap: 10}}>
+            <View style={{flexDirection: 'row', alignItems: 'center', gap: 10,}}>
               <View
                 style={{
                   borderWidth: 1,
@@ -597,6 +604,7 @@ function Schedule({navigation, route}: any) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   backgroundColor: Theme.darkGray,
+                  
                 }}>
                 <Image source={item.imageUrl} style={{width: 35, height: 35}} />
               </View>
@@ -644,7 +652,7 @@ function Schedule({navigation, route}: any) {
                 )}
               </View>
             </View>
-            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <View style={{alignItems: 'center', justifyContent: 'center', }}>
               <Text
                 style={[
                   styles.textType3,
@@ -793,7 +801,7 @@ function Schedule({navigation, route}: any) {
                 alignItems: 'center',
                 marginTop: 10,
               }}>
-              {classInProcess && Object.keys(classInProcess).length > 0 ? 
+              {/* {classInProcess && Object.keys(classInProcess).length > 0 ? 
               (
                 <View style={{flexDirection:'row', alignItems: 'center', justifyContent: 'center', width:'100%', gap:10}}>
                   <Text style={{textAlign: 'center',color:Theme.Dune}}>Class In Progress</Text>
@@ -803,9 +811,8 @@ function Schedule({navigation, route}: any) {
                   </Text>
                 </View>
               )
-              
               : 
-              (
+              ( */}
                 <>
                   <TouchableOpacity
                     onPress={() => handleEditPress(item)}
@@ -844,9 +851,9 @@ function Schedule({navigation, route}: any) {
                     </TouchableOpacity>
                   )}
                 </>
-              ) 
+              {/* ) 
               
-              }
+              } */}
             </View>
           )}
         </>
@@ -970,7 +977,9 @@ function Schedule({navigation, route}: any) {
       getTutorSubjects();
     }
   }, [tutorId, refreshing]);
-
+  // console.log("upcomingClass",upcomingClass);
+  // console.log("scheduleData",scheduleData);
+  
   return (
     //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
     //     <ActivityIndicator size={'large'} color={Theme.black} />

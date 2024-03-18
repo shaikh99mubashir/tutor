@@ -184,7 +184,11 @@ function AddClass({navigation}: any) {
       data = classes.map((e: any, i: Number) => {
         if (i == indexClicked) {
           const start = new Date(currentDate); // Create a new Date object for the start time
+          console.log("Start Time", start);
+          console.log("perHour", perHour);
+          
           const end = new Date(start.getTime() + perHour * 60 * 60 * 1000); 
+          // const end = new Date(start.getTime() + (perHour * 60 * 60 * 1000)); 
           return {
             ...e,
             // startTime: currentDate,

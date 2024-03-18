@@ -199,8 +199,13 @@ function ClockOut({ navigation, route }: any) {
         tutorReportListing &&
         tutorReportListing?.length > 0 &&
         tutorReportListing.filter((e: any, i: number) => {
+          console.log("e.scheduleID",e.scheduleID);
           return items.class_schedule_id == e.scheduleID;
         });
+
+        console.log("thisClass",thisClass);
+        console.log("items.class_schedule_id",items.class_schedule_id);
+        
 
       if (thisClass && thisClass.length > 0) {
         navigation.dispatch(

@@ -161,7 +161,7 @@ function ClockIn({navigation, route}: any) {
           maxHeight: 200,
           quality: 1.0,
         };
-        console.log('running1111111111');
+        // console.log('running1111111111');
         launchCamera(options, async (res: any) => {
           if (res?.didCancel) {
             console.log('User cancelled image picker');
@@ -172,7 +172,7 @@ function ClockIn({navigation, route}: any) {
           } else {
             try {
               let { assets } = res;
-              console.log('running22222222222222222');
+              // console.log('running22222222222222222');
               let startMinutes = new Date().getHours();
               let startSeconds = new Date().getMinutes();
   

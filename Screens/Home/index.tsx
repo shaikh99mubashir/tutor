@@ -1178,7 +1178,7 @@ function Home({ navigation, route }: any) {
                         styles.textType1,
                         { color: 'white', fontSize: 30, lineHeight: 40 },
                       ]}>
-                      RM {cummulativeCommission ? cummulativeCommission : '5000.00'}
+                      RM {cummulativeCommission ? cummulativeCommission : '0.00'}
                     </Text>
                     <Text
                       style={[
