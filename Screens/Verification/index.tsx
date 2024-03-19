@@ -95,6 +95,9 @@ const Verification = ({ navigation, route }: any) => {
 
     setLoading(true);
     let formData = new FormData();
+    formData.append("code", value);
+    formData.append("id",  data?.tutorDetail?.id);
+    console.log("form DAtat", formData);
     axios.post(`${Base_Uri}api/verificationCode`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
