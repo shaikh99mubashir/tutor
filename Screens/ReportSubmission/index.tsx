@@ -318,14 +318,7 @@ console.log("data",data);
 
 
   }, [navigation, subjectData, studentData])
-
-  // formData.append("scheduleID", data.class_schedule_id)
-    // formData.append("studentID", data.studentID)
-    // formData.append("studentID", student.studentID)
-    // formData.append("subjectID", data.subjectID)
   console.log(data?.class_schedule_id, "data.class_schedule_id")
-  // console.log(data.studentID, "data.studentID")
-  // console.log(student.studentID, "student.studentID")
 
   const submitReport = () => {
 
@@ -340,13 +333,10 @@ console.log("data",data);
         ToastAndroid.show("Required Fields are missing", ToastAndroid.SHORT)
         return
       }
-
-      console.log("working");
       
       setLoading(true)
 
       let formData = new FormData()
-        console.log("form data progress report",formData);
         
       formData.append("tutorID", tutorId)
       formData.append("studentID", data?.studentID)
@@ -394,17 +384,12 @@ console.log("data",data);
     }
     setLoading(true)
     let date = value
-    // const year = date.getFullYear();
-    // const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Adding 1 since month is zero-based
-    // const day = date.getDate().toString().padStart(2, '0');
     let formData = new FormData()
 
     formData.append("tutorID", tutorId)
     formData.append("scheduleID", data?.class_schedule_id)
     formData.append("studentID", data?.studentID)
-    // formData.append("studentID", student.studentID)
     formData.append("subjectID", data?.subjectID)
-    // formData.append("subjectID", subject.id)
     // formData.append("currentDate", year + '/' + month + '/' + day)
     formData.append("currentDate", formattedDateFirstClass)
     formData.append("reportType", evaluation?.option)
@@ -441,9 +426,6 @@ console.log("data",data);
 
 
   return (
-    // loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
-    //   <ActivityIndicator size={"large"} color={Theme.black} />
-    // </View> : 
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
        <CustomLoader visible={loading} />
       <Header title="Report Submission" backBtn navigation={navigation} />

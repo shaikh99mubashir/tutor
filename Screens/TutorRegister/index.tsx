@@ -25,9 +25,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import ModalImg from '../../Component/Modal/modal';
 const Signup = ({ navigation, route }: any) => {
   let data = route.params;
-
-  console.log("Signup datta",data);
-  
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [fullName, setFullName] = useState('');
@@ -42,7 +39,6 @@ const Signup = ({ navigation, route }: any) => {
   const [image, setImage] = useState('');
 
   let tutorDetail = context?.tutorDetails
-  console.log('tutorDetail', tutorDetail);
   const handleLoginPress = () => {
     // if (!name) {
     //   ToastAndroid.show('Kindly Enter Image', ToastAndroid.SHORT);

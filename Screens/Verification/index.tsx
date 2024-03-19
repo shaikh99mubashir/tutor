@@ -24,11 +24,8 @@ import messaging from '@react-native-firebase/messaging';
 import CustomLoader from '../../Component/CustomLoader';
 const Verification = ({ navigation, route }: any) => {
   let data = route.params;
-  // console.log('data=============>Verification', data?.tutorDetail.id);
-
   const [user, setUser] = useState(false);
   const CELL_COUNT = 6;
-  // const { confirmation, phoneNum } = route.params;
   const [code, setCode] = useState('');
   const [uploading, setUploading] = useState(false);
   const [codeError, setCodeError] = useState(false);
@@ -54,7 +51,6 @@ const Verification = ({ navigation, route }: any) => {
           messaging()
             .subscribeToTopic('all_devices')
             .then(() => {
-              // console.log(token, 'token');
 
               let formData = new FormData();
 
@@ -99,11 +95,6 @@ const Verification = ({ navigation, route }: any) => {
 
     setLoading(true);
     let formData = new FormData();
-
-    formData.append("code", value);
-    formData.append("id",  data?.tutorDetail?.id);
-    console.log("form DAtat", formData);
-    
     axios.post(`${Base_Uri}api/verificationCode`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -132,8 +123,6 @@ const Verification = ({ navigation, route }: any) => {
           axios
             .get(`${Base_Uri}getTutorDetailByID/${data?.tutorID}`)
             .then((res) => {
-              // console.log("res.data verification", res.data);
-              
               if (res.data.tutorDetailById == null) {
                 AsyncStorage.removeItem('loginAuth');
                 navigation.replace('Login');
@@ -141,8 +130,6 @@ const Verification = ({ navigation, route }: any) => {
                 return
               }
               let tutorData = res.data;
-              // console.log(" tutorData?.tutorDetailById[0]?.status", tutorData?.tutorDetailById[0]?.status );
-              // console.log('tutorData', tutorData);
 
               if (
                 tutorData?.tutorDetailById[0]?.full_name == null && tutorData?.tutorDetailById[0]?.email == null
@@ -216,7 +203,6 @@ const Verification = ({ navigation, route }: any) => {
 
   const handleResendPress = () => {
     let { UserDetail } = data;
-    console.log('UserDetail.phoneNumber', data?.tutorDetail?.phoneNumber);
     setResendLoading(true);
 
     axios

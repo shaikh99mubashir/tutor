@@ -17,12 +17,8 @@ import { convertArea } from 'geolib';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const Login = ({ navigation }: any) => {
   let [phoneNumber, setPhoneNumber] = useState('');
-
   const [loading, setLoading] = useState(false);
-
-  const phoneInput = useRef(null);
-
-  // console.log('phoneNumber',phoneNumber.slice(1));
+  
   const handleLoginPress = () => {
     if (!phoneNumber) {
       ToastAndroid.show('Kindly Enter Phone Number', ToastAndroid.SHORT);
@@ -43,7 +39,6 @@ const Login = ({ navigation }: any) => {
       timeout: 30000, // 30 seconds
       })
       .then(({ data }) => {
-        // console.log('data===>',data);
         clearTimeout(timeoutId);
         if (data?.status == 404) {
           setLoading(false);

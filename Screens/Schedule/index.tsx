@@ -127,7 +127,6 @@ function Schedule({navigation, route}: any) {
     axios
       .get(`${Base_Uri}api/bannerAds`)
       .then(({data}) => {
-        console.log('res', data.bannerAds);
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
@@ -188,8 +187,6 @@ function Schedule({navigation, route}: any) {
       .get(`${Base_Uri}getClassSchedulesTime/${tutorID}`)
       .then(({data}) => {
         let {classSchedulesTime} = data;
-        console.log("classSchedulesTime0",classSchedulesTime);
-        
         let Date = selectedDate.getDate();
         let month = selectedDate.getMonth();
         let year = selectedDate.getFullYear();
@@ -228,8 +225,6 @@ function Schedule({navigation, route}: any) {
         //     }))
         //   : [];
       setLoading(false);
-        console.log("setScheduleData",setScheduleData);
-        
         let dataToSend = [...classSchedulesTime];
         setScheduleData(dataToSend);
       })
@@ -851,9 +846,6 @@ function Schedule({navigation, route}: any) {
                     </TouchableOpacity>
                   )}
                 </>
-              {/* ) 
-              
-              } */}
             </View>
           )}
         </>
@@ -935,8 +927,6 @@ function Schedule({navigation, route}: any) {
       .get(`${Base_Uri}getTutorStudents/${tutorId}`)
       .then(({data}) => {
         const {tutorStudents} = data;
-        console.log(tutorStudents);
-
         updateStudent(tutorStudents);
       })
       .catch(error => {
@@ -955,15 +945,12 @@ function Schedule({navigation, route}: any) {
           tutorSubjects.length > 0 &&
           tutorSubjects.map((e: any, i: Number) => {
             if (e?.name) {
-              console.log('E.name', e?.name);
-
               return {
                 subject: e.name,
                 id: e.id,
               };
             }
           });
-        console.log('mySubject=====?>', mySubject);
         updateSubject(mySubject);
       })
       .catch(error => {

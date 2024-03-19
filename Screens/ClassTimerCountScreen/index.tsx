@@ -158,9 +158,7 @@ function ClassTimerCount({ navigation, route }: any) {
 
     let startTime = route.params
     let item = route.params
-    // console.log("item=======Class TimmerCount Screen", item?.item?.totalTime);
     const totalTime = item?.item?.totalTime;
-    console.log("totalTime",totalTime);
 
     const notificationTime = calculateNotificationTime(totalTime);
     function calculateNotificationTime(totalTime:any) {
@@ -183,7 +181,6 @@ function ClassTimerCount({ navigation, route }: any) {
         
         return { hours: notificationHours, minutes: notificationMinutes };
       }
-      console.log("notificationTime",notificationTime);
       
     //   sendNotification(notificationTime)
       function sendNotification() {
@@ -197,8 +194,6 @@ function ClassTimerCount({ navigation, route }: any) {
           messaging()
             .subscribeToTopic('all_devices')
             .then(() => {
-              console.log(token, 'token=====>');
-  
               let formData = new FormData();
   
               formData.append('title', 'Clock Out Time');
@@ -213,7 +208,6 @@ function ClassTimerCount({ navigation, route }: any) {
                 })
                 .then(res => {
                   let data = res.data;
-                  console.log(data, 'tokenResponse');
                 })
                 .catch(error => {
                   console.log(error, 'error');
@@ -247,77 +241,6 @@ function ClassTimerCount({ navigation, route }: any) {
       }, [notificationTime])
       
 
-
-    // const handleClockOut = async () => {
-
-    //     const granted = await PermissionsAndroid.request(
-    //         PermissionsAndroid.PERMISSIONS.CAMERA,
-    //     );
-    //     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-
-    //         const options: any = {
-    //             title: 'Select Picture',
-    //             storageOptions: {
-    //                 skipBackup: true,
-    //                 path: 'images',
-    //             },
-    //             maxWidth: 600,
-    //             maxHeight: 200,
-    //             quality: 1.0,
-    //         };
-
-    //         launchCamera(options, (res: any) => {
-
-    //             if (res.didCancel) {
-    //                 console.log('User cancelled image picker');
-    //             } else if (res.error) {
-    //                 console.log('ImagePicker Error:', res.error);
-    //             } else {
-    //                 let startHour = item.startMinutes
-    //                 let startMinutes = item.startSeconds
-    //                 let endHour = startHour + hour == 24 ? 0 : startHour + hour
-    //                 let endMinutes = startMinutes + minutes
-    //                 if (startMinutes + minutes >= 60) {
-    //                     endMinutes = startMinutes + minutes - 60
-    //                     endHour = endHour + 1
-    //                 }
-
-    //                 let { assets } = res
-
-
-    //                 let data = {
-    //                     id: item.id,
-    //                     class_schedule_id: item?.class_schedule_id,
-    //                     endHour: endHour,
-    //                     endMinutes: endMinutes,
-    //                     startMinutes: item?.startSeconds,
-    //                     startHour: item?.startMinutes,
-    //                     hasIncentive: item?.hasIncentive ? item?.hasIncentive : 0,
-    //                     uri: assets[0]?.uri,
-    //                     type: assets[0]?.type,
-    //                     filename: assets[0]?.fileName,
-    //                     ticketID: item?.item?.ticketID,
-    //                     classAttendedID: item?.data?.classAttendedID,
-    //                     minutes: time.minutes,
-    //                     hour: time?.hour ? time.hour : 0,
-    //                     studentName: item?.item?.studentName,
-    //                     subjectName: item?.item?.subjectName,
-    //                     subjectID: item?.item?.subjectID,
-    //                     studentID: item?.item?.studentID,
-    //                 }
-    //                 cleanTime()
-    //                 AsyncStorage.removeItem("classInProcess")
-    //                 AsyncStorage.removeItem("timer")
-    //                 navigation.replace("ClockOut", data)
-
-    //             }
-    //         })
-
-
-    //     }
-
-
-    // }
     const handleClockOut = async () => {
         try {
           const granted = await PermissionsAndroid.request(
@@ -336,10 +259,8 @@ function ClassTimerCount({ navigation, route }: any) {
             };
             launchCamera(options, (res: any) => {
               if (res.didCancel) {
-                console.log('User cancelled image picker');
                 ToastAndroid.show(`User cancelled image picker`, ToastAndroid.LONG);
               } else if (res.error) {
-                console.log('ImagePicker Error:', res.error);
                 ToastAndroid.show(`ImagePicker Error: ${res?.error}`, ToastAndroid.LONG);
               } else {
                 try {
@@ -378,14 +299,12 @@ function ClassTimerCount({ navigation, route }: any) {
                   AsyncStorage.removeItem('timer');
                   navigation.replace('ClockOut', data);
                 } catch (error) {
-                  console.log('Error in handleClockOut:', error);
                   ToastAndroid.show(`Error in handleClockOut: ${error}`, ToastAndroid.LONG);
                 }
               }
             });
           }
         } catch (permissionError) {
-          console.log('Error requesting camera permission:', permissionError);
           ToastAndroid.show(`Error requesting camera permission: ${permissionError}`, ToastAndroid.LONG);
         }
       };

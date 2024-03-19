@@ -14,70 +14,8 @@ import {Base_Uri} from '../../constant/BaseUri';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import messaging from '@react-native-firebase/messaging';
 const Splash = ({navigation}: any) => {
-  // const [tutorDetail, setTutorDetails] = useState<any>();
-
   const tutorDetailsCont = useContext(TutorDetailsContext);
   const {tutorDetails, setTutorDetail} = tutorDetailsCont;
-
-  // console.log(tutorDetails, 'myDetails');
-  const sendDeviceTokenToDatabase = (tutorId:any) => {
-    messaging()
-      .requestPermission()
-      .then(() => {
-        // Retrieve the FCM token
-        return messaging().getToken();
-      })
-      .then(token => {
-        messaging()
-          .subscribeToTopic('all_devices')
-          .then(() => {
-            console.log(token, 'token=====>');
-
-            let formData = new FormData();
-
-            formData.append('tutor_id', tutorId);
-            formData.append('device_token', token);
-
-            axios
-              .post(`${Base_Uri}api/getTutorDeviceToken`, formData, {
-                headers: {
-                  'Content-Type': 'multipart/form-data',
-                },
-              })
-              .then(res => {
-                let data = res.data;
-                // console.log(data, 'tokenResponse');
-              })
-              .catch(error => {
-                console.log(error, 'error');
-              });
-          })
-          .catch(error => {
-            console.error('Failed to subscribe to topic: all_devices', error);
-          });
-      })
-      .catch(error => {
-        console.error(
-          'Error requesting permission or retrieving token:',
-          error,
-        );
-      });
-  };
-
-
-  // useEffect(() => {
-  //   try {
-  //     let tutorData: any = AsyncStorage.getItem('tutorData');
-  //     tutorData = JSON.parse(tutorData);
-  //     console.log("tutorData=====>",tutorData);
-      
-  //     setTutorDetail(tutorData);
-  //     console.log('Bottom Navigation tutor data', tutorData);
-  //   } catch (error) {
-      
-  //     console.error('Error retrieving or parsing tutor data:', error);
-  //   }
-  // }, []);
 
   const navigateToHomeScreen = () => {
     setTimeout(async () => {
@@ -86,14 +24,9 @@ const Splash = ({navigation}: any) => {
 
       if (authData) {
         let tutorData:any = JSON.parse(authData);
-        console.log('tutorData----->', tutorData?.tutorID);
-        // sendDeviceTokenToDatabase(tutorData?.tutorID)
         axios
           .get(`${Base_Uri}getTutorDetailByID/${tutorData?.tutorID}`)
-          // .get(`${Base_Uri}getTutorDetailByID/2`)
           .then((res:any) => {
-            console.log('res---->',res.data.tutorDetailById);
-            
             if(res.data.tutorDetailById== null){
               AsyncStorage.removeItem('loginAuth');
               navigation.replace('Login');
@@ -104,8 +37,6 @@ const Splash = ({navigation}: any) => {
 
             let tutorData = res.data;
             setTutorDetail(tutorData?.tutorDetailById[0]);
-            console.log('tutorData',tutorData);
-            
             if (
                 !tutorData.tutorDetailById[0]?.full_name &&
                 !tutorData.tutorDetailById[0]?.email
@@ -117,7 +48,6 @@ const Splash = ({navigation}: any) => {
               }
 
             if (tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'unverified' || tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'verified') {
-              // navigation.replace('JobTicket');
               navigation.replace('Main', {
                 screen: 'Home',
               });
@@ -131,12 +61,6 @@ const Splash = ({navigation}: any) => {
                 'terminated or block',
               );
             }
-            // if (tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'verified') {
-            //   navigation.replace('Main', {
-            //     screen: 'Home',
-            //   });
-            //   return;
-            // }
             if (
               tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'terminated' ||
               tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'resigned' ||

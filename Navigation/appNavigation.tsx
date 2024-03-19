@@ -60,7 +60,6 @@ function BottomNavigation({navigation,route}: any) {
       axios
         .get(`${Base_Uri}getTutorDetailByID/${tutorData?.tutorID}`)
         .then(res => {
-          console.log('res---->', res.data.tutorDetailById);
           if(res.data.tutorDetailById == null){
             AsyncStorage.removeItem('loginAuth');
             navigation.replace('Login');
@@ -89,8 +88,6 @@ function BottomNavigation({navigation,route}: any) {
 
   const hideTabs =
     tutorDetails?.status?.toLowerCase() == 'unverified' ? ['Schedule', 'Home', 'inbox'] : [];
-
-  // console.log(tutorDetails, '<---tutorDetails');
 
   return (
     <Tab.Navigator
@@ -516,17 +513,13 @@ function AppNavigation() {
 
 export default AppNavigation;
 const styles = StyleSheet.create({
-  // Define your custom font family
   customFont: {
     fontFamily: 'Circular Std Black', // Use the actual font name here
   },
 
   tabBarStyle: {
-    // position: 'absolute',
     borderTopWidth: 0,
     height: 80,
-    // borderTopLeftRadius: 50,
-    // borderTopRightRadius: 50,
     backgroundColor: Theme.white,
   },
 });
