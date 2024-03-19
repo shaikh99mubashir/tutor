@@ -197,7 +197,7 @@ const Verification = ({ navigation, route }: any) => {
         }
       })
       .catch(error => {
-        console.log('reeoe', error);
+        console.log('reeoe', error.errorMessage);
 
         ToastAndroid.show('Invalid Code', ToastAndroid.SHORT);
         setLoading(false);
