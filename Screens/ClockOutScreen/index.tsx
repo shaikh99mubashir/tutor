@@ -116,16 +116,12 @@ function ClockOut({navigation, route}: any) {
         navigation.navigate('Schedule');
         return;
       }
-      console.log("tutorID",tutorID);
-      
       const tutorReportResponse = await axios.get(
         `${Base_Uri}api/tutorFirstReportListing/${tutorId}`,
       );
 
       const {data: tutorReportData} = tutorReportResponse;
       let {tutorReportListing} = tutorReportData;
-      console.log('tutorReportListing',tutorReportListing);
-      console.log('tutorReportResponse',tutorReportResponse);
       
       let thisClass =
         tutorReportListing &&
@@ -134,9 +130,6 @@ function ClockOut({navigation, route}: any) {
           console.log('e', e);
           return items.class_schedule_id == e.scheduleID;
         });
-
-      console.log('thisClass', thisClass);
-      console.log('items.class_schedule_id', items.class_schedule_id);
 
       if (thisClass && thisClass.length > 0) {
         navigation.dispatch(
