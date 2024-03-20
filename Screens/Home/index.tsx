@@ -604,7 +604,7 @@ function Home({ navigation, route }: any) {
       getCancelledHours();
       getAssignedTicket();
     }
-  }, [cummulativeCommission, refreshing, tutorId]);
+  }, [cummulativeCommission, refreshing, tutorId, focus]);
 
   const routeToScheduleScreen = async (item: any) => {
     interface LoginAuth {

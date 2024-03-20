@@ -191,10 +191,7 @@ const Profile = ({ navigation }: any) => {
     // }
     let authData:any = await AsyncStorage.getItem('loginAuth');
     let tutorData: any = JSON.parse(authData);
-    console.log('tutorData',tutorData.tutorID);
-    
-    
-    console.log('tutorDetail?.id',tutorDetail?.id);
+    console.log('tutorData.tutorID',tutorData.tutorID);
     if (uri && name && type) {
       console.log("uri",uri);
       console.log("type",type);
@@ -307,6 +304,18 @@ const Profile = ({ navigation }: any) => {
             `Tutor Details update unsuccessfull ${error}`,
             ToastAndroid.SHORT,
           );
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            console.log('Server responded with data:', error.response.data);
+            console.log('Status code:', error.response.status);
+            console.log('Headers:', error.response.headers);
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.log('No response received:', error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error setting up the request:', error.message);
+          }
         });
     }
   };
@@ -433,6 +442,9 @@ const Profile = ({ navigation }: any) => {
   // console.log("tutorDetails?.tutorDetailById[0]?.tutorImage",tutorDetails?.tutorDetailById[0]?.tutorImage);
   
   
+console.log('name',name);
+console.log('uri',uri);
+console.log('imageUrl',imageUrl);
 
 
   return  (
@@ -773,7 +785,7 @@ const Profile = ({ navigation }: any) => {
             width: '94%',
           }}>
           <TouchableOpacity
-            onPress={updateTutorDetail}
+            onPress={()=>updateTutorDetail()}
             style={{
               alignItems: 'center',
               padding: 10,

@@ -30,6 +30,8 @@ const OpenDetails = ({ route, navigation }: any) => {
 
   const tutor = useContext(TutorDetailsContext);
   let { tutorDetails, updateTutorDetails } = tutor;
+  console.log("tutorDetails",tutorDetails);
+  
   const [loading, setLoading] = useState(false);
 
   // console.log(openDetailItem.comment, "comment")
@@ -385,7 +387,7 @@ const OpenDetails = ({ route, navigation }: any) => {
             }
             {/* Special Need */}
 
-            {tutorDetails?.status == 'verified' && data?.mode == 'physical' && data?.studentAddress &&
+            {tutorDetails?.status?.toLowerCase() == 'verified' && data?.mode?.toLowerCase() == 'physical' && data?.studentAddress &&
               <View style={{ marginVertical: 5,}}>
                 <Text
                   style={styles.textType1}>
