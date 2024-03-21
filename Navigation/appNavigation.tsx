@@ -350,6 +350,23 @@ function BottomNavigation({navigation,route}: any) {
 function AppNavigation() {
   return (
     <NavigationContainer>
+      {/* <Stack.Navigator>
+      <Stack.Screen
+          options={{headerShown: false}}
+          name="BackToDashboard"
+          component={BackToDashboard}
+        />
+      <Stack.Screen
+          options={{headerShown: false}}
+          name="Schedule"
+          component={BottomNavigation}
+        />
+      <Stack.Screen
+          options={{headerShown: false}}
+          name="AddClass"
+          component={AddClass}
+        />
+      </Stack.Navigator> */}
       <Stack.Navigator>
         <Stack.Screen
           options={{headerShown: false}}
@@ -389,6 +406,11 @@ function AppNavigation() {
         <Stack.Screen
           options={{headerShown: false}}
           name="Main"
+          component={BottomNavigation}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="Schedule"
           component={BottomNavigation}
         />
         <Stack.Screen

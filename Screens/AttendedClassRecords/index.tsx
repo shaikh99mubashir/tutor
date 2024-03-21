@@ -138,7 +138,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
     useEffect(()=>{
       check()
       attendedClassApiCall()
-    },[route])
+    },[route,refresh])
     const renderRecords = ({ item }: any) => {
         return (
           <>
@@ -200,7 +200,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                       styles.textType1,
                       { lineHeight: 30, textTransform: 'capitalize' },
                     ]}>
-                    Est. {item?.totalPrice} RM
+                    RM {item?.totalPrice}
                   </Text>
                   {item?.classMode?.toLowerCase() == 'physical' &&
                   <View

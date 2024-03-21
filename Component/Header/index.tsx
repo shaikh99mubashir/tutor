@@ -50,6 +50,15 @@ const Header = (Props: any) => {
   }
 
 
+  console.log("Navigation===>",navigation);
+  const handleGoBack = () => {
+    if (navigation.canGoBack()) {
+      navigation.goBack(); // Navigate back to the previous screen if possible
+    } else {
+      navigation.replace("Main");// Navigate to the home screen if there's no previous screen
+    }
+  };
+
 
   return (
     <View
@@ -74,7 +83,7 @@ const Header = (Props: any) => {
               alignItems: 'flex-start',
               justifyContent: 'flex-start',
             }}>
-            <TouchableOpacity style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)', padding: 10, borderRadius: 50 }} onPress={() => navigation.goBack()}>
+            <TouchableOpacity style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)', padding: 10, borderRadius: 50 }}  onPress={() =>handleGoBack()}>
               <Image source={require('../../Assets/Images/back.png')} style={{ width: 12, height: 12 }} resizeMode='contain' />
             </TouchableOpacity>
           </View>
