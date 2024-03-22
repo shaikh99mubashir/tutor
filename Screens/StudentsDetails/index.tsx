@@ -28,6 +28,9 @@ const StudentsDetails = ({ navigation, route }: any) => {
 
   }, [focus])
 
+  console.log("data",data);
+  
+
   const makeCall = () => {
 
     const url = `tel:${data.studentPhone}`;

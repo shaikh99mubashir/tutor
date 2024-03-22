@@ -16,6 +16,7 @@ import TutorDetailsContext from '../../context/tutorDetailsContext';
 import {Base_Uri} from '../../constant/BaseUri';
 import axios from 'axios';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { useIsFocused } from '@react-navigation/native';
 
 function More({navigation}: any) {
   const context = useContext(TutorDetailsContext);
@@ -79,12 +80,12 @@ function More({navigation}: any) {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
-
+  const focus = useIsFocused();
   useEffect(() => {
     if (!tutorDetails) {
       getTutorDetails();
     }
-  }, []);
+  }, [focus]);
 
   const ApplyButton = async () => {
     try {
@@ -113,6 +114,35 @@ function More({navigation}: any) {
     ? tutorDetails.tutorImage
     : `${Base_Uri}public/tutorImage/${tutorDetails.tutorImage}`;
 
+
+    interface LoginAuth {
+      status: Number;
+      tutorID: Number;
+      token: string;
+    }
+  
+    const [tutorImage , setTutorImage] = useState('')
+    const getTutorDetailss = async () => {
+      const data: any = await AsyncStorage.getItem('loginAuth');
+      let loginData: LoginAuth = JSON.parse(data);
+  
+      let {tutorID} = loginData;
+      axios
+        .get(`${Base_Uri}getTutorDetailByID/${tutorID}`)
+        .then(({data}) => {
+          let {tutorDetailById} = data;
+          let tutorDetails = tutorDetailById[0];
+          console.log('tutorDetails', tutorDetails);
+          setTutorImage(tutorDetails.tutorImage)
+        })
+        .catch(error => {
+          ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        });
+    };
+    useEffect(() => {
+      getTutorDetailss();
+    }, [focus,]);
+
   return (
     <View style={{backgroundColor: Theme.white, height: '100%'}}>
       <Header title="More" navigation={navigation} />
@@ -137,14 +167,19 @@ function More({navigation}: any) {
                 gap: 10,
                 alignItems: 'center',
               }}>
-              <Image
+              {/* <Image
                 source={
                   tutorDetails.tutorImage
                     ? {uri: imageUrl}
                     : require('../../Assets/Images/avatar.png')
                 }
                 style={{height: 60, width: 60, borderRadius: 50}}
-              />
+              /> */}
+               <Image
+                source={{uri: tutorImage }}
+                style={{height: 60, width: 60, borderRadius: 50}}
+              /> 
+              
               <View>
                 <Text
                   style={{fontSize: 16, fontWeight: '600', color: Theme.black}}>

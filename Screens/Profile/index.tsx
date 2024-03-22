@@ -13,26 +13,26 @@ import {
   Modal,
   Dimensions,
 } from 'react-native';
-import React, { useEffect, useState, useContext } from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import Header from '../../Component/Header';
-import { Theme } from '../../constant/theme';
-import { PermissionsAndroid } from 'react-native';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import {Theme} from '../../constant/theme';
+import {PermissionsAndroid} from 'react-native';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios, { isAxiosError } from 'axios';
-import { Base_Uri } from '../../constant/BaseUri';
+import axios, {isAxiosError} from 'axios';
+import {Base_Uri} from '../../constant/BaseUri';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import Share from 'react-native-share';
-import { touch } from 'react-native-fs';
+import {touch} from 'react-native-fs';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import DropDownModalView from '../../Component/DropDownModalView';
 import bannerContext from '../../context/bannerContext';
 import ModalImg from '../../Component/Modal/modal';
 import CustomLoader from '../../Component/CustomLoader';
+import { useIsFocused } from '@react-navigation/native';
 
-
-const Profile = ({ navigation }: any) => {
+const Profile = ({navigation}: any) => {
   interface ITutorDetails {
     full_name: string | undefined;
     email: string | undefined;
@@ -41,7 +41,6 @@ const Profile = ({ navigation }: any) => {
     age: any;
     nric: string | undefined;
   }
-
 
   // const [tutorDetail, setTutorDetail] = useState<ITutorDetails>({
   //   full_name: '',
@@ -58,35 +57,31 @@ const Profile = ({ navigation }: any) => {
   const [nric, setNric] = React.useState('');
   const [age, setAge] = React.useState('');
   const [gender, setGender] = React.useState('');
-  const [openPhotoModal, setOpenPhotoModal] = useState(false)
-  const [uri, setUri] = useState("")
-  const [type, setType] = useState("")
-  const [name, setName] = useState("")
+  const [openPhotoModal, setOpenPhotoModal] = useState(false);
+  const [uri, setUri] = useState('');
+  const [type, setType] = useState('');
+  const [name, setName] = useState('');
   const context = useContext(TutorDetailsContext);
+  const focus = useIsFocused();
 
-  let tutorDetail = context?.tutorDetails
-  let tutorDetails = context?.tutorDetails
-  console.log('tutorDetails',tutorDetails);
-  console.log('tutorDetail',tutorDetail);
-  let bannerCont = useContext(bannerContext)
+  let tutorDetail = context?.tutorDetails;
+  let tutorDetails = context?.tutorDetails;
+  console.log('tutorDetails', tutorDetails);
+  console.log('tutorDetail', tutorDetail);
+  let bannerCont = useContext(bannerContext);
 
-  let { profileBanner, setProfileBanner }:any = bannerCont
+  let {profileBanner, setProfileBanner}: any = bannerCont;
 
-
-  let { updateTutorDetails, setTutorDetail } = context;
-
-
+  let {updateTutorDetails, setTutorDetail} = context;
 
   const openPhoto = async () => {
-
-    setOpenPhotoModal(false)
+    setOpenPhotoModal(false);
 
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.CAMERA,
     );
 
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-
       const options: any = {
         title: 'Select Picture',
         storageOptions: {
@@ -106,36 +101,25 @@ const Profile = ({ navigation }: any) => {
       } else if (result.errorCode == 'others') {
         // setToastMsg(result.errorMessage);
       } else {
-
         let uri = result.assets[0].uri;
         let type = result.assets[0].type;
         let name = result.assets[0].fileName;
 
-
-        setUri(uri)
-        setType(type)
-        setName(name)
-
+        setUri(uri);
+        setType(type);
+        setName(name);
       }
-
     }
-
-  }
-
-
-
+  };
 
   const uploadProfilePicture = async () => {
-
-
-    setOpenPhotoModal(false)
+    setOpenPhotoModal(false);
 
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.CAMERA,
     );
 
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-
       const options: any = {
         title: 'Select Picture',
         storageOptions: {
@@ -154,21 +138,16 @@ const Profile = ({ navigation }: any) => {
       } else if (result.errorCode == 'others') {
         // setToastMsg(result.errorMessage);
       } else {
-
         let uri = result.assets[0].uri;
         let type = result.assets[0].type;
         let name = result.assets[0].fileName;
 
-
-        setUri(uri)
-        setType(type)
-        setName(name)
-
-
+        setUri(uri);
+        setType(type);
+        setName(name);
       }
     }
   };
-
 
   const genderOption = [
     {
@@ -181,7 +160,6 @@ const Profile = ({ navigation }: any) => {
 
   let imageUrl;
   const updateTutorDetail = async () => {
-    
     // const expression: RegExp = /^[A -Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
     // const userEmail: any = tutorDetail.email;
     // const result: boolean = expression.test(userEmail); // true
@@ -189,21 +167,23 @@ const Profile = ({ navigation }: any) => {
     //   ToastAndroid.show('Enter correct email', ToastAndroid.SHORT);
     //   return;
     // }
-    let authData:any = await AsyncStorage.getItem('loginAuth');
+    let authData: any = await AsyncStorage.getItem('loginAuth');
     let tutorData: any = JSON.parse(authData);
-    console.log('tutorData.tutorID',tutorData.tutorID);
+    console.log('tutorData.tutorID', tutorData.tutorID);
     if (uri && name && type) {
-      console.log("uri",uri);
-      console.log("type",type);
-      console.log("name",uri);
-      console.log('If running',tutorDetail?.tutorId);
-      
-      setLoading(true)
+      console.log('uri', uri);
+      console.log('type', type);
+      console.log('name', uri);
+      console.log('If running', tutorDetail?.tutorId);
 
-      tutorDetail.displayName = dispalyName ? dispalyName : tutorDetail.displayName
-      tutorDetail.email = email ? email : tutorDetail.email
-      tutorDetail.age = age ? age : tutorDetail.age
-      tutorDetail.nric = nric ? nric : tutorDetail.nric
+      setLoading(true);
+
+      tutorDetail.displayName = dispalyName
+        ? dispalyName
+        : tutorDetail.displayName;
+      tutorDetail.email = email ? email : tutorDetail.email;
+      tutorDetail.age = age ? age : tutorDetail.age;
+      tutorDetail.nric = nric ? nric : tutorDetail.nric;
 
       let formData = new FormData();
       formData.append('tutorImage', {
@@ -219,37 +199,38 @@ const Profile = ({ navigation }: any) => {
       formData.append('nric', tutorDetail?.nric);
       formData.append('phone', tutorDetail?.phoneNumber);
       formData.append('age', tutorDetail?.age);
-      console.log('formData',formData);
-      
+      console.log('formData', formData);
+
       axios
         .post(`${Base_Uri}api/editTutorProfile`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         })
-        .then(({ data }) => {
+        .then(({data}) => {
           setLoading(false);
-          let { response } = data;
-          let { tutorImage } = response;
-          console.log("response", response);
-          
+          let {response} = data;
+          let {tutorImage} = response;
+          console.log('response', response);
+
           setImage(tutorImage);
           tutorDetail.tutorImage = tutorImage;
-          setTutorDetail({ ...tutorDetail, tutorImage: tutorImage });
-          setUri("")
-          setType("")
-          setName("")
-          
-          console.log("image",image);
-          
+          setTutorDetail({...tutorDetail, tutorImage: tutorImage});
+          setUri('');
+          setType('');
+          setName('');
+
+          console.log('image', image);
+
           if (image) {
-              imageUrl = image;
-            } else if (tutorDetail?.tutorImage?.includes('https')) {
-              imageUrl = tutorDetail?.tutorImage;
-            } else {
-              imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail?.tutorImage}`;
-            }
+            imageUrl = image;
+          } else if (tutorDetail?.tutorImage?.includes('https')) {
+            imageUrl = tutorDetail?.tutorImage;
+          } else {
+            imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail?.tutorImage}`;
+          }
           console.log('imageUrl', imageUrl);
+          getTutorDetails()
           ToastAndroid.show(
             'Successfully Update Tutor Details',
             ToastAndroid.SHORT,
@@ -265,13 +246,15 @@ const Profile = ({ navigation }: any) => {
         });
     } else {
       console.log('Else running profile');
-      setLoading(true)
-      tutorDetail.displayName = dispalyName ? dispalyName : tutorDetail.displayName
-      tutorDetail.email = email ? email : tutorDetail.email
-      tutorDetail.age = age ? age : tutorDetail.age
-      tutorDetail.nric = nric ? nric : tutorDetail.nric
-      console.log("tutorDetail?.tutorId",tutorDetail?.tutorId);
-      
+      setLoading(true);
+      tutorDetail.displayName = dispalyName
+        ? dispalyName
+        : tutorDetail.displayName;
+      tutorDetail.email = email ? email : tutorDetail.email;
+      tutorDetail.age = age ? age : tutorDetail.age;
+      tutorDetail.nric = nric ? nric : tutorDetail.nric;
+      console.log('tutorDetail?.tutorId', tutorDetail?.tutorId);
+
       let formData = new FormData();
       // formData.append('tutorID', tutorDetail?.tutorId);
       formData.append('id', tutorData.tutorID);
@@ -288,10 +271,16 @@ const Profile = ({ navigation }: any) => {
             'Content-Type': 'multipart/form-data',
           },
         })
-        .then(({ data }) => {
+        .then(({data}) => {
           setLoading(false);
-          let { response } = data;
-          setTutorDetail({ ...tutorDetail, displayName: tutorDetail.displayName, email: tutorDetail.email, nric: tutorDetail.nric, age: tutorDetail.age })
+          let {response} = data;
+          setTutorDetail({
+            ...tutorDetail,
+            displayName: tutorDetail.displayName,
+            email: tutorDetail.email,
+            nric: tutorDetail.nric,
+            age: tutorDetail.age,
+          });
           ToastAndroid.show(
             'Successfully Update Tutor Details',
             ToastAndroid.SHORT,
@@ -325,20 +314,18 @@ const Profile = ({ navigation }: any) => {
   // let imageUrl = image
   //   ? image
   //   : !tutorDetail.tutorImage
-  //     ? defaultAvatar 
+  //     ? defaultAvatar
   //     : tutorDetail.tutorImage.includes('https')
   //       ? tutorDetail.tutorImage
   //       : `${Base_Uri}public/tutorImage/${tutorDetail.tutorImage}`;
 
-
-
   // console.log(imageUrl, "image")
   const [openPPModal, setOpenPPModal] = useState(false);
   const displayBanner = async () => {
-    setOpenPPModal(true)
+    setOpenPPModal(true);
     axios
       .get(`${Base_Uri}api/bannerAds`)
-      .then(({ data }) => {
+      .then(({data}) => {
         // console.log('res', data.bannerAds);
       })
       .catch(error => {
@@ -351,74 +338,43 @@ const Profile = ({ navigation }: any) => {
   }, []);
 
   const linkToOtherPage = () => {
-
-    if (profileBanner.callToActionType == "Open URL") {
+    if (profileBanner.callToActionType == 'Open URL') {
       Linking.openURL(profileBanner.urlToOpen);
-    }
-    else if (profileBanner.callToActionType == "Open Page")
-
-      if (profileBanner.pageToOpen == "Dashboard") {
-
-        navigation.navigate("Home")
+    } else if (profileBanner.callToActionType == 'Open Page')
+      if (profileBanner.pageToOpen == 'Dashboard') {
+        navigation.navigate('Home');
+      } else if (profileBanner.pageToOpen == 'Faq') {
+        navigation.navigate('FAQs');
+      } else if (profileBanner.pageToOpen == 'Class Schedule List') {
+        navigation.navigate('Schedule');
+      } else if (profileBanner.pageToOpen == 'Student List') {
+        navigation.navigate('Students');
+      } else if (profileBanner.pageToOpen == 'Inbox') {
+        navigation.navigate('inbox');
+      } else if (profileBanner.pageToOpen == 'Profile') {
+        navigation.navigate('Profile');
+      } else if (profileBanner.pageToOpen == 'Payment History') {
+        navigation.navigate('PaymentHistory');
+      } else if (profileBanner.pageToOpen == 'Job Ticket List') {
+        navigation.navigate('Job Ticket');
+      } else if (profileBanner.pageToOpen == 'Submission History') {
+        navigation.navigate('ReportSubmissionHistory');
       }
-      else if (profileBanner.pageToOpen == "Faq") {
-
-        navigation.navigate("FAQs")
-
-      }
-      else if (profileBanner.pageToOpen == ("Class Schedule List")) {
-
-        navigation.navigate("Schedule")
-
-      }
-
-      else if (profileBanner.pageToOpen == "Student List") {
-
-        navigation.navigate("Students")
-
-      }
-      else if (profileBanner.pageToOpen == "Inbox") {
-
-        navigation.navigate("inbox")
-
-      }
-      else if (profileBanner.pageToOpen == "Profile") {
-        navigation.navigate("Profile")
-      }
-      else if (profileBanner.pageToOpen == ("Payment History")) {
-
-        navigation.navigate("PaymentHistory")
-
-
-      }
-      else if (profileBanner.pageToOpen == ("Job Ticket List")) {
-
-        navigation.navigate("Job Ticket")
-
-      }
-      else if (profileBanner.pageToOpen == ("Submission History")) {
-        navigation.navigate("ReportSubmissionHistory")
-      }
-  }
-
+  };
 
   const closeBannerModal = async () => {
+    if (profileBanner.displayOnce == 'on') {
+      let bannerData = {...profileBanner};
 
-    if (profileBanner.displayOnce == "on") {
+      let stringData = JSON.stringify(bannerData);
 
-      let bannerData = { ...profileBanner }
-
-      let stringData = JSON.stringify(bannerData)
-
-      let data = await AsyncStorage.setItem("profileBanner", stringData)
-      setProfileBanner([])
-      setOpenPPModal(false)
+      let data = await AsyncStorage.setItem('profileBanner', stringData);
+      setProfileBanner([]);
+      setOpenPPModal(false);
     } else {
-      setOpenPPModal(false)
+      setOpenPPModal(false);
     }
-
-  }
-
+  };
 
   // if (image) {
   //   imageUrl = image;
@@ -428,10 +384,10 @@ const Profile = ({ navigation }: any) => {
   //   imageUrl = `${Base_Uri}public/tutorImage/${tutorDetail?.tutorImage}`;
   // }
 
-   if (image) {
+  if (image) {
     imageUrl = image;
   } else if (!tutorDetail?.tutorImage) {
-    imageUrl =  tutorDetails?.tutorDetailById?.tutorImage
+    imageUrl = tutorDetails?.tutorDetailById?.tutorImage;
     // imageUrl =  tutorDetails?.tutorDetailById[0]?.tutorImage
   } else if (tutorDetail?.tutorImage?.includes('https')) {
     imageUrl = tutorDetail?.tutorImage;
@@ -440,53 +396,98 @@ const Profile = ({ navigation }: any) => {
   }
 
   // console.log("tutorDetails?.tutorDetailById[0]?.tutorImage",tutorDetails?.tutorDetailById[0]?.tutorImage);
+
+  console.log('name', name);
+  console.log('uri', uri);
+  console.log('imageUrl', imageUrl);
+
+  const [tutorId, setTutorId] = useState<Number | null>(null);
   
-  
-console.log('name',name);
-console.log('uri',uri);
-console.log('imageUrl',imageUrl);
+  interface LoginAuth {
+    status: Number;
+    tutorID: Number;
+    token: string;
+  }
+
+  const [tutorImage , setTutorImage] = useState('')
+  const getTutorDetails = async () => {
+    setLoading(true)
+    const data: any = await AsyncStorage.getItem('loginAuth');
+    let loginData: LoginAuth = JSON.parse(data);
+
+    let {tutorID} = loginData;
+    axios
+      .get(`${Base_Uri}getTutorDetailByID/${tutorID}`)
+      .then(({data}) => {
+        let {tutorDetailById} = data;
+        let tutorDetails = tutorDetailById[0];
+        console.log('tutorDetails', tutorDetails);
+        setTutorImage(tutorDetails.tutorImage)
+        setLoading(false)
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        setLoading(false)
+      });
+  };
+  useEffect(() => {
+    getTutorDetails();
+  }, [focus,]);
 
 
-  return  (
-  //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-  //     <ActivityIndicator size="large" color={Theme.black} />
-  //   </View>
-  // ) : (
-    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+  return (
+    //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    //     <ActivityIndicator size="large" color={Theme.black} />
+    //   </View>
+    // ) : (
+    <View style={{backgroundColor: Theme.white, height: '100%'}}>
       <Header title="Profile" navigation={navigation} backBtn />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{ paddingHorizontal: 15, marginBottom: 20}}>
-          <View style={{ paddingVertical: 15, alignItems: 'center' }}>
-          {/* {imageUrl == 1 ? <Image source={require('../../Assets/Images/avatar.png')} style={{ width: 80, height: 80, borderRadius: 50 }}/>
+        <View style={{paddingHorizontal: 15, marginBottom: 20}}>
+        {/* <Image
+              source={{uri: tutorImage}}
+              style={{width: 90, height: 90, borderRadius: 50}}
+              resizeMode="contain"
+            /> */}
+
+          <View style={{paddingVertical: 15, alignItems: 'center'}}>
+            {/* {imageUrl == 1 ? <Image source={require('../../Assets/Images/avatar.png')} style={{ width: 80, height: 80, borderRadius: 50 }}/>
           : */}
+            {/* <Image
+              source={{uri: name ? `file://${uri}` : `${imageUrl}`}}
+              style={{width: 90, height: 90, borderRadius: 50}}
+              resizeMode="contain"
+            /> */}
             <Image
-              source={{ uri: name ? `file://${uri}` : `${imageUrl}` }}
-              style={{ width: 90, height: 90, borderRadius: 50 }}
+              source={{uri: name ? `file://${uri}` : `${tutorImage}` ? `${tutorImage}` : `${imageUrl}`}}
+              style={{width: 90, height: 90, borderRadius: 50}}
               resizeMode="contain"
             />
-      
+
             <TouchableOpacity
               onPress={() => setOpenPhotoModal(true)}
               activeOpacity={0.8}>
               <Image
                 source={require('../../Assets/Images/plus.png')}
-                style={{ width: 20, height: 20, top: -20, left: 25 }}
+                style={{width: 20, height: 20, top: -20, left: 25}}
                 resizeMode="contain"
               />
             </TouchableOpacity>
-            <View style={{ alignItems: 'center' }}>
+            <View style={{alignItems: 'center'}}>
               <Text
-                style={{ fontSize: 18, fontWeight: '600', color: Theme.black }}>
-                {tutorDetail?.displayName ? tutorDetail?.displayName:tutorDetail?.full_name}
+                style={{fontSize: 18, fontWeight: '600', color: Theme.black}}>
+                {tutorDetail?.displayName
+                  ? tutorDetail?.displayName
+                  : tutorDetail?.full_name}
               </Text>
               <Text
-                style={{ fontSize: 14, fontWeight: '300', color: Theme.gray }}>
+                style={{fontSize: 14, fontWeight: '300', color: Theme.gray}}>
                 {tutorDetail?.email}
               </Text>
             </View>
           </View>
           {/* Full Name */}
-          <View style={{ marginVertical: 15 }}>
+          <View style={{marginVertical: 15}}>
             <Text
               style={{
                 color: Theme.black,
@@ -515,7 +516,7 @@ console.log('imageUrl',imageUrl);
             </View>
           </View>
           {/* Email */}
-          <View style={{ marginBottom: 15 }}>
+          <View style={{marginBottom: 15}}>
             <Text
               style={{
                 color: Theme.black,
@@ -545,13 +546,13 @@ console.log('imageUrl',imageUrl);
                 editable
                 onChangeText={text => setEmail(text)}
                 placeholder={tutorDetail?.email}
-                style={{ color: "black", fontSize: 14 }}
+                style={{color: 'black', fontSize: 14}}
                 placeholderTextColor={Theme.black}
               />
             </View>
           </View>
           {/* Displlay name */}
-          <View style={{ marginBottom: 15 }}>
+          <View style={{marginBottom: 15}}>
             <Text
               style={{
                 color: Theme.black,
@@ -581,13 +582,13 @@ console.log('imageUrl',imageUrl);
                 editable
                 onChangeText={text => setDispalyName(text)}
                 placeholder={tutorDetail?.displayName}
-                style={{ color: "black", fontSize: 14 }}
+                style={{color: 'black', fontSize: 14}}
                 placeholderTextColor={Theme.black}
               />
             </View>
           </View>
           {/* MObile number*/}
-          <View style={{ marginBottom: 15 }}>
+          <View style={{marginBottom: 15}}>
             <Text
               style={{
                 color: Theme.black,
@@ -616,7 +617,7 @@ console.log('imageUrl',imageUrl);
             </View>
           </View>
           {/* Gender*/}
-          <View style={{ marginBottom: 15 }}>
+          <View style={{marginBottom: 15}}>
             <Text
               style={{
                 color: Theme.black,
@@ -644,18 +645,25 @@ console.log('imageUrl',imageUrl);
               </Text> */}
               <DropDownModalView
                 // title="Gender"
-                selectedValue={(e: any) => setTutorDetail({ ...tutorDetail, gender: e.option })}
+                selectedValue={(e: any) =>
+                  setTutorDetail({...tutorDetail, gender: e.option})
+                }
                 // subTitle="Rate the student's performance in the quizes"
                 placeHolder="Select Answer"
                 option={genderOption}
                 value={tutorDetail.gender}
                 modalHeading="Select Gender"
-                style={{ borderWidth: 0, marginTop: 0, fontSize: 18, color: 'black',}}
+                style={{
+                  borderWidth: 0,
+                  marginTop: 0,
+                  fontSize: 18,
+                  color: 'black',
+                }}
               />
             </View>
           </View>
           {/* Age*/}
-          <View style={{ marginBottom: 15 }}>
+          <View style={{marginBottom: 15}}>
             <Text
               style={{
                 color: Theme.black,
@@ -674,16 +682,20 @@ console.log('imageUrl',imageUrl);
               }}>
               <TextInput
                 editable
-                style={{ color: "black",textTransform:'capitalize', }}
-                keyboardType='numeric'
+                style={{color: 'black', textTransform: 'capitalize'}}
+                keyboardType="numeric"
                 onChangeText={text => setAge(text)}
-                placeholder={tutorDetail?.age ? tutorDetail?.age.toString() : "Not Provided"}
+                placeholder={
+                  tutorDetail?.age
+                    ? tutorDetail?.age.toString()
+                    : 'Not Provided'
+                }
                 placeholderTextColor={Theme.black}
               />
             </View>
           </View>
           {/* Nric*/}
-          <View style={{ marginBottom: 10 }}>
+          <View style={{marginBottom: 10}}>
             <Text
               style={{
                 color: Theme.black,
@@ -702,10 +714,12 @@ console.log('imageUrl',imageUrl);
               }}>
               <TextInput
                 editable
-                style={{ color: "black" }}
+                style={{color: 'black'}}
                 onChangeText={text => setNric(text)}
-                keyboardType='numeric'
-                placeholder={tutorDetail?.nric ? tutorDetail.nric : "Not Provided"}
+                keyboardType="numeric"
+                placeholder={
+                  tutorDetail?.nric ? tutorDetail.nric : 'Not Provided'
+                }
                 placeholderTextColor={Theme.black}
               />
             </View>
@@ -713,60 +727,67 @@ console.log('imageUrl',imageUrl);
         </View>
       </ScrollView>
 
-      {Object.keys(profileBanner).length > 0 && (profileBanner.tutorStatusCriteria == "All" || tutorDetails.status == "verified") && <View style={{ flex: 1 }}>
-        <Modal
-          visible={openPPModal}
-          animationType="fade"
-          transparent={true}
-          onRequestClose={() => closeBannerModal()}>
-          <TouchableOpacity
-            onPress={linkToOtherPage}
-            style={{
-              flex: 1,
-              backgroundColor: 'rgba(0,0,0,0.5)',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <View
-              style={{
-                backgroundColor: 'white',
-                // padding: 15,
-                borderRadius: 5,
-                marginHorizontal: 20,
-              }}>
-              <TouchableOpacity onPress={() => closeBannerModal()}>
+      {Object.keys(profileBanner).length > 0 &&
+        (profileBanner.tutorStatusCriteria == 'All' ||
+          tutorDetails.status == 'verified') && (
+          <View style={{flex: 1}}>
+            <Modal
+              visible={openPPModal}
+              animationType="fade"
+              transparent={true}
+              onRequestClose={() => closeBannerModal()}>
+              <TouchableOpacity
+                onPress={linkToOtherPage}
+                style={{
+                  flex: 1,
+                  backgroundColor: 'rgba(0,0,0,0.5)',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
                 <View
                   style={{
-                    alignItems: 'flex-end',
-                    paddingVertical: 10,
-                    paddingRight: 15,
+                    backgroundColor: 'white',
+                    // padding: 15,
+                    borderRadius: 5,
+                    marginHorizontal: 20,
                   }}>
-                  <AntDesign name="closecircleo" size={20} color={'black'} />
+                  <TouchableOpacity onPress={() => closeBannerModal()}>
+                    <View
+                      style={{
+                        alignItems: 'flex-end',
+                        paddingVertical: 10,
+                        paddingRight: 15,
+                      }}>
+                      <AntDesign
+                        name="closecircleo"
+                        size={20}
+                        color={'black'}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                  {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
+                  <Image
+                    source={{uri: profileBanner.bannerImage}}
+                    style={{
+                      width: Dimensions.get('screen').width / 1.05,
+                      height: '90%',
+                    }}
+                    resizeMode="contain"
+                  />
                 </View>
               </TouchableOpacity>
-              {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
-              <Image
-                source={{ uri: profileBanner.bannerImage }}
-                style={{
-                  width: Dimensions.get('screen').width / 1.05,
-                  height: '90%',
-                }}
-                resizeMode="contain"
-              />
-            </View>
-          </TouchableOpacity>
-        </Modal>
-      </View>}
+            </Modal>
+          </View>
+        )}
 
-      {
-        openPhotoModal &&
-        <ModalImg closeModal={() =>
-          setOpenPhotoModal(false)}
+      {openPhotoModal && (
+        <ModalImg
+          closeModal={() => setOpenPhotoModal(false)}
           modalVisible={openPhotoModal}
           openCamera={openPhoto}
-          openGallery={uploadProfilePicture} />
-      }
-
+          openGallery={uploadProfilePicture}
+        />
+      )}
 
       {/* Submit Button */}
       <View
@@ -785,7 +806,7 @@ console.log('imageUrl',imageUrl);
             width: '94%',
           }}>
           <TouchableOpacity
-            onPress={()=>updateTutorDetail()}
+            onPress={() => updateTutorDetail()}
             style={{
               alignItems: 'center',
               padding: 10,
@@ -815,8 +836,7 @@ console.log('imageUrl',imageUrl);
         </View>
       </Modal> */}
 
-    <CustomLoader visible={loading} />
-
+      <CustomLoader visible={loading} />
     </View>
   );
 };

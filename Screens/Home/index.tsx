@@ -949,6 +949,34 @@ function Home({ navigation, route }: any) {
     return `${day} ${monthNames[monthIndex]} ${year}`;
   }
 
+  interface LoginAuth {
+    status: Number;
+    tutorID: Number;
+    token: string;
+  }
+
+  const [tutorImage , setTutorImage] = useState('')
+  const getTutorDetailss = async () => {
+    const data: any = await AsyncStorage.getItem('loginAuth');
+    let loginData: LoginAuth = JSON.parse(data);
+
+    let {tutorID} = loginData;
+    axios
+      .get(`${Base_Uri}getTutorDetailByID/${tutorID}`)
+      .then(({data}) => {
+        let {tutorDetailById} = data;
+        let tutorDetails = tutorDetailById[0];
+        console.log('tutorDetails', tutorDetails);
+        setTutorImage(tutorDetails.tutorImage)
+      })
+      .catch(error => {
+        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+      });
+  };
+  useEffect(() => {
+    getTutorDetailss();
+  }, [focus,refreshing]);
+
   return (
     // return !cancelledHours ? (
     //   <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -1043,7 +1071,7 @@ function Home({ navigation, route }: any) {
                     borderColor: Theme.Dune,
                   }}
                   activeOpacity={0.8}>
-                  <Image
+                  {/* <Image
                     source={
                       tutorDetails.tutorImage
                         ? { uri: imageUrl }
@@ -1051,7 +1079,11 @@ function Home({ navigation, route }: any) {
                     }
                     resizeMode="contain"
                     style={{ width: 60, height: 60, borderRadius: 50 }}
-                  />
+                  /> */}
+                     <Image
+                source={{uri: tutorImage }}
+                style={{height: 60, width: 60, borderRadius: 50}}
+              /> 
                 </TouchableOpacity>
               </View>
             </View>

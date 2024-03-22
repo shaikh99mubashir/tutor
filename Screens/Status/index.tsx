@@ -6,6 +6,7 @@ import CustomDropDown from '../../Component/CustomDropDown';
 import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
 import StudentContext from '../../context/studentContext';
+import CustomLoader from '../../Component/CustomLoader';
 
 const Status = ({ navigation, route }: any) => {
 
@@ -22,7 +23,7 @@ const Status = ({ navigation, route }: any) => {
       subject: "active"
     },
     {
-      subject: "inActive"
+      subject: "inactive"
     }
 
   ])
@@ -99,9 +100,10 @@ const Status = ({ navigation, route }: any) => {
 
 
   return (
-    loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
-      <ActivityIndicator size={"large"} color={Theme.black} />
-    </View> : <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+    // loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+    //   <ActivityIndicator size={"large"} color={Theme.black} />
+    // </View> : 
+    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <Header title="Status" backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <View style={{ paddingHorizontal: 15 }}>
@@ -213,6 +215,7 @@ const Status = ({ navigation, route }: any) => {
           </TouchableOpacity>
         </View>
       </View>
+      <CustomLoader visible={loading} />
     </View>
   );
 };

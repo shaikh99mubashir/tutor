@@ -36,7 +36,8 @@ const Students = ({ navigation }: any) => {
   let { tutorDetails } = tutorDetailsContext
 
 
-
+  console.log("student student",student);
+  
 
 
   const [students, setstudents] = useState([]);
@@ -269,7 +270,7 @@ const Students = ({ navigation }: any) => {
             <View style={{ marginTop: 35 }}>
               <Text
                 style={{ color: Theme.black, fontSize: 14, textAlign: 'center',fontFamily: 'Circular Std Black' }}>
-                No Student Found...
+                No Student Found
               </Text>
             </View>
           )}

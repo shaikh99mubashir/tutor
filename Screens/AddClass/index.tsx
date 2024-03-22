@@ -79,10 +79,11 @@ function AddClass({navigation}: any) {
       .then(({data}) => {
         const {tutorStudents} = data;
         // console.log(tutorStudents, 'tutorsStudents');
+        const activeStudents = tutorStudents.filter((tutorStudents:any) => tutorStudents.studentStatus === 'active');
         let myStudents =
-          tutorStudents &&
-          tutorStudents.length > 0 &&
-          tutorStudents.map((e: any, i: Number) => {
+          activeStudents &&
+          activeStudents.length > 0 &&
+          activeStudents.map((e: any, i: Number) => {
             if (e.studentName) {
               return {
                 ...e,
