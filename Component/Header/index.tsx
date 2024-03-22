@@ -51,15 +51,15 @@ const Header = (Props: any) => {
   }
 
 
-  const previousRouteName = navigation.getState().routes[navigation.getState().routes.length - 2]?.name;
+  const previousRouteName = navigation?.getState().routes[navigation.getState().routes.length - 2]?.name;
 
 // console.log("Previous Route Name:", previousRouteName);
   const handleGoBack = () => {
     if (previousRouteName ==  undefined) {
-      // navigation.replace("Main");
-      navigation.replace('Main', {
-        screen: 'Schedule',
+      navigation.replace("Main", {
+        screen: "Home",
       });
+      // navigation.replace("Main");
     } else {
       navigation.goBack(); // Navigate back to the previous screen if possible
     }
