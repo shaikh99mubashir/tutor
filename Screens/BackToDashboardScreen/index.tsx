@@ -12,7 +12,9 @@ function BackToDashboard({ route,navigation }: any) {
     console.log("navigation",navigation.canGoBack);
     
     const handelPress = () => {
-       navigation.navigate('AddClass')
+        console.log("Running");
+        
+       navigation.replace('AddClass')
     }
     return (
         <View style={{ flex: 1, backgroundColor: Theme.darkGray, alignItems: "center", justifyContent: "space-around" }} >
@@ -26,11 +28,11 @@ function BackToDashboard({ route,navigation }: any) {
             </Text>
             </View>
             <View style={{width:'100%', alignItems:"center", gap:20}}>
-            {/* <TouchableOpacity activeOpacity={0.8} onPress={()=> handelPress()} style={{ width: "90%", backgroundColor: Theme.white, padding: 12, borderRadius: 8 }} >
+            <TouchableOpacity activeOpacity={0.8} onPress={()=> handelPress()} style={{ width: "90%", backgroundColor: Theme.white, padding: 12, borderRadius: 8 }} >
                 <Text style={{ fontSize: 16, color: Theme.darkGray, textAlign: "center", fontWeight: "700",fontFamily: 'Circular Std Black' }} >
                    Update Schedule
                 </Text>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
             <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.replace("Main")} style={{ width: "90%", backgroundColor: Theme.black, padding: 12, borderRadius: 8 }} >
                 <Text style={{ fontSize: 16, color: Theme.white, textAlign: "center", fontWeight: "700",fontFamily: 'Circular Std Black' }} >
                     Back To Dashboard

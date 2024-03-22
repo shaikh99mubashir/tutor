@@ -599,7 +599,12 @@ function AddClass({navigation}: any) {
         );
       });
   };
+  // Get the name of the previous screen
+const previousRouteName = navigation.getState().routes[navigation.getState().routes.length - 2]?.name;
 
+console.log("Previous Route Name:", previousRouteName);
+
+  // console.log("Current Route Name:", currentRouteName);
   return (
     //   <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
     //     <ActivityIndicator size="large" color={Theme.black} />

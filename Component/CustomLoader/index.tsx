@@ -9,7 +9,7 @@ const CustomLoader = ({ visible}:any) => {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(0,0,0,0.5)',
+        backgroundColor: 'rgba(0,0,0,0.9)',
       }}>
       <Image
         source={require('../../Assets/Images/SIFU.gif')}

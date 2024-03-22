@@ -6,9 +6,10 @@ import {
   Dimensions,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Theme } from '../../constant/theme';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 export type Props = {
   navigation: any;
 };
@@ -50,12 +51,17 @@ const Header = (Props: any) => {
   }
 
 
-  console.log("Navigation===>",navigation);
+  const previousRouteName = navigation.getState().routes[navigation.getState().routes.length - 2]?.name;
+
+// console.log("Previous Route Name:", previousRouteName);
   const handleGoBack = () => {
-    if (navigation.canGoBack()) {
-      navigation.goBack(); // Navigate back to the previous screen if possible
+    if (previousRouteName ==  undefined) {
+      // navigation.replace("Main");
+      navigation.replace('Main', {
+        screen: 'Schedule',
+      });
     } else {
-      navigation.replace("Main");// Navigate to the home screen if there's no previous screen
+      navigation.goBack(); // Navigate back to the previous screen if possible
     }
   };
 

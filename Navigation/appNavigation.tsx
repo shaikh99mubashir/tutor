@@ -81,7 +81,6 @@ function BottomNavigation({navigation,route}: any) {
   useEffect(() => {
     getTutorData();
   }, []);
-
   
   const initialRoute =
     tutorDetails?.status?.toLowerCase() == 'unverified' ? 'JobTicket' : 'Home';
@@ -358,7 +357,7 @@ function AppNavigation() {
         />
       <Stack.Screen
           options={{headerShown: false}}
-          name="Schedule"
+          name="Main"
           component={BottomNavigation}
         />
       <Stack.Screen
