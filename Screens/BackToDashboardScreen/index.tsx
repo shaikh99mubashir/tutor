@@ -12,8 +12,6 @@ function BackToDashboard({ route,navigation }: any) {
     console.log("navigation",navigation.canGoBack);
     
     const handelPress = () => {
-        console.log("Running");
-        
        navigation.replace('AddClass')
     }
     return (

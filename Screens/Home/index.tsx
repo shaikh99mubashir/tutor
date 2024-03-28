@@ -587,13 +587,13 @@ function Home({ navigation, route }: any) {
     if (tutorId) {
       getCummulativeCommission();
     }
-  }, [tutorId, refreshing]);
+  }, [tutorId, refreshing, focus]);
 
   useEffect(() => {
     if (tutorId) {
       getUpcomingClasses();
     }
-  }, [tutorId, refreshing]);
+  }, [tutorId, refreshing,focus]);
 
   useEffect(() => {
     if (tutorId && cummulativeCommission) {

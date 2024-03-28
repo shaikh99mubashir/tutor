@@ -241,9 +241,9 @@ function Schedule({navigation, route}: any) {
   }, [refresh, data, selectedDate, focus]);
 
   const onChange = (event: any, selectedDate: any) => {
+    setShow(false);
     const currentDate: any = selectedDate;
     setSelectedDate(currentDate);
-    setShow(false);
   };
 
   const showMode = (currentMode: any) => {
@@ -263,6 +263,11 @@ function Schedule({navigation, route}: any) {
   };
 
   const handleSelectPress = (index: Number, item: any) => {
+    console.log("item schedule", item);
+    if(item.status ==  'On going'){
+      navigation.navigate('ClassTimerCount', classInProcess)
+    }
+    
     if (upcomingClass && upcomingClass.length > 0) {
       let myData = upcomingClass.map((e: any, i: Number) => {
         if (i == index) {
@@ -567,6 +572,7 @@ function Schedule({navigation, route}: any) {
  
     return (
       <TouchableOpacity
+      activeOpacity={0.8}
         onPress={() => handleSelectPress(index, item)}
         style={{
           borderWidth: 1,

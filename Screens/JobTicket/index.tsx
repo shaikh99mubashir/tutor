@@ -690,6 +690,7 @@ function JobTicket({ navigation, route }: any) {
           {item.offer_status}
         </Text>
         <TouchableOpacity
+        onPress={() => navigation.navigate('AppliedDetails', item)}
           activeOpacity={0.8}
           style={{
             borderWidth: 1,

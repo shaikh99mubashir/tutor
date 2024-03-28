@@ -573,6 +573,8 @@ function AddClass({navigation}: any) {
       classes: classesToAdd,
     };
 
+    console.log("classesss", classesss);
+    
     axios
       .post(`${Base_Uri}api/addMultipleClasses`, classesss)
       .then(res => {
@@ -602,15 +604,11 @@ function AddClass({navigation}: any) {
   };
   // Get the name of the previous screen
 const previousRouteName = navigation.getState().routes[navigation.getState().routes.length - 2]?.name;
+// console.log("selectedSubject",selectedSubject);
+// console.log("tutorId",tutorId);
+// console.log("selectedStudent?.studentID",selectedStudent?.studentID);
 
-console.log("Previous Route Name:", previousRouteName);
-
-  // console.log("Current Route Name:", currentRouteName);
   return (
-    //   <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-    //     <ActivityIndicator size="large" color={Theme.black} />
-    //   </View>
-    // ) : (
     <View style={{flex: 1, backgroundColor: Theme.white}}>
       <View>
         <Header title={'Add Class'} backBtn navigation={navigation} />
@@ -737,6 +735,7 @@ console.log("Previous Route Name:", previousRouteName);
                 value={value}
                 mode={mode}
                 // is24Hour={true}
+                minimumDate={new Date()}
                 onChange={onChange}
               />
             )}
