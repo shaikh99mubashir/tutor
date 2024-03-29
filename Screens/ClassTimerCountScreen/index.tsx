@@ -160,7 +160,7 @@ function ClassTimerCount({ navigation, route }: any) {
     let item = route.params
     const totalTime = item?.item?.totalTime;
 
-    const notificationTime = calculateNotificationTime(totalTime);
+    // const notificationTime = calculateNotificationTime(totalTime);
     function calculateNotificationTime(totalTime:any) {
         // Split totalTime into hours and minutes
         const [hours, minutes] = totalTime.split('.');
@@ -224,21 +224,21 @@ function ClassTimerCount({ navigation, route }: any) {
           );
         });
       }
-      useEffect(() => {
-        // Calculate the total minutes in the notification time
-        const totalMinutes = notificationTime.hours * 60 + notificationTime.minutes;
-        // Calculate the current time in minutes
-        const now = new Date();
-        const currentMinutes = now.getHours() * 60 + now.getMinutes();
-        // Specify the interval before which you want to trigger the notification (e.g., 2 hours)
-        const notificationInterval = totalTime * 60; // 2 hours in minutes
-        // Calculate the remaining minutes until the specified interval
-        const remainingMinutes = totalMinutes - notificationInterval;
-        // Check if the remaining minutes match the specified interval
-        if (currentMinutes >= remainingMinutes && currentMinutes < totalMinutes) {
-          sendNotification();
-        }
-      }, [notificationTime])
+      // useEffect(() => {
+      //   // Calculate the total minutes in the notification time
+      //   const totalMinutes = notificationTime.hours * 60 + notificationTime.minutes;
+      //   // Calculate the current time in minutes
+      //   const now = new Date();
+      //   const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      //   // Specify the interval before which you want to trigger the notification (e.g., 2 hours)
+      //   const notificationInterval = totalTime * 60; // 2 hours in minutes
+      //   // Calculate the remaining minutes until the specified interval
+      //   const remainingMinutes = totalMinutes - notificationInterval;
+      //   // Check if the remaining minutes match the specified interval
+      //   if (currentMinutes >= remainingMinutes && currentMinutes < totalMinutes) {
+      //     sendNotification();
+      //   }
+      // }, [notificationTime])
       
 
     const handleClockOut = async () => {
