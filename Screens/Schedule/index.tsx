@@ -264,7 +264,7 @@ function Schedule({navigation, route}: any) {
 
   const handleSelectPress = (index: Number, item: any) => {
     console.log("item schedule", item);
-    if(item.status ==  'On going'){
+    if(classInProcess && Object.keys(classInProcess).length > 0 && item.status ==  'On going'){
       navigation.navigate('ClassTimerCount', classInProcess)
     }
     
@@ -974,10 +974,6 @@ function Schedule({navigation, route}: any) {
   // console.log("scheduleData",scheduleData);
   
   return (
-    //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    //     <ActivityIndicator size={'large'} color={Theme.black} />
-    //   </View>
-    // ) : (
     <View style={{flex: 1, backgroundColor: 'white'}}>
       <CustomHeader
         title="Schedule"
@@ -1140,16 +1136,7 @@ function Schedule({navigation, route}: any) {
           </View>
         )}
       <CustomLoader visible={loading} />
-      {/* <Modal visible={loading} animationType="fade" transparent={true}>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            backgroundColor: 'rgba(0,0,0,0.5)',
-          }}>
-          <ActivityIndicator size={'large'} color={Theme.darkGray} />
-        </View>
-      </Modal> */}
+ 
     </View>
   );
 }
