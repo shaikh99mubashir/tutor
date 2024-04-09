@@ -472,13 +472,13 @@ function Schedule({navigation, route}: any) {
       (timeDifferenceMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
     );
 
-    if (hours > 1) {
-      ToastAndroid.show(
-        `There is ${hours} hours remaining in class`,
-        ToastAndroid.SHORT,
-      );
-      return;
-    }
+    // if (hours > 1) {
+    //   ToastAndroid.show(
+    //     `There is ${hours} hours remaining in class`,
+    //     ToastAndroid.SHORT,
+    //   );
+    //   return;
+    // }
 
     let data: any = await AsyncStorage.getItem('classInProcess');
     data = JSON.parse(data);

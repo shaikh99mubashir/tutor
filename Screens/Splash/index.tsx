@@ -24,6 +24,8 @@ const Splash = ({navigation}: any) => {
 
       if (authData) {
         let tutorData:any = JSON.parse(authData);
+        console.log("tutorData :>> ", tutorData.contact);
+        
         axios
           .get(`${Base_Uri}getTutorDetailByID/${tutorData?.tutorID}`)
           .then((res:any) => {
@@ -37,6 +39,8 @@ const Splash = ({navigation}: any) => {
 
             let tutorData = res.data;
             setTutorDetail(tutorData?.tutorDetailById[0]);
+            console.log('tutorData?.tutorDetailById[0]',tutorData?.tutorDetailById[0].phoneNumber);
+            
             if (
                 !tutorData.tutorDetailById[0]?.full_name &&
                 !tutorData.tutorDetailById[0]?.email
@@ -47,7 +51,8 @@ const Splash = ({navigation}: any) => {
                 return
               }
 
-            if (tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'unverified' || tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'verified') {
+            if (tutorData?.tutorDetailById[0].phoneNumber != tutorData.contact && tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'unverified' || 
+            tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'verified') {
               navigation.replace('Main', {
                 screen: 'Home',
               });

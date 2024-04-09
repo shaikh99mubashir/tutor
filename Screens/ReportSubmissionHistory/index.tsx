@@ -67,13 +67,9 @@ const ReportSubmissionHistory = ({navigation}: any) => {
   const getReportSubmissionHistory = async () => {
     if (refresh) {
       setLoading(true);
-
       let data: any = await AsyncStorage.getItem('loginAuth');
-
       data = JSON.parse(data);
-
       let {tutorID} = data;
-
       axios
         .get(`${Base_Uri}api/tutorFirstReportListing/${tutorID}`)
         .then(({data}) => {

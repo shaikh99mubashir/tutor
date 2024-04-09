@@ -16,6 +16,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
@@ -245,6 +246,47 @@ const OpenDetails = ({ route, navigation }: any) => {
                     },
                   ]}>
                   {data?.classFrequency}
+                </Text>
+               
+              </View>
+              <View
+                style={{
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginTop: 10,
+                }}>
+                <View
+                  style={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexDirection: 'row',
+                    gap: 10,
+                  }}>
+                  <Entypo
+                    name="time-slot"
+                    size={18}
+                    color={'#298CFF'}
+                  />
+                  <Text style={styles.textType3}>Class Duration(Hrs)</Text>
+                </View>
+             
+                <Text
+                  style={[
+                    styles.textType1,
+                    {
+                      color: '#003E9C',
+                      backgroundColor: '#298CFF33',
+                      paddingVertical: 2,
+                      // paddingHorizontal: 10,
+                      borderRadius: 50,
+                      textAlign:'center',
+                      width:30,
+                      height:30,
+                      fontSize: 18,
+                    },
+                  ]}>
+                  {data?.quantity}
                 </Text>
                
               </View>
