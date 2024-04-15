@@ -30,7 +30,8 @@ const Login = ({ navigation }: any) => {
       setLoading(false);
       ToastAndroid.show('Request timeout: Please check your internet connection', ToastAndroid.SHORT);
     }, 30000);
-    const phoneNumberWithCountryCode = "+60" + phoneNumber;
+    // const phoneNumberWithCountryCode = "+60" + phoneNumber;
+    const phoneNumberWithCountryCode =  phoneNumber;
     console.log("phoneNumberWithCountryCode",phoneNumberWithCountryCode);
     
     axios
