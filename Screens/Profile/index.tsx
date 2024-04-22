@@ -435,6 +435,21 @@ const Profile = ({navigation}: any) => {
   }, [focus,]);
 
 
+  const handleNricChange = (text:any) => {
+    // Remove non-numeric characters and limit the length to 6 characters
+    const formattedInput = text.replace(/\D/g, '').slice(0, 10);
+
+    // Check if the length is greater than 2 to insert "-"
+    if (formattedInput.length > 2) {
+      const firstPart = formattedInput.slice(0, 2);
+      const secondPart = formattedInput.slice(2);
+      setNric(firstPart + '-' + secondPart);
+    } else {
+      setNric(formattedInput);
+    }
+  };
+
+
   return (
     //   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
     //     <ActivityIndicator size="large" color={Theme.black} />
@@ -475,13 +490,14 @@ const Profile = ({navigation}: any) => {
             </TouchableOpacity>
             <View style={{alignItems: 'center'}}>
               <Text
-                style={{fontSize: 18, fontWeight: '600', color: Theme.black}}>
+                style={{fontSize: 18,    fontFamily: 'Circular Std Book',
+                 fontWeight: '600', color: Theme.black, textTransform:'capitalize'}}>
                 {tutorDetail?.displayName
                   ? tutorDetail?.displayName
                   : tutorDetail?.full_name}
               </Text>
               <Text
-                style={{fontSize: 14, fontWeight: '300', color: Theme.gray}}>
+                style={{fontSize: 16, fontWeight: '300', color: Theme.gray}}>
                 {tutorDetail?.email}
               </Text>
             </View>
@@ -507,9 +523,10 @@ const Profile = ({navigation}: any) => {
               <Text
                 style={{
                   color: Theme.black,
-                  fontSize: 14,
+                  fontSize: 16,
                   // fontWeight: '600',
                   marginTop: 5,
+                  textTransform:'capitalize'
                 }}>
                 {tutorDetail?.full_name}
               </Text>
@@ -546,7 +563,7 @@ const Profile = ({navigation}: any) => {
                 editable
                 onChangeText={text => setEmail(text)}
                 placeholder={tutorDetail?.email}
-                style={{color: 'black', fontSize: 14}}
+                style={{color: 'black',fontFamily: 'Circular Std Book', fontSize: 16,textTransform:'capitalize'}}
                 placeholderTextColor={Theme.black}
               />
             </View>
@@ -582,7 +599,8 @@ const Profile = ({navigation}: any) => {
                 editable
                 onChangeText={text => setDispalyName(text)}
                 placeholder={tutorDetail?.displayName}
-                style={{color: 'black', fontSize: 14}}
+                style={{color: 'black', fontFamily: 'Circular Std Book',
+                fontSize: 18,textTransform:'capitalize'}}
                 placeholderTextColor={Theme.black}
               />
             </View>
@@ -608,8 +626,8 @@ const Profile = ({navigation}: any) => {
               <Text
                 style={{
                   color: Theme.black,
-                  fontSize: 14,
-                  fontWeight: '600',
+                  fontFamily: 'Circular Std Book',
+                  fontSize: 16,
                   marginTop: 5,
                 }}>
                 {tutorDetail?.phoneNumber}
@@ -682,7 +700,8 @@ const Profile = ({navigation}: any) => {
               }}>
               <TextInput
                 editable
-                style={{color: 'black', textTransform: 'capitalize'}}
+                style={{color: 'black', textTransform: 'capitalize',    fontFamily: 'Circular Std Book',
+                fontSize: 16,}}
                 keyboardType="numeric"
                 onChangeText={text => setAge(text)}
                 placeholder={
@@ -714,11 +733,14 @@ const Profile = ({navigation}: any) => {
               }}>
               <TextInput
                 editable
-                style={{color: 'black'}}
-                onChangeText={text => setNric(text)}
+                style={{color: 'black',    fontFamily: 'Circular Std Book',
+                fontSize: 16,}}
+                onChangeText={(text) => handleNricChange(text)}
                 keyboardType="numeric"
+                value={nric}
+                maxLength={10}
                 placeholder={
-                  tutorDetail?.nric ? tutorDetail.nric : 'Not Provided'
+                  tutorDetail?.nric == null ? 'Not Provided' :tutorDetail?.nric 
                 }
                 placeholderTextColor={Theme.black}
               />

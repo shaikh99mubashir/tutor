@@ -100,7 +100,7 @@ const DropDownModalView = ({
             <Text
               style={{
                 color: 'black',
-                fontFamily: 'Circular Std Medium',
+                fontFamily: 'Circular Std Book',
                 fontSize: 16,
                 textTransform:'capitalize'
               }}>

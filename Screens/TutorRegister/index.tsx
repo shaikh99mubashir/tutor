@@ -285,6 +285,7 @@ const Signup = ({ navigation, route }: any) => {
               padding: 10,
               color: Theme.black,
               fontFamily: 'Circular Std Book',
+              textTransform:'capitalize'
             }}
             onChangeText={text => {
               setFullName(text);

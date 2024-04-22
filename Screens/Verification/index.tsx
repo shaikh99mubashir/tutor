@@ -120,9 +120,10 @@ const Verification = ({ navigation, route }: any) => {
           let mydata = JSON.stringify(data);
           AsyncStorage.setItem('loginAuth', mydata);
           console.log('mydata',mydata);
-          console.log('data.tutorID',data.tutorID);
           
           sendDeviceTokenToDatabase(data.tutorID)
+          console.log('data.tutorID',data.tutorID);
+          
           axios
             .get(`${Base_Uri}getTutorDetailByID/${data?.tutorID}`)
             .then((res) => {
@@ -130,6 +131,8 @@ const Verification = ({ navigation, route }: any) => {
                 AsyncStorage.removeItem('loginAuth');
                 navigation.replace('Login');
                 ToastAndroid.show('Terminated', ToastAndroid.SHORT);
+                console.log('no tutor id Found');
+                
                 return
               }
               let tutorData = res.data;
