@@ -26,6 +26,7 @@ import AsyncStorage, {
 } from '@react-native-async-storage/async-storage';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import bannerContext from '../../context/bannerContext';
@@ -590,7 +591,7 @@ function JobTicket({ navigation, route }: any) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexDirection: 'row',
-                  gap: 12,
+                  gap: 14,
                 }}>
                 <FontAwesome name="level-up" size={18} color={'#298CFF'} />
                 <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',color:Theme.ironsidegrey1}]}>Level</Text>
@@ -601,6 +602,31 @@ function JobTicket({ navigation, route }: any) {
                   { fontSize: 20, textTransform: 'capitalize',fontFamily: 'Circular Std Bold' },
                 ]}>
                 {item?.categoryName}
+              </Text>
+            </View>
+            <View
+              style={{
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: 10,
+              }}>
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  gap: 6,
+                }}>
+                <Ionicons name="recording-sharp" size={18} color={'#298CFF'} />
+                <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',color:Theme.ironsidegrey1}]}>Subscription </Text>
+              </View>
+              <Text
+                style={[
+                  styles.textType1,
+                  { fontSize: 20, textTransform: 'capitalize',fontFamily: 'Circular Std Bold' },
+                ]}>
+                {item?.subscription }
               </Text>
             </View>
           </View>
@@ -821,7 +847,7 @@ function JobTicket({ navigation, route }: any) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexDirection: 'row',
-                  gap: 12,
+                  gap: 14,
                 }}>
                 <FontAwesome name="level-up" size={18} color={'#298CFF'} />
                 <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',color:Theme.ironsidegrey1}]}>Level</Text>
@@ -832,6 +858,31 @@ function JobTicket({ navigation, route }: any) {
                   { fontSize: 20, textTransform: 'capitalize',fontFamily: 'Circular Std Medium' },
                 ]}>
                 {item?.categoryName}
+              </Text>
+            </View>
+            <View
+              style={{
+                justifyContent: 'space-between',
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: 10,
+              }}>
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  gap: 6,
+                }}>
+                <Ionicons name="recording-sharp" size={18} color={'#298CFF'} />
+                <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',color:Theme.ironsidegrey1}]}>Subscription </Text>
+              </View>
+              <Text
+                style={[
+                  styles.textType1,
+                  { fontSize: 20, textTransform: 'capitalize',fontFamily: 'Circular Std Bold' },
+                ]}>
+                {item?.subscription }
               </Text>
             </View>
           </View>

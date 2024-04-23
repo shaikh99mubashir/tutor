@@ -435,19 +435,35 @@ const Profile = ({navigation}: any) => {
   }, [focus,]);
 
 
-  const handleNricChange = (text:any) => {
-    // Remove non-numeric characters and limit the length to 6 characters
-    const formattedInput = text.replace(/\D/g, '').slice(0, 10);
+  const handleNricChange = (text: string) => {
+    // Remove non-numeric characters and limit the length to 12 characters
+    const formattedInput = text.replace(/\D/g, '').slice(0, 12);
 
-    // Check if the length is greater than 2 to insert "-"
-    if (formattedInput.length > 2) {
-      const firstPart = formattedInput.slice(0, 2);
-      const secondPart = formattedInput.slice(2);
-      setNric(firstPart + '-' + secondPart);
+    // Check if the length is greater than 6 to insert "-" after the first six digits
+    if (formattedInput.length >= 6) {
+        const firstPart = formattedInput.slice(0, 6);
+        let secondPart = '';
+        let thirdPart = '';
+
+        // Check if the length is greater than 8 to insert "-" after the next two digits
+        if (formattedInput.length >= 8) {
+            secondPart = formattedInput.slice(6, 8);
+            // If there are more than 8 characters, add the remaining characters to the third part
+            if (formattedInput.length > 8) {
+                thirdPart = formattedInput.slice(8);
+            }
+        } else {
+            secondPart = formattedInput.slice(6);
+        }
+        
+        // Combine the parts with hyphens
+        setNric(`${firstPart}${formattedInput.length > 6 ? '-' : ''}${secondPart}${thirdPart ? '-' + thirdPart : ''}`);
     } else {
-      setNric(formattedInput);
+        setNric(formattedInput);
     }
-  };
+};
+
+
 
 
   return (
@@ -738,7 +754,7 @@ const Profile = ({navigation}: any) => {
                 onChangeText={(text) => handleNricChange(text)}
                 keyboardType="numeric"
                 value={nric}
-                maxLength={10}
+                maxLength={14}
                 placeholder={
                   tutorDetail?.nric == null ? 'Not Provided' :tutorDetail?.nric 
                 }
