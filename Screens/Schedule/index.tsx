@@ -662,8 +662,10 @@ function Schedule({navigation, route}: any) {
                     backgroundColor:
                       item.mode == 'online' ? '#298CFF33' : Theme.lightGreen,
                     textTransform: 'capitalize',
-                    paddingVertical: 5,
-                    paddingHorizontal: 30,
+                    width:90,
+                    height:25,
+                    textAlign:'center',
+                    paddingVertical: 2,
                     borderRadius: 30,
                   },
                 ]}>

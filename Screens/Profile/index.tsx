@@ -616,7 +616,7 @@ const Profile = ({navigation}: any) => {
                 onChangeText={text => setDispalyName(text)}
                 placeholder={tutorDetail?.displayName}
                 style={{color: 'black', fontFamily: 'Circular Std Book',
-                fontSize: 18,textTransform:'capitalize'}}
+                fontSize: 16,textTransform:'capitalize'}}
                 placeholderTextColor={Theme.black}
               />
             </View>
