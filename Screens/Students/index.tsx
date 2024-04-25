@@ -53,7 +53,6 @@ const Students = ({ navigation }: any) => {
 
   }, [])
 
-  console.log(studentBanner, "nanmmmer")
 
   const linkToOtherPage = () => {
 
@@ -106,38 +105,9 @@ const Students = ({ navigation }: any) => {
       }
   }
 
-
-  // const getStudentData = async () => {
-  //   setLoading(true)
-  //   let data: any = await AsyncStorage.getItem('loginAuth');
-  //   data = JSON.parse(data);
-
-  //   let { tutorID } = data;
-
-  //   axios
-  //     .get(`${Base_Uri}getTutorStudents/${tutorID}`)
-  //     .then(({ data }) => {
-  //       setLoading(false)
-  //       let { tutorStudents } = data;
-
-  //       setstudents(tutorStudents);
-  //     })
-  //     .catch(error => {
-  //       setLoading(false)
-  //       console.log(error);
-  //     });
-  // };
-
-  // useEffect(() => {
-  //   getStudentData();
-  // }, []);
-
-
   const searchStudent = (e: any) => {
-
     setSearchText(e);
     let filteredItems: any = students.filter((x: any) => {
-      console.log(x, "xxxx")
       return (
         x?.studentName?.toLowerCase()?.includes(e?.toLowerCase()) ||
         x?.studentID?.toString().toLowerCase().includes(e?.toLowerCase())
@@ -179,9 +149,6 @@ const Students = ({ navigation }: any) => {
 
 
   return (
-    // loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
-    //   <ActivityIndicator size="large" color={Theme.black} />
-    // </View> : 
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
         <CustomLoader visible={loading} />
       <Header title="Student" backBtn navigation={navigation} />

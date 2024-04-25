@@ -83,16 +83,16 @@ const StudentsDetails = ({ navigation, route }: any) => {
               <Text
                 style={{
                   color: Theme.black,
-                  fontSize: 14,
-                  fontWeight: '700',
+                  fontSize: 16,
+                  fontFamily:'Circular Std Medium'
                 }}>
                 Student Name
               </Text>
               <Text
                 style={{
                   color: Theme.gray,
-                  fontSize: 14,
-                  fontWeight: '600',
+                  fontSize: 18,
+                  fontFamily:'Circular Std Medium',
                   marginTop: 5,
                   textTransform:'capitalize',
                 }}>
@@ -104,16 +104,16 @@ const StudentsDetails = ({ navigation, route }: any) => {
               <Text
                 style={{
                   color: Theme.black,
-                  fontSize: 14,
-                  fontWeight: '700',
+                  fontSize: 16,
+                  fontFamily:'Circular Std Medium'
                 }}>
                 Student ID
               </Text>
               <Text
                 style={{
                   color: Theme.gray,
-                  fontSize: 14,
-                  fontWeight: '600',
+                  fontSize: 18,
+                  fontFamily:'Circular Std Medium',
                   marginTop: 5,
                 }}>
                 {data.studentID}
@@ -124,16 +124,16 @@ const StudentsDetails = ({ navigation, route }: any) => {
               <Text
                 style={{
                   color: Theme.black,
-                  fontSize: 14,
-                  fontWeight: '700',
+                  fontSize: 16,
+                  fontFamily:'Circular Std Medium'
                 }}>
                 Gender
               </Text>
               <Text
                 style={{
                   color: Theme.gray,
-                  fontSize: 14,
-                  fontWeight: '600',
+                  fontSize: 18,
+                  fontFamily:'Circular Std Medium',
                   marginTop: 5,
                   textTransform:'capitalize',
                 }}>
@@ -145,16 +145,16 @@ const StudentsDetails = ({ navigation, route }: any) => {
               <Text
                 style={{
                   color: Theme.black,
-                  fontSize: 14,
-                  fontWeight: '700',
+                  fontSize: 16,
+                  fontFamily:'Circular Std Medium'
                 }}>
                 Age
               </Text>
               <Text
                 style={{
                   color: Theme.gray,
-                  fontSize: 14,
-                  fontWeight: '600',
+                  fontSize: 18,
+                  fontFamily:'Circular Std Medium',
                   marginTop: 5,
                 }}>
                 {data.studentAge ? `${ data.studentAge} y/o`  : "not provided"}
@@ -164,16 +164,16 @@ const StudentsDetails = ({ navigation, route }: any) => {
               <Text
                 style={{
                   color: Theme.black,
-                  fontSize: 14,
-                  fontWeight: '700',
+                  fontSize: 16,
+                  fontFamily:'Circular Std Medium'
                 }}>
                 Status
               </Text>
               <Text
                 style={{
                   color: Theme.gray,
-                  fontSize: 14,
-                  fontWeight: '600',
+                  fontSize: 18,
+                  fontFamily:'Circular Std Medium',
                   marginTop: 5,
                   textTransform:'capitalize',
                 }}>
@@ -185,16 +185,16 @@ const StudentsDetails = ({ navigation, route }: any) => {
               <Text
                 style={{
                   color: Theme.black,
-                  fontSize: 14,
-                  fontWeight: '700',
+                  fontSize: 16,
+                  fontFamily:'Circular Std Medium'
                 }}>
                 Redistration Date
               </Text>
               <Text
                 style={{
                   color: Theme.gray,
-                  fontSize: 14,
-                  fontWeight: '600',
+                  fontSize: 18,
+                  fontFamily:'Circular Std Medium',
                   marginTop: 5,
                 }}>
                 {data.studentRegisterDate ? data.studentRegisterDate : "not provided"}
@@ -217,16 +217,16 @@ const StudentsDetails = ({ navigation, route }: any) => {
               <Text
                 style={{
                   color: Theme.black,
-                  fontSize: 14,
-                  fontWeight: '700',
+                  fontSize: 16,
+                  fontFamily:'Circular Std Medium'
                 }}>
                 Name
               </Text>
               <Text
                 style={{
                   color: Theme.gray,
-                  fontSize: 14,
-                  fontWeight: '600',
+                  fontSize: 18,
+                  fontFamily:'Circular Std Medium',
                   marginTop: 5,
                   textTransform:'capitalize',
                 }}>
@@ -238,19 +238,19 @@ const StudentsDetails = ({ navigation, route }: any) => {
               <Text
                 style={{
                   color: Theme.black,
-                  fontSize: 14,
-                  fontWeight: '700',
+                  fontSize: 16,
+                  fontFamily:'Circular Std Medium'
                 }}>
                 Email
               </Text>
               <Text
                 style={{
                   color: Theme.gray,
-                  fontSize: 14,
-                  fontWeight: '600',
+                  fontSize: 18,
+                  fontFamily:'Circular Std Medium',
                   marginTop: 5,
                 }}>
-                {data.studentEmail ? data.studentEmail : "not provided"}
+                {data.studentEmail ? data.studentEmail : "Not provided"}
               </Text>
             </View>
             {/* Contact */}
@@ -258,16 +258,16 @@ const StudentsDetails = ({ navigation, route }: any) => {
               <Text
                 style={{
                   color: Theme.black,
-                  fontSize: 14,
-                  fontWeight: '700',
+                  fontSize: 16,
+                  fontFamily:'Circular Std Medium'
                 }}>
                 Contact No
               </Text>
               <Text
                 style={{
                   color: Theme.gray,
-                  fontSize: 14,
-                  fontWeight: '600',
+                  fontSize: 18,
+                  fontFamily:'Circular Std Medium',
                   marginTop: 5,
                 }}>
                 {data?.studentPhone ? data.studentPhone : "not provided"}
@@ -278,16 +278,17 @@ const StudentsDetails = ({ navigation, route }: any) => {
               <Text
                 style={{
                   color: Theme.black,
-                  fontSize: 14,
-                  fontWeight: '700',
+                  fontSize: 16,
+                  fontFamily:'Circular Std Medium'
                 }}>
                 Address
               </Text>
               <Text
                 style={{
                   color: Theme.gray,
-                  fontSize: 14,
-                  fontWeight: '600',
+                  fontSize: 18,
+                  fontFamily:'Circular Std Medium',
+                  lineHeight:22,
                   marginTop: 5,
                   textTransform:'capitalize',
                 }}>

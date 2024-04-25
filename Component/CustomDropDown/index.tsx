@@ -13,7 +13,7 @@ import React, { useState, useEffect } from 'react';
 import { Theme } from '../../constant/theme';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 const CustomDropDown = (props: any) => {
-  let { ddTitle, categoryData, dataShow, searchData, searchFunc, subject, search, headingStyle, categoryShow, dropdownPlace, dropdownContainerStyle, setSelectedSubject, selectedSubject } = props
+  let { ddTitle, categoryData, dataShow, searchData, searchFunc, subject, search, headingStyle, categoryShow, dropdownPlace, dropdownContainerStyle, setSelectedSubject, selectedSubject,ddTextStyle } = props
 
 
 
@@ -277,7 +277,7 @@ const CustomDropDown = (props: any) => {
                               color: Theme.black,
                               fontFamily: 'Circular Std Medium',
                               fontSize: 16,
-                              textTransform:'capitalize'
+                              textTransform:ddTextStyle ?ddTextStyle :'capitalize'
                             }}>
                             {e ?? selectedSubject}
                           </Text>

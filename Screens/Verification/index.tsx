@@ -324,6 +324,7 @@ const Verification = ({ navigation, route }: any) => {
             alignItems: 'center',
             padding: 10,
             backgroundColor: Theme.darkGray,
+            borderRadius: 10,
           }}>
           {loading ? (
             <ActivityIndicator color={Theme.white} size="small" />

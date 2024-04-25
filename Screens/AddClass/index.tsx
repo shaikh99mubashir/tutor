@@ -669,25 +669,25 @@ const previousRouteName = navigation.getState().routes[navigation.getState().rou
                   <View
                     style={{
                       backgroundColor: Theme.liteBlue,
-                      // elevation: 2,
-                      // paddingHorizontal: 10,
-                      // paddingVertical: 12,
                       padding:20,
-                      
                       borderRadius: 10,
                       marginVertical: 5,
                     }}>
                     <Text style={[styles.textType3,{lineHeight:23,color:'gray'}]}>
-                      {selectedSubject?.subject} Total Session are{' '}
+                    Great job on completing one of your ({selectedSubject?.classFrequency}) monthly sessions 
+                    for this subject! You now have ({MAX_CLASSES}) sessions left. 
+                    Could you schedule more if possible? Thanks!
+
+                      {/* {selectedSubject?.subject} Total Session are{' '}
                       <Text style={{fontWeight: '600'}}>
-                        {selectedSubject?.classFrequency}
+                      {selectedSubject?.classFrequency}
                       </Text>
                       . You can schedule Your reamining Session are
                       <Text style={{fontWeight: '600', fontFamily:'Circular Std Medium'}}>
                         {' '}
                         {classes.length} / {MAX_CLASSES}{' '}
                       </Text>
-                      {/* <Text style={{ fontWeight: '600' }}> {selectedSubject?.reamining_hours}</Text> */}
+                      <Text style={{ fontWeight: '600' }}> {selectedSubject?.reamining_hours}</Text> */}
                     </Text>
                   </View>
                 </View>
