@@ -192,6 +192,7 @@ const Students = ({ navigation }: any) => {
                 return (
                   <TouchableOpacity
                     onPress={() => navigation.navigate('StudentsDetails', item)}
+                    activeOpacity={0.8}
                     key={index}
                     style={{
                       borderWidth: 1,
@@ -220,10 +221,10 @@ const Students = ({ navigation }: any) => {
                         }}
                       />
                       <View>
-                        <Text style={{ color: Theme.gray, fontSize: 16,fontFamily: 'Circular Std Black', }}>
-                          {item.studentID}
+                        <Text style={{ color: Theme.gray, fontSize: 16,fontFamily: 'Circular Std Medium', }}>
+                          {item.uid}
                         </Text>
-                        <Text style={{ color: Theme.black, fontSize: 14,fontFamily: 'Circular Std Black' }}>
+                        <Text style={{ color: Theme.black, fontSize: 18,fontFamily: 'Circular Std Medium', }}>
                           {item.studentName}
                         </Text>
                       </View>
