@@ -473,7 +473,8 @@ const ReportSubmissionHistory = ({navigation}: any) => {
   ): Promise<string | undefined> => {
     try {
       const options = {
-        html: `        <html>
+        html: `
+        <html>
         <head>
         <style>
           body {
@@ -511,12 +512,12 @@ const ReportSubmissionHistory = ({navigation}: any) => {
         <div style="display: flex; flex-direction: row;gap:10px;">
         <div style="display: flex; align-items: center;gap: 10px;width:50%;">
         <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Student</h3>
-        <h3 style='white-space: pre;'>${item.studentID}</h3>
+        <h3 style='white-space: pre;'>${item.studentName}</h3>
         </div>
 
         <div style="display: flex; align-items: center;gap:5px;width:50%;">
         <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Tutor</h3>
-        <h3 style='white-space: pre;'>${item.tutorID}</h3>
+        <h3 style='white-space: pre;'>${item.tutorName}</h3>
       </div>
       </div>
 
@@ -524,7 +525,7 @@ const ReportSubmissionHistory = ({navigation}: any) => {
          
           <div style="display: flex; align-items: center;gap:5px;width:50%;">
             <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Subject</h3>
-            <h3 style='white-space: pre;'>${item.subjectID}</h3>
+            <h3 style='white-space: pre;'>${item.subjectName}</h3>
           </div>
           <div style="display: flex; align-items: center;gap:5px;width:50%;">
             <h3 style="background-color: orangered; padding: 10px;margin-right: 5px;color: white;width:80px;">Month</h3>
@@ -534,580 +535,715 @@ const ReportSubmissionHistory = ({navigation}: any) => {
       </div>
 
       <div>
-      <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">A. PERFOMANCE</p>
+      <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">A. OBSERVATION</p>
       <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 5px;">
-      <p style="color: rgb(0, 0, 95); margin-top: 5px;">1. Rate student understanding on this subject?</p>
-      <div style='display:flex; flex-direction:row; justify-content: space-between;'>
+      <p style="color: rgb(0, 0, 95); margin-top: 5px; margin-bottom:5px;">1.  Did you (tutor) hold or carried out any form of examination/test/quiz for the student within this 3 months?</p>
+      <div style='display:flex; flex-direction:row; gap:20px'>
       <div style="display: flex; align-items: center; gap: 15px; padding-bottom: 0px; padding-top: 0px;">
       <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-        item.rate_student_understanding_on_this_subject === 'Excellent'
+        item.observation === 'Yes'
           ? 'rgb(0, 0, 95)'
           : 'white'
       };border: 2px solid rgb(0, 0, 95);"></div>
       <p style="margin: 0px;background-color: ${
-        item.rate_student_understanding_on_this_subject === 'Excellent'
+        item.observation === 'Yes'
           ? 'orange'
           : 'white'
       }; padding: 0px;">${
-          item.rate_student_understanding_on_this_subject === 'Excellent'
-            ? 'Excellent'
-            : 'Excellent'
+          item.observation === 'Yes'
+            ? 'Yes'
+            : 'No'
         }</p>
     </div>
 
       <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
       <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-        item.rate_student_understanding_on_this_subject === 'Good'
+        item.observation === 'No'
           ? 'rgb(0, 0, 95)'
           : 'white'
       };border: 2px solid rgb(0, 0, 95);"></div>
       <p style="margin: 0px;background-color: ${
-        item.rate_student_understanding_on_this_subject === 'Good'
+        item.observation === 'No'
           ? 'orange'
           : 'white'
       }; padding: 0px;">${
-          item.rate_student_understanding_on_this_subject === 'Good'
-            ? 'Good'
-            : 'Good'
+          item.observation === 'No'
+            ? 'No'
+            : 'No'
+        }</p>
+    </div>
+</div>
+
+
+<p style="color: rgb(0, 0, 95); margin-top: 10px; margin-bottom:5px;">2. What is the student's learning style?</p>
+<div style=''>
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
+      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
+        item.observation2 === 'Visual: Learns with images and diagrams.'
+          ? 'rgb(0, 0, 95)'
+          : 'white'
+      };border: 2px solid rgb(0, 0, 95);"></div>
+      <p style="margin: 0px;background-color: ${
+        item.observation2 === 'Visual: Learns with images and diagrams.'
+          ? 'orange'
+          : 'white'
+      }; padding: 5px;">${
+          item.observation2 === 'Visual: Learns with images and diagrams.'
+            ? 'Visual: Learns with images and diagrams.'
+            : 'Visual: Learns with images and diagrams.'
+        }</p>
+    </div>
+
+      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
+      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
+        item.observation2 === 'Auditory: Listening and verbal instruction.'
+          ? 'rgb(0, 0, 95)'
+          : 'white'
+      };border: 2px solid rgb(0, 0, 95);"></div>
+      <p style="margin: 0px;background-color: ${
+        item.observation2 === 'Auditory: Listening and verbal instruction.'
+          ? 'orange'
+          : 'white'
+      }; padding: 5px;">${
+          item.observation2 === 'Auditory: Listening and verbal instruction.'
+            ? 'Auditory: Listening and verbal instruction.'
+            : 'Auditory: Listening and verbal instruction.'
         }</p>
     </div>
 
     <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
     <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-      item.rate_student_understanding_on_this_subject === 'Satisfactory'
+      item.observation2 === 'Reading/Writing: Reading and writing notes.'
         ? 'rgb(0, 0, 95)'
         : 'white'
     };border: 2px solid rgb(0, 0, 95);"></div>
     <p style="margin: 0px;background-color: ${
-      item.rate_student_understanding_on_this_subject === 'Satisfactory'
+      item.observation2 === 'Reading/Writing: Reading and writing notes.'
         ? 'orange'
         : 'white'
-    }; padding: 0px;">${
-          item.rate_student_understanding_on_this_subject === 'Satisfactory'
-            ? 'Satisfactory'
-            : 'Satisfactory'
+    }; padding: 5px;">${
+          item.observation2 === 'Reading/Writing: Reading and writing notes.'
+            ? 'Reading/Writing: Reading and writing notes.'
+            : 'Reading/Writing: Reading and writing notes.'
         }</p>
   </div>
 
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.rate_student_understanding_on_this_subject === 'Average'
+    item.observation2 === 'Multimodal: Learns best with a combination of styles'
       ? 'rgb(0, 0, 95)'
       : 'white'
   };border: 2px solid rgb(0, 0, 95);"></div>
   <p style="margin: 0px;background-color: ${
-    item.rate_student_understanding_on_this_subject === 'Average'
-      ? 'orange'
-      : 'white'
-  }; padding: 0px;">${
-          item.rate_student_understanding_on_this_subject === 'Average'
-            ? 'Average'
-            : 'Average'
-        }</p>
-</div>
-
-</div>
-
-
-<p style="color: rgb(0, 0, 95); margin-top: 10px;">2. how is the student performance on homework?</p>
-<div style='display:flex; flex-direction:row; justify-content: space-between;'>
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
-      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-        item.how_is_the_student_performance_on_homework === 'Excellent'
-          ? 'rgb(0, 0, 95)'
-          : 'white'
-      };border: 2px solid rgb(0, 0, 95);"></div>
-      <p style="margin: 0px;background-color: ${
-        item.how_is_the_student_performance_on_homework === 'Excellent'
-          ? 'orange'
-          : 'white'
-      }; padding: 5px;">${
-          item.how_is_the_student_performance_on_homework === 'Excellent'
-            ? 'Excellent'
-            : 'Excellent'
-        }</p>
-    </div>
-
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
-      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-        item.how_is_the_student_performance_on_homework === 'Good'
-          ? 'rgb(0, 0, 95)'
-          : 'white'
-      };border: 2px solid rgb(0, 0, 95);"></div>
-      <p style="margin: 0px;background-color: ${
-        item.how_is_the_student_performance_on_homework === 'Good'
-          ? 'orange'
-          : 'white'
-      }; padding: 5px;">${
-          item.how_is_the_student_performance_on_homework === 'Good'
-            ? 'Good'
-            : 'Good'
-        }</p>
-    </div>
-
-    <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
-    <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-      item.how_is_the_student_performance_on_homework === 'Satisfactory'
-        ? 'rgb(0, 0, 95)'
-        : 'white'
-    };border: 2px solid rgb(0, 0, 95);"></div>
-    <p style="margin: 0px;background-color: ${
-      item.how_is_the_student_performance_on_homework === 'Satisfactory'
-        ? 'orange'
-        : 'white'
-    }; padding: 5px;">${
-          item.how_is_the_student_performance_on_homework === 'Satisfactory'
-            ? 'Satisfactory'
-            : 'Satisfactory'
-        }</p>
-  </div>
-
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_is_the_student_performance_on_homework === 'Average'
-      ? 'rgb(0, 0, 95)'
-      : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.how_is_the_student_performance_on_homework === 'Average'
+    item.observation2 === 'Multimodal: Learns best with a combination of styles'
       ? 'orange'
       : 'white'
   }; padding: 5px;">${
-          item.how_is_the_student_performance_on_homework === 'Average'
-            ? 'Average'
-            : 'Average'
+          item.observation2 === 'Multimodal: Learns best with a combination of styles'
+            ? 'Multimodal: Learns best with a combination of styles'
+            : 'Multimodal: Learns best with a combination of styles'
         }</p>
 </div>
 </div>
 
 
-<p style="color: rgb(0, 0, 95); margin-top: 10px;">3. How well student participates in learning session?</p>
-<div style='display:flex; flex-direction:row; justify-content: space-between;'>
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
-      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-        item.how_well_student_answers === 'Excellent'
-          ? 'rgb(0, 0, 95)'
-          : 'white'
-      };border: 2px solid rgb(0, 0, 95);"></div>
-      <p style="margin: 0px;background-color: ${
-        item.how_well_student_answers === 'Excellent' ? 'orange' : 'white'
-      }; padding: 5px;">${
-          item.how_well_student_answers === 'Excellent'
-            ? 'Excellent'
-            : 'Excellent'
-        }</p>
-    </div>
-
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
-      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-        item.how_well_student_answers === 'Good' ? 'rgb(0, 0, 95)' : 'white'
-      };border: 2px solid rgb(0, 0, 95);"></div>
-      <p style="margin: 0px;background-color: ${
-        item.how_well_student_answers === 'Good' ? 'orange' : 'white'
-      }; padding: 5px;">${
-          item.how_well_student_answers === 'Good' ? 'Good' : 'Good'
-        }</p>
-    </div>
-
-    <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
-    <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-      item.how_well_student_answers === 'Satisfactory'
-        ? 'rgb(0, 0, 95)'
-        : 'white'
-    };border: 2px solid rgb(0, 0, 95);"></div>
-    <p style="margin: 0px;background-color: ${
-      item.how_well_student_answers === 'Satisfactory' ? 'orange' : 'white'
-    }; padding: 5px;">${
-          item.how_well_student_answers === 'Satisfactory'
-            ? 'Satisfactory'
-            : 'Satisfactory'
-        }</p>
-  </div>
-
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_well_student_answers === 'Average' ? 'rgb(0, 0, 95)' : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.how_well_student_answers === 'Average' ? 'orange' : 'white'
-  }; padding: 5px;">${
-          item.how_well_student_answers === 'Average' ? 'Average' : 'Average'
-        }</p>
-</div>
-</div>
-
-
-
-<p style="color: rgb(0, 0, 95); margin-top: 10px;">4. How well student's answer/explain/eleborates questions givenby tutor?</p>
-<div style='display:flex; flex-direction:row; justify-content: space-between;'>
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
-      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-        item.how_well_student_answers === 'Excellent'
-          ? 'rgb(0, 0, 95)'
-          : 'white'
-      };border: 2px solid rgb(0, 0, 95);"></div>
-      <p style="margin: 0px;background-color: ${
-        item.how_well_student_answers === 'Excellent' ? 'orange' : 'white'
-      }; padding: 5px;">${
-          item.how_well_student_answers === 'Excellent'
-            ? 'Excellent'
-            : 'Excellent'
-        }</p>
-    </div>
-
-      <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
-      <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-        item.how_well_student_answers === 'Good' ? 'rgb(0, 0, 95)' : 'white'
-      };border: 2px solid rgb(0, 0, 95);"></div>
-      <p style="margin: 0px;background-color: ${
-        item.how_well_student_answers === 'Good' ? 'orange' : 'white'
-      }; padding: 5px;">${
-          item.how_well_student_answers === 'Good' ? 'Good' : 'Good'
-        }</p>
-    </div>
-
-    <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
-    <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-      item.how_well_student_answers === 'Satisfactory'
-        ? 'rgb(0, 0, 95)'
-        : 'white'
-    };border: 2px solid rgb(0, 0, 95);"></div>
-    <p style="margin: 0px;background-color: ${
-      item.how_well_student_answers === 'Satisfactory' ? 'orange' : 'white'
-    }; padding: 5px;">${
-          item.how_well_student_answers === 'Satisfactory'
-            ? 'Satisfactory'
-            : 'Satisfactory'
-        }</p>
-  </div>
-
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_well_student_answers === 'Average' ? 'rgb(0, 0, 95)' : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.how_well_student_answers === 'Average' ? 'orange' : 'white'
-  }; padding: 5px;">${
-          item.how_well_student_answers === 'Average' ? 'Average' : 'Average'
-        }</p>
-</div>
-</div>
-
-
-
+<p style="color: rgb(0, 0, 95); margin-top: 10px; margin-bottom:5px;">3. What significant improvement do you see in the student's performance compared to before?</p>
+<p style="margin: 0px; padding-left: 18px;">${item.observation3}</p>
+<p style="color: rgb(0, 0, 95); margin-top: 10px; margin-bottom:5px;">4. Please suggest the parts that the student should improve and focus on?</p>
+<p style="margin: 0px; padding-left: 18px;">${item.observation4}</p>
+<p style="color: rgb(0, 0, 95); margin-top: 10px; margin-bottom:5px;">5. Please elaborate your plans for the student in 3 months' time from now?</p>
+<p style="margin: 0px; padding-left: 18px;">${item.observation5}</p>
+<p style="color: rgb(0, 0, 95); margin-top: 10px; margin-bottom:5px;">6. Comment (Additional)</p>
+<p style="margin: 0px; padding-left: 18px;">${item.observation6}</p>
   </div>
   </div>
+  
   <div style="margin-top: 10px;">
-  <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">B. ATTITUDE</p>
+  <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">B. PERFORMANCE</p>
   <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 10px;">
-  <p style="color: rgb(0, 0, 95); margin-top: 10px;">1. How can you rate the student attendence for 3 months</p>
-  <div style='display:flex; flex-direction:row; justify-content: space-between;'>
+  <p style="color: rgb(0, 0, 95); margin-top: 10px; margin-bottom:5px;">1. How well does the student understand this subject?</p>
+  <div style=''>
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_you_can_rate_student_attendance_for_3_months === 'Excellent'
+    item.performance === 'Strong understanding.'
       ? 'rgb(0, 0, 95)'
       : 'white'
   };border: 2px solid rgb(0, 0, 95);"></div>
   <p style="margin: 0px;background-color: ${
-    item.how_you_can_rate_student_attendance_for_3_months === 'Excellent'
+    item.performance === 'Strong understanding.'
       ? 'orange'
       : 'white'
   }; padding: 5px;">${
-          item.how_you_can_rate_student_attendance_for_3_months === 'Excellent'
-            ? 'Excellent'
-            : 'Excellent'
+          item.performance === 'Strong understanding.'
+            ? 'Strong understanding.'
+            : 'Strong understanding.'
         }</p>
 </div>
 
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_you_can_rate_student_attendance_for_3_months === 'Good'
+    item.performance === 'Basic understanding.'
       ? 'rgb(0, 0, 95)'
       : 'white'
   };border: 2px solid rgb(0, 0, 95);"></div>
   <p style="margin: 0px;background-color: ${
-    item.how_you_can_rate_student_attendance_for_3_months === 'Good'
+    item.performance === 'Basic understanding.'
       ? 'orange'
       : 'white'
   }; padding: 5px;">${
-          item.how_you_can_rate_student_attendance_for_3_months === 'Good'
-            ? 'Good'
-            : 'Good'
+          item.performance === 'Basic understanding.'
+            ? 'Basic understanding.'
+            : 'Basic understanding.'
         }</p>
 </div>
 
 <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
 <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.how_you_can_rate_student_attendance_for_3_months ===
-          'Satisfactory'
+          item.performance ===
+          'Little to no understanding.'
             ? 'rgb(0, 0, 95)'
             : 'white'
         };border: 2px solid rgb(0, 0, 95);"></div>
 <p style="margin: 0px;background-color: ${
-          item.how_you_can_rate_student_attendance_for_3_months ===
-          'Satisfactory'
+          item.performance ===
+          'Little to no understanding.'
             ? 'orange'
             : 'white'
         }; padding: 5px;">${
-          item.how_you_can_rate_student_attendance_for_3_months ===
-          'Satisfactory'
-            ? 'Satisfactory'
-            : 'Satisfactory'
+          item.performance ===
+          'Little to no understanding.'
+            ? 'Little to no understanding.'
+            : 'Little to no understanding.'
+        }</p>
+</div>
+</div>
+
+<p style="color: rgb(0, 0, 95); margin-top: 10px; margin-bottom:5px;">2. How well the student’s performance during these 3 months ?</p>
+  <div style=''>
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
+    item.performance2 === 'Outstanding performance.'
+      ? 'rgb(0, 0, 95)'
+      : 'white'
+  };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${
+    item.performance2 === 'Outstanding performance.'
+      ? 'orange'
+      : 'white'
+  }; padding: 5px;">${
+          item.performance2 === 'Outstanding performance.'
+            ? 'Outstanding performance.'
+            : 'Outstanding performance.'
+        }</p>
+</div>
+
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
+    item.performance2 === ' Adequate performance with room for improvement.'
+      ? 'rgb(0, 0, 95)'
+      : 'white'
+  };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${
+    item.performance2 === ' Adequate performance with room for improvement.'
+      ? 'orange'
+      : 'white'
+  }; padding: 5px;">${
+          item.performance2 === ' Adequate performance with room for improvement.'
+            ? ' Adequate performance with room for improvement.'
+            : ' Adequate performance with room for improvement.'
         }</p>
 </div>
 
 <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
 <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.how_you_can_rate_student_attendance_for_3_months === 'Average'
+          item.performance2 ===
+          'Consistently below expectations'
             ? 'rgb(0, 0, 95)'
             : 'white'
         };border: 2px solid rgb(0, 0, 95);"></div>
 <p style="margin: 0px;background-color: ${
-          item.how_you_can_rate_student_attendance_for_3_months === 'Average'
+          item.performance2 ===
+          'Consistently below expectations'
             ? 'orange'
             : 'white'
         }; padding: 5px;">${
-          item.how_you_can_rate_student_attendance_for_3_months === 'Average'
-            ? 'Average'
-            : 'Average'
+          item.performance2 ===
+          'Consistently below expectations'
+            ? 'Consistently below expectations'
+            : 'Consistently below expectations'
         }</p>
 </div>
 </div>
 
-
-<p style="color: rgb(0, 0, 95); margin-top: 10px;">2. How well do you intrect/communicate with student during/after class?</p>
-<div style='display:flex; flex-direction:row; justify-content: space-between;'>
+<p style="color: rgb(0, 0, 95); margin-top: 10px; margin-bottom:5px;">3. How well student’s participates in learning session?</p>
+  <div style=''>
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_well_do_you_interact_with_studyent_during_class === 'Excellent'
+    item.performance3 === 'Highly engaged, frequently asks questions.'
       ? 'rgb(0, 0, 95)'
       : 'white'
   };border: 2px solid rgb(0, 0, 95);"></div>
   <p style="margin: 0px;background-color: ${
-    item.how_well_do_you_interact_with_studyent_during_class === 'Excellent'
+    item.performance3 === 'Highly engaged, frequently asks questions.'
       ? 'orange'
       : 'white'
   }; padding: 5px;">${
-          item.how_well_do_you_interact_with_studyent_during_class ===
-          'Excellent'
-            ? 'Excellent'
-            : 'Excellent'
+          item.performance3 === 'Highly engaged, frequently asks questions.'
+            ? 'Highly engaged, frequently asks questions.'
+            : 'Highly engaged, frequently asks questions.'
         }</p>
 </div>
 
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_well_do_you_interact_with_studyent_during_class === 'Good'
+    item.performance3 === 'Participates and occasionally asks questions.'
       ? 'rgb(0, 0, 95)'
       : 'white'
   };border: 2px solid rgb(0, 0, 95);"></div>
   <p style="margin: 0px;background-color: ${
-    item.how_well_do_you_interact_with_studyent_during_class === 'Good'
+    item.performance3 === 'Participates and occasionally asks questions.'
       ? 'orange'
       : 'white'
   }; padding: 5px;">${
-          item.how_well_do_you_interact_with_studyent_during_class === 'Good'
-            ? 'Good'
-            : 'Good'
+          item.performance3 === 'Participates and occasionally asks questions.'
+            ? 'Participates and occasionally asks questions.'
+            : 'Participates and occasionally asks questions.'
         }</p>
 </div>
 
 <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
 <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.how_well_do_you_interact_with_studyent_during_class ===
-          'Satisfactory'
+          item.performance3 ===
+          'Does not participate or ask questions.'
             ? 'rgb(0, 0, 95)'
             : 'white'
         };border: 2px solid rgb(0, 0, 95);"></div>
 <p style="margin: 0px;background-color: ${
-          item.how_well_do_you_interact_with_studyent_during_class ===
-          'Satisfactory'
+          item.performance3 ===
+          'Does not participate or ask questions.'
             ? 'orange'
             : 'white'
         }; padding: 5px;">${
-          item.how_well_do_you_interact_with_studyent_during_class ===
-          'Satisfactory'
-            ? 'Satisfactory'
-            : 'Satisfactory'
+          item.performance3 ===
+          'Does not participate or ask questions.'
+            ? 'Does not participate or ask questions.'
+            : 'Does not participate or ask questions.'
+        }</p>
+</div>
+</div>
+
+<p style="color: rgb(0, 0, 95); margin-top: 10px; margin-bottom:5px;">4. How well student answers/explains/elaborates questions given by tutor?</p>
+  <div style=''>
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
+    item.performance4 === 'Clear answers, in-depth explanations.'
+      ? 'rgb(0, 0, 95)'
+      : 'white'
+  };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${
+    item.performance4 === 'Clear answers, in-depth explanations.'
+      ? 'orange'
+      : 'white'
+  }; padding: 5px;">${
+          item.performance4 === 'Clear answers, in-depth explanations.'
+            ? 'Clear answers, in-depth explanations.'
+            : 'Clear answers, in-depth explanations.'
+        }</p>
+</div>
+
+  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
+  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
+    item.performance4 === 'Adequate answers, basic explanations.'
+      ? 'rgb(0, 0, 95)'
+      : 'white'
+  };border: 2px solid rgb(0, 0, 95);"></div>
+  <p style="margin: 0px;background-color: ${
+    item.performance4 === 'Adequate answers, basic explanations.'
+      ? 'orange'
+      : 'white'
+  }; padding: 5px;">${
+          item.performance4 === 'Adequate answers, basic explanations.'
+            ? 'Adequate answers, basic explanations.'
+            : 'Adequate answers, basic explanations.'
         }</p>
 </div>
 
 <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
 <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.how_well_do_you_interact_with_studyent_during_class === 'Average'
+          item.performance4 ===
+          'Unable to answer clearly, little to no explanations.'
             ? 'rgb(0, 0, 95)'
             : 'white'
         };border: 2px solid rgb(0, 0, 95);"></div>
 <p style="margin: 0px;background-color: ${
-          item.how_well_do_you_interact_with_studyent_during_class === 'Average'
+          item.performance4 ===
+          'Unable to answer clearly, little to no explanations.'
             ? 'orange'
             : 'white'
         }; padding: 5px;">${
-          item.how_well_do_you_interact_with_studyent_during_class === 'Average'
-            ? 'Average'
-            : 'Average'
+          item.performance4 ===
+          'Unable to answer clearly, little to no explanations.'
+            ? 'Unable to answer clearly, little to no explanations.'
+            : 'Unable to answer clearly, little to no explanations.'
         }</p>
 </div>
 </div>
 
-
-<p style="color: rgb(0, 0, 95); margin-top: 10px;">3. How well the student manage his/her time to complete his/her homework?</p>
-<div style='display:flex; flex-direction:row; justify-content: space-between;'>
+<p style="color: rgb(0, 0, 95); margin-top: 10px; margin-bottom:5px;">5. How would you rate the student's level of improvement over the past month?</p>
+  <div style=''>
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_well_the_student_manages_his_time_tomplete_his_homework ===
-    'Excellent'
+    item.performance5 === 'Significant improvement in many topics.'
       ? 'rgb(0, 0, 95)'
       : 'white'
   };border: 2px solid rgb(0, 0, 95);"></div>
   <p style="margin: 0px;background-color: ${
-    item.how_well_the_student_manages_his_time_tomplete_his_homework ===
-    'Excellent'
+    item.performance5 === 'Significant improvement in many topics.'
       ? 'orange'
       : 'white'
   }; padding: 5px;">${
-          item.how_well_the_student_manages_his_time_tomplete_his_homework ===
-          'Excellent'
-            ? 'Excellent'
-            : 'Excellent'
+          item.performance5 === 'Significant improvement in many topics.'
+            ? 'Significant improvement in many topics.'
+            : 'Significant improvement in many topics.'
         }</p>
 </div>
 
   <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
   <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_well_the_student_manages_his_time_tomplete_his_homework === 'Good'
+    item.performance5 === 'Some improvement in specific topic.'
       ? 'rgb(0, 0, 95)'
       : 'white'
   };border: 2px solid rgb(0, 0, 95);"></div>
   <p style="margin: 0px;background-color: ${
-    item.how_well_the_student_manages_his_time_tomplete_his_homework === 'Good'
+    item.performance5 === 'Some improvement in specific topic.'
       ? 'orange'
       : 'white'
   }; padding: 5px;">${
-          item.how_well_the_student_manages_his_time_tomplete_his_homework ===
-          'Good'
-            ? 'Good'
-            : 'Good'
+          item.performance5 === 'Some improvement in specific topic.'
+            ? 'Some improvement in specific topic.'
+            : 'Some improvement in specific topic.'
         }</p>
 </div>
 
 <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
 <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.how_well_the_student_manages_his_time_tomplete_his_homework ===
-          'Satisfactory'
+          item.performance5 ===
+          'No noticeable improvement.'
             ? 'rgb(0, 0, 95)'
             : 'white'
         };border: 2px solid rgb(0, 0, 95);"></div>
 <p style="margin: 0px;background-color: ${
-          item.how_well_the_student_manages_his_time_tomplete_his_homework ===
-          'Satisfactory'
+          item.performance5 ===
+          'No noticeable improvement.'
             ? 'orange'
             : 'white'
         }; padding: 5px;">${
-          item.how_well_the_student_manages_his_time_tomplete_his_homework ===
-          'Satisfactory'
-            ? 'Satisfactory'
-            : 'Satisfactory'
+          item.performance5 ===
+          'No noticeable improvement.'
+            ? 'No noticeable improvement.'
+            : 'No noticeable improvement.'
         }</p>
 </div>
-
-
-<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 5px;">
-<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.how_well_the_student_manages_his_time_tomplete_his_homework ===
-          'Average'
-            ? 'rgb(0, 0, 95)'
-            : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-<p style="margin: 0px;background-color: ${
-          item.how_well_the_student_manages_his_time_tomplete_his_homework ===
-          'Average'
-            ? 'orange'
-            : 'white'
-        }; padding: 5px;">${
-          item.how_well_the_student_manages_his_time_tomplete_his_homework ===
-          'Average'
-            ? 'Average'
-            : 'Average'
-        }</p>
-</div>
+<p style="color: rgb(0, 0, 95); margin-top: 10px; margin-bottom:5px;">6. Comment (Additional)</p>
+<p style="margin: 0px; padding-left: 18px;">${item.performance6}</p>
 </div>
 
-
-
-<p style="color: rgb(0, 0, 95); margin-top: 10px;">4. How well the student response were corrected?</p>
-<div style='display:flex; flex-direction:row; justify-content: space-between;'>
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_well_the_student_respondes_when_corrected === 'Excellent'
-      ? 'rgb(0, 0, 95)'
-      : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.how_well_the_student_respondes_when_corrected === 'Excellent'
-      ? 'orange'
-      : 'white'
-  }; padding: 5px;">${
-          item.how_well_the_student_respondes_when_corrected === 'Excellent'
-            ? 'Excellent'
-            : 'Excellent'
-        }</p>
-</div>
-
-  <div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
-  <div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-    item.how_well_the_student_respondes_when_corrected === 'Good'
-      ? 'rgb(0, 0, 95)'
-      : 'white'
-  };border: 2px solid rgb(0, 0, 95);"></div>
-  <p style="margin: 0px;background-color: ${
-    item.how_well_the_student_respondes_when_corrected === 'Good'
-      ? 'orange'
-      : 'white'
-  }; padding: 5px;">${
-          item.how_well_the_student_respondes_when_corrected === 'Good'
-            ? 'Good'
-            : 'Good'
-        }</p>
-</div>
-
-<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: px;">
-<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.how_well_the_student_respondes_when_corrected === 'Satisfactory'
-            ? 'rgb(0, 0, 95)'
-            : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-<p style="margin: 0px;background-color: ${
-          item.how_well_the_student_respondes_when_corrected === 'Satisfactory'
-            ? 'orange'
-            : 'white'
-        }; padding: 5px;">${
-          item.how_well_the_student_respondes_when_corrected === 'Satisfactory'
-            ? 'Satisfactory'
-            : 'Satisfactory'
-        }</p>
-</div>
-
-<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: px;">
-<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
-          item.how_well_the_student_respondes_when_corrected === 'Average'
-            ? 'rgb(0, 0, 95)'
-            : 'white'
-        };border: 2px solid rgb(0, 0, 95);"></div>
-<p style="margin: 0px;background-color: ${
-          item.how_well_the_student_respondes_when_corrected === 'Average'
-            ? 'orange'
-            : 'white'
-        }; padding: 5px;">${
-          item.how_well_the_student_respondes_when_corrected === 'Average'
-            ? 'Average'
-            : 'Average'
-        }</p>
-</div>
   </div>
   </div>
+.....
+<div style="margin-top: 10px;">
+<p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">C. ATTITUDE</p>
+<div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 10px;">
+<p style="color: rgb(0, 0, 95); margin-top: 10px; margin-bottom:5px;">1. How well student’s attendance for 3 months?</p>
+<div style=''>
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
+  item.attitude === 'Rarely absent, consistently on time.'
+    ? 'rgb(0, 0, 95)'
+    : 'white'
+};border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${
+  item.attitude === 'Rarely absent, consistently on time.'
+    ? 'orange'
+    : 'white'
+}; padding: 5px;">${
+        item.attitude === 'Rarely absent, consistently on time.'
+          ? 'Rarely absent, consistently on time.'
+          : 'Rarely absent, consistently on time.'
+      }</p>
+</div>
 
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
+  item.attitude === 'Sometimes absent or late, but with reasonable excuses.'
+    ? 'rgb(0, 0, 95)'
+    : 'white'
+};border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${
+  item.attitude === 'Sometimes absent or late, but with reasonable excuses.'
+    ? 'orange'
+    : 'white'
+}; padding: 5px;">${
+        item.attitude === 'Sometimes absent or late, but with reasonable excuses.'
+          ? 'Sometimes absent or late, but with reasonable excuses.'
+          : 'Sometimes absent or late, but with reasonable excuses.'
+      }</p>
+</div>
 
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
+        item.attitude ===
+        'Regularly absent or late, significantly impacts participation.'
+          ? 'rgb(0, 0, 95)'
+          : 'white'
+      };border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${
+        item.attitude ===
+        'Regularly absent or late, significantly impacts participation.'
+          ? 'orange'
+          : 'white'
+      }; padding: 5px;">${
+        item.attitude ===
+        'Regularly absent or late, significantly impacts participation.'
+          ? 'Regularly absent or late, significantly impacts participation.'
+          : 'Regularly absent or late, significantly impacts participation.'
+      }</p>
+</div>
+</div>
+
+<p style="color: rgb(0, 0, 95); margin-top: 10px; margin-bottom:5px;">2. How well the student’s performance during these 3 months ?</p>
+<div style=''>
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
+  item.performance2 === 'Outstanding performance.'
+    ? 'rgb(0, 0, 95)'
+    : 'white'
+};border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${
+  item.performance2 === 'Outstanding performance.'
+    ? 'orange'
+    : 'white'
+}; padding: 5px;">${
+        item.performance2 === 'Outstanding performance.'
+          ? 'Outstanding performance.'
+          : 'Outstanding performance.'
+      }</p>
+</div>
+
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
+  item.performance2 === ' Adequate performance with room for improvement.'
+    ? 'rgb(0, 0, 95)'
+    : 'white'
+};border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${
+  item.performance2 === ' Adequate performance with room for improvement.'
+    ? 'orange'
+    : 'white'
+}; padding: 5px;">${
+        item.performance2 === ' Adequate performance with room for improvement.'
+          ? ' Adequate performance with room for improvement.'
+          : ' Adequate performance with room for improvement.'
+      }</p>
+</div>
+
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
+        item.performance2 ===
+        'Consistently below expectations'
+          ? 'rgb(0, 0, 95)'
+          : 'white'
+      };border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${
+        item.performance2 ===
+        'Consistently below expectations'
+          ? 'orange'
+          : 'white'
+      }; padding: 5px;">${
+        item.performance2 ===
+        'Consistently below expectations'
+          ? 'Consistently below expectations'
+          : 'Consistently below expectations'
+      }</p>
+</div>
+</div>
+
+<p style="color: rgb(0, 0, 95); margin-top: 10px; margin-bottom:5px;">3. How well student’s participates in learning session?</p>
+<div style=''>
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
+  item.performance3 === 'Highly engaged, frequently asks questions.'
+    ? 'rgb(0, 0, 95)'
+    : 'white'
+};border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${
+  item.performance3 === 'Highly engaged, frequently asks questions.'
+    ? 'orange'
+    : 'white'
+}; padding: 5px;">${
+        item.performance3 === 'Highly engaged, frequently asks questions.'
+          ? 'Highly engaged, frequently asks questions.'
+          : 'Highly engaged, frequently asks questions.'
+      }</p>
+</div>
+
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
+  item.performance3 === 'Participates and occasionally asks questions.'
+    ? 'rgb(0, 0, 95)'
+    : 'white'
+};border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${
+  item.performance3 === 'Participates and occasionally asks questions.'
+    ? 'orange'
+    : 'white'
+}; padding: 5px;">${
+        item.performance3 === 'Participates and occasionally asks questions.'
+          ? 'Participates and occasionally asks questions.'
+          : 'Participates and occasionally asks questions.'
+      }</p>
+</div>
+
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
+        item.performance3 ===
+        'Does not participate or ask questions.'
+          ? 'rgb(0, 0, 95)'
+          : 'white'
+      };border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${
+        item.performance3 ===
+        'Does not participate or ask questions.'
+          ? 'orange'
+          : 'white'
+      }; padding: 5px;">${
+        item.performance3 ===
+        'Does not participate or ask questions.'
+          ? 'Does not participate or ask questions.'
+          : 'Does not participate or ask questions.'
+      }</p>
+</div>
+</div>
+
+<p style="color: rgb(0, 0, 95); margin-top: 10px; margin-bottom:5px;">4. How well student answers/explains/elaborates questions given by tutor?</p>
+<div style=''>
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
+  item.performance4 === 'Clear answers, in-depth explanations.'
+    ? 'rgb(0, 0, 95)'
+    : 'white'
+};border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${
+  item.performance4 === 'Clear answers, in-depth explanations.'
+    ? 'orange'
+    : 'white'
+}; padding: 5px;">${
+        item.performance4 === 'Clear answers, in-depth explanations.'
+          ? 'Clear answers, in-depth explanations.'
+          : 'Clear answers, in-depth explanations.'
+      }</p>
+</div>
+
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
+  item.performance4 === 'Adequate answers, basic explanations.'
+    ? 'rgb(0, 0, 95)'
+    : 'white'
+};border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${
+  item.performance4 === 'Adequate answers, basic explanations.'
+    ? 'orange'
+    : 'white'
+}; padding: 5px;">${
+        item.performance4 === 'Adequate answers, basic explanations.'
+          ? 'Adequate answers, basic explanations.'
+          : 'Adequate answers, basic explanations.'
+      }</p>
+</div>
+
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
+        item.performance4 ===
+        'Unable to answer clearly, little to no explanations.'
+          ? 'rgb(0, 0, 95)'
+          : 'white'
+      };border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${
+        item.performance4 ===
+        'Unable to answer clearly, little to no explanations.'
+          ? 'orange'
+          : 'white'
+      }; padding: 5px;">${
+        item.performance4 ===
+        'Unable to answer clearly, little to no explanations.'
+          ? 'Unable to answer clearly, little to no explanations.'
+          : 'Unable to answer clearly, little to no explanations.'
+      }</p>
+</div>
+</div>
+
+<p style="color: rgb(0, 0, 95); margin-top: 10px; margin-bottom:5px;">5. How would you rate the student's level of improvement over the past month?</p>
+<div style=''>
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
+  item.performance5 === 'Significant improvement in many topics.'
+    ? 'rgb(0, 0, 95)'
+    : 'white'
+};border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${
+  item.performance5 === 'Significant improvement in many topics.'
+    ? 'orange'
+    : 'white'
+}; padding: 5px;">${
+        item.performance5 === 'Significant improvement in many topics.'
+          ? 'Significant improvement in many topics.'
+          : 'Significant improvement in many topics.'
+      }</p>
+</div>
+
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
+  item.performance5 === 'Some improvement in specific topic.'
+    ? 'rgb(0, 0, 95)'
+    : 'white'
+};border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${
+  item.performance5 === 'Some improvement in specific topic.'
+    ? 'orange'
+    : 'white'
+}; padding: 5px;">${
+        item.performance5 === 'Some improvement in specific topic.'
+          ? 'Some improvement in specific topic.'
+          : 'Some improvement in specific topic.'
+      }</p>
+</div>
+
+<div style="display: flex; align-items: center; gap: 10px; padding-bottom: 0px; padding-top: 0px;">
+<div style="border-radius: 50%; height: 13px; width: 13px; background-color: ${
+        item.performance5 ===
+        'No noticeable improvement.'
+          ? 'rgb(0, 0, 95)'
+          : 'white'
+      };border: 2px solid rgb(0, 0, 95);"></div>
+<p style="margin: 0px;background-color: ${
+        item.performance5 ===
+        'No noticeable improvement.'
+          ? 'orange'
+          : 'white'
+      }; padding: 5px;">${
+        item.performance5 ===
+        'No noticeable improvement.'
+          ? 'No noticeable improvement.'
+          : 'No noticeable improvement.'
+      }</p>
+</div>
+<p style="color: rgb(0, 0, 95); margin-top: 10px; margin-bottom:5px;">6. Comment (Additional)</p>
+<p style="margin: 0px; padding-left: 18px;">${item.performance6}</p>
+</div>
+
+</div>
+</div>
+.....
   <div style="margin-top: 10px;">
   <p style="background-color: orangered;color: white;font-weight: 700;padding: 5px; margin: 0px;">C. RESULT</p>
   <div style="margin-top:5px;border: 1px solid rgb(0, 0, 95);padding: 10px;">
@@ -1459,13 +1595,20 @@ const ReportSubmissionHistory = ({navigation}: any) => {
       if (Platform.OS === 'android') {
         const granted = await PermissionsAndroid.request(
           PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'External Storage Write Permission',
+            message: 'App needs access to write to your external storage',
+            buttonNeutral: 'Ask Me Later',
+            buttonNegative: 'Cancel',
+            buttonPositive: 'OK',
+          },
         );
 
         if (granted !== PermissionsAndroid.RESULTS.GRANTED) {
           console.error('Permission denied for writing to external storage.');
           return;
         }
-      }
+      } 
 
       const pdfFile = await RNHTMLtoPDF.convert(options);
       const {filePath}: any = pdfFile;
@@ -1477,6 +1620,9 @@ const ReportSubmissionHistory = ({navigation}: any) => {
   };
 
   const handleGenerateProgressReport = async (item: any) => {
+    console.log('item',item);
+    
+    
     try {
       const pdfUri: any = await generateDownloadProgressReport(item);
       setPdfUri(pdfUri); // Set the local file URI of the downloaded PDF
@@ -1485,6 +1631,8 @@ const ReportSubmissionHistory = ({navigation}: any) => {
     }
   };
 
+  console.log('pdfUri',pdfUri);
+  
   const displayBanner = async () => {
     setOpenPPModal(true);
     axios
@@ -1584,89 +1732,89 @@ const ReportSubmissionHistory = ({navigation}: any) => {
 
           {allReports && allReports.length > 0 ? (
             <View>
-            <FlatList
-              data={foundName.length > 0 ? foundName : allReports}
-              nestedScrollEnabled
-              keyExtractor={(item: any) => item.id}
-              renderItem={({item, index}: any) => {
-                return (
-                  <View
-                    key={index}
-                    style={{
-                      borderWidth: 1,
-                      paddingHorizontal: 15,
-                      marginTop: 10,
-                      paddingVertical: 15,
-                      borderRadius: 10,
-                      gap: 10,
-                      marginRight: 10,
-                      borderColor: '#eee',
-                      width: '100%',
-                    }}>
-                    {/* Avaiable Subject */}
-                    <View style={{}}>
-                      <Text
-                        style={{
-                          color: Theme.black,
-                          fontSize: 12,
-                          fontWeight: '600',
-                        }}>
-                        {item.studentID}
-                      </Text>
-                      <Text
-                        style={{
-                          color: Theme.gray,
-                          fontSize: 12,
-                          fontWeight: '600',
-                          paddingVertical: 10,
-                          textTransform:'capitalize',
-                        }}>
-                        {item.studentName}
-                      </Text>
-                      <Text
-                        style={{
-                          color: Theme.black,
-                          fontSize: 12,
-                          fontWeight: '600',
-                        }}>
-                        Subimited on {item.created_at}
-                      </Text>
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                        }}>
+              <FlatList
+                data={foundName.length > 0 ? foundName : allReports}
+                nestedScrollEnabled
+                keyExtractor={(item: any) => item.id}
+                renderItem={({item, index}: any) => {
+                  return (
+                    <View
+                      key={index}
+                      style={{
+                        borderWidth: 1,
+                        paddingHorizontal: 15,
+                        marginTop: 10,
+                        paddingVertical: 15,
+                        borderRadius: 10,
+                        gap: 10,
+                        marginRight: 10,
+                        borderColor: '#eee',
+                        width: '100%',
+                      }}>
+                      {/* Avaiable Subject */}
+                      <View style={{}}>
+                        <Text
+                          style={{
+                            color: Theme.black,
+                            fontSize: 12,
+                            fontWeight: '600',
+                          }}>
+                          {item.studentID}
+                        </Text>
                         <Text
                           style={{
                             color: Theme.gray,
                             fontSize: 12,
                             fontWeight: '600',
-                            paddingTop: 10,
+                            paddingVertical: 10,
+                            textTransform: 'capitalize',
                           }}>
-                          {item?.tutorReportType ?? item.reportType}
+                          {item.studentName}
                         </Text>
-                        <TouchableOpacity
-                          onPress={() =>
-                            item.reportType
-                              ? handleGenerateProgressReport(item)
-                              : handleGenerateAndDownloadPdf(item)
-                          }
-                          style={{alignItems: 'center'}}>
-                          <Image
-                            source={require('../../Assets/Images/inbox.png')}
-                            style={{width: 25, height: 25}}
-                            resizeMode="contain"
-                          />
-                          <Text style={{fontSize: 10, color: 'black'}}>
-                            Download
+                        <Text
+                          style={{
+                            color: Theme.black,
+                            fontSize: 12,
+                            fontWeight: '600',
+                          }}>
+                          Subimited on {item.created_at}
+                        </Text>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          }}>
+                          <Text
+                            style={{
+                              color: Theme.gray,
+                              fontSize: 12,
+                              fontWeight: '600',
+                              paddingTop: 10,
+                            }}>
+                            {item?.tutorReportType ?? item.reportType}
                           </Text>
-                        </TouchableOpacity>
+                          <TouchableOpacity
+                            onPress={() =>
+                              item.reportType
+                                ? handleGenerateProgressReport(item)
+                                : handleGenerateAndDownloadPdf(item)
+                            }
+                            style={{alignItems: 'center'}}>
+                            <Image
+                              source={require('../../Assets/Images/inbox.png')}
+                              style={{width: 25, height: 25}}
+                              resizeMode="contain"
+                            />
+                            <Text style={{fontSize: 10, color: 'black'}}>
+                              Download
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
                       </View>
                     </View>
-                  </View>
-                );
-              }}
-            />
+                  );
+                }}
+              />
             </View>
           ) : (
             <View style={{marginTop: 35}}>

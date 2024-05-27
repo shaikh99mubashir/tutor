@@ -69,18 +69,30 @@ const ReportSubmission = ({navigation, route}: any): any => {
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState<any>('');
+  const [obQ1, setObQ1] = useState<any>('');
+  const [obQ2, setObQ2] = useState<any>('');
+  const [obQ3, setObQ3] = useState<any>('');
+  const [obQ4, setObQ4] = useState<any>('');
+  const [obQ5, setObQ5] = useState<any>('');
+  const [obQ6, setObQ6] = useState<any>('');
   const [perQ1, setPerQ1] = useState<any>('');
   const [perQ2, setPerQ2] = useState<any>('');
   const [perQ3, setPerQ3] = useState<any>('');
   const [perQ4, setPerQ4] = useState<any>('');
+  const [perQ5, setPerQ5] = useState<any>('');
+  const [perQ6, setPerQ6] = useState<any>('');
   const [attQ1, setattQ1] = useState<any>('');
   const [attQ2, setattQ2] = useState<any>('');
   const [attQ3, setattQ3] = useState<any>('');
   const [attQ4, setattQ4] = useState<any>('');
+  const [attQ5, setattQ5] = useState<any>('');
+  const [attQ6, setattQ6] = useState<any>('');
   const [rulQ1, setRulQ1] = useState<any>('');
   const [rulQ2, setRulQ2] = useState<any>('');
   const [rulQ3, setRulQ3] = useState<any>('');
   const [rulQ4, setRulQ4] = useState<any>('');
+  console.log('rulQ1',rulQ1);
+  
   const [observation, setObservation] = useState<any>({
     obv1: '',
     obv2: '',
@@ -127,16 +139,167 @@ const ReportSubmission = ({navigation, route}: any): any => {
   ];
   const performanceOption = [
     {
-      option: 'Excellent',
+      option: 'Strong understanding.',
     },
     {
-      option: 'Good',
+      option: 'Basic understanding.',
     },
     {
-      option: 'Satisfactory',
+      option: 'Little to no understanding.',
+    },
+  ];
+  const performanceOption2 = [
+    {
+      option: 'Outstanding performance.',
     },
     {
-      option: 'Average',
+      option: 'Adequate performance with room for improvement.',
+    },
+    {
+      option: 'Consistently below expectations',
+    },
+  ];
+  const performanceOption3 = [
+    {
+      option: 'Highly engaged, frequently asks questions.',
+    },
+    {
+      option: 'Participates and occasionally asks questions.',
+    },
+    {
+      option: 'Does not participate or ask questions.',
+    },
+  ];
+  const performanceOption4 = [
+    {
+      option: 'Clear answers, in-depth explanations.',
+    },
+    {
+      option: 'Adequate answers, basic explanations.',
+    },
+    {
+      option: 'Unable to answer clearly, little to no explanations.',
+    },
+  ];
+  const performanceOption5 = [
+    {
+      option: 'Significant improvement in many topics.',
+    },
+    {
+      option: 'Some improvement in specific topic.',
+    },
+    {
+      option: 'No noticeable improvement.',
+    },
+  ];
+  const attitudeOption = [
+    {
+      option: 'Rarely absent, consistently on time.',
+    },
+    {
+      option: 'Sometimes absent or late, but with reasonable excuses.',
+    },
+    {
+      option: 'Regularly absent or late, significantly impacts participation.',
+    },
+  ];
+  const attitudeOption2 = [
+    {
+      option: 'Communication is very effective and frequent.',
+    },
+    {
+      option: 'Communication is adequate but could be more effective.',
+    },
+    {
+      option: 'Communication is minimal or ineffective.',
+    },
+  ];
+  const attitudeOption3 = [
+    {
+      option: 'Completes homework ahead of deadlines.',
+    },
+    {
+      option: 'Completes most homework on time.',
+    },
+    {
+      option: 'Rarely completes homework on time.',
+    },
+  ];
+  const attitudeOption4 = [
+    {
+      option: 'Shows a strong willingness to learn.',
+    },
+    {
+      option: 'Shows some interest and willingness to learn.',
+    },
+    {
+      option: 'Rarely completes homework on time.Rarely shows willingness to learn.',
+    },
+  ];
+  const attitudeOption5 = [
+    {
+      option: 'Highly engaged and interested.',
+    },
+    {
+      option: 'Moderately engaged.',
+    },
+    {
+      option: 'Lacks engagement and interest.',
+    },
+  ];
+  const resultOption = [
+    {
+      option: 'Consistently achieves high scores.',
+    },
+    {
+      option: 'Achieves average scores.',
+    },
+    {
+      option: 'Consistently achieves low scores.',
+    },
+  ];
+  const resultOption2 = [
+    {
+      option: 'Always well-prepared.',
+    },
+    {
+      option: 'Adequately prepared.',
+    },
+    {
+      option: 'Rarely prepared.',
+    },
+  ];
+  const resultOption3 = [
+    {
+      option: 'Scores are consistently high.',
+    },
+    {
+      option: ' Scores are average.',
+    },
+    {
+      option: 'Scores are consistently low.',
+    },
+  ];
+  const OB1 = [
+    {
+      option: 'Yes',
+    },
+    {
+      option: 'No',
+    },
+  ];
+  const OB2 = [
+    {
+      option: 'Visual: Learns with images and diagrams.',
+    },
+    {
+      option: 'Auditory: Listening and verbal instruction.',
+    },
+    {
+      option: 'Reading/Writing: Reading and writing notes.',
+    },
+    {
+      option: 'Multimodal: Learns best with a combination of styles',
     },
   ];
 
@@ -220,8 +383,7 @@ const ReportSubmission = ({navigation, route}: any): any => {
       option: 'Solves many different questions correctly on their own.',
     },
     {
-      option:
-        ' Solves most questions correctly with little guidance.',
+      option: ' Solves most questions correctly with little guidance.',
     },
     {
       option: 'Answers some questions correctly but needs a lot of guidance.',
@@ -232,8 +394,7 @@ const ReportSubmission = ({navigation, route}: any): any => {
       option: 'Visual: Learns with images and diagrams.',
     },
     {
-      option:
-        'Auditory: Listening and verbal instruction.',
+      option: 'Auditory: Listening and verbal instruction.',
     },
     {
       option: 'Reading/Writing: Reading and writing notes.',
@@ -244,15 +405,15 @@ const ReportSubmission = ({navigation, route}: any): any => {
   ];
   const CT2 = [
     {
-      option: 'Able to answer questions using many different methods and concepts. ',
+      option:
+        'Able to answer questions using many different methods and concepts. ',
+    },
+    {
+      option: 'Able to use various methods and concepts, but not frequently. ',
     },
     {
       option:
-        'Able to use various methods and concepts, but not frequently. ',
-    },
-    {
-      option: 'Finds it hard to use different methods and concepts to answer questions.'
-      ,
+        'Finds it hard to use different methods and concepts to answer questions.',
     },
   ];
   const understanding = [
@@ -263,8 +424,7 @@ const ReportSubmission = ({navigation, route}: any): any => {
       option: 'Explains basic concepts clearly but with a few errors.',
     },
     {
-      option:
-        ' Struggles to explain concepts and makes many mistakes.',
+      option: ' Struggles to explain concepts and makes many mistakes.',
     },
   ];
   const understanding2 = [
@@ -275,8 +435,7 @@ const ReportSubmission = ({navigation, route}: any): any => {
       option: 'Applies concepts well and solves certain questions correctly.',
     },
     {
-      option:
-        ' Unable to apply concepts and solve problems correctly.',
+      option: ' Unable to apply concepts and solve problems correctly.',
     },
   ];
   const knowledge = [
@@ -375,14 +534,22 @@ const ReportSubmission = ({navigation, route}: any): any => {
         !tutorId ||
         !data?.studentID ||
         !selectedMonth ||
+        !obQ1 ||
+        !obQ2 ||
+        !obQ3 ||
+        !obQ4 ||
+        !obQ5 ||
+        !obQ6 ||
         !perQ1 ||
         !perQ2 ||
         !perQ3 ||
         !perQ4 ||
+        !perQ5 ||
         !attQ1 ||
         !attQ2 ||
         !attQ3 ||
         !attQ4 ||
+        !attQ5 ||
         !rulQ1 ||
         !rulQ2 ||
         !rulQ3 ||
@@ -402,63 +569,82 @@ const ReportSubmission = ({navigation, route}: any): any => {
       formData.append('reportType', evaluation?.option);
       formData.append('month', selectedMonth?.option);
       formData.append(
-        'rate_student_understanding_on_this_subject',
+        'observation',
+        obQ1?.option,
+      );
+      formData.append(
+        'observation2',
+        obQ2?.option,
+      );
+      formData.append(
+        'observation3',
+        obQ3,
+      );
+      formData.append(
+        'observation4',
+        obQ4,
+      );
+      formData.append(
+        'observation5',
+        obQ5,
+      );
+      formData.append(
+        'observation6',
+        obQ6,
+      );
+      formData.append(
+        'performance',
         perQ1?.option,
       );
       formData.append(
-        'how_is_the_student_performance_on_homework',
+        'performance2',
         perQ2?.option,
       );
       formData.append(
-        'how_well_student_participates_in_learning_session',
+        'performance3',
         perQ3?.option,
       );
-      formData.append('how_well_student_answers', perQ4?.option);
+      formData.append('performance4', perQ4?.option);
+      formData.append('performance5', perQ5?.option);
+      formData.append('performance6', perQ6);
       formData.append(
-        'how_you_can_rate_student_attendance_for_3_months',
+        'attitude',
         attQ1?.option,
       );
       formData.append(
-        'how_well_do_you_interact_with_studyent_during_class',
+        'attitude2',
         attQ2?.option,
       );
       formData.append(
-        'how_well_the_student_manages_his_time_tomplete_his_homework',
+        'attitude3',
         attQ3?.option,
       );
       formData.append(
-        'how_well_the_student_respondes_when_corrected',
+        'attitude4',
         attQ4?.option,
       );
-      formData.append('rate_the_student_performance_in_quizzes', rulQ1?.option);
       formData.append(
-        'how_well_the_student_prepares_for_test_and_assignment',
+        'attitude5',
+        attQ5?.option,
+      );
+      formData.append(
+        'attitude6',
+        attQ6,
+      );
+      formData.append('result', rulQ1?.option);
+      formData.append(
+        'result2',
         rulQ2?.option,
       );
       formData.append(
-        'rate_student_learning_preferences_willingness_to_learn_and_inter',
-        rulQ4?.option,
+        'result3',
+        rulQ3?.option,
       );
       formData.append(
-        'did_you_hold_or_carried_out_any_form_of_examination_for_the_stud',
-        rulQ4?.option,
+        'result4',
+        rulQ4,
       );
-      formData.append(
-        'how_do_you_rate_student_performance_based_on_this_test',
-        observation?.obv1,
-      );
-      formData.append(
-        'which_topic_has_the_student_showed_some_significant_improvement',
-        observation?.obv2,
-      );
-      formData.append(
-        'can_you_determine_and_name_the_topic_that_the_student_should_imp',
-        observation?.obv3,
-      );
-      formData.append(
-        'please_elaborate_your_plan_for_the_student_in_3_months_time_from',
-        observation?.obv4,
-      );
+      
       console.log('form data progress report===========>', formData);
 
       axios
@@ -474,6 +660,18 @@ const ReportSubmission = ({navigation, route}: any): any => {
         })
         .catch(error => {
           setLoading(false);
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            console.log('Server responded with data:', error.response.data);
+            console.log('Status code:', error.response.status);
+            console.log('Headers:', error.response.headers);
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.log('No response received:', error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error setting up the request:', error.message);
+          }
           ToastAndroid.show('Failed To Submit Report', ToastAndroid.SHORT);
           console.log(error, 'error');
         });
@@ -601,11 +799,6 @@ const ReportSubmission = ({navigation, route}: any): any => {
                   marginTop: 5,
                   flexDirection: 'row',
                   justifyContent: 'space-between',
-                  // borderWidth: 1,
-                  // borderTopLeftRadius: 5,
-                  // borderTopRightRadius: 5,
-                  // borderBottomLeftRadius: 5,
-                  // borderBottomRightRadius: 5,
                   paddingVertical: 15,
                   paddingHorizontal: 15,
                   borderRadius: 15,
@@ -624,14 +817,6 @@ const ReportSubmission = ({navigation, route}: any): any => {
             </View>
           )}
           {/* Student */}
-          {/* <DropDownModalView
-            title="Student"
-            selectedValue={setStudent}
-            placeHolder="Select Student.."
-            value={student && Object.keys(student).length > 0 ? student.option : ""}
-            option={studentData}
-            modalHeading="Student"
-          /> */}
           <View style={{marginTop: 8}}>
             <Text
               style={{
@@ -664,14 +849,6 @@ const ReportSubmission = ({navigation, route}: any): any => {
             </View>
           </View>
           {/* Subject */}
-          {/* <DropDownModalView
-            title="Subject"
-            placeHolder="Select Subject"
-            selectedValue={setSubject}
-            value={subject && Object.keys(subject).length > 0 ? subject.option : ""}
-            option={subjectData}
-            modalHeading="Subject"
-          /> */}
           <View style={{marginTop: 8}}>
             <Text
               style={{
@@ -703,38 +880,183 @@ const ReportSubmission = ({navigation, route}: any): any => {
               </Text>
             </View>
           </View>
-          {/* Knowledge */}
+          {/* evaluation Knowledge /  Observation*/}
           {evaluation.option == 'Progress Report' ? (
             <>
               <DropDownModalView
-                title="1. Performance"
-                selectedValue={setPerQ1}
-                subTitle="Rate the student's understanding of this subject."
+                title="A. OBSERVATION"
+                selectedValue={setObQ1}
+                subTitle=" Did you (tutor) hold or carried out any form of examination/test/quiz for the student within this 3 months?"
                 placeHolder="Select Answer"
-                option={performanceOption}
+                option={OB1}
                 modalHeading="Select Answer"
               />
               <DropDownModalView
-                selectedValue={setPerQ2}
-                subTitle="How is student performance on homework?"
+                selectedValue={setObQ2}
+                subTitle="What is the student's learning style?"
                 placeHolder="Select Answer"
-                option={performanceOption}
+                option={OB2}
                 modalHeading="Select Answer"
               />
-              <DropDownModalView
-                selectedValue={setPerQ3}
-                subTitle="How well student's participate in learning session?"
-                placeHolder="Select Answer"
-                option={performanceOption}
-                modalHeading="Select Answer"
-              />
-              <DropDownModalView
-                selectedValue={setPerQ4}
-                subTitle="How well student's answer/explain/eleborates questions givenby tutor?"
-                placeHolder="Select Answer"
-                option={performanceOption}
-                modalHeading="Select Answer"
-              />
+              <>
+                <Text
+                  style={{
+                    color: Theme.gray,
+                    fontFamily: 'Circular Std Medium',
+                    fontSize: 14,
+                    marginTop: 8,
+                  }}>
+                  What significant improvement do you see in the student's
+                  performance compared to before?
+                </Text>
+                <View
+                  style={[
+                    styles.textAreaContainer,
+                    {
+                      width: '100%',
+                      // borderWidth: 1,
+                      borderRadius: 10,
+                      marginTop: 5,
+                    },
+                  ]}>
+                  <TextInput
+                    placeholder="significant improvement"
+                    multiline={true}
+                    maxLength={300}
+                    onChangeText={e => setObQ3(e)}
+                    style={[
+                      styles.textArea,
+                      {
+                        height: 80,
+                        padding: 8,
+                        color: 'black',
+                        fontFamily: 'Circular Std Medium',
+                      },
+                    ]}
+                    underlineColorAndroid="transparent"
+                    placeholderTextColor="grey"
+                  />
+                </View>
+              </>
+              <>
+                <Text
+                  style={{
+                    color: Theme.gray,
+                    fontFamily: 'Circular Std Medium',
+                    fontSize: 14,
+                    marginTop: 8,
+                  }}>
+                  Please suggest the parts that the student should improve and
+                  focus on?
+                </Text>
+                <View
+                  style={[
+                    styles.textAreaContainer,
+                    {
+                      width: '100%',
+                      // borderWidth: 1,
+                      borderRadius: 10,
+                      marginTop: 5,
+                    },
+                  ]}>
+                  <TextInput
+                    placeholder="student should focus on"
+                    multiline={true}
+                    maxLength={300}
+                    onChangeText={e => setObQ4(e)}
+                    style={[
+                      styles.textArea,
+                      {
+                        height: 80,
+                        padding: 8,
+                        color: 'black',
+                        fontFamily: 'Circular Std Medium',
+                      },
+                    ]}
+                    underlineColorAndroid="transparent"
+                    placeholderTextColor="grey"
+                  />
+                </View>
+              </>
+              <>
+                <Text
+                  style={{
+                    color: Theme.gray,
+                    fontFamily: 'Circular Std Medium',
+                    fontSize: 14,
+                    marginTop: 8,
+                  }}>
+                  Please elaborate your plans for the student in 3 months' time
+                  from now?
+                </Text>
+                <View
+                  style={[
+                    styles.textAreaContainer,
+                    {
+                      width: '100%',
+                      // borderWidth: 1,
+                      borderRadius: 10,
+                      marginTop: 5,
+                    },
+                  ]}>
+                  <TextInput
+                    placeholder="plan"
+                    multiline={true}
+                    maxLength={300}
+                    onChangeText={e => setObQ5(e)}
+                    style={[
+                      styles.textArea,
+                      {
+                        height: 80,
+                        padding: 8,
+                        color: 'black',
+                        fontFamily: 'Circular Std Medium',
+                      },
+                    ]}
+                    underlineColorAndroid="transparent"
+                    placeholderTextColor="grey"
+                  />
+                </View>
+              </>
+              <>
+                <Text
+                  style={{
+                    color: Theme.gray,
+                    fontFamily: 'Circular Std Medium',
+                    fontSize: 14,
+                    marginTop: 8,
+                  }}>
+                  Comment (Additional)
+                </Text>
+                <View
+                  style={[
+                    styles.textAreaContainer,
+                    {
+                      width: '100%',
+                      // borderWidth: 1,
+                      borderRadius: 10,
+                      marginTop: 5,
+                    },
+                  ]}>
+                  <TextInput
+                    placeholder="Comment"
+                    multiline={true}
+                    maxLength={300}
+                    onChangeText={e => setObQ6(e)}
+                    style={[
+                      styles.textArea,
+                      {
+                        height: 80,
+                        padding: 8,
+                        color: 'black',
+                        fontFamily: 'Circular Std Medium',
+                      },
+                    ]}
+                    underlineColorAndroid="transparent"
+                    placeholderTextColor="grey"
+                  />
+                </View>
+              </>
             </>
           ) : (
             <>
@@ -755,43 +1077,89 @@ const ReportSubmission = ({navigation, route}: any): any => {
               />
             </>
           )}
-          {/* Understanding */}
+          {/* Performance */}
           {evaluation.option == 'Progress Report' ? (
             <>
               <DropDownModalView
-                title="2. Attitude"
-                selectedValue={setattQ1}
-                subTitle="How can you rate the student attendence for 3 months?"
+                title="B. Performance"
+                selectedValue={setPerQ1}
+                subTitle="How well does the student understand this subject?"
                 placeHolder="Select Answer"
                 option={performanceOption}
                 modalHeading="Select Answer"
               />
               <DropDownModalView
-                selectedValue={setattQ2}
-                subTitle="How well do you intrect/communicate with student during/after class?"
+                selectedValue={setPerQ2}
+                subTitle="How well the student’s performance during these 3 months ?"
                 placeHolder="Select Answer"
-                option={performanceOption}
+                option={performanceOption2}
                 modalHeading="Select Answer"
               />
               <DropDownModalView
-                selectedValue={setattQ3}
-                subTitle="How well the student manage his/her time to complete his/her homework?"
+                selectedValue={setPerQ3}
+                subTitle="How well student’s participates in learning session?"
                 placeHolder="Select Answer"
-                option={performanceOption}
+                option={performanceOption3}
                 modalHeading="Select Answer"
               />
               <DropDownModalView
-                selectedValue={setattQ4}
-                subTitle="How well the student response were corrected?"
+                selectedValue={setPerQ4}
+                subTitle="How well student answers/explains/elaborates questions given by tutor?"
                 placeHolder="Select Answer"
-                option={performanceOption}
+                option={performanceOption4}
                 modalHeading="Select Answer"
               />
+              <DropDownModalView
+                selectedValue={setPerQ5}
+                subTitle="How would you rate the student's level of improvement over the past month?"
+                placeHolder="Select Answer"
+                option={performanceOption5}
+                modalHeading="Select Answer"
+              />
+              <>
+                <Text
+                  style={{
+                    color: Theme.gray,
+                    fontFamily: 'Circular Std Medium',
+                    fontSize: 14,
+                    marginTop: 8,
+                  }}>
+                  Comment (Additional)
+                </Text>
+                <View
+                  style={[
+                    styles.textAreaContainer,
+                    {
+                      width: '100%',
+                      // borderWidth: 1,
+                      borderRadius: 10,
+                      marginTop: 5,
+                    },
+                  ]}>
+                  <TextInput
+                    placeholder="Comment"
+                    multiline={true}
+                    maxLength={300}
+                    onChangeText={e => setPerQ6(e)}
+                    style={[
+                      styles.textArea,
+                      {
+                        height: 80,
+                        padding: 8,
+                        color: 'black',
+                        fontFamily: 'Circular Std Medium',
+                      },
+                    ]}
+                    underlineColorAndroid="transparent"
+                    placeholderTextColor="grey"
+                  />
+                </View>
+              </>
             </>
           ) : (
             <>
               <DropDownModalView
-                title="B. Understanding"
+                title="B. Performance"
                 selectedValue={setUnderstandingAnswer}
                 subTitle="How well does the student explain the basic concepts?"
                 placeHolder="Select Answer"
@@ -811,233 +1179,181 @@ const ReportSubmission = ({navigation, route}: any): any => {
           {evaluation.option == 'Progress Report' ? (
             <>
               <DropDownModalView
-                title="3. Result"
-                selectedValue={setRulQ1}
-                subTitle="Rate the student's performance in the quizes"
+                title="C. ATTITUDE"
+                selectedValue={setattQ1}
+                subTitle="How well student’s attendance for 3 months?"
                 placeHolder="Select Answer"
-                option={performanceOption}
+                option={attitudeOption}
+                modalHeading="Select Answer"
+              />
+              <DropDownModalView
+                selectedValue={setattQ2}
+                subTitle="How well do you interact/communicate with student during/after class?"
+                placeHolder="Select Answer"
+                option={attitudeOption2}
+                modalHeading="Select Answer"
+              />
+              <DropDownModalView
+                selectedValue={setattQ3}
+                subTitle="How well the student manages their task given ? "
+                placeHolder="Select Answer"
+                option={attitudeOption3}
+                modalHeading="Select Answer"
+              />
+              <DropDownModalView
+                selectedValue={setattQ4}
+                subTitle="How well student's willingness to learn ?"
+                placeHolder="Select Answer"
+                option={attitudeOption4}
+                modalHeading="Select Answer"
+              />
+              <DropDownModalView
+                selectedValue={setattQ5}
+                subTitle="What are the student's interests towards the subject?"
+                placeHolder="Select Answer"
+                option={attitudeOption5}
+                modalHeading="Select Answer"
+              />
+                <>
+                <Text
+                  style={{
+                    color: Theme.gray,
+                    fontFamily: 'Circular Std Medium',
+                    fontSize: 14,
+                    marginTop: 8,
+                  }}>
+                  Comment (Additional)
+                </Text>
+                <View
+                  style={[
+                    styles.textAreaContainer,
+                    {
+                      width: '100%',
+                      // borderWidth: 1,
+                      borderRadius: 10,
+                      marginTop: 5,
+                    },
+                  ]}>
+                  <TextInput
+                    placeholder="Comment"
+                    multiline={true}
+                    maxLength={300}
+                    onChangeText={e => setattQ6(e)}
+                    style={[
+                      styles.textArea,
+                      {
+                        height: 80,
+                        padding: 8,
+                        color: 'black',
+                        fontFamily: 'Circular Std Medium',
+                      },
+                    ]}
+                    underlineColorAndroid="transparent"
+                    placeholderTextColor="grey"
+                  />
+                </View>
+              </>
+            </>
+          ) : (
+            <>
+              <DropDownModalView
+                title="C. CRITICAL THINKING"
+                selectedValue={setCtAnswer}
+                subTitle="How well does the student solve different types of questions with minimal guidance?"
+                placeHolder="Select Answer"
+                option={CT}
+                modalHeading="Critical Thinking"
+              />
+              <DropDownModalView
+                selectedValue={setCtAnswer2}
+                subTitle="How well is the is the student able to answer questions using a variety of methods and concepts?"
+                placeHolder="Select Answer"
+                option={CT2}
+                modalHeading="Critical Thinking"
+              />
+            </>
+          )}
+
+          {/*  OBSERVATION */}
+          {evaluation.option == 'Progress Report' ? (
+            <>
+             <DropDownModalView
+                title="D. RESULT"
+                selectedValue={setRulQ1}
+                subTitle=" How well does the student performance in quizzes/test?"
+                placeHolder="Select Answer"
+                option={resultOption}
                 modalHeading="Select Answer"
               />
               <DropDownModalView
                 selectedValue={setRulQ2}
-                subTitle="How well the student prepare for the test and assignment?"
+                subTitle="How well the student prepares for test and assignment?"
                 placeHolder="Select Answer"
-                option={performanceOption}
+                option={resultOption2}
                 modalHeading="Select Answer"
               />
               <DropDownModalView
                 selectedValue={setRulQ3}
-                subTitle="How student's test score at school?"
+                subTitle="How is the student’s test score at school?"
                 placeHolder="Select Answer"
-                option={performanceOption}
+                option={resultOption3}
                 modalHeading="Select Answer"
               />
-              <DropDownModalView
-                selectedValue={setRulQ4}
-                subTitle="How student's learning prefrences, willingness to learn, and interest towords the subject?"
-                placeHolder="Select Answer"
-                option={performanceOption}
-                modalHeading="Select Answer"
-              />
+                <>
+                <Text
+                  style={{
+                    color: Theme.gray,
+                    fontFamily: 'Circular Std Medium',
+                    fontSize: 14,
+                    marginTop: 8,
+                  }}>
+                  Comment (Additional)
+                </Text>
+                <View
+                  style={[
+                    styles.textAreaContainer,
+                    {
+                      width: '100%',
+                      // borderWidth: 1,
+                      borderRadius: 10,
+                      marginTop: 5,
+                    },
+                  ]}>
+                  <TextInput
+                    placeholder="Comment"
+                    multiline={true}
+                    maxLength={300}
+                    onChangeText={e => setRulQ4(e)}
+                    style={[
+                      styles.textArea,
+                      {
+                        height: 80,
+                        padding: 8,
+                        color: 'black',
+                        fontFamily: 'Circular Std Medium',
+                      },
+                    ]}
+                    underlineColorAndroid="transparent"
+                    placeholderTextColor="grey"
+                  />
+                </View>
+              </>
             </>
           ) : (
             <>
-            <DropDownModalView
-              title="C. CRITICAL THINKING"
-              selectedValue={setCtAnswer}
-              subTitle="How well does the student solve different types of questions with minimal guidance?"
-              placeHolder="Select Answer"
-              option={CT}
-              modalHeading="Critical Thinking"
+              <DropDownModalView
+                title="D. OBSERVATION"
+                selectedValue={setObservationEReport}
+                subTitle="How well does the student solve different types of questions with minimal guidance?"
+                placeHolder="Select Answer"
+                option={Observation}
+                modalHeading="Observation"
               />
-            <DropDownModalView
-              selectedValue={setCtAnswer2}
-              subTitle="How well is the is the student able to answer questions using a variety of methods and concepts?"
-              placeHolder="Select Answer"
-              option={CT2}
-              modalHeading="Critical Thinking"
-              />
-             
-              </>
-          )}
-
-           {/*  OBSERVATION */}
-           {evaluation.option == 'Progress Report' ? (
-           <></>
-          ) : (
-            <>
-            <DropDownModalView
-              title="D. OBSERVATION"
-              selectedValue={setObservationEReport}
-              subTitle="How well does the student solve different types of questions with minimal guidance?"
-              placeHolder="Select Answer"
-              option={Observation}
-              modalHeading="Observation"
-              />
-             
-              </>
+            </>
           )}
 
           {evaluation.option == 'Progress Report' ? (
             <>
-              <Text
-                style={{
-                  fontSize: 16,
-                  color: 'black',
-                  fontFamily: 'Circular Std Bold',
-                }}>
-                4. Observation
-              </Text>
-              <Text
-                style={{
-                  color: Theme.gray,
-                  fontFamily: 'Circular Std Medium',
-                  fontSize: 14,
-                }}>
-                Did you (tutor) hold or carried out any form of
-                eximination/test/quiz for student within this 3 months?
-              </Text>
-              <View
-                style={[
-                  styles.textAreaContainer,
-                  {
-                    width: '100%',
-                    // borderWidth: 1,
-                    borderRadius: 15,
-                    marginTop: 5,
-                  },
-                ]}>
-                <TextInput
-                  placeholder="Enter answer"
-                  multiline={true}
-                  maxLength={300}
-                  onChangeText={e => setObservation({...observation, obv1: e})}
-                  style={[
-                    styles.textArea,
-                    {
-                      height: 80,
-                      padding: 8,
-                      color: 'black',
-                      fontFamily: 'Circular Std Medium',
-                    },
-                  ]}
-                  underlineColorAndroid="transparent"
-                  placeholderTextColor="grey"
-                />
-              </View>
-              <Text
-                style={{
-                  color: Theme.gray,
-                  fontFamily: 'Circular Std Medium',
-                  fontSize: 14,
-                  marginTop: 8,
-                }}>
-                How do you rate student's performance based on this test?
-              </Text>
-              <View
-                style={[
-                  styles.textAreaContainer,
-                  {
-                    width: '100%',
-                    // borderWidth: 1,
-                    borderRadius: 10,
-                    marginTop: 5,
-                  },
-                ]}>
-                <TextInput
-                  placeholder="Enter answer"
-                  multiline={true}
-                  maxLength={300}
-                  onChangeText={e => setObservation({...observation, obv2: e})}
-                  style={[
-                    styles.textArea,
-                    {
-                      height: 80,
-                      padding: 8,
-                      color: 'black',
-                      fontFamily: 'Circular Std Medium',
-                    },
-                  ]}
-                  underlineColorAndroid="transparent"
-                  placeholderTextColor="grey"
-                />
-              </View>
-              <Text
-                style={{
-                  color: Theme.gray,
-                  fontFamily: 'Circular Std Medium',
-                  fontSize: 14,
-                  marginTop: 8,
-                }}>
-                which topic(s) has the students showed some significant
-                improvement?
-              </Text>
-              <View
-                style={[
-                  styles.textAreaContainer,
-                  {
-                    width: '100%',
-                    // borderWidth: 1,
-                    borderRadius: 10,
-                    marginTop: 5,
-                  },
-                ]}>
-                <TextInput
-                  placeholder="Enter answer"
-                  multiline={true}
-                  maxLength={300}
-                  onChangeText={e => setObservation({...observation, obv3: e})}
-                  style={[
-                    styles.textArea,
-                    {
-                      height: 80,
-                      padding: 8,
-                      color: 'black',
-                      fontFamily: 'Circular Std Medium',
-                    },
-                  ]}
-                  underlineColorAndroid="transparent"
-                  placeholderTextColor="grey"
-                />
-              </View>
-              <Text
-                style={{
-                  color: Theme.gray,
-                  fontFamily: 'Circular Std Medium',
-                  fontSize: 14,
-                  marginTop: 8,
-                }}>
-                Can you determine and name the topic(s) that the student should
-                improve and focus on?
-              </Text>
-              <View
-                style={[
-                  styles.textAreaContainer,
-                  {
-                    width: '100%',
-                    // borderWidth: 1,
-                    borderRadius: 10,
-                    marginTop: 5,
-                  },
-                ]}>
-                <TextInput
-                  placeholder="Enter answer"
-                  multiline={true}
-                  maxLength={300}
-                  onChangeText={e => setObservation({...observation, obv4: e})}
-                  style={[
-                    styles.textArea,
-                    {
-                      height: 80,
-                      padding: 8,
-                      color: 'black',
-                      fontFamily: 'Circular Std Medium',
-                    },
-                  ]}
-                  underlineColorAndroid="transparent"
-                  placeholderTextColor="grey"
-                />
-              </View>
             </>
           ) : (
             <>
@@ -1071,7 +1387,7 @@ const ReportSubmission = ({navigation, route}: any): any => {
                 ]}>
                 <TextInput
                   placeholder="give score out of 10"
-                  keyboardType='number-pad'
+                  keyboardType="number-pad"
                   onChangeText={e =>
                     setQuestions({...questions, addationalAssessments: e})
                   }
