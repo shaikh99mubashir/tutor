@@ -677,6 +677,10 @@ const ReportSubmission = ({navigation, route}: any): any => {
         });
       return;
     }
+    if(questions.addationalAssessments >= '10'){
+      ToastAndroid.show('Please answer all questions', ToastAndroid.SHORT);
+      return
+    }
 
     if (
       !tutorId ||
@@ -771,6 +775,7 @@ const ReportSubmission = ({navigation, route}: any): any => {
             option={EvalutionOption}
             modalHeading="Select Report Type"
           />
+
           {/* First Class Date */}
           {evaluation.option == 'Progress Report' ? (
             <View style={{marginTop: 8}}>
@@ -1391,15 +1396,8 @@ const ReportSubmission = ({navigation, route}: any): any => {
                   onChangeText={e =>
                     setQuestions({...questions, addationalAssessments: e})
                   }
-                  // style={[
-                  //   styles.textArea,
-                  //   {
-                  //     width: Dimensions.get('window').width,
-                  //     padding: 8,
-                  //     color: 'black',
-                  //     fontFamily: 'Circular Std Medium',
-                  //   },
-                  // ]}
+                  style={{color:'black',fontSize: 16,
+                  fontFamily: 'Circular Std Medium',}}
                   underlineColorAndroid="transparent"
                   placeholderTextColor="grey"
                 />

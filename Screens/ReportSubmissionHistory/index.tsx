@@ -1552,7 +1552,7 @@ const ReportSubmissionHistory = ({navigation}: any) => {
                             fontSize: 12,
                             fontWeight: '600',
                           }}>
-                          {item.studentID}
+                          {item.student_id}
                         </Text>
                         <Text
                           style={{
@@ -1570,7 +1570,7 @@ const ReportSubmissionHistory = ({navigation}: any) => {
                             fontSize: 12,
                             fontWeight: '600',
                           }}>
-                          Subimited on {item.created_at}
+                          Subimited on: {item.submittedDate}
                         </Text>
                         <View
                           style={{
@@ -1617,6 +1617,7 @@ const ReportSubmissionHistory = ({navigation}: any) => {
               </Text>
             </View>
           )}
+          <View style={{margin:10}}></View>
         </View>
         <CustomLoader visible={loading} />
       </ScrollView>
