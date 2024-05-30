@@ -45,6 +45,7 @@ import TutorDetailsContext from '../context/tutorDetailsContext';
 import axios from 'axios';
 import {Base_Uri} from '../constant/BaseUri';
 import AttendedClassRecords from '../Screens/AttendedClassRecords';
+import ScheduleSuccessfully from '../Screens/ScheduleSuccessfully';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -501,6 +502,11 @@ function AppNavigation() {
           options={{headerShown: false}}
           name="ClassTimerCount"
           component={ClassTimerCount}
+        />
+        <Stack.Screen
+          options={{headerShown: false}}
+          name="ScheduleSuccessfully"
+          component={ScheduleSuccessfully}
         />
         <Stack.Screen
           options={{headerShown: false}}

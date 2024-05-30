@@ -285,7 +285,7 @@ function AddClass({navigation}: any) {
               style={[styles.textType1, {fontSize: 18, fontWeight:'600'}]}>
             Session {index + 1}
           </Text>
-          <TouchableOpacity style={{paddingRight:15, }} onPress={() => handleFilterPress(index)}>
+          <TouchableOpacity  activeOpacity={0.8} style={{paddingRight:15, }} onPress={() => handleFilterPress(index)}>
             <Image
               source={require('../../Assets/Images/delicon.png')}
               resizeMode="contain"
@@ -585,7 +585,8 @@ function AddClass({navigation}: any) {
           ToastAndroid.show(res.data.message, ToastAndroid.SHORT);
           return;
         }
-        navigation.navigate('Schedule', classesss?.classes[0]?.startTime);
+        navigation.navigate('ScheduleSuccessfully')
+        // navigation.navigate('Schedule', classesss?.classes[0]?.startTime);
         ToastAndroid.show(res?.data?.message, ToastAndroid.SHORT);
       })
       .catch(error => {
@@ -706,6 +707,7 @@ const previousRouteName = navigation.getState().routes[navigation.getState().rou
                   marginBottom: 60,
                 }}>
                 <TouchableOpacity
+                activeOpacity={0.8}
                   onPress={() => addClass()}
                   style={{
                     backgroundColor: Theme.gray,
@@ -749,6 +751,7 @@ const previousRouteName = navigation.getState().routes[navigation.getState().rou
                 bottom: 20,
               }}>
               <TouchableOpacity
+               activeOpacity={0.8}
                 onPress={() => confirmClass()}
                 style={{
                   backgroundColor: Theme.darkGray,

@@ -97,8 +97,6 @@ const Notifications = ({ navigation }: any) => {
   const getScheduleNotification = () => {
 
     if (refresh) {
-
-
       axios.get(`${Base_Uri}api/classScheduleStatusNotifications/${tutorDetails.tutorId}`).then((res) => {
         let { data } = res
         setScheduleNotification(data.record)
@@ -118,7 +116,7 @@ const Notifications = ({ navigation }: any) => {
 
 
   const navigateToOtherScreen = (item: any) => {
-
+    
     if (item?.notificationType == "Submit Evaluation Report" || item?.notificationType == "Submit Progress Report") {
       navigation.navigate("ReportSubmission", item)
       axios.get(`${Base_Uri}api/updateNotificationStatus/${item.notificationID}/old`).then((res) => {
@@ -147,7 +145,21 @@ const Notifications = ({ navigation }: any) => {
       }).catch((error) => {
         ToastAndroid.show("Nework Error", ToastAndroid.SHORT)
       })
-    } else {
+    }
+    else if(item?.notificationType == "Schedule Class"){
+      navigation.navigate('AddClass')
+      axios.get(`${Base_Uri}api/updateNotificationStatus/${item.notificationID}/old`).then((res) => {
+
+        let updateNotifications = notification.filter((e: any, i: number) => {
+          return e.notificationID !== item?.notificationID
+        })
+
+        setNotification(updateNotifications)
+      }).catch((error) => {
+        ToastAndroid.show("Nework Error", ToastAndroid.SHORT)
+      })
+    } 
+    else {
       item.status = "attended"
       item.id = item?.class_schedule_id
       // navigation.navigate("EditAttendedClass", { data: item })
@@ -178,7 +190,8 @@ const Notifications = ({ navigation }: any) => {
             data={totalNotifications || []}
             nestedScrollEnabled={true}
             renderItem={({ item, index }: any) => {
-
+              console.log("item=======>",item);
+              
               return (
                 <TouchableOpacity
                   onPress={() => navigateToOtherScreen(item)}
@@ -223,7 +236,16 @@ const Notifications = ({ navigation }: any) => {
                           marginTop: 10,
                           fontFamily: 'Circular Std Medium'
                         }}>
-                        {item.notificationMessage ?? `Update Schedule Class, Tutor Name: ${tutorDetails?.full_name}, Student Name: ${item?.studentName}, Subject Name: ${item?.subjectName}`}
+                        {`Student Name: ${item?.studentName} `}
+                      </Text>
+                      <Text
+                        style={{
+                          color: Theme.black,
+                          fontSize: 14,
+                          fontWeight: '600',
+                          fontFamily: 'Circular Std Medium'
+                        }}>
+                        {`Subject Name: ${item?.subjectName} `}
                       </Text>
                       <Text
                         style={{
