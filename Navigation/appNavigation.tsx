@@ -46,6 +46,7 @@ import axios from 'axios';
 import {Base_Uri} from '../constant/BaseUri';
 import AttendedClassRecords from '../Screens/AttendedClassRecords';
 import ScheduleSuccessfully from '../Screens/ScheduleSuccessfully';
+import HomeIcon from '../SVGs/Home';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -213,14 +214,15 @@ function BottomNavigation({navigation,route}: any) {
                         flexDirection: 'row',
                         // backgroundColor:'#1FC07D',
                       }}>
-                      <Image
+                      {/* <Image
                         source={require('../Assets/Images/HomeBlue.png')}
                         resizeMode="contain"
                         style={{
                           height: 100,
                           width: 100,
                         }}
-                      />
+                      /> */}
+                      <HomeIcon/>
                     </View>
                   ) : (
                     <View
@@ -229,14 +231,7 @@ function BottomNavigation({navigation,route}: any) {
                         justifyContent: 'center',
                         flexDirection: 'row',
                       }}>
-                      <Image
-                        source={require('../Assets/Images/HomeBlue.png')}
-                        resizeMode="contain"
-                        style={{
-                          height: 100,
-                          width: 100,
-                        }}
-                      />
+                      <HomeIcon/>
                     </View>
                   )}
                 </View>

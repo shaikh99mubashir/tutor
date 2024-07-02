@@ -4,7 +4,7 @@ import {Theme} from '../../constant/theme';
 
 const ScheduleSuccessfully = ({navigation}:any) => {
   return (
-    <View style={{backgroundColor: '#4c65fe', height: '100%'}}>
+    <View style={{backgroundColor: Theme.darkGray, height: '100%'}}>
       <View
         style={{
           justifyContent: 'center',
@@ -19,8 +19,8 @@ const ScheduleSuccessfully = ({navigation}:any) => {
             height: 350,
           }}
         />
-        <View style={{marginTop:60}}></View>
-        <Text style={styles.textType3}>
+        <View style={{marginTop:20}}></View>
+        <Text style={[styles.textType3,{fontSize:16}]}>
           Class schedule has been added successfully
         </Text>
       </View>
@@ -36,12 +36,12 @@ const ScheduleSuccessfully = ({navigation}:any) => {
                 onPress={() =>  navigation.replace("Main")}
                 style={{
                   backgroundColor: Theme.white,
-                  padding: 15,
+                  padding: 10,
                   borderRadius: 10,
-                  width: '90%',
+                  width: '80%',
                 }}>
                 <Text
-                  style={[styles.textType3,{color:'#4c65fe'}]}>
+                  style={[styles.textType3,{color:Theme.darkGray,fontSize:16}]}>
                   Back To DashBoard
                 </Text>
               </TouchableOpacity>
