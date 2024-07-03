@@ -40,10 +40,6 @@ const Signup = ({ navigation, route }: any) => {
 
   let tutorDetail = context?.tutorDetails
   const handleLoginPress = () => {
-    // if (!name) {
-    //   ToastAndroid.show('Kindly Enter Image', ToastAndroid.SHORT);
-    //   return;
-    // }
     if (!fullName) {
       ToastAndroid.show('Kindly Enter Full Name', ToastAndroid.SHORT);
       return;
@@ -57,11 +53,6 @@ const Signup = ({ navigation, route }: any) => {
       ToastAndroid.show('Kindly Accept Terms and Services', ToastAndroid.SHORT);
       return;
     }
-
-    // if (!phoneNumber) {
-    //   ToastAndroid.show('Kindly Enter Phonenumber', ToastAndroid.SHORT);
-    //   return;
-    // }
 
     let emailReg = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/;
 
