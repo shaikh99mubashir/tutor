@@ -51,7 +51,7 @@ function JobTicket({ navigation, route }: any) {
   let { jobTicketBanner, setJobTicketBanner } = bannerCont;
   let loginData: LoginAuth;
   const [isSearchItems, setIsSearchItems] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false);
   const tutor = useContext(TutorDetailsContext);
   const [modalVisible, setModalVisible] = useState(false);
@@ -99,7 +99,7 @@ function JobTicket({ navigation, route }: any) {
   const onRefresh = React.useCallback(() => {
     if (!refreshing) {
       // setRefreshing(true);
-      setLoading(true);
+      // setLoading(true);
       setTimeout(() => {
         setRefreshing(false);
         setOpenPPModal(true);
@@ -267,10 +267,10 @@ function JobTicket({ navigation, route }: any) {
         }
       })
       .catch(error => {
-        ToastAndroid.show(
-          'Internal Server Error getTutorDetailByID ',
-          ToastAndroid.SHORT,
-        );
+        // ToastAndroid.show(
+        //   'Internal Server Error getTutorDetailByID ',
+        //   ToastAndroid.SHORT,
+        // );
       });
   };
 
@@ -308,10 +308,10 @@ function JobTicket({ navigation, route }: any) {
         })
         .catch(error => {
           setLoading(false);
-          ToastAndroid.show(
-            'Internal Server Error ticketsAPI1',
-            ToastAndroid.SHORT,
-          );
+          // ToastAndroid.show(
+          //   'Internal Server Error ticketsAPI1',
+          //   ToastAndroid.SHORT,
+          // );
         });
 
       return;
@@ -327,10 +327,10 @@ function JobTicket({ navigation, route }: any) {
         })
         .catch(error => {
           setLoading(false);
-          ToastAndroid.show(
-            'Internal Server Error ticketsAPI',
-            ToastAndroid.SHORT,
-          );
+          // ToastAndroid.show(
+          //   'Internal Server Error ticketsAPI',
+          //   ToastAndroid.SHORT,
+          // );
         });
     }
   };
@@ -360,10 +360,10 @@ function JobTicket({ navigation, route }: any) {
           setLoading(false);
         })
         .catch((error) => {
-          ToastAndroid.show(
-            'Internal Server Error getTutorOffers filter DATA',
-            ToastAndroid.SHORT,
-          );
+          // ToastAndroid.show(
+          //   'Internal Server Error getTutorOffers filter DATA',
+          //   ToastAndroid.SHORT,
+          // );
           setLoading(false);
         });
       return;
@@ -377,17 +377,17 @@ function JobTicket({ navigation, route }: any) {
         setLoading(false);
       })
       .catch(error => {
-        ToastAndroid.show(
-          'Internal Server Error getTutorOffers3',
-          ToastAndroid.SHORT,
-        );
+        // ToastAndroid.show(
+        //   'Internal Server Error getTutorOffers3',
+        //   ToastAndroid.SHORT,
+        // );
         setLoading(false);
       });
   };
 
   useEffect(() => {
     getTutorId();
-  }, [focus]);
+  }, [focus,loading]);
 
   useEffect(() => {
     if (tutorId) {
@@ -540,8 +540,6 @@ function JobTicket({ navigation, route }: any) {
                 style={[
                   styles.textType3,
                   {
-                    // color: '#003E9C',
-                    // backgroundColor: '#298CFF33',
                     color: item.mode == 'online'? Theme.darkGray : '#1FC07D',
                     backgroundColor: item.mode == 'online'? '#298CFF33' : Theme.lightGreen,
                     fontFamily: 'Circular Std Medium',
@@ -612,7 +610,6 @@ function JobTicket({ navigation, route }: any) {
                   flexDirection: 'row',
                   gap: 10,
                 }}>
-                {/* <Image source={require('../../Assets/Images/preftutor.png')} /> */}
                 <FontAwesome name="user-o" size={18} color={'#298CFF'} />
                 <Text style={[styles.textType3,{fontFamily: 'Circular Std Medium',color:Theme.ironsidegrey1}]}>Pref. Tutor</Text>
               </View>
@@ -1092,16 +1089,6 @@ function JobTicket({ navigation, route }: any) {
             </View>
         ) : (
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-            {/* <Text
-              style={{
-                fontWeight: 'bold',
-                fontSize: 16,
-                color: Theme.black,
-                textAlign: 'center',
-              }}>
-              No Data Found
-            </Text> */}
-
             <Image
               source={require('../../Assets/Images/nojobavailable.png')}
               style={{ width: 300, height: 300 }}
@@ -1119,7 +1106,7 @@ function JobTicket({ navigation, route }: any) {
       .get(`${Base_Uri}api/bannerAds`)
       .then(({ data }) => { })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
@@ -1181,9 +1168,9 @@ function JobTicket({ navigation, route }: any) {
       />
 
       <ScrollView
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
+        // refreshControl={
+        //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        // }
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled>
         <View style={{ paddingHorizontal: 15, marginTop: 20 }}>
@@ -1249,81 +1236,13 @@ function JobTicket({ navigation, route }: any) {
             </Modal>
           </View>
         )}
-      {/* <Modal visible={modalVisible} animationType="fade" transparent={true}>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            backgroundColor: 'rgba(0,0,0,0.5)',
-          }}>
-          <View
-            style={[
-              styles.modalContainer,
-              { padding: 30, marginHorizontal: 40 },
-            ]}>
-            <Text
-              style={{
-                color: Theme.darkGray,
-                fontSize: 16,
-                fontWeight: 'bold',
-                fontFamily: 'Circular Std Medium',
-                lineHeight: 30,
-              }}>
-              You have been Verified!
-            </Text>
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-                gap: 10,
-                marginTop: 20,
-                marginBottom: 20,
-              }}>
-              <TouchableOpacity
-                onPress={() => HandelGoToDashboard()}
-                activeOpacity={0.8}
-                style={{
-                  borderWidth: 1,
-                  paddingVertical: 10,
-                  borderRadius: 10,
-                  borderColor: Theme.lightGray,
-                  alignItems: 'center',
-                  width: '90%',
-                  backgroundColor: Theme.darkGray,
-                }}>
-                <Text
-                  style={{
-                    color: 'white',
-                    fontSize: 14,
-                    fontFamily: 'Circular Std Medium',
-                  }}>
-                  Go To Dashboard
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      </Modal> */}
+      
       <BackToDashboard
         modalVisible={modalVisible}
         handleGoToDashboard={() => HandelGoToDashboard()}
       />
       <CustomLoader visible={loading} />
-      {/* <Modal visible={loading} animationType="fade" transparent={true}>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'rgba(0,0,0,0.5)',
-          }}>
-          <Image
-            source={require('../../Assets/Images/SIFU.gif')}
-            style={{ width: 150, height: 150 }}
-          />
-        </View>
-      </Modal> */}
+     
     </View>
   );
 }

@@ -7,7 +7,7 @@ import {CommonActions, useIsFocused} from '@react-navigation/native';
 //#0f58cb
 
 function BackToDashboard({ route,navigation }: any) {
-    let data = route.params
+    let data = route?.params
     // const navigation: any = useNavigation()
     console.log("navigation",navigation.canGoBack);
     
