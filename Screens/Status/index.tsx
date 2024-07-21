@@ -16,6 +16,7 @@ import axios from 'axios';
 import {Base_Uri} from '../../constant/BaseUri';
 import StudentContext from '../../context/studentContext';
 import CustomLoader from '../../Component/CustomLoader';
+import CustomButton from '../../Component/CustomButton';
 
 const Status = ({navigation, route}: any) => {
   let data = route.params;
@@ -169,7 +170,7 @@ const Status = ({navigation, route}: any) => {
           />
 
           {/* Comment */}
-          <View style={{marginBottom: 100}}>
+          <View style={{marginBottom: 20}}>
             <Text
               style={{
                 color: Theme.black,
@@ -207,10 +208,12 @@ const Status = ({navigation, route}: any) => {
               />
             </View>
           </View>
+          <CustomButton btnTitle='Submit'   onPress={handleEditStatus} />
+          <View style={{marginBottom:20}}></View>
         </View>
       </ScrollView>
       {/* Submit Button */}
-      <View
+      {/* <View
         style={{
           backgroundColor: Theme.white,
           position: 'absolute',
@@ -244,7 +247,7 @@ const Status = ({navigation, route}: any) => {
             </Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </View> */}
       <CustomLoader visible={loading} />
     </View>
   );

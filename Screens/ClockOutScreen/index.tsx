@@ -9,6 +9,7 @@ import {
   BackHandler,
   ToastAndroid,
   ActivityIndicator,
+  StyleSheet,
 } from 'react-native';
 import {Theme} from '../../constant/theme';
 import Header from '../../Component/Header';
@@ -22,6 +23,7 @@ import TutorDetailForm from '../TutorDetailForm';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import CustomLoader from '../../Component/CustomLoader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import CustomButton from '../../Component/CustomButton';
 
 function ClockOut({navigation, route}: any) {
   const [loading, setLoading] = useState(false);
@@ -211,8 +213,137 @@ function ClockOut({navigation, route}: any) {
           />
         </MapView>
       )}
+            <View style={{paddingHorizontal: 25}}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={{
+            borderWidth: 1,
+            borderRadius: 20,
+            marginBottom: 100,
+            padding: 20,
+            borderColor: Theme.shinyGrey,
+            borderBottomColor: Theme.shinyGrey,
+            backgroundColor: Theme.white,
+            position: 'absolute',
+            bottom: 0,
+            width: '100%',
+            alignSelf: 'center',
+          }}>
+          <View
+            style={{
+              paddingBottom: 20,
+            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 20,
+              }}>
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  gap: 40,
+                }}>
+                <Text
+                  style={[
+                    styles.textType3,
+                    {
+                      color: Theme.IronsideGrey,
+                      fontFamily: 'Circular Std Book',
+                    },
+                  ]}>
+                  Time
+                </Text>
+                <Text
+                  style={[
+                    styles.textType3,
+                    {
+                      color: Theme.IronsideGrey,
+                      fontFamily: 'Circular Std Book',
+                    },
+                  ]}>
+                  :
+                </Text>
+              </View>
 
-      <TouchableOpacity
+              <Text
+                style={[
+                  styles.textType1,
+                  {fontSize: 18, textTransform: 'capitalize'},
+                ]}>
+                  {data.startHour.toString().length == 1
+              ? `0${data.startHour}`
+              : data.startHour}
+            :
+            {data.startMinutes.toString().length == 1
+              ? `0${data?.startMinutes}`
+              : data.startMinutes}
+           {' '} - {' '}
+            {data.endHour.toString().length == 1
+              ? `0${data.endHour}`
+              : data.endHour}
+            :
+            {data.endMinutes.toString().length == 1
+              ? `0${data.endMinutes}`
+              : data.endMinutes}
+            
+              </Text>
+            </View>
+            <View
+              style={{
+                gap: 20,
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: 10,
+              }}>
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  gap: 15,
+                }}>
+                <Text
+                  style={[
+                    styles.textType3,
+                    {
+                      color: Theme.IronsideGrey,
+                      fontFamily: 'Circular Std Book',
+                    },
+                  ]}>
+                  Duration
+                </Text>
+                <Text
+                  style={[
+                    styles.textType3,
+                    {
+                      color: Theme.IronsideGrey,
+                      fontFamily: 'Circular Std Book',
+                    },
+                  ]}>
+                  :
+                </Text>
+              </View>
+              <Text
+                style={[
+                  styles.textType1,
+                  {fontSize: 18, textTransform: 'capitalize'},
+                ]}>
+                 {data.hour} hours  {data.minutes} minutes
+              </Text>
+            </View>
+          </View>
+          <View style={{margin: 5}}></View>
+          <CustomButton
+            btnTitle="Clock Out"
+            onPress={() => handleClockOutPress()}
+          />
+        </TouchableOpacity>
+      </View>
+
+      {/* <TouchableOpacity
         style={{
           borderWidth: 1,
           borderColor: Theme.lightGray,
@@ -293,10 +424,28 @@ function ClockOut({navigation, route}: any) {
             Clock Out
           </Text>
         </TouchableOpacity>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <CustomLoader visible={loading} />
     </View>
   );
 }
 
 export default ClockOut;
+
+const styles = StyleSheet.create({
+  textType3: {
+    color: Theme.Dune,
+    fontWeight: '500',
+    fontSize: 16,
+    fontFamily: 'Circular Std Medium',
+    fontStyle: 'normal',
+  },
+  textType1: {
+    fontWeight: '500',
+    fontSize: 26,
+    color: Theme.Black,
+    fontFamily: 'Circular Std Medium',
+    lineHeight: 24,
+    fontStyle: 'normal',
+  },
+});

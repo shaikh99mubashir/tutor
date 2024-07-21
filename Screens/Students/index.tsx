@@ -36,8 +36,8 @@ const Students = ({ navigation }: any) => {
   let { tutorDetails } = tutorDetailsContext
 
 
-  console.log("student student",student);
-  
+  console.log("student student", student);
+
 
 
   const [students, setstudents] = useState([]);
@@ -150,7 +150,7 @@ const Students = ({ navigation }: any) => {
 
   return (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
-        <CustomLoader visible={loading} />
+      <CustomLoader visible={loading} />
       <Header title="Student" backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <View style={{ paddingHorizontal: 15 }}>
@@ -185,59 +185,158 @@ const Students = ({ navigation }: any) => {
 
           {students && students.length > 0 ? (
             <View>
-            <FlatList
-              data={searchText && foundName.length > 0 ? foundName : students}
-              nestedScrollEnabled
-              renderItem={({ item, index }: any) => {
-                return (
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('StudentsDetails', item)}
-                    activeOpacity={0.8}
-                    key={index}
-                    style={{
-                      borderWidth: 1,
-                      paddingHorizontal: 15,
-                      marginTop: 10,
-                      paddingVertical: 15,
-                      borderRadius: 10,
-                      gap: 10,
-                      marginRight: 10,
-                      borderColor: '#eee',
-                      width: '100%',
-                    }}>
-                    <View
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'row',
-                        gap: 15,
-                        alignItems: 'center',
-                      }}>
-                      <Image
-                        source={require('../../Assets/Images/woman.png')}
+              <FlatList
+                data={searchText && foundName.length > 0 ? foundName : students}
+                nestedScrollEnabled
+                renderItem={({ item, index }: any) => {
+                  console.log("item", item);
+
+                  return (
+                    <>
+                      <TouchableOpacity
+                        onPress={() => navigation.navigate('StudentsDetails', item)}
+                        activeOpacity={0.8}
                         style={{
-                          width: 45,
-                          height: 45,
-                          borderRadius: 50,
-                        }}
-                      />
-                      <View>
-                        <Text style={{ color: Theme.gray, fontSize: 16,fontFamily: 'Circular Std Medium', }}>
-                          {item.uid}
-                        </Text>
-                        <Text style={{ color: Theme.black, fontSize: 18,fontFamily: 'Circular Std Medium', }}>
-                          {item.studentName}
-                        </Text>
-                      </View>
-                    </View>
-                  </TouchableOpacity>
-                );
-              }}
-            />
+                          borderWidth: 1,
+                          borderRadius: 20,
+                          marginBottom: 10,
+                          paddingHorizontal: 20,
+                          paddingVertical: 10,
+                          borderColor: Theme.shinyGrey,
+                          borderBottomColor: Theme.shinyGrey,
+                          backgroundColor: Theme.white,
+                        }}>
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            width: '100%',
+                            borderColor: Theme.shinyGrey,
+                          }}>
+                          <View
+                            style={{ flexDirection: 'row', alignItems: 'center', gap: 15 }}>
+                            <View>
+                              {item.studentGender.toLowerCase() == 'male' ?
+                                <Image source={require('../../Assets/Images/StudentMale.png')} />
+                                :
+                                <Image source={require('../../Assets/Images/StudentFemale.png')} />
+
+                              }
+                            </View>
+                            <View>
+                              <Text style={[styles.textType3, { color: Theme.Primary }]}>
+                                {item.uid}
+                              </Text>
+                              <Text
+                                style={[
+                                  styles.textType1,
+                                  { lineHeight: 30, fontSize: 22 },
+                                ]}>
+                                {item.studentName}
+                              </Text>
+                            </View>
+                          </View>
+                        </View>
+
+                        <View
+                          style={{
+                            borderWidth: 0.4,
+                            borderColor: Theme.lineColor,
+                            marginTop: 15,
+                          }}></View>
+                        <View
+                          style={{
+                            paddingVertical: 10,
+                          }}>
+                          <View
+                            style={{
+                              justifyContent: 'space-between',
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                            }}>
+                            <View
+                              style={{
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                flexDirection: 'row',
+                                gap: 10,
+                              }}>
+                              <AntDesign name="copy1" size={20} color={Theme.darkGray} />
+                              <Text
+                                style={[styles.textType3, { color: Theme.IronsideGrey }]}>
+                                Subject Subscribed
+                              </Text>
+                            </View>
+                            <View style={{
+                              backgroundColor: Theme.lightBlue, borderRadius: 50, paddingVertical: 2,
+                              width: 30,
+                              height: 30,
+                            }}>
+
+                              <Text
+                                style={[
+                                  styles.textType1,
+                                  {
+                                    color: Theme.DarkBlue,
+                                    textAlign: 'center',
+                                    fontSize: 18,
+                                  },
+                                ]}>
+                                {item?.subjectCount}
+                              </Text>
+                            </View>
+                          </View>
+                        </View>
+                      </TouchableOpacity>
+                      {/* <TouchableOpacity
+                        onPress={() => navigation.navigate('StudentsDetails', item)}
+                        activeOpacity={0.8}
+                        key={index}
+                        style={{
+                          borderWidth: 1,
+                          paddingHorizontal: 15,
+                          marginTop: 10,
+                          paddingVertical: 15,
+                          borderRadius: 10,
+                          gap: 10,
+                          marginRight: 10,
+                          borderColor: '#eee',
+                          width: '100%',
+                        }}>
+                        <View
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: 15,
+                            alignItems: 'center',
+                          }}>
+                          <Image
+                            source={require('../../Assets/Images/woman.png')}
+                            style={{
+                              width: 45,
+                              height: 45,
+                              borderRadius: 50,
+                            }}
+                          />
+                          <View>
+                            <Text style={{ color: Theme.gray, fontSize: 16, fontFamily: 'Circular Std Medium', }}>
+                              {item.uid}
+                            </Text>
+                            <Text style={{ color: Theme.black, fontSize: 18, fontFamily: 'Circular Std Medium', }}>
+                              {item.studentName}
+                            </Text>
+                          </View>
+                        </View>
+                      </TouchableOpacity> */}
+                    </>
+                  );
+                }}
+              />
             </View>
           ) : (
             <View style={{ marginTop: 35 }}>
               <Text
-                style={{ color: Theme.black, fontSize: 14, textAlign: 'center',fontFamily: 'Circular Std Black' }}>
+                style={{ color: Theme.black, fontSize: 14, textAlign: 'center', fontFamily: 'Circular Std Black' }}>
                 No Student Found
               </Text>
             </View>
@@ -289,4 +388,18 @@ const Students = ({ navigation }: any) => {
 
 export default Students;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  textType3: {
+    color: Theme.Dune,
+    fontSize: 16,
+    fontFamily: 'Circular Std Medium',
+  },
+  textType1: {
+    fontWeight: '500',
+    fontSize: 26,
+    color: Theme.Black,
+    fontFamily: 'Circular Std Medium',
+    lineHeight: 24,
+    fontStyle: 'normal',
+  },
+});

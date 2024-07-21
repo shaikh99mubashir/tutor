@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { Theme } from '../../constant/theme';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import Entypo from 'react-native-vector-icons/Entypo';
 export type Props = {
   navigation: any;
 };
@@ -46,16 +47,16 @@ const Header = (Props: any) => {
     }
   }
 
-  const  routeToRecordFilter = () =>{
+  const routeToRecordFilter = () => {
     navigation.navigate('Filter', "tutorrecords")
   }
 
 
   const previousRouteName = navigation?.getState().routes[navigation.getState().routes.length - 2]?.name;
 
-// console.log("Previous Route Name:", previousRouteName);
+  // console.log("Previous Route Name:", previousRouteName);
   const handleGoBack = () => {
-    if (previousRouteName ==  undefined) {
+    if (previousRouteName == undefined) {
       navigation.replace("Main", {
         screen: "Home",
       });
@@ -71,53 +72,35 @@ const Header = (Props: any) => {
       style={{
         backgroundColor: 'rgba(52, 52, 52, 0.0)',
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%',
         alignItems: 'center',
         marginTop: 10,
         paddingHorizontal: 15,
         borderBottomColor: 'grey',
-        borderBottomWidth: 1,
         height: 60,
         ...containerStyle
       }}>
       <>
-        {backBtn ? (
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'flex-start',
-              justifyContent: 'flex-start',
-            }}>
-            <TouchableOpacity style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)', padding: 10, borderRadius: 50 }}  onPress={() =>handleGoBack()}>
-              <Image source={require('../../Assets/Images/back.png')} style={{ width: 12, height: 12 }} resizeMode='contain' />
-            </TouchableOpacity>
-          </View>
-        ) : (
-          <View
-            style={{
-              flex: 1,
-            }}></View>
-        )}
 
-        {title ? (
-          <View style={{ flex: 2, alignItems: 'center' }}>
-            <Text
-              style={{
-                // fontFamily: 'Poppins-Regular',
-                fontSize: 22,
-                color: Theme.darkGray,
-                marginVertical: 0,
-                fontWeight: '600',
-                fontFamily: 'Circular Std Black',
-              }}>
-              {title}
-            </Text>
-          </View>
-        ) : (
-          <View style={{ flex: 2 }}>
-          </View>
-        )}
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'flex-start',
+            width:'100%'
+          }}>
+          {backBtn &&
+            <TouchableOpacity style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)', paddingRight: 10, borderRadius: 50 }} onPress={() => handleGoBack()}>
+              <Entypo name="chevron-left" size={25} color={'black'} />
+              {/* <Image source={require('../../Assets/Images/back.png')} style={{ width: 12, height: 12 }} resizeMode='contain' /> */}
+            </TouchableOpacity>
+          }
+          {title &&
+            <Text  style={[styles.textType1,{fontFamily:'Circular Std Bold',width:'100%'}]}>{title}</Text>
+          }
+        </View>
+
+
         {filter ? (
           <View style={{ flex: 1 }}>
             <TouchableOpacity
@@ -132,56 +115,56 @@ const Header = (Props: any) => {
 
             </TouchableOpacity>
           </View>
-        ) : 
-        recordsFilter ? (
-          <View style={{ flex: 1 }}>
-            <TouchableOpacity
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'flex-end',
-              }}
-              activeOpacity={0.8}
-              onPress={() => routeToRecordFilter()}>
-              <Image source={require('../../Assets/Images/funnel.png')} style={{ width: 20, height: 20 }} resizeMode='contain' />
+        ) :
+          recordsFilter ? (
+            <View style={{ flex: 1 }}>
+              <TouchableOpacity
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'flex-end',
+                }}
+                activeOpacity={0.8}
+                onPress={() => routeToRecordFilter()}>
+                <Image source={require('../../Assets/Images/funnel.png')} style={{ width: 20, height: 20 }} resizeMode='contain' />
 
-            </TouchableOpacity>
-          </View>
-        ) : 
-        addClass ? (
-          <View style={{ flex: 1 }}>
-            <TouchableOpacity
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'flex-end',
-              }}
-              activeOpacity={0.8}
-              onPress={() => { }}>
-              <Image source={require('../../Assets/Images/plus.png')} style={{ width: 25, height: 25 }} resizeMode='contain' />
-            </TouchableOpacity>
-          </View>
-        ) : plus ? <View style={{ flex: 1, alignItems: "flex-end" }}>
-          <TouchableOpacity
-            style={{
-              // flex: 1,
-              width: 24,
-              height: 24,
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: 100,
-              backgroundColor: Theme.darkGray,
-              padding: 5
-            }}
-            activeOpacity={0.8}
-            onPress={() => navigation.navigate('AddClass')}>
-            <Icon name={"plus"} size={14} color={Theme.white} />
-          </TouchableOpacity>
-        </View> : (
-          <View style={{ flex: 1 }}>
-            <Text></Text>
-          </View>
-        )}
+              </TouchableOpacity>
+            </View>
+          ) :
+            addClass ? (
+              <View style={{ flex: 1 }}>
+                <TouchableOpacity
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'flex-end',
+                  }}
+                  activeOpacity={0.8}
+                  onPress={() => { }}>
+                  <Image source={require('../../Assets/Images/plus.png')} style={{ width: 25, height: 25 }} resizeMode='contain' />
+                </TouchableOpacity>
+              </View>
+            ) : plus ? <View style={{ flex: 1, alignItems: "flex-end" }}>
+              <TouchableOpacity
+                style={{
+                  // flex: 1,
+                  width: 34,
+                  height: 34,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  borderRadius: 100,
+                  backgroundColor: Theme.darkGray,
+                  padding: 5
+                }}
+                activeOpacity={0.8}
+                onPress={() => navigation.navigate('AddClass')}>
+                <Icon name={"plus"} size={24} color={Theme.white} />
+              </TouchableOpacity>
+            </View> : (
+              <View style={{ flex: 1 }}>
+                <Text></Text>
+              </View>
+            )}
       </>
     </View>
   );
@@ -204,5 +187,13 @@ const styles = StyleSheet.create({
     width: 150,
     height: 40,
     alignSelf: 'center',
+  },
+  textType1: {
+    fontWeight: '500',
+    fontSize: 26,
+    color: Theme.Black,
+    fontFamily: 'Circular Std Medium',
+    // lineHeight: 24,
+    fontStyle: 'normal',
   },
 });

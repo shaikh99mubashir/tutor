@@ -39,6 +39,7 @@ import Money from '../../SVGs/Money';
 import Student from '../../SVGs/Student';
 import Clock from '../../SVGs/Clock';
 import Schedule from '../../SVGs/Schedule';
+import UpCommingCarousel from '../../Component/UpCommingCarousel';
 function Home({navigation, route}: any) {
   let key = route.key;
 
@@ -1148,11 +1149,12 @@ function Home({navigation, route}: any) {
                       alignItems: 'center',
                       gap: 10,
                     }}>
-                    <Image
-                      source={require('../../Assets/Images/woman.png')}
-                      resizeMode="contain"
-                      style={{width: 60, height: 60}}
-                    />
+                    {classInProcess?.item?.studentGender.toLowerCase() == 'male' ?
+                                <Image source={require('../../Assets/Images/StudentMale.png')} />
+                                :
+                                <Image source={require('../../Assets/Images/StudentFemale.png')} />
+
+                              }
                     <View style={{gap: 5}}>
                       {/* <Text style={[styles.textType3, { color: Theme.white, }]}>J9003560</Text> */}
                       <Text style={[styles.textType1, {color: Theme.white}]}>
@@ -1349,7 +1351,35 @@ function Home({navigation, route}: any) {
             </View>
           </View>
 
-          <Text
+          <View style={{margin: 8}}></View>
+        <View>
+          <View
+            style={{
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              marginTop: 20,
+              marginBottom: 10,
+            }}>
+            <Text style={[styles.textType1, {fontFamily: 'Circular Std Bold'}]}>
+              Upcoming Classes
+            </Text>
+          </View>
+          <View style={{margin: 3}}></View>
+          {upCommingClasses && upCommingClasses.length > 0 ? (
+          <View>
+            <UpCommingCarousel upCommingClassesdata={upCommingClasses}/>
+          </View>
+           ) : (
+            <View style={{marginTop: 35}}>
+              <Text style={[styles.textType3, {textAlign: 'center'}]}>
+                No UpComming Classes...
+              </Text>
+            </View>
+          )}
+        </View>
+        <View style={{margin: 8}}></View>
+
+          {/* <Text
             style={[
               styles.textType3,
               {marginTop: 20, fontWeight: '500', fontSize: 16},
@@ -1422,7 +1452,7 @@ function Home({navigation, route}: any) {
                             fontSize: 14,
                             marginTop: 10,
                           }}>
-                          {/* Date - {item?.date?.slice(0, 11)} */}
+                          
                           Date - {convertDateFormat(item.date)}
                         </Text>
                       </View>
@@ -1437,7 +1467,7 @@ function Home({navigation, route}: any) {
                 No UpComming Classes...
               </Text>
             </View>
-          )}
+          )} */}
         </ScrollView>
       </ScrollView>
       {openPPModal &&

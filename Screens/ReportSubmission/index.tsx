@@ -24,6 +24,7 @@ import StudentContext from '../../context/studentContext';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import CustomLoader from '../../Component/CustomLoader';
+import CustomButton from '../../Component/CustomButton';
 
 const ReportSubmission = ({ navigation, route }: any): any => {
   let data = route.params;
@@ -440,7 +441,7 @@ const ReportSubmission = ({ navigation, route }: any): any => {
   ];
   const knowledge = [
     {
-      option: ' Remember most concepts with minimal errors.',
+      option: 'Remember most concepts with minimal errors.',
     },
     {
       option: 'Remember basic concepts after receiving guidance. ',
@@ -797,9 +798,9 @@ const ReportSubmission = ({ navigation, route }: any): any => {
   return (
     <View style={{ backgroundColor: Theme.white, height: '100%' }}>
       <CustomLoader visible={loading} />
-      <Header title={evaluation.option} navigation={navigation} />
+      <Header title={evaluation.option} navigation={navigation} containerStyle={{ height: 80, flexDirection: 'column', paddingTop:15, }}/>
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{ paddingHorizontal: 15, marginBottom: 100 }}>
+        <View style={{ paddingHorizontal: 15, marginBottom: 60 }}>
           {/* Report Type */}
           {/* <DropDownModalView
             title="Report Type"
@@ -1518,10 +1519,13 @@ const ReportSubmission = ({ navigation, route }: any): any => {
               </View>
             </>
           )}
+          <View style={{margin:15}}/>
+          <CustomButton btnTitle='Submit Report' onPress={() => submitReport()}/>
         </View>
       </ScrollView>
       {/* Submit Button */}
-      <View
+
+      {/* <View
         style={{
           backgroundColor: Theme.white,
           position: 'absolute',
@@ -1564,7 +1568,7 @@ const ReportSubmission = ({ navigation, route }: any): any => {
             onChange={onChange}
           />
         )}
-      </View>
+      </View> */}
     </View>
   );
 };

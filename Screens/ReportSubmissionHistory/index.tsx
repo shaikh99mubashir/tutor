@@ -30,6 +30,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import bannerContext from '../../context/bannerContext';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import CustomLoader from '../../Component/CustomLoader';
+import CustomButton from '../../Component/CustomButton';
 const ReportSubmissionHistory = ({navigation}: any) => {
   // const [reportSubmission, setreportSubmission] = useState([]);
   // const [progressReport, setProgressReport] = useState([]);
@@ -1463,6 +1464,14 @@ const ReportSubmissionHistory = ({navigation}: any) => {
         navigation.navigate('ReportSubmissionHistory');
       }
   };
+  const [selectedItem, setSelectedItem] = useState(null);
+  console.log("selectedItem",selectedItem);
+  const handleItemPress = (item: any) => {
+    console.log('item===>',item);
+    
+    setSelectedItem(item.id === selectedItem ? null : item.id);
+    
+  };
 
   return pdfUri ? (
     <View style={{flex: 1}}>
@@ -1486,7 +1495,7 @@ const ReportSubmissionHistory = ({navigation}: any) => {
     </View>
   ) : (
     <View style={{backgroundColor: Theme.white, height: '100%'}}>
-      <Header title="Student Reports" backBtn navigation={navigation} />
+      <Header title="Student Reports" backBtn navigation={navigation }   containerStyle={{ height: 85, flexDirection: 'column', paddingTop: 20 }}/>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -1531,7 +1540,146 @@ const ReportSubmissionHistory = ({navigation}: any) => {
                 keyExtractor={(item: any) => item.id}
                 renderItem={({item, index}: any) => {
                   return (
-                    <View
+                    <>
+                      <TouchableOpacity activeOpacity={0.8} onPress={() => handleItemPress(item)}>
+                        <View
+                          style={{
+                            justifyContent: 'flex-end',
+                            alignItems: 'flex-end',
+                            position: 'relative',
+                            top: 18,
+                            zIndex: 100,
+                            left: -22,
+                          }}>
+                          <View
+                            style={{
+                              backgroundColor: item?.reportType?.toLowerCase() == 'progress report' ? Theme.Primary : Theme.SmaltBlue,
+                              padding: 8,
+                              borderRadius: 50,
+                              width: 150,
+                              alignItems: 'center',
+                            }}>
+                            <Text style={{ color: Theme.white, fontFamily: 'Circular Std Book' }}>{item?.reportType?.toLowerCase() == 'student evaluation report' ?'Evaluation Report':item?.reportType }</Text>
+                          </View>
+                        </View>
+                        <View
+                          style={{
+                            borderWidth: 1,
+                            borderRadius: 20,
+                            marginBottom: 0,
+                            paddingHorizontal: 20,
+                            paddingVertical: 10,
+                            borderColor: selectedItem === item.id ? Theme.darkGray : Theme.shinyGrey,
+                            // borderBottomColor: Theme.gray,
+                            backgroundColor: Theme.white,
+                          }}>
+                          <View
+                            style={{
+                              flexDirection: 'row',
+                              justifyContent: 'space-between',
+                              width: '100%',
+                              borderColor: Theme.shinyGrey,
+                            }}>
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                                gap: 15,
+                              }}>
+                              <View>
+                              {item?.studentGender?.toLowerCase() == 'male' ?
+                              <Image source={require('../../Assets/Images/StudentMale.png')} />
+                              :
+                              <Image source={require('../../Assets/Images/StudentFemale.png')} />
+                            
+                            }
+                              </View>
+                              <View>
+                                <Text
+                                  style={[
+                                    styles.textType3,
+                                    { color: Theme.Primary, fontSize: 14 },
+                                  ]}>
+                                  {item.student_id}
+                                </Text>
+                                <Text
+                                  style={[styles.textType1, { lineHeight: 30, fontSize: 18 }]}>
+                                  {item?.studentName}
+                                </Text>
+                              </View>
+                            </View>
+                          </View>
+
+                          <View
+                            style={{
+                              borderWidth: 0.4,
+                              borderColor: Theme.lineColor,
+                              marginTop: 15,
+                            }}></View>
+                          <View
+                            style={{
+                              paddingVertical: 10,
+                            }}>
+                            <View
+                              style={{
+                                justifyContent: 'space-between',
+                                flexDirection: 'row',
+                                alignItems: 'center',
+                              }}>
+                              <View
+                                style={{
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  flexDirection: 'row',
+                                  gap: 10,
+                                }}>
+                                <AntDesign name="calendar" size={20} color={Theme.darkGray} />
+                                <Text
+                                  style={[
+                                    styles.textType3,
+                                    {
+                                      color: Theme.IronsideGrey,
+                                      fontFamily: 'Circular Std Book',
+                                    },
+                                  ]}>
+                                  Submitted on
+                                </Text>
+                              </View>
+                              <View
+                                style={{
+                                  backgroundColor: Theme.shinyGrey,
+                                  paddingVertical: 8,
+                                  borderRadius: 6,
+                                  paddingHorizontal: 12,
+                                }}>
+                                <View
+                                  style={{
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    flexDirection: 'row',
+                                    gap: 10,
+                                  }}>
+                                  <Text
+                                    style={[
+                                      styles.textType3,
+                                      { color: Theme.darkGray, fontFamily: 'Circular Std Book' },
+                                    ]}>
+                                    {item.submittedDate}
+                                  </Text>
+                                </View>
+                              </View>
+                            </View>
+                          </View>
+                          <View style={{ marginVertical: selectedItem ? 10 : 0 }}>
+                            {selectedItem === item.id && <CustomButton btnTitle="Download" onPress={() =>
+                              item.reportType == "Student Evaluation Report"
+                                ?  handleGenerateAndDownloadPdf(item)
+                                : handleGenerateProgressReport(item)
+                            }/>}
+                          </View>
+                        </View>
+                      </TouchableOpacity>
+                    {/* <View
                       key={index}
                       style={{
                         borderWidth: 1,
@@ -1544,7 +1692,6 @@ const ReportSubmissionHistory = ({navigation}: any) => {
                         borderColor: '#eee',
                         width: '100%',
                       }}>
-                      {/* Avaiable Subject */}
                       <View style={{}}>
                         <Text
                           style={{
@@ -1604,7 +1751,8 @@ const ReportSubmissionHistory = ({navigation}: any) => {
                           </TouchableOpacity>
                         </View>
                       </View>
-                    </View>
+                    </View> */}
+                    </>
                   );
                 }}
               />
@@ -1678,4 +1826,20 @@ const ReportSubmissionHistory = ({navigation}: any) => {
 
 export default ReportSubmissionHistory;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  textType3: {
+    color: Theme.Dune,
+    fontWeight: '500',
+    fontSize: 16,
+    fontFamily: 'Circular Std Medium',
+    fontStyle: 'normal',
+  },
+  textType1: {
+    fontWeight: '500',
+    fontSize: 26,
+    color: Theme.Black,
+    fontFamily: 'Circular Std Medium',
+    lineHeight: 24,
+    fontStyle: 'normal',
+  },
+});

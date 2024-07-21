@@ -11,6 +11,7 @@ import PhoneInput from 'react-native-phone-number-input';
 import { Theme } from '../../constant/theme';
 import axios from 'axios';
 import { Base_Uri } from '../../constant/BaseUri';
+import CustomButton from '../../Component/CustomButton';
 
 const Login = ({ navigation }: any) => {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -58,11 +59,21 @@ const Login = ({ navigation }: any) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.headerText}>Enter your{'\n'}mobile number</Text>
-      <Text style={styles.subHeaderText}>
+      <Text style={[styles.headerText,{lineHeight:32}]}>Enter your{'\n'}Phone Number</Text>
+      {/* <Text style={styles.subHeaderText}>
         A verification code will be sent to{'\n'}this mobile Number
+      </Text> */}
+      <View style={{ margin: 5 }}></View>
+      <Text
+        style={[styles.textType1, { lineHeight: 20, color: Theme.IronsideGrey }]}>
+       A verification code will be sent to {'\n'}this
+        <Text style={[styles.textType1, { lineHeight: 20 }]}> Phone Number</Text>{' '}
+      
       </Text>
-      <PhoneInput
+      <View style={{ margin: 15 }}></View>
+      <Text style={styles.textType1}>Phone Number*</Text>
+      <View style={{ margin: 4 }}></View>
+      {/* <PhoneInput
         placeholder="Enter Your Number"
         defaultValue={phoneNumber}
         defaultCode="MY"
@@ -79,14 +90,59 @@ const Login = ({ navigation }: any) => {
           borderColor: 'transparent',
         }}
         onChangeFormattedText={text => setPhoneNumber(text)}
-      />
-      <TouchableOpacity onPress={handleLoginPress} style={styles.button}>
+      /> */}
+       <View>
+        <PhoneInput
+          // ref={phoneInput}
+          placeholder="149655271"
+          defaultValue={phoneNumber}
+          defaultCode="MY"
+          layout="first"
+          autoFocus={true}
+          textInputStyle={{
+            color: Theme.DustyGrey,
+            height: 50,
+            fontFamily: 'Circular Std Medium',
+            marginLeft: -5,
+            letterSpacing: 1.5,
+          }}
+          textInputProps={{ placeholderTextColor: Theme.DustyGrey }}
+          codeTextStyle={{
+            marginLeft: 0,
+            color: Theme.DustyGrey,
+            fontFamily: 'Circular Std Medium',
+            letterSpacing: 1.5,
+          }}
+          containerStyle={styles.phoneNumberView}
+          flagButtonStyle={{
+            borderRadius: 8,
+            borderWidth: 2,
+            borderColor: Theme.GhostWhite,
+            width: 70,
+            height: 40,
+            marginLeft: 10,
+            marginTop: 10,
+          }}
+          textContainerStyle={{
+            height: 60,
+            backgroundColor: 'white',
+            borderRadius: 10,
+            borderColor: Theme.GhostWhite,
+          }}
+          onChangeFormattedText={text => {
+            setPhoneNumber(text);
+          }}
+        />
+      </View>
+      {/* <TouchableOpacity onPress={handleLoginPress} style={styles.button}>
         {loading ? (
           <ActivityIndicator color={Theme.white} size="small" />
         ) : (
           <Text style={styles.buttonText}>Continue</Text>
         )}
-      </TouchableOpacity>
+      </TouchableOpacity> */}
+      <View style={{margin:10}}/>
+      <CustomButton btnTitle='Continue' loading={loading}  onPress={handleLoginPress}/>
     </View>
   );
 };
@@ -109,16 +165,16 @@ const styles = StyleSheet.create({
     marginTop: 14,
     fontFamily: 'Circular Std Book',
   },
-  phoneNumberView: {
-    marginTop: 20,
-    width: '100%',
-    backgroundColor: 'white',
-    borderColor: Theme.gray,
-    borderRadius: 10,
-    borderWidth: 1,
-    color: '#E5E5E5',
-    flexShrink: 22,
-  },
+  // phoneNumberView: {
+  //   marginTop: 20,
+  //   width: '100%',
+  //   backgroundColor: 'white',
+  //   borderColor: Theme.gray,
+  //   borderRadius: 10,
+  //   borderWidth: 1,
+  //   color: '#E5E5E5',
+  //   flexShrink: 22,
+  // },
   button: {
     borderWidth: 1,
     borderColor: Theme.white,
@@ -133,6 +189,27 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
     fontFamily: 'Poppins-Regular',
+  },
+  textType1: {
+    color: Theme.Black,
+    fontSize: 16,
+    fontFamily: 'Circular Std Medium',
+  },
+  textType2: {
+    color: Theme.Black,
+    fontSize: 26,
+    fontFamily: 'Circular Std Medium',
+  },
+  phoneNumberView: {
+    // height: 70,
+    width: '100%',
+    // backgroundColor: 'white',
+    borderColor: Theme.GhostWhite,
+    borderRadius: 10,
+    borderWidth: 1,
+    color: '#E5E5E5',
+    flexShrink: 22,
+    fontFamily: 'Circular Std Medium',
   },
 });
 

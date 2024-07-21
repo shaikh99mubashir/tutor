@@ -25,6 +25,7 @@ import {useIsFocused} from '@react-navigation/native';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import CustomLoader from '../../Component/CustomLoader';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import CustomButton from '../../Component/CustomButton';
 
 function AddClass({navigation}: any) {
   const [student, setStudent] = useState([]);
@@ -697,40 +698,22 @@ const previousRouteName = navigation.getState().routes[navigation.getState().rou
               <View style={{marginBottom: 100}}>
                 <FlatList data={classes} renderItem={renderClasses} />
               </View>
+           
             </ScrollView>
+            <View style={{margin:10}}></View>
             {MAX_CLASSES > 0 && MAX_CLASSES > classes.length && (
-              <View
-                style={{
-                  width: '100%',
-                  alignItems: 'center',
-                  marginTop: 20,
-                  marginBottom: 60,
-                }}>
-                <TouchableOpacity
-                activeOpacity={0.8}
-                  onPress={() => addClass()}
-                  style={{
-                    backgroundColor: Theme.gray,
-                    padding: 15,
-                    borderRadius: 10,
-                    width: '100%',
-                  }}>
-                  {/* {selectedSubject?.remaining_classes
-                  } */}
-
-                  <Text
-                    style={{
-                      textAlign: 'center',
-                      fontSize: 16,
-                      color: Theme.white,
-                      fontFamily:'Circular Std Medium'
-                    }}>
-                    {classes.length > 0 ? 'Add More Classes' : 'Add Classes'}
-                  </Text>
-                </TouchableOpacity>
-              </View>
+              <CustomButton backgroundColor={Theme.WhiteSmoke}
+              color={Theme.Black} btnTitle= {classes.length > 0 ? 'Add More Classes' : 'Add Classes'} onPress={() => addClass()}/>
+              
             )}
-
+            <View style={{margin:5}}></View>
+             {MAX_CLASSES > 0 && MAX_CLASSES >= classes.length && (
+              <CustomButton btnTitle='Confirm Class'
+              opacity= {classes.length > 0 ? 1 : 0.7}
+              disabled={classes.length === 0}
+              onPress={() => confirmClass()}
+              />
+             )}
             {show && (
               <DateTimePicker
                 testID="dateTimePicker"
@@ -742,7 +725,7 @@ const previousRouteName = navigation.getState().routes[navigation.getState().rou
               />
             )}
           </View>
-          {MAX_CLASSES > 0 && MAX_CLASSES >= classes.length && (
+          {/* {MAX_CLASSES > 0 && MAX_CLASSES >= classes.length && (
             <View
               style={{
                 width: '100%',
@@ -772,7 +755,7 @@ const previousRouteName = navigation.getState().routes[navigation.getState().rou
                 </Text>
               </TouchableOpacity>
             </View>
-          )}
+          )} */}
         </>
       ) : (
         <View style={{justifyContent: 'center', alignItems: 'center', flex: 1}}>

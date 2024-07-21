@@ -23,6 +23,7 @@ import { PermissionsAndroid } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ModalImg from '../../Component/Modal/modal';
+import CustomButton from '../../Component/CustomButton';
 const Signup = ({ navigation, route }: any) => {
   let data = route.params;
   const [email, setEmail] = useState('');
@@ -303,55 +304,6 @@ const Signup = ({ navigation, route }: any) => {
             }}
           />
 
-          {/* <View
-          style={[
-            styles.phoneNumberView,
-            {
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: 20,
-              paddingHorizontal: 15,
-              paddingVertical: 5,
-            },
-          ]}>
-          <Image
-            source={require('../../Assets/Images/malalogo.png')}
-            style={{width: 30, height: 30}}
-            resizeMode="contain"
-          />
-          <Text style={styles.textType3}>+60</Text>
-          <TextInput
-            placeholder="Enter Your Mobile Number"
-            placeholderTextColor={Theme.black}
-            keyboardType="number-pad"
-            style={[styles.textType3, {color: 'black'}]}
-            onChangeText={text => {
-              setPhoneNumber(text);
-            }}
-          />
-        </View> */}
-
-          {/* <PhoneInput
-          ref={phoneInput}
-          placeholder="Enter Your Number"
-          defaultValue={phoneNumber}
-          defaultCode="PK"
-          layout="first"
-          autoFocus={true}
-          textInputStyle={{color: Theme.black, height: 50}}
-          textInputProps={{placeholderTextColor: Theme.gray}}
-          codeTextStyle={{marginLeft: -15, paddingLeft: -55, color: 'black'}}
-          containerStyle={styles.phoneNumberView}
-          textContainerStyle={{
-            height: 60,
-            backgroundColor: 'white',
-            borderRadius: 10,
-            borderColor: 'transparent',
-          }}
-          onChangeFormattedText={text => {
-            setPhoneNumber(text);
-          }}
-        />  */}
         </View>
         {/* Submit Button */}
         {
@@ -371,7 +323,7 @@ const Signup = ({ navigation, route }: any) => {
             width: '100%',
             alignSelf: 'center'
           }}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => handleLoginPress()}
             style={{
               alignItems: 'center',
@@ -391,7 +343,9 @@ const Signup = ({ navigation, route }: any) => {
                 Register
               </Text>
             )}
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+        
+      <CustomButton btnTitle='Continue' loading={loading}  onPress={handleLoginPress}/>
           <View style={{ marginTop: 10, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', }}>
             <TouchableOpacity
               style={{ width: 18, height: 18, borderWidth: 1, borderRadius: 0, margin: 10 }}

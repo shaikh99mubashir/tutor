@@ -8,7 +8,8 @@ import {
   PermissionsAndroid,
   ToastAndroid,
   ActivityIndicator,
-  ErrorUtils ,
+  ErrorUtils, 
+  StyleSheet,
 } from 'react-native';
 import {Theme} from '../../constant/theme';
 import Header from '../../Component/Header';
@@ -18,6 +19,11 @@ import axios from 'axios';
 import {Base_Uri} from '../../constant/BaseUri';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomLoader from '../../Component/CustomLoader';
+import CustomButton from '../../Component/CustomButton';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
+import moment from 'moment';
+
 
 function ClockIn({navigation, route}: any) {
   let item = route.params;
@@ -150,6 +156,7 @@ function ClockIn({navigation, route}: any) {
       ToastAndroid.show(`Error requesting camera permission: ${permissionError.message}`, ToastAndroid.LONG);
     }
   };
+  const formattedDate = moment(item.date).format('dddd, DD MMM YYYY');
 
   return (
     <View style={{flex: 1, alignItems: 'center'}}>
@@ -171,8 +178,170 @@ function ClockIn({navigation, route}: any) {
           />
         </MapView>
       )}
-
+    <View style={{paddingHorizontal: 25}}>
       <TouchableOpacity
+        activeOpacity={0.8}
+        style={{
+          borderWidth: 1,
+          borderRadius: 20,
+          marginBottom: 100,
+          padding: 20,
+          borderColor: Theme.shinyGrey,
+          borderBottomColor: Theme.shinyGrey,
+          backgroundColor: Theme.white,
+          position: 'absolute',
+          bottom: 0,
+          width: '100%',
+          alignSelf: 'center',
+        }}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '100%',
+            borderColor: Theme.shinyGrey,
+          }}>
+          <View style={{flexDirection: 'row', alignItems: 'center', gap: 15}}>
+            <View>
+            {item?.studentGender?.toLowerCase() == 'male' ?
+                                <Image source={require('../../Assets/Images/StudentMale.png')} />
+                                :
+                                <Image source={require('../../Assets/Images/StudentFemale.png')} />
+
+                              }
+            </View>
+            <View>
+              <Text style={[styles.textType3, {color: Theme.Primary}]}>
+                {item.jtuid}
+              </Text>
+              <Text style={[styles.textType3]}>{item.studentName}</Text>
+            </View>
+          </View>
+          <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <Text
+              style={[
+                styles.textType3,
+                {
+                  color: 
+                    item.mode == 'online' ? Theme.DodgerBlue : Theme.darkGray,
+                  backgroundColor: 
+                    item.mode == 'online' ? '#298CFF33' : Theme.lightBlue,
+                  paddingVertical: 5,
+                  paddingHorizontal: 30,
+                  borderRadius: 30,
+                  textTransform: 'capitalize',
+                },
+              ]}>
+              {item.mode}
+            </Text>
+          </View>
+        </View>
+        {item?.mode == 'Physical' && (
+         <View
+              style={{
+                flexDirection: 'row',
+                gap: 5,
+                alignItems: 'center',
+                marginTop: 5,
+              }}>
+              <Feather name="map-pin" size={18} color={'#003E9C'} />
+              <Text style={[styles.textType3, {color: '#003E9C'}]}>
+                {item?.city}
+              </Text>
+            </View> 
+         )} 
+        <View
+          style={{
+            borderWidth: 1,
+            borderColor: Theme.LightPattensBlue,
+            marginTop: 20,
+          }}></View>
+        <View
+          style={{
+            paddingVertical: 20,
+          }}>
+          <View
+            style={{
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                gap: 10,
+              }}>
+              <AntDesign name="copy1" size={20} color={Theme.Primary} />
+              <Text style={styles.textType3}>Subject</Text>
+            </View>
+            <Text
+              style={[
+                styles.textType1,
+                {fontSize: 18, textTransform: 'capitalize'},
+              ]}>
+              {item.subjectName}
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 10,
+            }}>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                gap: 10,
+              }}>
+              <AntDesign name="calendar" size={20} color={Theme.Primary} />
+              <Text style={styles.textType3}>Day</Text>
+            </View>
+            <Text
+              style={[
+                styles.textType1,
+                {fontSize: 18, textTransform: 'capitalize'},
+              ]}>
+              {formattedDate}
+            </Text>
+          </View>
+          <View
+            style={{
+              justifyContent: 'space-between',
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 10,
+            }}>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                gap: 10,
+              }}>
+              <AntDesign name="clockcircleo" size={18} color={Theme.Primary} />
+              <Text style={styles.textType3}>Time</Text>
+            </View>
+            <Text
+              style={[
+                styles.textType1,
+                {fontSize: 18, textTransform: 'capitalize'},
+              ]}>
+             {item.startTime.toString()} - {item.endTime.toString()}
+            </Text>
+          </View>
+        </View>
+        <CustomButton
+          btnTitle="Clock In"
+          onPress={() => handleClockInPress()}
+        />
+      </TouchableOpacity>
+      </View>
+      {/* <TouchableOpacity
         style={{
           borderWidth: 1,
           borderColor: Theme.lightGray,
@@ -238,10 +407,28 @@ function ClockIn({navigation, route}: any) {
             Clock In
           </Text>
         </TouchableOpacity>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <CustomLoader visible={loading} />
     </View>
   );
 }
 
 export default ClockIn;
+
+const styles = StyleSheet.create({
+  textType3: {
+    color: Theme.Dune,
+    fontWeight: '500',
+    fontSize: 16,
+    fontFamily: 'Circular Std Medium',
+    fontStyle: 'normal',
+  },
+  textType1: {
+    fontWeight: '500',
+    fontSize: 26,
+    color: Theme.Black,
+    fontFamily: 'Circular Std Medium',
+    lineHeight: 24,
+    fontStyle: 'normal',
+  },
+});

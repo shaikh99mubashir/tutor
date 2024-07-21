@@ -14,6 +14,7 @@ import React, { useState } from 'react';
 import Header from '../../Component/Header';
 import { Theme } from '../../constant/theme';
 import { useIsFocused } from "@react-navigation/native"
+import CustomButton from '../../Component/CustomButton';
 const StudentsDetails = ({ navigation, route }: any) => {
   const data = route.params;
 
@@ -211,7 +212,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
             }}>
             Contact Person
           </Text>
-          <View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#eee', marginBottom: 100 }}>
+          <View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#eee', marginBottom: 20 }}>
             {/*  Name */}
             <View style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
               <Text
@@ -347,10 +348,12 @@ const StudentsDetails = ({ navigation, route }: any) => {
               </TouchableOpacity>
             </View>
           </View>
+          <CustomButton btnTitle='Edit Status'  onPress={() => navigation.navigate('Status', data)} />
+              <View style={{marginBottom:20}}></View>
         </View>
       </ScrollView>
       {/* Submit Button */}
-      <View
+      {/* <View
         style={{
           backgroundColor: Theme.white,
           position: 'absolute',
@@ -383,7 +386,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
             </Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </View> */}
     </View>
   );
 };

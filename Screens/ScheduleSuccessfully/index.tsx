@@ -1,6 +1,7 @@
 import {Dimensions, Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {Theme} from '../../constant/theme';
+import CustomButton from '../../Component/CustomButton';
 
 const ScheduleSuccessfully = ({navigation}:any) => {
   return (
@@ -24,7 +25,11 @@ const ScheduleSuccessfully = ({navigation}:any) => {
           Class schedule has been added successfully
         </Text>
       </View>
-      <View
+      <View style={{width:'100%', paddingHorizontal:25, bottom:30, position:'absolute'}}>
+                <CustomButton btnTitle=' Back To Dashboard' backgroundColor={Theme.Black}
+                color={Theme.white} onPress={() => navigation.replace("Main")}/>
+                </View>
+      {/* <View
               style={{
                 width: '100%',
                 alignItems: 'center',
@@ -45,7 +50,7 @@ const ScheduleSuccessfully = ({navigation}:any) => {
                   Back To DashBoard
                 </Text>
               </TouchableOpacity>
-            </View>
+            </View> */}
     </View>
   );
 };

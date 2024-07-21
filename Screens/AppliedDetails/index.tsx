@@ -204,7 +204,7 @@ const AppliedDetails = ({ route, navigation }: any) => {
                   <Text style={styles.textType3}>Student Detail</Text>
                 </View>
                 <Text style={[styles.textType1, { fontSize: 18 }]}>
-                  {data?.studentGender},({data?.student_age} y/o)
+                  {data?.studentGender} ({data?.student_age} y/o)
                 </Text>
               </View>
               <View

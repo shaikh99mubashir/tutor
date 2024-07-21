@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect, useContext} from 'react';
+import React, { useState, useCallback, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -14,16 +14,16 @@ import {
   Linking,
   TouchableWithoutFeedback,
 } from 'react-native';
-import {Theme} from '../../constant/theme';
+import { Theme } from '../../constant/theme';
 import AntDesign from 'react-native-vector-icons/EvilIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native';
 import CustomHeader from '../../Component/Header';
-import {Base_Uri} from '../../constant/BaseUri';
+import { Base_Uri } from '../../constant/BaseUri';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {ToastAndroid} from 'react-native';
-import {useIsFocused, useRoute} from '@react-navigation/native';
+import { ToastAndroid } from 'react-native';
+import { useIsFocused, useRoute } from '@react-navigation/native';
 import upcomingClassContext from '../../context/upcomingClassContext';
 import moment from 'moment';
 import scheduleContext from '../../context/scheduleContext';
@@ -36,10 +36,12 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import StudentContext from '../../context/studentContext';
 import CustomLoader from '../../Component/CustomLoader';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+import ScheduleIcon from '../../SVGs/ScheduleIcon';
+import CustomButton from '../../Component/CustomButton';
 
 // import { ScrollView } from "react-native-gesture-handler"
 
-function Schedule({navigation, route}: any) {
+function Schedule({ navigation, route }: any) {
   let data = route.params;
 
   let focus = useIsFocused();
@@ -48,12 +50,12 @@ function Schedule({navigation, route}: any) {
   let bannerCont = useContext(bannerContext);
   const tutorDetailsContext = useContext(TutorDetailsContext);
 
-  let {tutorDetails} = tutorDetailsContext;
+  let { tutorDetails } = tutorDetailsContext;
 
-  let {schedulePageBannner, setSchedulePageBanner} = bannerCont;
+  let { schedulePageBannner, setSchedulePageBanner } = bannerCont;
 
-  let {scheduleData, setScheduleData} = context;
-  let {upcomingClass, setUpcomingClass} = context;
+  let { scheduleData, setScheduleData } = context;
+  let { upcomingClass, setUpcomingClass } = context;
   const studentAndSubjectContext = useContext(StudentContext);
   const [loading, setLoading] = useState(false);
   // const [scheduleData, setScheduleData] = useState<any>([]);
@@ -66,7 +68,7 @@ function Schedule({navigation, route}: any) {
   const [show, setShow] = useState(false);
   const [refreshing, setRefreshing] = React.useState(false);
   const [refresh, setRefresh] = useState(false);
-  const {students, subjects, updateStudent, updateSubject} =
+  const { students, subjects, updateStudent, updateSubject } =
     studentAndSubjectContext;
   const onRefresh = React.useCallback(() => {
     // setRefreshing(true);
@@ -126,7 +128,7 @@ function Schedule({navigation, route}: any) {
     setOpenPPModal(true);
     axios
       .get(`${Base_Uri}api/bannerAds`)
-      .then(({data}) => {
+      .then(({ data }) => {
       })
       .catch(error => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
@@ -146,7 +148,7 @@ function Schedule({navigation, route}: any) {
     }
     const login: any = await AsyncStorage.getItem('loginAuth');
     let loginData: LoginAuth = JSON.parse(login);
-    let {tutorID} = loginData;
+    let { tutorID } = loginData;
 
     if (upcomingClass && Object.keys(upcomingClass).length > 0) {
       axios
@@ -154,7 +156,7 @@ function Schedule({navigation, route}: any) {
         .then(res => {
           let scheduledClasses = res.data;
 
-          let {classSchedulesTime} = scheduledClasses;
+          let { classSchedulesTime } = scheduledClasses;
           let checkRouteClass =
             classSchedulesTime &&
             classSchedulesTime.length > 0 &&
@@ -185,8 +187,8 @@ function Schedule({navigation, route}: any) {
     }
     axios
       .get(`${Base_Uri}getClassSchedulesTime/${tutorID}`)
-      .then(({data}) => {
-        let {classSchedulesTime} = data;
+      .then(({ data }) => {
+        let { classSchedulesTime } = data;
         let Date = selectedDate.getDate();
         let month = selectedDate.getMonth();
         let year = selectedDate.getFullYear();
@@ -194,28 +196,28 @@ function Schedule({navigation, route}: any) {
         classSchedulesTime =
           classSchedulesTime && classSchedulesTime.length > 0
             ? classSchedulesTime
-                .map((e: any, i: number) => {
-                  let getDate: any = moment(e.date);
+              .map((e: any, i: number) => {
+                let getDate: any = moment(e.date);
 
-                  let convertDate = getDate.toDate();
-                  let scheduleDate = convertDate.getDate();
-                  let scheduleMonth = convertDate.getMonth();
-                  let scheduleYear = convertDate.getFullYear();
+                let convertDate = getDate.toDate();
+                let scheduleDate = convertDate.getDate();
+                let scheduleMonth = convertDate.getMonth();
+                let scheduleYear = convertDate.getFullYear();
 
-                  if (
-                    Date == scheduleDate &&
-                    month == scheduleMonth &&
-                    year == scheduleYear
-                  ) {
-                    return {
-                      ...e,
-                      imageUrl: require('../../Assets/Images/student.png'),
-                    };
-                  } else {
-                    return false;
-                  }
-                })
-                .filter(Boolean)
+                if (
+                  Date == scheduleDate &&
+                  month == scheduleMonth &&
+                  year == scheduleYear
+                ) {
+                  return {
+                    ...e,
+                    imageUrl: require('../../Assets/Images/student.png'),
+                  };
+                } else {
+                  return false;
+                }
+              })
+              .filter(Boolean)
             : [];
         // classSchedulesTime =
         // classSchedulesTime && classSchedulesTime.length > 0
@@ -224,7 +226,7 @@ function Schedule({navigation, route}: any) {
         //       imageUrl: require("../../Assets/Images/student.png"),
         //     }))
         //   : [];
-      setLoading(false);
+        setLoading(false);
         let dataToSend = [...classSchedulesTime];
         setScheduleData(dataToSend);
       })
@@ -264,10 +266,10 @@ function Schedule({navigation, route}: any) {
 
   const handleSelectPress = (index: Number, item: any) => {
     console.log("item schedule", item);
-    if(classInProcess && Object.keys(classInProcess).length > 0 && item.status ==  'On going'){
+    if (classInProcess && Object.keys(classInProcess).length > 0 && item.status == 'On going') {
       navigation.navigate('ClassTimerCount', classInProcess)
     }
-    
+
     if (upcomingClass && upcomingClass.length > 0) {
       let myData = upcomingClass.map((e: any, i: Number) => {
         if (i == index) {
@@ -332,7 +334,7 @@ function Schedule({navigation, route}: any) {
 
   const closeBannerModal = async () => {
     if (schedulePageBannner.displayOnce == 'on') {
-      let bannerData = {...schedulePageBannner};
+      let bannerData = { ...schedulePageBannner };
 
       let stringData = JSON.stringify(bannerData);
 
@@ -399,7 +401,7 @@ function Schedule({navigation, route}: any) {
 
                 <TouchableOpacity
                   onPress={() => navigateToEditScreen('postponed')}
-                  style={{width: '100%'}}>
+                  style={{ width: '100%' }}>
                   <Text
                     style={[
                       styles.text,
@@ -416,7 +418,7 @@ function Schedule({navigation, route}: any) {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => navigateToEditScreen('cancelled')}
-                  style={{width: '100%'}}>
+                  style={{ width: '100%' }}>
                   <Text
                     style={[
                       styles.text,
@@ -551,7 +553,7 @@ function Schedule({navigation, route}: any) {
     getClassInProcess();
   }, [focus, refreshing]);
 
-  const renderScheduleData = ({item, index}: any): any => {
+  const renderScheduleData = ({ item, index }: any): any => {
     let nowDate: Date = new Date();
     let date = nowDate.getDate();
     let month = nowDate.getMonth();
@@ -569,10 +571,10 @@ function Schedule({navigation, route}: any) {
 
     const startTime12Hour = convertTo12HourFormat(item.startTime);
     const endTime12Hour = convertTo12HourFormat(item.endTime);
- 
+
     return (
       <TouchableOpacity
-      activeOpacity={0.8}
+        activeOpacity={0.8}
         onPress={() => handleSelectPress(index, item)}
         style={{
           borderWidth: 1,
@@ -584,7 +586,7 @@ function Schedule({navigation, route}: any) {
           marginTop: 20,
           borderRadius: 20,
         }}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
           <View
             style={{
               flexDirection: 'row',
@@ -594,7 +596,7 @@ function Schedule({navigation, route}: any) {
               paddingBottom: 20,
               borderBottomColor: Theme.lightGray,
             }}>
-            <View style={{flexDirection: 'row', alignItems: 'center', gap: 10,}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, }}>
               <View
                 style={{
                   borderWidth: 1,
@@ -605,15 +607,20 @@ function Schedule({navigation, route}: any) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   backgroundColor: Theme.darkGray,
-                  
+
                 }}>
-                <Image source={item.imageUrl} style={{width: 35, height: 35}} />
+                {item?.studentGender?.toLowerCase() == 'male' ?
+                  <Image source={require('../../Assets/Images/StudentMale.png')} />
+                  :
+                  <Image source={require('../../Assets/Images/StudentFemale.png')} />
+
+                }
               </View>
               <View>
                 <Text
                   style={[
                     styles.textType3,
-                    {fontFamily: 'Circular Std Medium', color: '#1FC07D'},
+                    { fontFamily: 'Circular Std Medium', color: '#1FC07D' },
                   ]}>
                   {item?.jtuid}
                 </Text>
@@ -653,7 +660,7 @@ function Schedule({navigation, route}: any) {
                 )}
               </View>
             </View>
-            <View style={{alignItems: 'center', justifyContent: 'center', }}>
+            <View style={{ alignItems: 'center', justifyContent: 'center', }}>
               <Text
                 style={[
                   styles.textType3,
@@ -662,9 +669,9 @@ function Schedule({navigation, route}: any) {
                     backgroundColor:
                       item.mode == 'online' ? '#298CFF33' : Theme.lightGreen,
                     textTransform: 'capitalize',
-                    width:90,
-                    height:25,
-                    textAlign:'center',
+                    width: 90,
+                    height: 25,
+                    textAlign: 'center',
                     paddingVertical: 2,
                     borderRadius: 30,
                   },
@@ -675,7 +682,7 @@ function Schedule({navigation, route}: any) {
           </View>
         </View>
 
-        <View style={{paddingVertical: 20}}>
+        <View style={{ paddingVertical: 20 }}>
           <View
             style={{
               justifyContent: 'space-between',
@@ -690,11 +697,11 @@ function Schedule({navigation, route}: any) {
                 gap: 10,
               }}>
               <AntDesig name="copy1" size={20} color={'#298CFF'} />
-              <Text style={[styles.textType3, {color: Theme.ironsidegrey1}]}>
+              <Text style={[styles.textType3, { color: Theme.ironsidegrey1 }]}>
                 Subject
               </Text>
             </View>
-            <Text style={[styles.textType1, {fontSize: 18}]}>
+            <Text style={[styles.textType1, { fontSize: 18 }]}>
               {' '}
               {item.subjectName ?? item?.subject_name}
             </Text>
@@ -714,11 +721,11 @@ function Schedule({navigation, route}: any) {
                 gap: 10,
               }}>
               <AntDesig name="carryout" size={20} color={'#298CFF'} />
-              <Text style={[styles.textType3, {color: Theme.ironsidegrey1}]}>
+              <Text style={[styles.textType3, { color: Theme.ironsidegrey1 }]}>
                 Day
               </Text>
             </View>
-            <Text style={[styles.textType1, {fontSize: 18}]}>
+            <Text style={[styles.textType1, { fontSize: 18 }]}>
               {convertDateDayFormat(item.date)}
             </Text>
           </View>
@@ -737,11 +744,11 @@ function Schedule({navigation, route}: any) {
                 gap: 10,
               }}>
               <AntDesig name="clockcircleo" size={20} color={'#298CFF'} />
-              <Text style={[styles.textType3, {color: Theme.ironsidegrey1}]}>
+              <Text style={[styles.textType3, { color: Theme.ironsidegrey1 }]}>
                 Time
               </Text>
             </View>
-            <Text style={[styles.textType1, {fontSize: 18}]}>
+            <Text style={[styles.textType1, { fontSize: 18 }]}>
               {startTime12Hour} - {endTime12Hour}
             </Text>
           </View>
@@ -761,14 +768,14 @@ function Schedule({navigation, route}: any) {
               }}>
               {/* <Image source={require('../../Assets/Images/level.png')} /> */}
               <MaterialIcons name="schedule-send" size={20} color={'#298CFF'} />
-              <Text style={[styles.textType3, {color: Theme.ironsidegrey1}]}>
+              <Text style={[styles.textType3, { color: Theme.ironsidegrey1 }]}>
                 Status
               </Text>
             </View>
             <Text
               style={[
                 styles.textType1,
-                {fontSize: 18, textTransform: 'capitalize'},
+                { fontSize: 18, textTransform: 'capitalize' },
               ]}>
               {item.status}
             </Text>
@@ -785,7 +792,7 @@ function Schedule({navigation, route}: any) {
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => navigation.navigate('AttendedDetails')}>
-              <Text style={{color: Theme.gray, marginTop: 10}}>
+              <Text style={{ color: Theme.gray, marginTop: 10 }}>
                 View Details
               </Text>
             </TouchableOpacity>
@@ -816,44 +823,53 @@ function Schedule({navigation, route}: any) {
               )
               : 
               ( */}
-                <>
-                  <TouchableOpacity
-                    onPress={() => handleEditPress(item)}
+              <>
+                <View style={{ width: '48%' }}>
+
+                  <CustomButton btnTitle='Edit' backgroundColor={Theme.WhiteSmoke}
+                    color={Theme.Black} onPress={() => handleEditPress(item)} />
+                </View>
+                {/* <TouchableOpacity
+                  onPress={() => handleEditPress(item)}
+                  style={{
+                    backgroundColor: Theme.gray,
+                    width: '48%',
+                    padding: 10,
+                    borderRadius: 10,
+                  }}>
+                  <Text
                     style={{
-                      backgroundColor: Theme.gray,
-                      width: '48%',
-                      padding: 10,
-                      borderRadius: 10,
+                      textAlign: 'center',
+                      fontSize: 14,
+                      color: 'white',
                     }}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        fontSize: 14,
-                        color: 'white',
-                      }}>
-                      Edit
-                    </Text>
-                  </TouchableOpacity>
-                  {flag && (
-                    <TouchableOpacity
-                      onPress={() => routeToClockIn(item)}
-                      style={{
-                        backgroundColor: Theme.darkGray,
-                        width: '48%',
-                        padding: 10,
-                        borderRadius: 10,
-                      }}>
-                      <Text
-                        style={{
-                          textAlign: 'center',
-                          fontSize: 14,
-                          color: 'white',
-                        }}>
-                        Attend
-                      </Text>
-                    </TouchableOpacity>
-                  )}
-                </>
+                    Edit
+                  </Text>
+                </TouchableOpacity> */}
+                {flag && (
+                  <View style={{ width: '48%' }}>
+
+                    <CustomButton btnTitle='Attend' onPress={() => routeToClockIn(item)} />
+                  </View>
+                  // <TouchableOpacity
+                  //   onPress={() => routeToClockIn(item)}
+                  //   style={{
+                  //     backgroundColor: Theme.darkGray,
+                  //     width: '48%',
+                  //     padding: 10,
+                  //     borderRadius: 10,
+                  //   }}>
+                  //   <Text
+                  //     style={{
+                  //       textAlign: 'center',
+                  //       fontSize: 14,
+                  //       color: 'white',
+                  //     }}>
+                  //     Attend
+                  //   </Text>
+                  // </TouchableOpacity>
+                )}
+              </>
             </View>
           )}
         </>
@@ -926,15 +942,15 @@ function Schedule({navigation, route}: any) {
     const data: any = await AsyncStorage.getItem('loginAuth');
     let loginData: LoginAuth = JSON.parse(data);
 
-    let {tutorID} = loginData;
+    let { tutorID } = loginData;
     setTutorId(tutorID);
   };
 
   const getTutorStudents = () => {
     axios
       .get(`${Base_Uri}getTutorStudents/${tutorId}`)
-      .then(({data}) => {
-        const {tutorStudents} = data;
+      .then(({ data }) => {
+        const { tutorStudents } = data;
         updateStudent(tutorStudents);
       })
       .catch(error => {
@@ -945,8 +961,8 @@ function Schedule({navigation, route}: any) {
   const getTutorSubjects = () => {
     axios
       .get(`${Base_Uri}getTutorSubjects/${tutorId}`)
-      .then(({data}) => {
-        let {tutorSubjects} = data;
+      .then(({ data }) => {
+        let { tutorSubjects } = data;
 
         let mySubject =
           tutorSubjects &&
@@ -974,9 +990,9 @@ function Schedule({navigation, route}: any) {
   }, [tutorId, refreshing]);
   // console.log("upcomingClass",upcomingClass);
   // console.log("scheduleData",scheduleData);
-  
+
   return (
-    <View style={{flex: 1, backgroundColor: 'white'}}>
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
       <CustomHeader
         title="Schedule"
         plus={scheduleData.length !== 0}
@@ -988,8 +1004,40 @@ function Schedule({navigation, route}: any) {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
         nestedScrollEnabled={true}>
-        <View style={{padding: 20}}>
+        <View style={{ padding: 20 }}>
           <TouchableOpacity
+            onPress={() => setShow(true)}
+            activeOpacity={0.8}
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              alignItems: 'center',
+              gap: 10,
+            }}>
+            <View
+              style={{
+                backgroundColor: Theme.white,
+                paddingVertical: 8,
+                paddingHorizontal: 10,
+                borderRadius: 10,
+                borderColor: Theme.lineColor,
+                flexDirection: 'row',
+                gap: 20,
+                alignItems: 'center',
+                borderWidth: 1,
+              }}>
+              <Text
+                style={styles.textType3}>
+                {selectedDate.toLocaleDateString([], {
+                  month: 'short',
+                  day: '2-digit',
+                  year: 'numeric',
+                })}
+              </Text>
+              <ScheduleIcon />
+            </View>
+          </TouchableOpacity>
+          {/* <TouchableOpacity
             onPress={() => setShow(true)}
             style={{
               flexDirection: 'row',
@@ -1004,11 +1052,10 @@ function Schedule({navigation, route}: any) {
                 fontWeight: '700',
                 fontFamily: 'Circular Std Black',
               }}>
-              {/* {selectedDate.toString().slice(4, 15)} */}
               {convertDateFormat(selectedDate)}
             </Text>
             <AntDesig name="caretdown" color={Theme.black} size={12} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           {show && (
             <DateTimePicker
               testID="dateTimePicker"
@@ -1020,7 +1067,7 @@ function Schedule({navigation, route}: any) {
           )}
 
           {scheduleData.length == 0 &&
-          Object.keys(upcomingClass).length == 0 ? (
+            Object.keys(upcomingClass).length == 0 ? (
             <View
               style={{
                 height: Dimensions.get('window').height - 250,
@@ -1048,7 +1095,10 @@ function Schedule({navigation, route}: any) {
                 }}>
                 Look like you haven't added any class.
               </Text>
-              <View
+              <View style={{ width: '100%', marginTop: 40 }}>
+                <CustomButton btnTitle='Add Class' onPress={() => navigation.navigate('AddClass')} />
+              </View>
+              {/* <View
                 style={{
                   borderWidth: 1,
                   borderColor: Theme.white,
@@ -1058,7 +1108,7 @@ function Schedule({navigation, route}: any) {
                 }}>
                 <TouchableOpacity
                   activeOpacity={0.8}
-                  onPress={() => navigation.navigate('AddClass')}
+                  
                   style={{
                     alignItems: 'center',
                     padding: 10,
@@ -1074,7 +1124,7 @@ function Schedule({navigation, route}: any) {
                     Add Class
                   </Text>
                 </TouchableOpacity>
-              </View>
+              </View> */}
             </View>
           ) : (
             <View>
@@ -1093,7 +1143,7 @@ function Schedule({navigation, route}: any) {
       {Object.keys(schedulePageBannner).length > 0 &&
         (schedulePageBannner.tutorStatusCriteria == 'All' ||
           tutorDetails.status == 'verified') && (
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             <Modal
               visible={openPPModal}
               animationType="fade"
@@ -1125,7 +1175,7 @@ function Schedule({navigation, route}: any) {
                   </TouchableOpacity>
                   {/* <Image source={{uri:}} style={{width:Dimensions.get('screen').width/1.1,height:'80%',}} resizeMode='contain'/> */}
                   <Image
-                    source={{uri: schedulePageBannner.bannerImage}}
+                    source={{ uri: schedulePageBannner.bannerImage }}
                     style={{
                       width: Dimensions.get('screen').width / 1.1,
                       height: '80%',
@@ -1138,7 +1188,7 @@ function Schedule({navigation, route}: any) {
           </View>
         )}
       <CustomLoader visible={loading} />
- 
+
     </View>
   );
 }

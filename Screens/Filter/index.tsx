@@ -18,6 +18,7 @@ import JobTicket from '../JobTicket';
 import filterContext from '../../context/filterContext';
 import { stat } from 'react-native-fs';
 import DropDownModalView from '../../Component/DropDownModalView';
+import CustomButton from '../../Component/CustomButton';
 
 
 const Filter = ({ navigation, route }: any) => {
@@ -344,7 +345,7 @@ const Filter = ({ navigation, route }: any) => {
                 headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={filterCity ? filterCity : "Select City"} dropdownContainerStyle={{ paddingVertical: 15, }} subject={city} categoryShow={"subject"} />
             </View>}
       </ScrollView>
-      <View style={{ width: "100%", alignItems: "center" }} >
+      {/* <View style={{ width: "100%", alignItems: "center" }} >
         <View
           style={{
             flexDirection: 'row',
@@ -383,7 +384,16 @@ const Filter = ({ navigation, route }: any) => {
             </Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </View> */}
+      <View style={{flexDirection:"row", justifyContent:"center",gap:10,alignSelf:'center',position:'absolute',bottom:0, marginBottom:80, paddingHorizontal:15}}>
+       <View style={{width: '48%'}}>
+              <CustomButton btnTitle="Save"  onPress={() => data == 'applied' ? applyStatusFilter() : data == 'tutorrecords' ? applyRecordStatusFilter() : applyFilter()}/>
+            </View>
+            <View style={{width: '48%'}}>
+              <CustomButton btnTitle="Reset"  onPress={() => data == 'applied' ? resetStatusFilter() :data == 'tutorrecords' ? resetRecordStatusFilter(): resetFilter()} backgroundColor={Theme.WhiteSmoke} color={Theme.Black}/>
+            </View>
+            
+        </View>
     </View>
   );
 };

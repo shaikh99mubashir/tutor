@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Image } from "react-native"
 import { Theme } from "../../constant/theme"
 import { useNavigation } from "@react-navigation/native"
 import {CommonActions, useIsFocused} from '@react-navigation/native';
+import CustomButton from "../../Component/CustomButton";
 
 //#0f58cb
 
@@ -21,12 +22,21 @@ function BackToDashboard({ route,navigation }: any) {
             <Text style={{ color: Theme.white, fontSize: 30, width: "90%", textAlign: "center", fontWeight: "500", marginBottom:15,fontFamily: 'Circular Std Black' }} >
                 {data?.notificationType ? "" : "Class Completed!"}
             </Text>
-            <Text style={{ color: Theme.white, fontSize: 16, width: "90%", textAlign: "center", fontWeight: "300",fontFamily: 'Circular Std Black' }} >
-                {data?.notificationType ? "Report has been successfully Submited" : "Good Job for completing your class.\n See you next in the class!!"}
+            <Text style={{ color: Theme.white, fontSize: 18, width: "90%", textAlign: "center", fontWeight: "300",fontFamily: 'Circular Std Black' }} >
+                {data?.notificationType ? "Report has been Successfully Submited" : "Good Job for completing your class.\n See you next in the class!!"}
             </Text>
             </View>
             <View style={{width:'100%', alignItems:"center", gap:20}}>
-            <TouchableOpacity activeOpacity={0.8} onPress={()=> handelPress()} style={{ width: "90%", backgroundColor: Theme.white, padding: 12, borderRadius: 8 }} >
+                <View style={{width:'100%', paddingHorizontal:25}}>
+
+                <CustomButton btnTitle='Update Schedule' backgroundColor={Theme.WhiteSmoke}
+                color={Theme.Black} onPress={()=> handelPress()}/>
+                </View>
+                <View style={{width:'100%', paddingHorizontal:25}}>
+                <CustomButton btnTitle=' Back To Dashboard' backgroundColor={Theme.Black}
+                color={Theme.white} onPress={() => navigation.replace("Main")}/>
+                </View>
+            {/* <TouchableOpacity activeOpacity={0.8} onPress={()=> handelPress()} style={{ width: "90%", backgroundColor: Theme.white, padding: 12, borderRadius: 8 }} >
                 <Text style={{ fontSize: 16, color: Theme.darkGray, textAlign: "center", fontWeight: "700",fontFamily: 'Circular Std Black' }} >
                    Update Schedule
                 </Text>
@@ -35,7 +45,7 @@ function BackToDashboard({ route,navigation }: any) {
                 <Text style={{ fontSize: 16, color: Theme.white, textAlign: "center", fontWeight: "700",fontFamily: 'Circular Std Black' }} >
                     Back To Dashboard
                 </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             </View>
         </View>
     )

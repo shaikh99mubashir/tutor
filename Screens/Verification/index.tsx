@@ -22,6 +22,7 @@ import { Base_Uri } from '../../constant/BaseUri';
 import axios from 'axios';
 import messaging from '@react-native-firebase/messaging';
 import CustomLoader from '../../Component/CustomLoader';
+import CustomButton from '../../Component/CustomButton';
 const Verification = ({ navigation, route }: any) => {
   let data = route.params;
   const [user, setUser] = useState(false);
@@ -96,7 +97,7 @@ const Verification = ({ navigation, route }: any) => {
     setLoading(true);
     let formData = new FormData();
     formData.append("code", value);
-    formData.append("id",  data?.tutorDetail?.id);
+    formData.append("id", data?.tutorDetail?.id);
     console.log("form DAtat", formData);
     axios.post(`${Base_Uri}api/verificationCode`, formData, {
       headers: {
@@ -104,8 +105,8 @@ const Verification = ({ navigation, route }: any) => {
       },
     })
       .then(({ data }: any) => {
-        console.log('data.tutorID',data);
-        
+        console.log('data.tutorID', data);
+
         if (data?.status !== 200) {
           console.log('Running');
           setLoading(false);
@@ -116,14 +117,14 @@ const Verification = ({ navigation, route }: any) => {
           console.log('data.tutorID Running', data.tutorID);
 
           setLoading(false);
-         
+
           let mydata = JSON.stringify(data);
           AsyncStorage.setItem('loginAuth', mydata);
-          console.log('mydata',mydata);
-          
+          console.log('mydata', mydata);
+
           sendDeviceTokenToDatabase(data.tutorID)
-          console.log('data.tutorID',data.tutorID);
-          
+          console.log('data.tutorID', data.tutorID);
+
           axios
             .get(`${Base_Uri}getTutorDetailByID/${data?.tutorID}`)
             .then((res) => {
@@ -132,7 +133,7 @@ const Verification = ({ navigation, route }: any) => {
                 navigation.replace('Login');
                 ToastAndroid.show('Terminated', ToastAndroid.SHORT);
                 console.log('no tutor id Found');
-                
+
                 return
               }
               let tutorData = res.data;
@@ -142,7 +143,7 @@ const Verification = ({ navigation, route }: any) => {
               ) {
                 navigation.replace('Signup', tutorData)
               }
-              else if(tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'unverified' || tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'verified'){
+              else if (tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'unverified' || tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'verified') {
                 // navigation.replace('Main', {
                 //   screen: 'Home',
                 // });
@@ -246,18 +247,19 @@ const Verification = ({ navigation, route }: any) => {
         noSignUp
         title="Verification"
       />
-      <View style={{ marginVertical: 10, paddingHorizontal: 15,marginTop:30 }}>
+      <View style={{ paddingHorizontal: 20, marginTop: 30 }}>
         <Text
-          style={{
-            fontFamily: 'Circular Std Medium',
-            color: Theme.gray,
-            fontSize: 16,
-            textAlign: 'center',
-          }}>
-          Enter Verification Code
+          style={[
+            styles.textType1,
+            { lineHeight: 20, color: Theme.IronsideGrey },
+          ]}>
+          A Verification OTP has been sent {'\n'}to{' '}
+          <Text style={[styles.textType1, { lineHeight: 20 }]}>
+            {data?.tutorDetail?.phoneNumber}
+          </Text>
         </Text>
       </View>
-      <View style={{ paddingHorizontal: 15 }}>
+      <View style={{ paddingHorizontal: 15,marginTop: 0  }}>
         <CodeField
           ref={ref}
           {...props}
@@ -283,33 +285,31 @@ const Verification = ({ navigation, route }: any) => {
           activeOpacity={0.8}
           onPress={() => handleResendPress()}>
           <Text
-            style={{
-              color: Theme.gray,
-              fontSize: 15,
-              fontFamily: 'Circular Std Medium',
-            }}>
+            style={[
+              styles.textType1,
+              { lineHeight: 20, color: Theme.IronsideGrey },
+            ]}>
             If you didn,t receive a code!
             {/* {resendLoading ? (
               <View style={{margin:10}}>
               <ActivityIndicator color={Theme.black} size="small" />
               </View>
             ) : ( */}
-              <Text
-                style={{
-                  color: Theme.darkGray,
-                  fontSize: 15,
-                  fontFamily: 'Circular Std Medium',
-                }}>
-                {' '}
-                Resend{' '}
-              </Text>
+            <Text
+               style={[
+                styles.textType1,
+                { lineHeight: 20, color: Theme.darkGray },
+              ]}>
+              {' '}
+              Resend{' '}
+            </Text>
             {/* )} */}
           </Text>
         </TouchableOpacity>
       </View>
-      <CustomLoader visible={resendLoading} />   
+      <CustomLoader visible={resendLoading} />
       {/* Verify Button */}
-      <View
+      {/* <View
         style={{
           // width: Dimensions.get('window').width / 1.1,
           // borderWidth: 1,
@@ -339,6 +339,10 @@ const Verification = ({ navigation, route }: any) => {
             </Text>
           )}
         </TouchableOpacity>
+        <View style={{margin:10}}/>
+      </View> */}
+      <View style={{paddingHorizontal:15, marginTop:20}}>
+      <CustomButton btnTitle='Continue' loading={loading}  onPress={() => !resendLoading && Verify()}/>
       </View>
     </View>
   );
@@ -376,15 +380,38 @@ const styles = StyleSheet.create({
     padding: 10,
     alignItems: 'center',
     lineHeight: 38,
-    fontSize: 24,
+    fontFamily: 'Circular Std Bold',
+        fontSize: 33,
     marginHorizontal: 4,
-    borderWidth: 1,
-    borderRadius: 10,
-    backgroundColor: '#e6e9fa',
-    borderColor: Theme.darkGray,
+    // borderWidth: 1,
+    borderRadius: 12,
+    // backgroundColor: '#e6e9fa',
+    backgroundColor: Theme.liteBlue,
+    // borderColor: Theme.darkGray,
     textAlign: 'center',
   },
   focusCell: {
     borderColor: Theme.darkGray,
+  },
+  textType1: {
+    color: Theme.Black,
+    fontSize: 16,
+    fontFamily: 'Circular Std Medium',
+  },
+  textType2: {
+    color: Theme.Black,
+    fontSize: 26,
+    fontFamily: 'Circular Std Medium',
+  },
+  phoneNumberView: {
+    // height: 70,
+    width: '100%',
+    // backgroundColor: 'white',
+    borderColor: Theme.GhostWhite,
+    borderRadius: 10,
+    borderWidth: 1,
+    color: '#E5E5E5',
+    flexShrink: 22,
+    fontFamily: 'Circular Std Medium',
   },
 });

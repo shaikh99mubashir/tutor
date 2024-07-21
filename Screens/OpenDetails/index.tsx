@@ -21,6 +21,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import CustomButton from '../../Component/CustomButton';
 
 const OpenDetails = ({route, navigation}: any) => {
   const data = route.params;
@@ -198,7 +199,7 @@ const OpenDetails = ({route, navigation}: any) => {
                   <Text style={styles.textType3}>Student Detail</Text>
                 </View>
                 <Text style={[styles.textType1, {fontSize: 18}]}>
-                  {data?.studentGender},({data?.student_age} y/o)
+                  {data?.studentGender} ({data?.student_age} y/o)
                 </Text>
               </View>
               <View
@@ -543,7 +544,7 @@ const OpenDetails = ({route, navigation}: any) => {
               </View>
             )}
             {/* Comment */}
-            <View style={{marginBottom: 100, marginTop: 20}}>
+            <View style={{marginBottom: 20, marginTop: 20}}>
               <Text style={styles.textType1}>Comment</Text>
               <View
                 style={[
@@ -576,11 +577,14 @@ const OpenDetails = ({route, navigation}: any) => {
                 />
               </View>
             </View>
+
+      {/* Submit Button */}
+      <CustomButton btnTitle={'Apply'}  onPress={sendOpenDetailData}/>
           </View>
         </View>
       </ScrollView>
-      {/* Submit Button */}
-      <View
+      
+      {/* <View
         style={{
           backgroundColor: Theme.white,
           position: 'absolute',
@@ -618,7 +622,7 @@ const OpenDetails = ({route, navigation}: any) => {
             )}
           </TouchableOpacity>
         </View>
-      </View>
+      </View> */}
     </View>
   );
 };

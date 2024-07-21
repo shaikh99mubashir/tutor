@@ -1,6 +1,7 @@
 import { Modal, View, Text, TouchableOpacity,StyleSheet } from 'react-native';
 import React from 'react'
 import { Theme } from '../../constant/theme';
+import CustomButton from '../CustomButton';
 
 const BackToDashboard = ({modalVisible, handleGoToDashboard}:any) => {
   return (
@@ -14,19 +15,23 @@ const BackToDashboard = ({modalVisible, handleGoToDashboard}:any) => {
           <View
             style={[
               styles.modalContainer,
-              { padding: 30, marginHorizontal: 40 },
+              { padding: 30, marginHorizontal: 10 },
             ]}>
             <Text
               style={{
                 color: Theme.darkGray,
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: 'bold',
                 fontFamily: 'Circular Std Medium',
                 lineHeight: 30,
               }}>
               You have been Verified!
             </Text>
-            <View
+
+            <View style={{width:'90%', marginTop:20}}>
+            <CustomButton btnTitle='Go To Dashboard' onPress={handleGoToDashboard}/>
+            </View>
+            {/* <View
               style={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -56,7 +61,7 @@ const BackToDashboard = ({modalVisible, handleGoToDashboard}:any) => {
                   Go To Dashboard
                 </Text>
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
         </View>
       </Modal>
