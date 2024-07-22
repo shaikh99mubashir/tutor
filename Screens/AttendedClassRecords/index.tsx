@@ -371,7 +371,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
         );
       };
   return (
-    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+    <View style={{ backgroundColor: Theme.GhostWhite, height: '100%' }}>
     <Header
       title="Records"
       recordsFilter
@@ -386,7 +386,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
       showsVerticalScrollIndicator={false}
       nestedScrollEnabled>
         <CustomLoader visible={loading} />
-      <View style={{ paddingHorizontal: 15, marginTop: 20 }}>
+      <View style={{ paddingHorizontal: 25, marginTop: 20 }}>
         {/* Search */}
         {/* <View style={{ justifyContent: 'center', alignItems: 'center' }}>
           <View

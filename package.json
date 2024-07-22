@@ -48,6 +48,7 @@
     "react-native-screens": "^3.20.0",
     "react-native-share": "^9.2.3",
     "react-native-svg": "^15.3.0",
+    "react-native-toast-message": "^2.2.0",
     "react-native-vector-icons": "^9.2.0",
     "rn-fetch-blob": "^0.12.0"
   },

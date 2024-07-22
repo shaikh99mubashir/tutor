@@ -120,7 +120,7 @@ const OnBoarding = ({navigation}: any) => {
 
   const handleDonePress = () => {
     AsyncStorage.setItem('login', 'login');
-    navigation.replace('Login');
+    navigation.replace('GetStarted');
   };
   const handleLoginPress = () => {
     // AsyncStorage.setItem('OnBoarding', 'true');
@@ -132,13 +132,13 @@ const OnBoarding = ({navigation}: any) => {
       <View style={{marginBottom: 20, marginHorizontal: 20}}>
         {currentSlideIndex == slides.length - 1 ? (
           <>
-            <View style={{height: 50, paddingHorizontal: 15, marginBottom: 20,}}>
+            <View style={{height: 50, paddingHorizontal: 15, marginBottom: 0,}}>
               <CustomButton
                 onPress={() => handleDonePress()}
-                btnTitle="Continue To Login"
+                btnTitle="Get Started"
               />
             </View>
-            {/* <TouchableOpacity
+            <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => handleLoginPress()}
               style={{
@@ -172,7 +172,7 @@ const OnBoarding = ({navigation}: any) => {
                   Login
                 </Text>
               </View>
-            </TouchableOpacity> */}
+            </TouchableOpacity>
           </>
         ) : (
           <View style={{height: 50, marginBottom: 20, paddingHorizontal: 15}}>
@@ -227,7 +227,7 @@ const OnBoarding = ({navigation}: any) => {
 
   return (
     <SafeAreaView
-      style={{flex: 1, backgroundColor: Theme.white, paddingTop: 20}}>
+      style={{flex: 1, backgroundColor: Theme.GhostWhite, paddingTop: 20}}>
       {/* <StatusBar backgroundColor={COLORS.primary} /> */}
       <View style={{alignItems: 'center', flexDirection: 'row', marginTop: 20}}>
         <View style={{width: '60%'}}>

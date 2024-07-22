@@ -5,6 +5,7 @@ import {
   View,
   Dimensions,
   ToastAndroid,
+  ImageBackground,
 } from 'react-native';
 import React, {useContext, useEffect, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -134,10 +135,10 @@ const Splash = ({navigation}: any) => {
         return;
       }
 
-      if (data) {
-        navigation.replace('Login');
-        return;
-      }
+      // if (data) {
+      //   navigation.replace('Login');
+      //   return;
+      // }
       navigation.replace('OnBoarding');
     }, 3000);
   };
@@ -145,25 +146,41 @@ const Splash = ({navigation}: any) => {
     navigateToHomeScreen();
   }, []);
   return (
-    <View
-      style={{
-        backgroundColor: 'white',
-        height: '100%',
-        paddingHorizontal: 15,
-        alignItems: 'center',
-      }}>
+    // <View
+    //   style={{
+    //     backgroundColor: 'white',
+    //     height: '100%',
+    //     paddingHorizontal: 15,
+    //     alignItems: 'center',
+    //   }}>
+    //   <Image
+    //     source={require('../../Assets/Images/logo.png')}
+    //     resizeMode="contain"
+    //     style={styles.logo}
+    //   />
+    // </View>
+   <ImageBackground
+    source={require('../../Assets/Images/SplashScreen.png')}
+    style={styles.background}
+    >
       <Image
-        source={require('../../Assets/Images/logo.png')}
+        source={require('../../Assets/Images/sifuwhite.png')}
         resizeMode="contain"
         style={styles.logo}
       />
-    </View>
+    </ImageBackground>
   );
 };
 
 export default Splash;
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    resizeMode: 'cover', // or 'stretch'
+    justifyContent: 'center',
+    alignItems:'center'
+  },
   gradient: {
     flex: 1,
     justifyContent: 'center',
@@ -171,6 +188,6 @@ const styles = StyleSheet.create({
   },
   logo: {
     height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width / 1.1,
+    width: Dimensions.get('window').width / 1.7,
   },
 });

@@ -149,17 +149,17 @@ const Students = ({ navigation }: any) => {
 
 
   return (
-    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+    <View style={{ backgroundColor: Theme.GhostWhite, height: '100%' }}>
       <CustomLoader visible={loading} />
       <Header title="Student" backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{ paddingHorizontal: 15 }}>
+        <View style={{ paddingHorizontal: 25 }}>
           {/* Search */}
           <View style={{ justifyContent: 'center', alignItems: 'center' }}>
             <View
               style={{
                 width: '100%',
-                backgroundColor: Theme.lightGray,
+                backgroundColor: Theme.white,
                 borderRadius: 10,
                 display: 'flex',
                 flexDirection: 'row',

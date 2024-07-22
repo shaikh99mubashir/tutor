@@ -577,12 +577,12 @@ function Schedule({ navigation, route }: any) {
         activeOpacity={0.8}
         onPress={() => handleSelectPress(index, item)}
         style={{
-          borderWidth: 1,
-          borderColor: item.selected ? Theme.darkGray : Theme.lightGray,
+          // borderWidth: 1,
+          // borderColor: item.selected ? Theme.darkGray : Theme.lightGray,
           // borderColor:  'silver',
-          paddingHorizontal: 15,
+          paddingHorizontal: 20,
           paddingVertical: 10,
-          // backgroundColor: item.selected ? 'silver' : 'silver',
+          backgroundColor: Theme.white,
           marginTop: 20,
           borderRadius: 20,
         }}>
@@ -593,8 +593,10 @@ function Schedule({ navigation, route }: any) {
               justifyContent: 'space-between',
               width: '100%',
               borderBottomWidth: 1,
-              paddingBottom: 20,
+              paddingVertical: 10,
+              paddingBottom:15,
               borderBottomColor: Theme.lightGray,
+              paddingTop:10
             }}>
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 15, }}>
               <View
@@ -992,7 +994,7 @@ function Schedule({ navigation, route }: any) {
   // console.log("scheduleData",scheduleData);
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
+    <View style={{ flex: 1, backgroundColor: Theme.GhostWhite, paddingHorizontal:10 }}>
       <CustomHeader
         title="Schedule"
         plus={scheduleData.length !== 0}

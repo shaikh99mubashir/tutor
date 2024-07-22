@@ -11,6 +11,7 @@ import { Theme } from '../../constant/theme';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import Entypo from 'react-native-vector-icons/Entypo';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 export type Props = {
   navigation: any;
 };
@@ -30,6 +31,7 @@ const Header = (Props: any) => {
     tab,
     containerStyle,
     recordsFilter,
+    BackBtn
   } = Props;
 
   const routeToFilter = () => {
@@ -74,7 +76,7 @@ const Header = (Props: any) => {
         flexDirection: 'row',
         alignItems: 'center',
         marginTop: 10,
-        paddingHorizontal: 15,
+        paddingHorizontal: 20,
         borderBottomColor: 'grey',
         height: 60,
         ...containerStyle
@@ -87,8 +89,14 @@ const Header = (Props: any) => {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'flex-start',
-            width:'100%'
+            width: '100%'
           }}>
+          {BackBtn && (
+            <TouchableOpacity onPress={() => navigation.goBack()} style={{ padding: 10, paddingLeft: 0, }}>
+              <AntDesign name="arrowleft" size={25} color={'black'} />
+              {/* <Entypo name="chevron-left" size={25} color={'black'} /> */}
+            </TouchableOpacity>
+          )}
           {backBtn &&
             <TouchableOpacity style={{ backgroundColor: 'rgba(52, 52, 52, 0.0)', paddingRight: 10, borderRadius: 50 }} onPress={() => handleGoBack()}>
               <Entypo name="chevron-left" size={25} color={'black'} />
@@ -96,25 +104,37 @@ const Header = (Props: any) => {
             </TouchableOpacity>
           }
           {title &&
-            <Text  style={[styles.textType1,{fontFamily:'Circular Std Bold',width:'100%'}]}>{title}</Text>
+            <Text style={[styles.textType1, { fontFamily: 'Circular Std Bold', width: '100%' }]}>{title}</Text>
           }
         </View>
 
 
         {filter ? (
-          <View style={{ flex: 1 }}>
-            <TouchableOpacity
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'flex-end',
-              }}
-              activeOpacity={0.8}
-              onPress={() => routeToFilter()}>
-              <Image source={require('../../Assets/Images/funnel.png')} style={{ width: 20, height: 20 }} resizeMode='contain' />
+          // <View style={{ flex: 1 }}>
+          //   <TouchableOpacity
+          //     style={{
+          //       flex: 1,
+          //       justifyContent: 'center',
+          //       alignItems: 'flex-end',
+          //     }}
+          //     activeOpacity={0.8}
+          //     onPress={() => routeToFilter()}>
+          //     <Image source={require('../../Assets/Images/funnel.png')} style={{ width: 20, height: 20 }} resizeMode='contain' />
 
-            </TouchableOpacity>
-          </View>
+          //   </TouchableOpacity>
+          // </View>
+          <View
+        style={{
+          backgroundColor: Theme.shinyGrey,
+          padding: 10,
+          borderRadius: 50,
+        }}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => routeToFilter()}>
+            <AntDesign name="filter" size={25} color={'black'} />
+          </TouchableOpacity>
+      </View>
         ) :
           recordsFilter ? (
             <View style={{ flex: 1 }}>

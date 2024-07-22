@@ -306,7 +306,7 @@ function AddClass({navigation}: any) {
               flexDirection: 'row',
               justifyContent: 'space-between',
               alignItems: 'center',
-              backgroundColor: Theme.liteBlue,
+              backgroundColor: Theme.white,
               padding: 20,
               marginTop: 5,
               borderRadius: 15,
@@ -338,7 +338,7 @@ function AddClass({navigation}: any) {
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 // backgroundColor: '#E6F2FF',
-                backgroundColor: Theme.liteBlue,
+                backgroundColor: Theme.white,
                 padding: 20,
                 marginTop: 5,
                 borderRadius: 15,
@@ -373,7 +373,7 @@ function AddClass({navigation}: any) {
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                backgroundColor: Theme.liteBlue,
+                backgroundColor: Theme.white,
                 padding: 20,
                 marginTop: 5,
                 borderRadius: 15,
@@ -611,7 +611,7 @@ const previousRouteName = navigation.getState().routes[navigation.getState().rou
 // console.log("selectedStudent?.studentID",selectedStudent?.studentID);
 
   return (
-    <View style={{flex: 1, backgroundColor: Theme.white}}>
+    <View style={{flex: 1, backgroundColor: Theme.GhostWhite, paddingHorizontal:10}}>
       <View>
         <Header title={'Add Class'} backBtn navigation={navigation} />
       </View>
@@ -670,26 +670,15 @@ const previousRouteName = navigation.getState().routes[navigation.getState().rou
                   </Text>
                   <View
                     style={{
-                      backgroundColor: Theme.liteBlue,
+                      backgroundColor: Theme.white,
                       padding:20,
                       borderRadius: 10,
-                      marginVertical: 5,
+                      marginVertical: 25,
                     }}>
                     <Text style={[styles.textType3,{lineHeight:23,color:'gray'}]}>
                     Great job on completing one of your ({selectedSubject?.classFrequency}) monthly sessions 
                     for this subject! You now have ({MAX_CLASSES}) sessions left. 
                     Could you schedule more if possible? Thanks!
-
-                      {/* {selectedSubject?.subject} Total Session are{' '}
-                      <Text style={{fontWeight: '600'}}>
-                      {selectedSubject?.classFrequency}
-                      </Text>
-                      . You can schedule Your reamining Session are
-                      <Text style={{fontWeight: '600', fontFamily:'Circular Std Medium'}}>
-                        {' '}
-                        {classes.length} / {MAX_CLASSES}{' '}
-                      </Text>
-                      <Text style={{ fontWeight: '600' }}> {selectedSubject?.reamining_hours}</Text> */}
                     </Text>
                   </View>
                 </View>
@@ -698,7 +687,6 @@ const previousRouteName = navigation.getState().routes[navigation.getState().rou
               <View style={{marginBottom: 100}}>
                 <FlatList data={classes} renderItem={renderClasses} />
               </View>
-           
             </ScrollView>
             <View style={{margin:10}}></View>
             {MAX_CLASSES > 0 && MAX_CLASSES > classes.length && (

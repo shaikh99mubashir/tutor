@@ -279,7 +279,7 @@ const PaymentHistory = ({ navigation }: any) => {
       <ActivityIndicator color={"black"} size={"large"} />
     </View> : <View style={{ flex: 1, backgroundColor: 'white' }}>
       <Header title="Payment History" navigation={navigation} backBtn  containerStyle={{ height: 86, flexDirection: 'column', paddingTop: 20 }} />
-      {commissionData && commissionData.length > 0 ? (
+      {commissionData && commissionData.length < 0 ? (
         <View style={{ paddingBottom: 80 }}>
           <ScrollView refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />

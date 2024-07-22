@@ -1494,7 +1494,7 @@ const ReportSubmissionHistory = ({navigation}: any) => {
       </TouchableOpacity>
     </View>
   ) : (
-    <View style={{backgroundColor: Theme.white, height: '100%'}}>
+    <View style={{backgroundColor: Theme.GhostWhite, height: '100%'}}>
       <Header title="Student Reports" backBtn navigation={navigation }   containerStyle={{ height: 85, flexDirection: 'column', paddingTop: 20 }}/>
       <ScrollView
         refreshControl={
@@ -1502,13 +1502,13 @@ const ReportSubmissionHistory = ({navigation}: any) => {
         }
         showsVerticalScrollIndicator={false}
         nestedScrollEnabled>
-        <View style={{paddingHorizontal: 15}}>
+        <View style={{paddingHorizontal: 25}}>
           {/* Search */}
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
             <View
               style={{
                 width: '100%',
-                backgroundColor: Theme.lightGray,
+                backgroundColor: Theme.white,
                 borderRadius: 10,
                 display: 'flex',
                 flexDirection: 'row',

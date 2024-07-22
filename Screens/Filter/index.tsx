@@ -19,6 +19,7 @@ import filterContext from '../../context/filterContext';
 import { stat } from 'react-native-fs';
 import DropDownModalView from '../../Component/DropDownModalView';
 import CustomButton from '../../Component/CustomButton';
+import CustomDropDown2 from '../../Component/CustomDropDown2';
 
 
 const Filter = ({ navigation, route }: any) => {
@@ -55,11 +56,22 @@ const Filter = ({ navigation, route }: any) => {
       option: "Rejected"
     }
   ])
+  // const [status, setStatus] = useState([
+  //   {
+  //     subject: "Approved"
+  //   },
+  //   {
+  //     subject: "Pending"
+  //   },
+  //   {
+  //     subject: "Rejected"
+  //   }
+  // ])
 
-  const [selectedStatus, setSelectedStatus] = useState("")
+  const [selectedStatus, setSelectedStatus] = useState([])
   const [selectedAttendedStatus, setSelectedAttendedStatus] = useState("")
 
-
+console.log('selectedStatus',selectedStatus);
 
   const [classMode, setClassMode] = useState([
     {
@@ -106,8 +118,8 @@ const Filter = ({ navigation, route }: any) => {
   }
 
   const applyRecordStatusFilter = async () => {
-    console.log("selectedAttendedStatus",selectedAttendedStatus);
-    
+    console.log("selectedAttendedStatus", selectedAttendedStatus);
+
     if (!selectedAttendedStatus) {
 
       ToastAndroid.show("Kindly Select Status", ToastAndroid.SHORT)
@@ -281,30 +293,43 @@ const Filter = ({ navigation, route }: any) => {
 
 
   return (
-    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+    <View style={{ backgroundColor: Theme.GhostWhite, height: '100%', }}>
+      <View style={{ marginTop: 10 }}></View>
       <Header title="Filter" backBtn navigation={navigation} />
+
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        {data == 'applied' ? <View style={{ paddingHorizontal: 15 }} >
-          <DropDownModalView
-            title="Status"
-            selectedValue={setSelectedStatus}
-            placeHolder={alreadyFilterStatus ? alreadyFilterStatus : 'Select Status'}
-            option={status}
-            modalHeading="Select Status"
-          />
-        </View>
+        {data == 'applied' ?
+          <View style={{ paddingHorizontal: 25 }} >
+            <DropDownModalView
+              title="Status"
+              selectedValue={setSelectedStatus}
+              placeHolder={alreadyFilterStatus ? alreadyFilterStatus : 'Select Status'}
+              option={status}
+              modalHeading="Select Status"
+            />
+            {/* <CustomDropDown2
+              // setSelectedSubject={setSelectedState}
+              setSelectedSubject={setSelectedStatus}
+              selectedSubject={selectedState}
+              ddTitle="Status"
+              dropdownPlace={alreadyFilterStatus ? alreadyFilterStatus : 'Select Status'}
+              subject={status}
+              categoryShow={'subject'}
+            /> */}
+          </View>
           :
           data == 'tutorrecords' ? <View style={{ paddingHorizontal: 15 }} >
             <DropDownModalView
               title="Status"
               selectedValue={setSelectedAttendedStatus}
-              placeHolder={alreadyRecordFilterStatus ? alreadyRecordFilterStatus :'Select Status'}
+              placeHolder={alreadyRecordFilterStatus ? alreadyRecordFilterStatus : 'Select Status'}
               option={classAttendedStatus}
               modalHeading="Select Status"
             />
 
           </View>
-            : <View style={{ paddingHorizontal: 15 }}>
+            : <View style={{ paddingHorizontal: 25 }}>
+              <View style={{ marginTop: 10 }}></View>
               <CustomDropDown
                 setSelectedSubject={setSelectedCategory}
                 search={"category"}
@@ -313,7 +338,7 @@ const Filter = ({ navigation, route }: any) => {
                 searchFunc={handleSearchData}
                 selectedSubject={selectedCategory}
                 ddTitle="Category"
-                headingStyle={{ color: Theme.black, fontWeight: "700" }}
+                headingStyle={{ color: Theme.black, }}
                 dropdownPlace={filterCategory ? filterCategory : "Select Category"}
                 dropdownContainerStyle={{
                   paddingVertical: 15,
@@ -326,23 +351,28 @@ const Filter = ({ navigation, route }: any) => {
                 searchData={searchSubjectData}
                 searchFunc={handleSearchData}
                 selectedSubject={selectedSubject}
-                ddTitle="Subject" headingStyle={{ color: Theme.black, fontWeight: "700" }}
+                ddTitle="Subject" headingStyle={{ color: Theme.black, }}
                 dropdownPlace={filterSubject ? filterSubject : "Select Subject"}
                 dropdownContainerStyle={{ paddingVertical: 15, }} subject={subjects} categoryShow={"subject"} />
               <CustomDropDown
                 setSelectedSubject={setSelectedMode}
                 selectedSubject={selectedMode}
-                ddTitle="Mode" headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={filterMode ? filterMode : "Select Mode"} dropdownContainerStyle={{ paddingVertical: 15, }} subject={classMode} categoryShow={"subject"} />
-              <CustomDropDown setSelectedSubject={setSelectedState}
-                selectedSubject={selectedState} search={"state"} searchData={searchStateData}
-                searchFunc={handleSearchData} ddTitle="State" headingStyle={{ color: Theme.black, fontWeight: "700" }}
+                ddTitle="Mode" headingStyle={{ color: Theme.black, }} dropdownPlace={filterMode ? filterMode : "Select Mode"} dropdownContainerStyle={{ paddingVertical: 15, }} subject={classMode} categoryShow={"subject"} />
+              <CustomDropDown s
+                etSelectedSubject={setSelectedState}
+                selectedSubject={selectedState}
+                search={"state"}
+                searchData={searchStateData}
+                searchFunc={handleSearchData}
+                ddTitle="State"
+                headingStyle={{ color: Theme.black, }}
                 dropdownPlace={filterState ? filterState : "Select State"} dropdownContainerStyle={{ paddingVertical: 15, }} subject={state} categoryShow={"subject"} />
               <CustomDropDown ddTitle="City"
                 search={"city"} searchData={searchCityData}
                 searchFunc={handleSearchData}
                 setSelectedSubject={setSelectedCity}
                 selectedSubject={selectedCity}
-                headingStyle={{ color: Theme.black, fontWeight: "700" }} dropdownPlace={filterCity ? filterCity : "Select City"} dropdownContainerStyle={{ paddingVertical: 15, }} subject={city} categoryShow={"subject"} />
+                headingStyle={{ color: Theme.black, }} dropdownPlace={filterCity ? filterCity : "Select City"} dropdownContainerStyle={{ paddingVertical: 15, }} subject={city} categoryShow={"subject"} />
             </View>}
       </ScrollView>
       {/* <View style={{ width: "100%", alignItems: "center" }} >
@@ -385,15 +415,22 @@ const Filter = ({ navigation, route }: any) => {
           </TouchableOpacity>
         </View>
       </View> */}
-      <View style={{flexDirection:"row", justifyContent:"center",gap:10,alignSelf:'center',position:'absolute',bottom:0, marginBottom:80, paddingHorizontal:15}}>
-       <View style={{width: '48%'}}>
-              <CustomButton btnTitle="Save"  onPress={() => data == 'applied' ? applyStatusFilter() : data == 'tutorrecords' ? applyRecordStatusFilter() : applyFilter()}/>
-            </View>
-            <View style={{width: '48%'}}>
-              <CustomButton btnTitle="Reset"  onPress={() => data == 'applied' ? resetStatusFilter() :data == 'tutorrecords' ? resetRecordStatusFilter(): resetFilter()} backgroundColor={Theme.WhiteSmoke} color={Theme.Black}/>
-            </View>
-            
+      <View style={{
+        flexDirection: "row",
+        justifyContent: "center",
+        gap: 10, alignSelf: 'center',
+        bottom: 0, marginBottom: 30,
+        paddingHorizontal: 15,
+        backgroundColor: Theme.GhostWhite
+      }}>
+        <View style={{ width: '48%' }}>
+          <CustomButton btnTitle="Save" onPress={() => data == 'applied' ? applyStatusFilter() : data == 'tutorrecords' ? applyRecordStatusFilter() : applyFilter()} />
         </View>
+        <View style={{ width: '48%' }}>
+          <CustomButton btnTitle="Reset" onPress={() => data == 'applied' ? resetStatusFilter() : data == 'tutorrecords' ? resetRecordStatusFilter() : resetFilter()} backgroundColor={Theme.WhiteSmoke} color={Theme.Black} />
+        </View>
+
+      </View>
     </View>
   );
 };

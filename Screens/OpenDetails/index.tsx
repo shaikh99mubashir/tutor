@@ -37,11 +37,8 @@ const OpenDetails = ({route, navigation}: any) => {
 
   const [loading, setLoading] = useState(false);
 
-  // console.log(openDetailItem.comment, "comment")
-
-  // console.log(data, "dataaa")
-  // console.log('idddddddddddddd',data)
   const sendOpenDetailData = async () => {
+    setLoading(true);
     let tutorData: any = await AsyncStorage.getItem('loginAuth');
 
     tutorData = await JSON.parse(tutorData);
@@ -58,7 +55,7 @@ const OpenDetails = ({route, navigation}: any) => {
     console.log(tutor_id, 'tutor_id');
     console.log(comment, 'comment');
 
-    setLoading(true);
+    
     axios
       .get(
         `${Base_Uri}offerSendByTutor/${subjectId}/${tutor_id}/${ticketID}/${comment}`,
@@ -83,24 +80,12 @@ const OpenDetails = ({route, navigation}: any) => {
         ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
-  // console.log('data=============>', data);
 
   return (
-    <View style={{backgroundColor: Theme.white, height: '100%'}}>
+    <View style={{backgroundColor: Theme.GhostWhite, height: '100%'}}>
       <Header title={data?.jtuid} backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{paddingHorizontal: 15}}>
-          {/* <Text
-            style={{
-              color: 'green',
-              fontSize: 15,
-              fontWeight: '500',
-              paddingVertical: 8,
-              borderBottomWidth: 1,
-              borderColor: '#eee',
-            }}>
-            {data?.studentAddress1} {data?.studentAddress2}
-          </Text> */}
+        <View style={{paddingHorizontal: 25}}>
           <View
             style={{
               backgroundColor: Theme.darkGray,
@@ -148,10 +133,11 @@ const OpenDetails = ({route, navigation}: any) => {
 
             <View
               style={{
-                backgroundColor: Theme.liteBlue,
-                padding: 15,
+                backgroundColor: Theme.white,
+                paddingHorizontal: 25,
+                paddingVertical: 20,
                 marginTop: 10,
-                borderRadius: 12,
+                borderRadius: 20,
               }}>
               <View
                 style={{
@@ -167,7 +153,7 @@ const OpenDetails = ({route, navigation}: any) => {
                     flexDirection: 'row',
                     gap: 10,
                   }}>
-                  <FontAwesome name="user-o" size={18} color={'#298CFF'} />
+                  <FontAwesome name="user-o" size={18} color={Theme.darkGray} />
                   <Text style={styles.textType3}>Student Name</Text>
                 </View>
                 <Text
@@ -194,7 +180,7 @@ const OpenDetails = ({route, navigation}: any) => {
                   <FontAwesome
                     name="graduation-cap"
                     size={18}
-                    color={'#298CFF'}
+                    color={Theme.darkGray}
                   />
                   <Text style={styles.textType3}>Student Detail</Text>
                 </View>
@@ -216,7 +202,7 @@ const OpenDetails = ({route, navigation}: any) => {
                     flexDirection: 'row',
                     gap: 10,
                   }}>
-                  <Feather name="hash" size={18} color={'#298CFF'} />
+                  <Feather name="hash" size={18} color={Theme.darkGray} />
                   <Text style={styles.textType3}>No. of Sessions</Text>
                 </View>
 
@@ -224,7 +210,7 @@ const OpenDetails = ({route, navigation}: any) => {
                   style={[
                     styles.textType1,
                     {
-                      color: '#003E9C',
+                      color: Theme.darkGray,
                       backgroundColor: '#298CFF33',
                       paddingVertical: 2,
                       // paddingHorizontal: 10,
@@ -252,7 +238,7 @@ const OpenDetails = ({route, navigation}: any) => {
                     flexDirection: 'row',
                     gap: 10,
                   }}>
-                  <Entypo name="time-slot" size={18} color={'#298CFF'} />
+                  <Entypo name="time-slot" size={18} color={Theme.darkGray} />
                   <Text style={styles.textType3}>Class Duration(Hrs)</Text>
                 </View>
 
@@ -260,7 +246,7 @@ const OpenDetails = ({route, navigation}: any) => {
                   style={[
                     styles.textType1,
                     {
-                      color: '#003E9C',
+                      color: Theme.darkGray,
                       backgroundColor: '#298CFF33',
                       paddingVertical: 2,
                       // paddingHorizontal: 10,
@@ -278,10 +264,11 @@ const OpenDetails = ({route, navigation}: any) => {
 
             <View
               style={{
-                backgroundColor: Theme.liteBlue,
-                padding: 15,
+                backgroundColor: Theme.white,
+                paddingHorizontal: 25,
+                paddingVertical:15,
                 marginTop: 10,
-                borderRadius: 12,
+                borderRadius: 20,
               }}>
               <View
                 style={{
@@ -297,7 +284,7 @@ const OpenDetails = ({route, navigation}: any) => {
                     gap: 12,
                     paddingBottom: 15,
                   }}>
-                  <FontAwesome name="level-up" size={22} color={'#298CFF'} />
+                  <FontAwesome name="level-up" size={22} color={Theme.darkGray} />
                   <Text style={styles.textType3}>Level</Text>
                 </View>
                 <Text style={[styles.textType1, {fontSize: 18}]}>
@@ -318,7 +305,7 @@ const OpenDetails = ({route, navigation}: any) => {
                     gap: 12,
                     paddingBottom: 15,
                   }}>
-                  <Ionicons name="recording-sharp" size={18} color={'#298CFF'} />
+                  <Ionicons name="recording-sharp" size={18} color={Theme.darkGray} />
                   <Text style={styles.textType3}>Subscription</Text>
                 </View>
                 <Text style={[styles.textType1, {fontSize: 18}]}>
@@ -339,7 +326,7 @@ const OpenDetails = ({route, navigation}: any) => {
                     flexDirection: 'row',
                     gap: 10,
                   }}>
-                  <AntDesign name="copy1" size={18} color={'#298CFF'} />
+                  <AntDesign name="copy1" size={18} color={Theme.darkGray} />
                   <Text style={styles.textType3}>Subject</Text>
                 </View>
                 <Text style={[styles.textType1, {fontSize: 18}]}>
@@ -362,7 +349,7 @@ const OpenDetails = ({route, navigation}: any) => {
                     flexDirection: 'row',
                     gap: 10,
                   }}>
-                  <FontAwesome name="user-o" size={18} color={'#298CFF'} />
+                  <FontAwesome name="user-o" size={18} color={Theme.darkGray} />
                   <Text style={styles.textType3}>Pref. Tutor</Text>
                 </View>
                 <Text
@@ -396,8 +383,8 @@ const OpenDetails = ({route, navigation}: any) => {
                       gap: 10,
                       paddingHorizontal: 10,
                     }}>
-                    <AntDesign name="calendar" size={20} color={'#298CFF'} />
-                    <Text style={[styles.textType3, {color: '#298CFF'}]}>
+                    <AntDesign name="calendar" size={20} color={Theme.darkGray} />
+                    <Text style={[styles.textType3, {color: Theme.darkGray}]}>
                       {data?.classDay}
                     </Text>
                   </View>
@@ -419,9 +406,9 @@ const OpenDetails = ({route, navigation}: any) => {
                     <AntDesign
                       name="clockcircleo"
                       size={20}
-                      color={'#298CFF'}
+                      color={Theme.darkGray}
                     />
-                    <Text style={[styles.textType3, {color: '#298CFF'}]}>
+                    <Text style={[styles.textType3, {color: Theme.darkGray}]}>
                       {data?.classTime}
                     </Text>
                   </View>
@@ -436,10 +423,10 @@ const OpenDetails = ({route, navigation}: any) => {
                 <Text style={styles.textType1}>Special Need</Text>
                 <View
                   style={{
-                    backgroundColor: Theme.liteBlue,
-                    paddingHorizontal: 10,
-                    paddingVertical: 12,
-                    borderRadius: 10,
+                    backgroundColor: Theme.white,
+                    paddingHorizontal: 25,
+                    paddingVertical: 20,
+                    borderRadius: 20,
                     marginVertical: 5,
                   }}>
                   <Text
@@ -461,10 +448,10 @@ const OpenDetails = ({route, navigation}: any) => {
                   <Text style={styles.textType1}>Student Address</Text>
                   <View
                     style={{
-                      backgroundColor: Theme.liteBlue,
-                      paddingHorizontal: 10,
-                      paddingVertical: 12,
-                      borderRadius: 10,
+                      backgroundColor: Theme.white,
+                      paddingHorizontal: 25,
+                      paddingVertical: 20,
+                      borderRadius: 20,
                       marginVertical: 5,
                     }}>
                     <Text
@@ -486,10 +473,10 @@ const OpenDetails = ({route, navigation}: any) => {
                   <View
                     key={i}
                     style={{
-                      backgroundColor: Theme.liteBlue,
-                      paddingHorizontal: 10,
-                      paddingVertical: 12,
-                      borderRadius: 10,
+                      backgroundColor: Theme.white,
+                      paddingHorizontal: 25,
+                      paddingVertical: 20,
+                      borderRadius: 20,
                       marginVertical: 5,
                     }}>
                     <Text style={styles.textType3}>
@@ -544,7 +531,7 @@ const OpenDetails = ({route, navigation}: any) => {
               </View>
             )}
             {/* Comment */}
-            <View style={{marginBottom: 20, marginTop: 20}}>
+            <View style={{marginBottom: 20, marginTop: 0}}>
               <Text style={styles.textType1}>Comment</Text>
               <View
                 style={[
@@ -552,8 +539,9 @@ const OpenDetails = ({route, navigation}: any) => {
                   {
                     // borderWidth: 1,
                     marginTop: 5,
-                    borderRadius: 10,
+                    borderRadius: 20,
                     marginHorizontal: 2,
+                    
                   },
                 ]}>
                 <TextInput
@@ -566,10 +554,12 @@ const OpenDetails = ({route, navigation}: any) => {
                   style={[
                     styles.textArea,
                     {
-                      backgroundColor: Theme.liteBlue,
-                      padding: 12,
+                      backgroundColor: Theme.white,
+                      paddingHorizontal: 20,
+                      paddingVertical:20,
                       color: Theme.black,
                       fontFamily: 'Circular Std Book',
+                      borderRadius:20,
                     },
                   ]}
                   underlineColorAndroid="transparent"

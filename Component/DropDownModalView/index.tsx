@@ -56,7 +56,6 @@ const DropDownModalView = ({
           <Text
             style={{
               fontSize: 16,
-              fontWeight: 'bold',
               color: 'black',
               fontFamily: 'Circular Std Medium',
             }}>
@@ -82,12 +81,9 @@ const DropDownModalView = ({
             justifyContent: 'space-between',
             paddingVertical: 15,
             paddingHorizontal: 20,
-            borderRadius:15,
-            // borderTopLeftRadius: 5,
-            // borderTopRightRadius: 5,
-            // borderBottomLeftRadius: 5,
-            // borderBottomRightRadius: 5,
-            backgroundColor:Theme.liteBlue,
+            borderRadius:20,
+            height:60,
+            backgroundColor:Theme.white,
             alignItems: 'center',
             ...style,
           }}>

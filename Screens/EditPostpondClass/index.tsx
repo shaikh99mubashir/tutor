@@ -19,6 +19,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import axios from 'axios';
 import {Base_Uri} from '../../constant/BaseUri';
 import CustomLoader from '../../Component/CustomLoader';
+import CustomButton from '../../Component/CustomButton';
 
 
 function EditPostpondClass({navigation, route}: any) {
@@ -183,7 +184,7 @@ function EditPostpondClass({navigation, route}: any) {
   //   }
   // }, [inputRef]);
   return (
-    <KeyboardAvoidingView style={{flex: 1, backgroundColor: Theme.white}}>
+    <KeyboardAvoidingView style={{flex: 1, backgroundColor: Theme.GhostWhite}}>
       <View>
         <CustomHeader title="Edit Class" backBtn navigation={navigation} />
       </View>
@@ -194,7 +195,7 @@ function EditPostpondClass({navigation, route}: any) {
           showsVerticalScrollIndicator={false}>
           <View
             style={{
-              backgroundColor: Theme.liteBlue,
+              backgroundColor: Theme.white,
               padding: 20,
               borderRadius: 10,
               marginTop: 10,
@@ -268,7 +269,7 @@ function EditPostpondClass({navigation, route}: any) {
           </Text>
           <View
             style={{
-              backgroundColor: Theme.liteBlue,
+              backgroundColor: Theme.white,
               padding: 20,
               borderRadius: 10,
               marginTop: 10,
@@ -308,7 +309,7 @@ function EditPostpondClass({navigation, route}: any) {
               style={{
                 height: 100,
                 padding: 10,
-                backgroundColor: Theme.liteBlue,
+                backgroundColor: Theme.white,
                 borderRadius: 5,
                 marginTop: 5,
               }}>
@@ -436,7 +437,7 @@ function EditPostpondClass({navigation, route}: any) {
                     flexDirection: 'row',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    backgroundColor: Theme.liteBlue,
+                    backgroundColor: Theme.white,
                     padding: 20,
                     marginTop: 5,
                     borderRadius: 15,
@@ -477,7 +478,7 @@ function EditPostpondClass({navigation, route}: any) {
                       justifyContent: 'space-between',
                       alignItems: 'center',
                       // backgroundColor: '#E6F2FF',
-                      backgroundColor: Theme.liteBlue,
+                      backgroundColor: Theme.white,
                       padding: 20,
                       marginTop: 5,
                       borderRadius: 15,
@@ -523,7 +524,7 @@ function EditPostpondClass({navigation, route}: any) {
                       flexDirection: 'row',
                       justifyContent: 'space-between',
                       alignItems: 'center',
-                      backgroundColor: Theme.liteBlue,
+                      backgroundColor: Theme.white,
                       padding: 20,
                       marginTop: 5,
                       borderRadius: 15,
@@ -561,9 +562,12 @@ function EditPostpondClass({navigation, route}: any) {
               onChange={onChange}
             />
           )}
+          <View style={{marginVertical:15}}>
+          <CustomButton btnTitle='Confirm Class' onPress={() => editTutorPostPonedClass()}/>
+          </View>
         </ScrollView>
       </View>
-      <View
+      {/* <View
         style={{
           width: '92%',
           alignItems: 'center',
@@ -582,7 +586,7 @@ function EditPostpondClass({navigation, route}: any) {
             Confirm Class
           </Text>
         </TouchableOpacity>
-      </View>
+      </View> */}
       <CustomLoader visible={loading} />
     </KeyboardAvoidingView>
   );

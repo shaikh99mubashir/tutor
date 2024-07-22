@@ -8,6 +8,7 @@ import AntDesign from "react-native-vector-icons/EvilIcons"
 import axios from "axios";
 import { Base_Uri } from "../../constant/BaseUri";
 import CustomLoader from "../../Component/CustomLoader";
+import CustomButton from "../../Component/CustomButton";
 
 function EditCancelledClass({ navigation, route }: any) {
 
@@ -51,12 +52,13 @@ console.log(cancelledReason,"reason")
         // loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
         //     <ActivityIndicator size="large" color={Theme.black} />
         // </View> :
-         <KeyboardAvoidingView behavior="height" style={{ flex: 1, backgroundColor: Theme.white }} >
+         <KeyboardAvoidingView behavior="height" style={{ flex: 1, backgroundColor: Theme.GhostWhite }} >
             <View>
                 <CustomHeader title="Edit Class" backBtn navigation={navigation} />
             </View>
+            <View style={{marginTop:20}}></View>
             <ScrollView nestedScrollEnabled={true} showsVerticalScrollIndicator={false}  >
-                <View style={{ flex: 1, padding: 20 }} >
+                <View style={{ flex: 1, paddingHorizontal: 25 }} >
                     <Text style={{ color: Theme.black, fontSize: 18, fontWeight: "600" , fontFamily: 'Circular Std Medium',}} >
                         Student
                     </Text>
@@ -73,7 +75,7 @@ console.log(cancelledReason,"reason")
                     <Text style={{ color: Theme.black, fontSize: 18, fontWeight: "600", marginTop: 15, fontFamily: 'Circular Std Medium', }} >
                         Class
                     </Text>
-                    <View style={{ backgroundColor: Theme.liteBlue, padding: 20, borderRadius: 10, marginTop: 10 }} >
+                    <View style={{ backgroundColor: Theme.white, padding: 20, borderRadius: 10, marginTop: 10 }} >
                         <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }} >
                             <Text style={{ color: Theme.gray, fontSize: 16, fontWeight: "500" , fontFamily: 'Circular Std Medium',}} >
                                 Date
@@ -106,7 +108,7 @@ console.log(cancelledReason,"reason")
                     <Text style={{ color: Theme.black, fontSize: 18, fontWeight: "600", marginTop: 20, fontFamily: 'Circular Std Medium', }} >
                         Status
                     </Text>
-                    <View style={{ backgroundColor: Theme.lightGray, padding: 20, borderRadius: 10, marginTop: 10 }} >
+                    <View style={{ backgroundColor: Theme.white, padding: 20, borderRadius: 10, marginTop: 10 }} >
 
                         <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center" }} >
                             <Text style={{ color: Theme.black, fontSize: 16, fontWeight: "500", fontFamily: 'Circular Std Medium', }} >
@@ -115,13 +117,11 @@ console.log(cancelledReason,"reason")
 
                             {/* <AntDesign name="chevron-down" color={Theme.black} size={30} /> */}
                         </View>
-
                     </View>
-
                     <View>
                         <Text style={{ color: Theme.black, fontSize: 16, fontWeight: "600", marginTop: 15, fontFamily: 'Circular Std Medium', }}>Cancelled Reason</Text>
 
-                        <View style={{ height: 100, padding: 10, backgroundColor: Theme.lightGray, borderRadius: 5, marginTop: 5 }}>
+                        <View style={{ height: 100, padding: 10, backgroundColor: Theme.white, borderRadius: 5, marginTop: 5 }}>
                             <TextInput
                                 style={{ padding: 10, color: Theme.black, fontSize: 16, paddingVertical: 3 }}
                                 onChangeText={setCancelledReason}
@@ -132,17 +132,18 @@ console.log(cancelledReason,"reason")
                             />
                         </View>
                     </View>
-
+            <View style={{margin:20}}/>
+                <CustomButton btnTitle='Cancelled' onPress={() => editTutorCancelledClass()}/>
                 </View>
                 <CustomLoader visible={loading} />
             </ScrollView>
-            <View style={{ width: "92%", alignItems: "center", marginBottom: 20,alignSelf:'center' }} >
+            {/* <View style={{ width: "92%", alignItems: "center", marginBottom: 20,alignSelf:'center' }} >
                 <TouchableOpacity onPress={() => editTutorCancelledClass()} style={{ backgroundColor: Theme.darkGray, padding: 15, borderRadius: 10, width: "95%" }} >
                     <Text style={{ textAlign: "center", fontSize: 16, color: Theme.white }} >
                         Confirm Class
                     </Text>
                 </TouchableOpacity>
-            </View>
+            </View> */}
         </KeyboardAvoidingView>
     )
 }

@@ -51,6 +51,8 @@ import ProfileIcon from '../SVGs/ProfileIcon';
 import JobTicketIcon from '../SVGs/JobTicketIcon';
 import ScheduleIcon from '../SVGs/ScheduleIcon';
 import ChatIcon from '../SVGs/ChatIcon';
+import GetStarted from '../Screens/GetStarted';
+import Toast from 'react-native-toast-message';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -117,9 +119,9 @@ function BottomNavigation({ navigation, route }: any) {
                       alignItems: 'center',
                       justifyContent: 'center',
                       flexDirection: 'column',
-                      
+
                     }}>
-                   <JobTicketIcon />
+                    <JobTicketIcon />
                     <Text
                       style={{
                         marginTop: 2,
@@ -140,7 +142,7 @@ function BottomNavigation({ navigation, route }: any) {
                       justifyContent: 'center',
                       flexDirection: 'column',
                     }}>
-                   <JobTicketIcon color={Theme.gray} />
+                    <JobTicketIcon color={Theme.gray} />
                     <Text
                       style={{
                         marginTop: 2,
@@ -174,19 +176,19 @@ function BottomNavigation({ navigation, route }: any) {
                         justifyContent: 'center',
                         flexDirection: 'column',
                       }}>
-                     <ScheduleIcon/>
-                    <Text
-                      style={{
-                        marginTop: 2,
-                        color: focused ? 'black' : Theme.gray,
-                        fontWeight: '500',
-                        fontSize: 12,
-                        fontFamily: 'Circular Std Medium',
-                        fontStyle: 'normal',
-                      }}
-                    >
-                      Schedule
-                    </Text>
+                      <ScheduleIcon />
+                      <Text
+                        style={{
+                          marginTop: 2,
+                          color: focused ? 'black' : Theme.gray,
+                          fontWeight: '500',
+                          fontSize: 12,
+                          fontFamily: 'Circular Std Medium',
+                          fontStyle: 'normal',
+                        }}
+                      >
+                        Schedule
+                      </Text>
                     </View>
                   ) : (
                     <View
@@ -196,18 +198,18 @@ function BottomNavigation({ navigation, route }: any) {
                         flexDirection: 'column',
                       }}>
                       <ScheduleIcon color={Theme.gray} />
-                    <Text
-                      style={{
-                        marginTop: 2,
-                        color: focused ? 'black' : Theme.gray,
-                        fontWeight: '500',
-                        fontSize: 12,
-                        fontFamily: 'Circular Std Medium',
-                        fontStyle: 'normal',
-                      }}
-                    >
-                      Schedule
-                    </Text>
+                      <Text
+                        style={{
+                          marginTop: 2,
+                          color: focused ? 'black' : Theme.gray,
+                          fontWeight: '500',
+                          fontSize: 12,
+                          fontFamily: 'Circular Std Medium',
+                          fontStyle: 'normal',
+                        }}
+                      >
+                        Schedule
+                      </Text>
                     </View>
                   )}
                 </View>
@@ -273,19 +275,19 @@ function BottomNavigation({ navigation, route }: any) {
                         padding: 5,
                         borderRadius: 5,
                       }}>
-                     <ChatIcon />
-                    <Text
-                      style={{
-                        marginTop: 2,
-                        color: focused ? 'black' : Theme.gray,
-                        fontWeight: '500',
-                        fontSize: 12,
-                        fontFamily: 'Circular Std Medium',
-                        fontStyle: 'normal',
-                      }}
-                    >
-                      Inbox
-                    </Text>
+                      <ChatIcon />
+                      <Text
+                        style={{
+                          marginTop: 2,
+                          color: focused ? 'black' : Theme.gray,
+                          fontWeight: '500',
+                          fontSize: 12,
+                          fontFamily: 'Circular Std Medium',
+                          fontStyle: 'normal',
+                        }}
+                      >
+                        Inbox
+                      </Text>
                     </View>
                   ) : (
                     <View
@@ -294,19 +296,19 @@ function BottomNavigation({ navigation, route }: any) {
                         justifyContent: 'center',
                         flexDirection: 'column',
                       }}>
-                     <ChatIcon color={Theme.gray} />
-                    <Text
-                      style={{
-                        marginTop: 2,
-                        color: focused ? 'black' : Theme.gray,
-                        fontWeight: '500',
-                        fontSize: 12,
-                        fontFamily: 'Circular Std Medium',
-                        fontStyle: 'normal',
-                      }}
-                    >
-                      Inbox
-                    </Text>
+                      <ChatIcon color={Theme.gray} />
+                      <Text
+                        style={{
+                          marginTop: 2,
+                          color: focused ? 'black' : Theme.gray,
+                          fontWeight: '500',
+                          fontSize: 12,
+                          fontFamily: 'Circular Std Medium',
+                          fontStyle: 'normal',
+                        }}
+                      >
+                        Inbox
+                      </Text>
                     </View>
                   )}
                 </View>
@@ -317,7 +319,6 @@ function BottomNavigation({ navigation, route }: any) {
         <Tab.Screen
           name="More"
           component={More}
-
           options={{
             tabBarIcon: ({ focused, color }) => (
               <View>
@@ -370,7 +371,6 @@ function BottomNavigation({ navigation, route }: any) {
         />
       </>
     </Tab.Navigator>
-
   );
 }
 
@@ -404,6 +404,11 @@ function AppNavigation() {
           options={{ headerShown: false }}
           name="OnBoarding"
           component={OnBoarding}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="GetStarted"
+          component={GetStarted}
         />
         <Stack.Screen
           options={{ headerShown: false }}
@@ -561,6 +566,7 @@ function AppNavigation() {
           component={TutorDetailForm}
         />
       </Stack.Navigator>
+      <Toast />
     </NavigationContainer>
   );
 }
@@ -572,8 +578,10 @@ const styles = StyleSheet.create({
   },
 
   tabBarStyle: {
-    borderTopWidth: 0,
-    height: 80,
+    borderTopWidth: 1,
+    height: 70,
     backgroundColor: Theme.white,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30
   },
 });
