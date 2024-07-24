@@ -17,6 +17,7 @@ import {Base_Uri} from '../../constant/BaseUri';
 import StudentContext from '../../context/studentContext';
 import CustomLoader from '../../Component/CustomLoader';
 import CustomButton from '../../Component/CustomButton';
+import Toast from 'react-native-toast-message';
 
 const Status = ({navigation, route}: any) => {
   let data = route.params;
@@ -60,11 +61,23 @@ const Status = ({navigation, route}: any) => {
 
   const handleEditStatus = () => {
     if (!selectedStatus) {
-      ToastAndroid.show('Kindly select Status', ToastAndroid.SHORT);
+      // ToastAndroid.show('Kindly select Status', ToastAndroid.SHORT);
+      Toast.show({
+        type: 'info',
+        // text1: 'Request timeout:',
+        text2:  `Kindly select Status`,
+        position:'bottom'
+      });
       return;
     }
     if (!editStatus.reason) {
-      ToastAndroid.show('Kindly Write Reason', ToastAndroid.SHORT);
+      // ToastAndroid.show('Kindly Write Reason', ToastAndroid.SHORT);
+      Toast.show({
+        type: 'info',
+        // text1: 'Request timeout:',
+        text2:  `Kindly Write Reason`,
+        position:'bottom'
+      });
       return;
     }
     setLoading(true);
@@ -84,7 +97,13 @@ const Status = ({navigation, route}: any) => {
       })
       .then(res => {
         setLoading(false);
-        ToastAndroid.show(res?.data?.response, ToastAndroid.SHORT);
+        // ToastAndroid.show(res?.data?.response, ToastAndroid.SHORT);
+        Toast.show({
+          type: 'info',
+          // text1: 'Request timeout:',
+          text2:  `${res?.data?.response}`,
+          position:'bottom'
+        });
 
         let updateData =
           students &&

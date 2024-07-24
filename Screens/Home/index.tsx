@@ -42,6 +42,7 @@ import Schedule from '../../SVGs/Schedule';
 import UpCommingCarousel from '../../Component/UpCommingCarousel';
 import DiagArrow from '../../SVGs/DiagArrow/Index';
 import Toast from 'react-native-toast-message';
+import { getFcmToken } from '../../src/utils/fcmHelper';
 function Home({navigation, route}: any) {
   let key = route.key;
 
@@ -1000,7 +1001,7 @@ function Home({navigation, route}: any) {
       .then(({data}) => {
         let {tutorDetailById} = data;
         let tutorDetails = tutorDetailById[0];
-        console.log('tutorDetails', tutorDetails);
+        // console.log('tutorDetails', tutorDetails);
         setTutorImage(tutorDetails.tutorImage);
       })
       .catch(error => {
@@ -1010,6 +1011,31 @@ function Home({navigation, route}: any) {
   useEffect(() => {
     getTutorDetailss();
   }, [focus, refreshing]);
+
+
+const getNotificationScreenName = async () => {
+  try {
+    let notiRoute: any = await AsyncStorage.getItem('notiRoute');
+    if (notiRoute) {
+      let notiScreenName = JSON.parse(notiRoute);
+      console.log("notiRoute====>", notiScreenName);
+    } else {
+      console.log("notiRoute is null");
+    }
+  } catch (error) {
+    console.error("Error retrieving notiRoute:", error);
+  }
+};
+
+// Call the function wherever you need it
+
+
+  useEffect(() => {
+    getFcmToken();
+    getNotificationScreenName();
+  }, [focus]);
+ 
+
 
   return (
     <View style={{flex: 1, backgroundColor: Theme.GhostWhite}}>

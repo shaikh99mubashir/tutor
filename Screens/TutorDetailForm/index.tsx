@@ -29,6 +29,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import DropDownModalView from '../../Component/DropDownModalView';
 import bannerContext from '../../context/bannerContext';
 import ModalImg from '../../Component/Modal/modal';
+import Toast from 'react-native-toast-message';
 
 const TutorDetailForm = ({navigation, route}: any) => {
   interface ITutorDetails {
@@ -158,12 +159,24 @@ const TutorDetailForm = ({navigation, route}: any) => {
     let flag = values.some((e, i) => !e);
 
     if (flag) {
-      ToastAndroid.show('Required Fields are missing', ToastAndroid.SHORT);
+      // ToastAndroid.show('Required Fields are missing', ToastAndroid.SHORT);
+      Toast.show({
+        type: 'info',
+        // text1: 'Request timeout:',
+        text2:  `Required Fields are missing`,
+        position:'bottom'
+      });
       return;
     }
 
     if (!uri) {
-      ToastAndroid.show('Please Upload Profile Picture', ToastAndroid.SHORT);
+      // ToastAndroid.show('Please Upload Profile Picture', ToastAndroid.SHORT);
+      Toast.show({
+        type: 'info',
+        // text1: 'Request timeout:',
+        text2:  `Please Upload Profile Picture`,
+        position:'bottom'
+      });
       return;
     }
 
@@ -199,11 +212,16 @@ const TutorDetailForm = ({navigation, route}: any) => {
         .then(res => {
           setLoading(false);
           let responseData = res.data;
-
-          ToastAndroid.show(
-            'Successfully Update Tutor Details',
-            ToastAndroid.SHORT,
-          );
+          Toast.show({
+            type: 'info',
+            // text1: 'Request timeout:',
+            text2:  `Successfully Update Tutor Details`,
+            position:'bottom'
+          });
+          // ToastAndroid.show(
+          //   'Successfully Update Tutor Details',
+          //   ToastAndroid.SHORT,
+          // );
           navigation.reset({
             index: 0,
             routes: [
@@ -219,10 +237,16 @@ const TutorDetailForm = ({navigation, route}: any) => {
         .catch(error => {
           setLoading(false);
           console.log(error);
-          ToastAndroid.show(
-            'Tutor Details update unsuccessfull',
-            ToastAndroid.SHORT,
-          );
+          Toast.show({
+            type: 'info',
+            // text1: 'Request timeout:',
+            text2:  `Unsuccessfully Update Tutor Details`,
+            position:'bottom'
+          });
+          // ToastAndroid.show(
+          //   'Tutor Details update unsuccessfull',
+          //   ToastAndroid.SHORT,
+          // );
         });
     }
   };

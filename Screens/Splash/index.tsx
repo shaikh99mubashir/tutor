@@ -14,7 +14,6 @@ import axios from 'axios';
 import {Base_Uri} from '../../constant/BaseUri';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import messaging from '@react-native-firebase/messaging';
-import Toast from 'react-native-toast-message';
 const Splash = ({navigation}: any) => {
   const tutorDetailsCont = useContext(TutorDetailsContext);
   const {tutorDetails, setTutorDetail} = tutorDetailsCont;
@@ -35,13 +34,7 @@ const Splash = ({navigation}: any) => {
               AsyncStorage.removeItem('loginAuth');
               navigation.replace('Login');
               setTutorDetail('')
-              // ToastAndroid.show('Terminated', ToastAndroid.SHORT);
-              Toast.show({
-                type: 'info',
-                // text1: 'Request timeout:',
-                text2:  `Terminated`,
-                position:'bottom'
-              });
+              ToastAndroid.show('Terminated', ToastAndroid.SHORT);
               return;
             }
 
@@ -136,13 +129,7 @@ const Splash = ({navigation}: any) => {
             AsyncStorage.removeItem('loginAuth');
             navigation.replace('Login');
             setTutorDetail('')
-            // ToastAndroid.show('Session Expire', ToastAndroid.SHORT);
-            Toast.show({
-              type: 'info',
-              // text1: 'Request timeout:',
-              text2:  `Session Expire`,
-              position:'bottom'
-            });
+            ToastAndroid.show('Session Expire', ToastAndroid.SHORT);
             // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
           });
         return;

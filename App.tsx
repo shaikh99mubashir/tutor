@@ -17,12 +17,24 @@ import ScheduleState from './context/ScheduleState';
 import ReportSubmissionState from './context/reportSubmissionState';
 import BannerState from './context/bannerState';
 import ScheduleNotificationState from './context/scheduleNotificationState';
-
+import { getFcmToken, registerListenerWithFCM } from './src/utils/fcmHelper';
+import notifee, { EventType } from '@notifee/react-native';
 function App() {
   useEffect(() => {
     IdleTimerManager.setIdleTimerDisabled(true);
 
     return () => IdleTimerManager.setIdleTimerDisabled(false);
+  }, []);
+
+  useEffect(() => {
+    getFcmToken();
+  }, []);
+
+ 
+
+  useEffect(() => {
+    const unsubscribe = registerListenerWithFCM();
+    return unsubscribe;
   }, []);
 
 

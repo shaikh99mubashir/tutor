@@ -124,7 +124,7 @@ const Students = ({ navigation }: any) => {
       .then(({ data }) => {
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
