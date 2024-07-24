@@ -32,6 +32,7 @@ import ModalImg from '../../Component/Modal/modal';
 import CustomLoader from '../../Component/CustomLoader';
 import { useIsFocused } from '@react-navigation/native';
 import CustomButton from '../../Component/CustomButton';
+import Toast from 'react-native-toast-message';
 
 const Profile = ({ navigation }: any) => {
   interface ITutorDetails {
@@ -232,18 +233,30 @@ const Profile = ({ navigation }: any) => {
           }
           console.log('imageUrl', imageUrl);
           getTutorDetails()
-          ToastAndroid.show(
-            'Successfully Update Tutor Details',
-            ToastAndroid.SHORT,
-          );
+          // ToastAndroid.show(
+          //   'Successfully Update Tutor Details',
+          //   ToastAndroid.SHORT,
+          // );
+          Toast.show({
+            type: 'info',
+            // text1: 'Request timeout:',
+            text2:  `Successfully Update Tutor Details`,
+            position:'bottom'
+          });
         })
         .catch(error => {
           setLoading(false);
           console.log(error);
-          ToastAndroid.show(
-            'Tutor Details update unsuccessfull',
-            ToastAndroid.SHORT,
-          );
+          // ToastAndroid.show(
+          //   'Tutor Details update unsuccessfull',
+          //   ToastAndroid.SHORT,
+          // );
+          Toast.show({
+            type: 'info',
+            // text1: 'Request timeout:',
+            text2:  `Tutor Details update unsuccessfull`,
+            position:'bottom'
+          });
         });
     } else {
       console.log('Else running profile');
@@ -282,18 +295,30 @@ const Profile = ({ navigation }: any) => {
             nric: tutorDetail.nric,
             age: tutorDetail.age,
           });
-          ToastAndroid.show(
-            'Successfully Update Tutor Details',
-            ToastAndroid.SHORT,
-          );
+          // ToastAndroid.show(
+          //   'Successfully Update Tutor Details',
+          //   ToastAndroid.SHORT,
+          // );
+          Toast.show({
+            type: 'info',
+            // text1: 'Request timeout:',
+            text2:  `Tutor Details update unsuccessfull`,
+            position:'bottom'
+          });
         })
         .catch(error => {
           setLoading(false);
           console.log(error);
-          ToastAndroid.show(
-            `Tutor Details update unsuccessfull ${error}`,
-            ToastAndroid.SHORT,
-          );
+          // ToastAndroid.show(
+          //   `Tutor Details update unsuccessfull ${error}`,
+          //   ToastAndroid.SHORT,
+          // );
+          Toast.show({
+            type: 'info',
+            // text1: 'Request timeout:',
+            text2:  `Tutor Details update unsuccessfull`,
+            position:'bottom'
+          });
           if (error.response) {
             // The request was made and the server responded with a status code
             console.log('Server responded with data:', error.response.data);
@@ -330,7 +355,7 @@ const Profile = ({ navigation }: any) => {
         // console.log('res', data.bannerAds);
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
@@ -427,7 +452,7 @@ const Profile = ({ navigation }: any) => {
         setLoading(false)
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
         setLoading(false)
       });
   };

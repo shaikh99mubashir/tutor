@@ -10,6 +10,7 @@ import { Base_Uri } from '../../constant/BaseUri';
 import paymentContext from '../../context/paymentHistoryContext';
 import bannerContext from '../../context/bannerContext';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
+import PaidIcon from '../../SVGs/PaidIcon';
 const PaymentHistory = ({ navigation }: any) => {
 
 
@@ -123,7 +124,7 @@ const PaymentHistory = ({ navigation }: any) => {
 
       }).catch((error) => {
         setLoading(false)
-        ToastAndroid.show("Internal Server Error", ToastAndroid.SHORT)
+        // ToastAndroid.show("Internal Server Error", ToastAndroid.SHORT)
 
       })
 
@@ -215,48 +216,81 @@ const PaymentHistory = ({ navigation }: any) => {
     }
   }
 
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const handleItemPress = (itemId: any) => {
+    setSelectedItem(itemId === selectedItem ? null : itemId);
+  };
 
 
-  const renderItem = ({ item }: any) => (
-    <View style={styles.itemContainer}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        <View style={{ flexDirection: 'column' }}>
-          <Text style={{ color: 'black', fontWeight: '600' ,fontFamily: 'Circular Std Black'}}>
-            Comission Month
-          </Text>
-          <Text style={{ color: 'grey', fontFamily: 'Circular Std Black'}}>
-            {item.comissionMonth} {item.comissionYear}
+
+
+  const renderItem = ({ item }: any) => {
+    console.log("trem",item);
+    
+    return(
+      <TouchableOpacity onPress={() => handleItemPress(item.id)}>
+    <View
+      style={{
+        backgroundColor: Theme.white,
+        padding: 25,
+        borderRadius: 16,
+        borderWidth: 1,
+        borderColor: selectedItem === item.id ? Theme.darkGray : Theme.shinyGrey,
+        marginBottom:10
+      }}>
+      <Text style={[styles.textType1, {color: Theme.darkGray}]}>
+       RM {item.payAmount}.00
+      </Text>
+      <View style={{margin: 8}}></View>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 20,
+        }}>
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'row',
+            gap: 5,
+          }}>
+          <AntDesign name="calendar" size={20} color={Theme.darkGray} />
+          <Text style={[styles.textType3, {color: Theme.IronsideGrey}]}>
+            Month
           </Text>
         </View>
-        <View style={{ flexDirection: 'column' }}>
-          <Text style={{ color: 'black', fontWeight: '600',fontFamily: 'Circular Std Black' }}>
-            Payment Date
-          </Text>
-          <Text style={{ color: 'grey',fontFamily: 'Circular Std Black' }}>
-            {convertDateFormat(item.paymentDate)}
+        <Text style={[styles.textType3]}>: {item?.comissionMonth}</Text>
+      </View>
+      <View style={{margin: 5}}></View>
+      <View
+        style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 12,
+        }}>
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'row',
+            gap: 5,
+          }}>
+          {/* <Image source={require('../../Images/PaidOn.png')} /> */}
+          <PaidIcon/>
+          <Text style={[styles.textType3, {color: Theme.IronsideGrey}]}>
+            Paid On
           </Text>
         </View>
-
+        <Text style={[styles.textType3]}>: {item?.paymentDate}</Text>
       </View>
-      <Text style={{ marginTop: 5, color: 'black', fontWeight: '600',fontFamily: 'Circular Std Black' }}>
-        Payment Amount : <Text style={{ color: 'grey',fontFamily: 'Circular Std Black' }}>{item.payAmount}</Text>
-      </Text>
-      <Text style={{ marginTop: 5, color: 'black', fontWeight: '600',fontFamily: 'Circular Std Black' }}>
-        Paying Account :<Text style={{ color: 'grey', fontFamily: 'Circular Std Black'}}> {item.payingAccount}</Text>
-      </Text>
-      <View style={{ flexDirection: 'row', marginTop: 5 }}>
-        <Text style={{ color: 'black', fontWeight: '600',fontFamily: 'Circular Std Black' }}>
-          Deduction: <Text style={{ color: 'grey',fontFamily: 'Circular Std Black' }}>{item.deduction} |{' '}</Text>
-        </Text>
-        <Text style={{ color: 'black', fontWeight: '600',fontFamily: 'Circular Std Black' }}>
-          Addition: <Text style={{ color: 'grey',fontFamily: 'Circular Std Black' }}>{item.addition}</Text>
-        </Text>
-      </View>
-      <Text style={{ marginTop: 5, color: 'black', fontWeight: '600',fontFamily: 'Circular Std Black' }}>
-        Remarks: <Text style={{ color: 'grey',fontFamily: 'Circular Std Black' }}>{item.remark ? item.remark : "No Remarks"}</Text>
-      </Text>
+      {/* <View style={{margin:  selectedItem ? 10 : 0}}></View>
+      {selectedItem === item.id && <CustomButton btnTitle="Download" />} */}
     </View>
-  );
+  </TouchableOpacity>
+    )
+  };
 
   const [openPPModal, setOpenPPModal] = useState(false);
   const displayBanner = async () => {
@@ -267,7 +301,7 @@ const PaymentHistory = ({ navigation }: any) => {
         console.log('res', data.bannerAds);
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
@@ -277,10 +311,10 @@ const PaymentHistory = ({ navigation }: any) => {
   return (
     loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
       <ActivityIndicator color={"black"} size={"large"} />
-    </View> : <View style={{ flex: 1, backgroundColor: 'white' }}>
+    </View> : <View style={{ flex: 1, backgroundColor: Theme.GhostWhite }}>
       <Header title="Payment History" navigation={navigation} backBtn  containerStyle={{ height: 86, flexDirection: 'column', paddingTop: 20 }} />
-      {commissionData && commissionData.length < 0 ? (
-        <View style={{ paddingBottom: 80 }}>
+      {commissionData && commissionData.length > 0 ? (
+        <View style={{ paddingBottom: 80,paddingHorizontal:25 }}>
           <ScrollView refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           } >
@@ -368,5 +402,20 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'silver',
     elevation: 1
+  },
+  textType3: {
+    color: Theme.Dune,
+    fontWeight: '500',
+    fontSize: 16,
+    fontFamily: 'Circular Std Medium',
+    fontStyle: 'normal',
+  },
+  textType1: {
+    fontWeight: '500',
+    fontSize: 26,
+    color: Theme.Black,
+    fontFamily: 'Circular Std Medium',
+    lineHeight: 24,
+    fontStyle: 'normal',
   },
 });

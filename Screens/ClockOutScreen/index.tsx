@@ -1,5 +1,5 @@
-import React, {useEffect, useState, useContext} from 'react';
-import MapView, {Marker} from 'react-native-maps';
+import React, { useEffect, useState, useContext } from 'react';
+import MapView, { Marker } from 'react-native-maps';
 import {
   View,
   Text,
@@ -11,21 +11,22 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from 'react-native';
-import {Theme} from '../../constant/theme';
+import { Theme } from '../../constant/theme';
 import Header from '../../Component/Header';
-import {launchCamera} from 'react-native-image-picker';
+import { launchCamera } from 'react-native-image-picker';
 import Geolocation from '@react-native-community/geolocation';
 import axios from 'axios';
-import {Base_Uri} from '../../constant/BaseUri';
+import { Base_Uri } from '../../constant/BaseUri';
 import noteContext from '../../context/noteContext';
-import {CommonActions, useIsFocused} from '@react-navigation/native';
+import { CommonActions, useIsFocused } from '@react-navigation/native';
 import TutorDetailForm from '../TutorDetailForm';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import CustomLoader from '../../Component/CustomLoader';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import CustomButton from '../../Component/CustomButton';
+import Toast from 'react-native-toast-message';
 
-function ClockOut({navigation, route}: any) {
+function ClockOut({ navigation, route }: any) {
   const [loading, setLoading] = useState(false);
   const contexts = useContext(noteContext);
   const [tutorId, setTutorId] = useState(null);
@@ -57,19 +58,19 @@ function ClockOut({navigation, route}: any) {
     getCurrentLocation();
   }, []);
 
-    const getTutorID = async () => {
-      let data: any = await AsyncStorage.getItem('loginAuth');
-  
-      data = JSON.parse(data);
-  
-      let {tutorID} = data;
-  
-      setTutorId(tutorID);
-    };
-  
-    useEffect(() => {
-      getTutorID();
-    }, []);
+  const getTutorID = async () => {
+    let data: any = await AsyncStorage.getItem('loginAuth');
+
+    data = JSON.parse(data);
+
+    let { tutorID } = data;
+
+    setTutorId(tutorID);
+  };
+
+  useEffect(() => {
+    getTutorID();
+  }, []);
 
   const handleClockOutPress = async () => {
     try {
@@ -77,7 +78,13 @@ function ClockOut({navigation, route}: any) {
 
       if (!data) {
         console.log('Data is undefined or null');
-        ToastAndroid.show('Data is undefined or null', ToastAndroid.LONG);
+        // ToastAndroid.show('Data is undefined or null', ToastAndroid.LONG);
+        Toast.show({
+          type: 'info',
+          // text1: 'Request timeout:',
+          text2:  `Data is undefined or null'`,
+          position:'bottom'
+        });
         setLoading(false);
         return;
       }
@@ -97,7 +104,13 @@ function ClockOut({navigation, route}: any) {
         });
       } else {
         console.log('Missing image properties');
-        ToastAndroid.show('Missing image properties', ToastAndroid.LONG);
+        // ToastAndroid.show('Missing image properties', ToastAndroid.LONG);
+        Toast.show({
+          type: 'info',
+          // text1: 'Request timeout:',
+          text2:  `Missing image properties`,
+          position:'bottom'
+        });
         setLoading(false);
         return;
       }
@@ -112,7 +125,13 @@ function ClockOut({navigation, route}: any) {
         },
       );
 
-      ToastAndroid.show(clockOutResponse?.data?.result, ToastAndroid.SHORT);
+      // ToastAndroid.show(clockOutResponse?.data?.result, ToastAndroid.SHORT);
+      Toast.show({
+        type: 'info',
+        // text1: 'Request timeout:',
+        text2:  `${clockOutResponse?.data?.result}`,
+        position:'bottom'
+      });
 
       if (clockOutResponse?.data?.errorMsg) {
         navigation.navigate('Schedule');
@@ -122,9 +141,9 @@ function ClockOut({navigation, route}: any) {
         `${Base_Uri}api/tutorFirstReportListing/${tutorId}`,
       );
 
-      const {data: tutorReportData} = tutorReportResponse;
-      let {tutorReportListing} = tutorReportData;
-      
+      const { data: tutorReportData } = tutorReportResponse;
+      let { tutorReportListing } = tutorReportData;
+
       let thisClass =
         tutorReportListing &&
         tutorReportListing?.length > 0 &&
@@ -137,7 +156,7 @@ function ClockOut({navigation, route}: any) {
         navigation.dispatch(
           CommonActions.reset({
             index: 0,
-            routes: [{name: 'BackToDashboard'}],
+            routes: [{ name: 'BackToDashboard' }],
           }),
         );
       } else {
@@ -158,10 +177,16 @@ function ClockOut({navigation, route}: any) {
         console.log('Error setting up the request:', error.message);
       }
       setLoading(false);
-      ToastAndroid.show(
-        `Error in handleClockOutPress: ${error}`,
-        ToastAndroid.LONG,
-      );
+      // ToastAndroid.show(
+      //   `Error in handleClockOutPress: ${error}`,
+      //   ToastAndroid.LONG,
+      // );
+      Toast.show({
+        type: 'info',
+        text1: 'Error in handleClockOutPress:',
+        text2:  `${error}`,
+        position:'bottom'
+      });
       console.log('Error in handleClockOutPress:', error);
     }
   };
@@ -169,19 +194,19 @@ function ClockOut({navigation, route}: any) {
   let totalHours;
   let totalMinutes;
 
-  if ((data.endHour - data.startHour)?.toString()?.includes('-')) {
-    let endHour = 24 - data.startHour;
-    let totalEndMinutes = endHour * 60 + data.endMinutes;
-    let totalStartMinutes = data.startHour * 60 + data.startMinutes;
+  if ((data?.endHour - data?.startHour)?.toString()?.includes('-')) {
+    let endHour = 24 - data?.startHour;
+    let totalEndMinutes = endHour * 60 + data?.endMinutes;
+    let totalStartMinutes = data?.startHour * 60 + data?.startMinutes;
     let total = totalEndMinutes + totalStartMinutes;
     let myHours = total / 60;
     let minutes = myHours.toString().split('.')[1];
     let totalHours = myHours.toString().split('.')[0];
     let totalMinutes = (Number(minutes) / 100) * 60;
   } else {
-    let totalEndMinutes = Number(data.endHour * 60) + Number(data.endMinutes);
+    let totalEndMinutes = Number(data?.endHour * 60) + Number(data?.endMinutes);
     let totalStartMinutes =
-      Number(data.startHour * 60) + Number(data.startMinutes);
+      Number(data?.startHour * 60) + Number(data?.startMinutes);
 
     let total = totalEndMinutes - totalStartMinutes;
 
@@ -194,11 +219,11 @@ function ClockOut({navigation, route}: any) {
   }
 
   return (
-    <View style={{flex: 1, alignItems: 'center'}}>
+    <View style={{ flex: 1, alignItems: 'center' }}>
       <Header backBtn navigation={navigation} title={'Clock Out'} />
       {currentLocation.latitude && currentLocation.longitude && (
         <MapView
-          style={{height: '100%', width: '100%'}}
+          style={{ height: '100%', width: '100%' }}
           region={{
             latitude: currentLocation.latitude,
             longitude: currentLocation.longitude,
@@ -213,7 +238,7 @@ function ClockOut({navigation, route}: any) {
           />
         </MapView>
       )}
-            <View style={{paddingHorizontal: 25}}>
+      {/* <View style={{ paddingHorizontal: 25 }}>
         <TouchableOpacity
           activeOpacity={0.8}
           style={{
@@ -271,24 +296,24 @@ function ClockOut({navigation, route}: any) {
               <Text
                 style={[
                   styles.textType1,
-                  {fontSize: 18, textTransform: 'capitalize'},
+                  { fontSize: 18, textTransform: 'capitalize' },
                 ]}>
-                  {data.startHour.toString().length == 1
-              ? `0${data.startHour}`
-              : data.startHour}
-            :
-            {data.startMinutes.toString().length == 1
-              ? `0${data?.startMinutes}`
-              : data.startMinutes}
-           {' '} - {' '}
-            {data.endHour.toString().length == 1
-              ? `0${data.endHour}`
-              : data.endHour}
-            :
-            {data.endMinutes.toString().length == 1
-              ? `0${data.endMinutes}`
-              : data.endMinutes}
-            
+                {data.startHour.toString().length == 1
+                  ? `0${data.startHour}`
+                  : data.startHour}
+                :
+                {data.startMinutes.toString().length == 1
+                  ? `0${data?.startMinutes}`
+                  : data.startMinutes}
+                {' '} - {' '}
+                {data.endHour.toString().length == 1
+                  ? `0${data.endHour}`
+                  : data.endHour}
+                :
+                {data.endMinutes.toString().length == 1
+                  ? `0${data.endMinutes}`
+                  : data.endMinutes}
+
               </Text>
             </View>
             <View
@@ -329,20 +354,272 @@ function ClockOut({navigation, route}: any) {
               <Text
                 style={[
                   styles.textType1,
-                  {fontSize: 18, textTransform: 'capitalize'},
+                  { fontSize: 18, textTransform: 'capitalize' },
                 ]}>
-                 {data.hour} hours  {data.minutes} minutes
+                {data.hour} hours  {data.minutes} minutes
               </Text>
             </View>
           </View>
-          <View style={{margin: 5}}></View>
+          <View style={{ margin: 5 }}></View>
           <CustomButton
             btnTitle="Clock Out"
             onPress={() => handleClockOutPress()}
           />
         </TouchableOpacity>
-      </View>
+      </View> */}
 
+      {/* <View style={{ paddingHorizontal: 25 }}>
+        <TouchableOpacity
+          activeOpacity={0.8}
+          style={{
+            borderWidth: 1,
+            borderRadius: 20,
+            marginBottom: 100,
+            padding: 20,
+            borderColor: Theme.shinyGrey,
+            borderBottomColor: Theme.shinyGrey,
+            backgroundColor: Theme.white,
+            position: 'absolute',
+            bottom: 0,
+            width: '100%',
+            alignSelf: 'center',
+          }}>
+          <View
+            style={{
+              paddingBottom: 20,
+            }}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                gap: 20,
+              }}>
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  gap: 40,
+                }}>
+                <Text
+                  style={[
+                    styles.textType3,
+                    {
+                      color: Theme.IronsideGrey,
+                      fontFamily: 'Circular Std Book',
+                    },
+                  ]}>
+                  Time
+                </Text>
+                <Text
+                  style={[
+                    styles.textType3,
+                    {
+                      color: Theme.IronsideGrey,
+                      fontFamily: 'Circular Std Book',
+                    },
+                  ]}>
+                  :
+                </Text>
+              </View>
+
+              <Text
+                style={[
+                  styles.textType1,
+                  { fontSize: 18, textTransform: 'capitalize' },
+                ]}>
+                {data.startHour.toString().length == 1
+                  ? `0${data.startHour}`
+                  : data.startHour}
+                :
+                {data.startMinutes.toString().length == 1
+                  ? `0${data?.startMinutes}`
+                  : data.startMinutes}
+                {' '} - {' '}
+                {data.endHour.toString().length == 1
+                  ? `0${data.endHour}`
+                  : data.endHour}
+                :
+                {data.endMinutes.toString().length == 1
+                  ? `0${data.endMinutes}`
+                  : data.endMinutes}
+
+              </Text>
+            </View>
+            <View
+              style={{
+                gap: 20,
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginTop: 10,
+              }}>
+              <View
+                style={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                  gap: 15,
+                }}>
+                <Text
+                  style={[
+                    styles.textType3,
+                    {
+                      color: Theme.IronsideGrey,
+                      fontFamily: 'Circular Std Book',
+                    },
+                  ]}>
+                  Duration
+                </Text>
+                <Text
+                  style={[
+                    styles.textType3,
+                    {
+                      color: Theme.IronsideGrey,
+                      fontFamily: 'Circular Std Book',
+                    },
+                  ]}>
+                  :
+                </Text>
+              </View>
+              <Text
+                style={[
+                  styles.textType1,
+                  { fontSize: 18, textTransform: 'capitalize' },
+                ]}>
+                {data.hour} hours  {data.minutes} minutes
+              </Text>
+            </View>
+          </View>
+          <View style={{ margin: 5 }}></View>
+          <CustomButton
+            btnTitle="Clock Out"
+            onPress={() => handleClockOutPress()}
+          />
+        </TouchableOpacity>
+      </View> */}
+      <TouchableOpacity
+        style={{
+          borderWidth: 1,
+          borderColor: Theme.lightGray,
+          padding: 20,
+          backgroundColor: Theme.white,
+          bottom: 20,
+          borderRadius: 10,
+          position: 'absolute',
+          width: '90%',
+        }}>
+        <View
+          style={{
+            paddingBottom: 20,
+          }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              gap: 20,
+            }}>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                gap: 40,
+              }}>
+              <Text
+                style={[
+                  styles.textType3,
+                  {
+                    color: Theme.IronsideGrey,
+                    fontFamily: 'Circular Std Book',
+                  },
+                ]}>
+                Time
+              </Text>
+              <Text
+                style={[
+                  styles.textType3,
+                  {
+                    color: Theme.IronsideGrey,
+                    fontFamily: 'Circular Std Book',
+                  },
+                ]}>
+                :
+              </Text>
+            </View>
+
+            <Text
+              style={[
+                styles.textType1,
+                { fontSize: 18, textTransform: 'capitalize' },
+              ]}>
+              {data?.startHour?.toString().length == 1
+                ? `0${data?.startHour}`
+                : data?.startHour}
+              :
+              {data?.startMinutes?.toString().length == 1
+                ? `0${data?.startMinutes}`
+                : data.startMinutes}
+              {' '} - {' '}
+              {data?.endHour?.toString().length == 1
+                ? `0${data?.endHour}`
+                : data?.endHour}
+              :
+              {data?.endMinutes?.toString().length == 1
+                ? `0${data?.endMinutes}`
+                : data?.endMinutes}
+
+            </Text>
+          </View>
+          <View
+            style={{
+              gap: 20,
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: 10,
+            }}>
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'row',
+                gap: 15,
+              }}>
+              <Text
+                style={[
+                  styles.textType3,
+                  {
+                    color: Theme.IronsideGrey,
+                    fontFamily: 'Circular Std Book',
+                  },
+                ]}>
+                Duration
+              </Text>
+              <Text
+                style={[
+                  styles.textType3,
+                  {
+                    color: Theme.IronsideGrey,
+                    fontFamily: 'Circular Std Book',
+                  },
+                ]}>
+                :
+              </Text>
+            </View>
+            <Text
+              style={[
+                styles.textType1,
+                { fontSize: 18, textTransform: 'capitalize' },
+              ]}>
+              {data?.hour} hours  {data?.minutes} minutes
+            </Text>
+          </View>
+        </View>
+        <View style={{ margin: 5 }}></View>
+        <CustomButton
+          btnTitle="Clock Out"
+          onPress={() => handleClockOutPress()}
+        />
+      </TouchableOpacity>
       {/* <TouchableOpacity
         style={{
           borderWidth: 1,

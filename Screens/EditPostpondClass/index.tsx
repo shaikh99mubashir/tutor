@@ -20,6 +20,7 @@ import axios from 'axios';
 import {Base_Uri} from '../../constant/BaseUri';
 import CustomLoader from '../../Component/CustomLoader';
 import CustomButton from '../../Component/CustomButton';
+import Toast from 'react-native-toast-message';
 
 
 function EditPostpondClass({navigation, route}: any) {
@@ -48,18 +49,37 @@ function EditPostpondClass({navigation, route}: any) {
 
   const editTutorPostPonedClass = () => {
     if (!postponedReason) {
-      ToastAndroid.show('Kindly enter postponed reason', ToastAndroid.SHORT);
+      // ToastAndroid.show('Kindly enter postponed reason', ToastAndroid.SHORT);
+      Toast.show({
+        type: 'info',
+        // text1: 'Request timeout:',
+        text2:  `Kindly enter postponed reason`,
+        position:'bottom'
+      });
       return;
     }
     if (!nextClass.date) {
-      ToastAndroid.show('Kindly enter next class Date', ToastAndroid.SHORT);
+      // ToastAndroid.show('Kindly enter next class Date', ToastAndroid.SHORT);
+      Toast.show({
+        type: 'info',
+        // text1: 'Request timeout:',
+        text2:  `Kindly enter next class Date`,
+        position:'bottom'
+      });
+
       return;
     }
     if (!nextClass.startTime || nextClass.startTime == '-') {
-      ToastAndroid.show(
-        'Kindly enter next class start time',
-        ToastAndroid.SHORT,
-      );
+      // ToastAndroid.show(
+      //   'Kindly enter next class start time',
+      //   ToastAndroid.SHORT,
+      // );
+      Toast.show({
+        type: 'info',
+        // text1: 'Request timeout:',
+        text2:  `Kindly enter next class start time`,
+        position:'bottom'
+      });
       return;
     }
     // if (!nextClass.endTime || nextClass.endTime == '-') {
@@ -105,21 +125,39 @@ function EditPostpondClass({navigation, route}: any) {
           .then(res => {
             setLoading(false);
             setNextClass(initialData);
-            ToastAndroid.show(res?.data?.SuccessMessage, ToastAndroid.SHORT);
+            // ToastAndroid.show(res?.data?.SuccessMessage, ToastAndroid.SHORT);
+            Toast.show({
+              type: 'info',
+              // text1: 'Request timeout:',
+              text2:  `${res?.data?.SuccessMessage}`,
+              position:'bottom'
+            });
             navigation.navigate('Schedule', data.id);
           })
           .catch(error => {
             setLoading(false);
-            ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+            // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+            Toast.show({
+              type: 'info',
+              // text1: 'Request timeout:',
+              text2:  `Network Error`,
+              position:'bottom'
+            });
           });
       })
       .catch(error => {
         setLoading(false);
         console.log(error, 'error');
-        ToastAndroid.show(
-          'Sorry classes added unsuccessfull',
-          ToastAndroid.SHORT,
-        );
+        // ToastAndroid.show(
+        //   'Sorry classes added unsuccessfull',
+        //   ToastAndroid.SHORT,
+        // );
+        Toast.show({
+          type: 'info',
+          // text1: 'Request timeout:',
+          text2:  `Sorry classes added unsuccessfull`,
+          position:'bottom'
+        });
       });
   };
 

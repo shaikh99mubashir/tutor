@@ -89,7 +89,7 @@ const Notifications = ({ navigation }: any) => {
         })
         .catch(error => {
           setLoading(false);
-          ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+          // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
         });
     }
   };
@@ -102,7 +102,7 @@ const Notifications = ({ navigation }: any) => {
         setScheduleNotification(data.record)
       }).catch((error) => {
 
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       })
     }
 
@@ -143,7 +143,7 @@ const Notifications = ({ navigation }: any) => {
         //     ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
         //   });
       }).catch((error) => {
-        ToastAndroid.show("Nework Error", ToastAndroid.SHORT)
+        // ToastAndroid.show("Nework Error", ToastAndroid.SHORT)
       })
     }
     else if(item?.notificationType == "Schedule Class"){
@@ -156,7 +156,7 @@ const Notifications = ({ navigation }: any) => {
 
         setNotification(updateNotifications)
       }).catch((error) => {
-        ToastAndroid.show("Nework Error", ToastAndroid.SHORT)
+        // ToastAndroid.show("Nework Error", ToastAndroid.SHORT)
       })
     } 
     else {
@@ -169,7 +169,7 @@ const Notifications = ({ navigation }: any) => {
         })
         setNotification(updateNotifications)
       }).catch((error) => {
-        ToastAndroid.show("Nework Error", ToastAndroid.SHORT)
+        // ToastAndroid.show("Nework Error", ToastAndroid.SHORT)
       })
     }
   }
@@ -177,8 +177,9 @@ const Notifications = ({ navigation }: any) => {
 
 
   return (
-    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+    <View style={{ backgroundColor: Theme.GhostWhite, height: '100%' }}>
       <Header title="Notifications" backBtn navigation={navigation} />
+      <View style={{paddingHorizontal:25}}>
       <ScrollView
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -197,7 +198,7 @@ const Notifications = ({ navigation }: any) => {
                   onPress={() => navigateToOtherScreen(item)}
                   activeOpacity={0.8}
                   key={index}
-                  style={{ paddingHorizontal: 15 }}>
+                  style={{ paddingHorizontal: 0 }}>
                   <View
                     style={{
                       backgroundColor: Theme.white,
@@ -285,6 +286,7 @@ const Notifications = ({ navigation }: any) => {
           </View>
         )}
       </ScrollView>
+      </View>
       <CustomLoader visible={loading} />
     </View>
   );

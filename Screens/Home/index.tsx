@@ -40,6 +40,8 @@ import Student from '../../SVGs/Student';
 import Clock from '../../SVGs/Clock';
 import Schedule from '../../SVGs/Schedule';
 import UpCommingCarousel from '../../Component/UpCommingCarousel';
+import DiagArrow from '../../SVGs/DiagArrow/Index';
+import Toast from 'react-native-toast-message';
 function Home({navigation, route}: any) {
   let key = route.key;
 
@@ -164,7 +166,7 @@ function Home({navigation, route}: any) {
         setCommissionData(response);
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
@@ -182,7 +184,7 @@ function Home({navigation, route}: any) {
         setNotification(tutorNotification);
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
@@ -438,7 +440,13 @@ function Home({navigation, route}: any) {
           AsyncStorage.removeItem('loginAuth');
           navigation.replace('Login');
           updateTutorDetails('');
-          ToastAndroid.show('Terminated', ToastAndroid.SHORT);
+          // ToastAndroid.show('Terminated', ToastAndroid.SHORT);
+          Toast.show({
+            type: 'info',
+            // text1: 'Request timeout:',
+            text2:  `Terminated`,
+            position:'bottom'
+          });
           return;
         }
         let {tutorDetailById} = data;
@@ -461,7 +469,7 @@ function Home({navigation, route}: any) {
         updateTutorDetails(details);
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
@@ -473,7 +481,7 @@ function Home({navigation, route}: any) {
         setScheduleNotification(data.record);
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
@@ -490,7 +498,7 @@ function Home({navigation, route}: any) {
         setCumulativeCommission(data.commulativeCommission);
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
@@ -501,7 +509,7 @@ function Home({navigation, route}: any) {
         setAttendedHours(data.attendedHours);
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
@@ -512,7 +520,7 @@ function Home({navigation, route}: any) {
         setScheduledHours(data.scheduledHours);
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
@@ -523,7 +531,7 @@ function Home({navigation, route}: any) {
         setCancelledHours(data.cancelledHours);
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
   const [assignedTickets, setAssignedTickets] = useState();
@@ -534,7 +542,7 @@ function Home({navigation, route}: any) {
         setAssignedTickets(data.assignedTickets);
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
@@ -547,7 +555,7 @@ function Home({navigation, route}: any) {
         updateStudent(tutorStudents);
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
@@ -583,7 +591,7 @@ function Home({navigation, route}: any) {
         setUpCommingClasses(classSchedules);
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
@@ -667,7 +675,7 @@ function Home({navigation, route}: any) {
         );
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
     navigation.navigate('Schedule');
   };
@@ -881,7 +889,7 @@ function Home({navigation, route}: any) {
         }
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
@@ -996,7 +1004,7 @@ function Home({navigation, route}: any) {
         setTutorImage(tutorDetails.tutorImage);
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
   useEffect(() => {
@@ -1149,7 +1157,7 @@ function Home({navigation, route}: any) {
                       alignItems: 'center',
                       gap: 10,
                     }}>
-                    {classInProcess?.item?.studentGender.toLowerCase() == 'male' ?
+                    {classInProcess?.item?.studentGender?.toLowerCase() == 'male' ?
                                 <Image source={require('../../Assets/Images/StudentMale.png')} />
                                 :
                                 <Image source={require('../../Assets/Images/StudentFemale.png')} />
@@ -1210,10 +1218,11 @@ function Home({navigation, route}: any) {
                       style={{marginTop: 5}}
                     /> */}
                     <Money/>
-                    <Image
+                    {/* <Image
                       source={require('../../Assets/Images/DiagonalRightUparrow.png')}
                       resizeMode="contain"
-                    />
+                    /> */}
+                    <DiagArrow color={Theme.white}/>
                   </View>
                   <View style={{paddingBottom: 15}}>
                     <Text style={[styles.textType3, {color: 'white'}]}>
@@ -1253,10 +1262,11 @@ function Home({navigation, route}: any) {
                       marginTop: 15,
                     }}>
                     <Text style={styles.textType3}>Active Student</Text>
-                    <Image
+                    {/* <Image
                       source={require('../../Assets/Images/DiagonalRightUparrowblack.png')}
                       resizeMode="contain"
-                    />
+                    /> */}
+                    <DiagArrow/>
                   </View>
                   <View style={{margin: 10}}></View>
                   <View
@@ -1298,10 +1308,11 @@ function Home({navigation, route}: any) {
                       resizeMode="contain"
                     /> */}
                     <Clock/>
-                    <Image
+                    {/* <Image
                       source={require('../../Assets/Images/DiagonalRightUparrowblack.png')}
                       resizeMode="contain"
-                    />
+                    /> */}
+                    <DiagArrow/>
                   </View>
                   <View style={{paddingBottom: 20}}>
                     <Text style={[styles.textType3]}>Attended Hours</Text>
@@ -1331,10 +1342,11 @@ function Home({navigation, route}: any) {
                       marginVertical: 16,
                     }}>
                      <Schedule/>
-                    <Image
+                    {/* <Image
                       source={require('../../Assets/Images/DiagonalRightUparrowblack.png')}
                       resizeMode="contain"
-                    />
+                    /> */}
+                    <DiagArrow/>
                   </View>
                   <View style={{paddingBottom: 20}}>
                     <Text style={[styles.textType3]}>Scheduled Hours</Text>

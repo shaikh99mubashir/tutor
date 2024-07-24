@@ -1,4 +1,4 @@
-import { Modal, View, Text, TouchableOpacity,StyleSheet } from 'react-native';
+import { Modal, View, Text, TouchableOpacity,StyleSheet, Image } from 'react-native';
 import React from 'react'
 import { Theme } from '../../constant/theme';
 import CustomButton from '../CustomButton';
@@ -15,21 +15,15 @@ const BackToDashboard = ({modalVisible, handleGoToDashboard}:any) => {
           <View
             style={[
               styles.modalContainer,
-              { padding: 30, marginHorizontal: 10 },
+              { padding: 30, marginHorizontal: 40 },
             ]}>
             <Text
-              style={{
-                color: Theme.darkGray,
-                fontSize: 18,
-                fontWeight: 'bold',
-                fontFamily: 'Circular Std Medium',
-                lineHeight: 30,
-              }}>
+              style={styles.textType3}>
               You have been Verified!
             </Text>
-
-            <View style={{width:'90%', marginTop:20}}>
-            <CustomButton btnTitle='Go To Dashboard' onPress={handleGoToDashboard}/>
+            {/* <Image source={require('../../Assets/Images/verified.png')} /> */}
+            <View style={{width:'70%', marginTop:20}}>
+            <CustomButton btnTitle='Go To Dashboard' height={45}fontSize={18} onPress={handleGoToDashboard}/>
             </View>
             {/* <View
               style={{
@@ -85,5 +79,12 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 12,
         fontFamily: 'Poppins-Regular',
+      },
+      textType3: {
+        color: Theme.Dune,
+        fontWeight: '500',
+        fontSize: 20,
+        fontFamily: 'Circular Std Medium',
+        fontStyle: 'normal',
       },
 })

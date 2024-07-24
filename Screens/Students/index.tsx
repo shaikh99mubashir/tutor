@@ -24,6 +24,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import bannerContext from '../../context/bannerContext';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import CustomLoader from '../../Component/CustomLoader';
+import SubjectIcon from '../../SVGs/SubjectIcon';
 const Students = ({ navigation }: any) => {
 
   const context = useContext(StudentContext)
@@ -261,7 +262,8 @@ const Students = ({ navigation }: any) => {
                                 flexDirection: 'row',
                                 gap: 10,
                               }}>
-                              <AntDesign name="copy1" size={20} color={Theme.darkGray} />
+                              {/* <AntDesign name="copy1" size={20} color={Theme.darkGray} /> */}
+                              <SubjectIcon/>
                               <Text
                                 style={[styles.textType3, { color: Theme.IronsideGrey }]}>
                                 Subject Subscribed

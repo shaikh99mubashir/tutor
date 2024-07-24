@@ -8,8 +8,8 @@ import {
   Modal,
   Button,
 } from 'react-native';
-import React, {useState} from 'react';
-import {Theme} from '../../constant/theme';
+import React, { useState } from 'react';
+import { Theme } from '../../constant/theme';
 import Header from '../../Component/Header';
 import DropDownPicker from 'react-native-dropdown-picker';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -26,6 +26,10 @@ const DropDownModalView = ({
   modalHeading,
   subTitle,
   style,
+  titleStyle,
+  titleHeading,
+  subTitleText,
+  valueText
 }: any) => {
   const [serviceDD, setServiceDD] = useState(false);
   const [reportType, setReportType] = useState(null);
@@ -51,16 +55,19 @@ const DropDownModalView = ({
     <>
       {/* Report Type */}
 
-      <View style={{marginTop: 8}}>
+      <View style={{ marginTop: 8 }}>
         {title && (
-          <Text
-            style={{
-              fontSize: 16,
-              color: 'black',
-              fontFamily: 'Circular Std Medium',
-            }}>
-            {title}
-          </Text>
+          <View style={{...titleHeading}}>
+            <Text
+              style={{
+                fontSize: 16,
+                color: 'black',
+                fontFamily: 'Circular Std Medium',
+                ...titleStyle
+              }}>
+              {title}
+            </Text>
+          </View>
         )}
         {subTitle && (
           <Text
@@ -68,6 +75,7 @@ const DropDownModalView = ({
               color: Theme.gray,
               fontFamily: 'Circular Std Medium',
               fontSize: 14,
+              ...subTitleText
             }}>
             {subTitle}
           </Text>
@@ -81,9 +89,9 @@ const DropDownModalView = ({
             justifyContent: 'space-between',
             paddingVertical: 15,
             paddingHorizontal: 20,
-            borderRadius:20,
-            height:60,
-            backgroundColor:Theme.white,
+            borderRadius: 20,
+            height: 60,
+            backgroundColor: Theme.white,
             alignItems: 'center',
             ...style,
           }}>
@@ -98,25 +106,26 @@ const DropDownModalView = ({
                 color: 'black',
                 fontFamily: 'Circular Std Book',
                 fontSize: 16,
-                textTransform:'capitalize'
+                textTransform: 'capitalize',
+                ...valueText
               }}>
               {value
                 ? value
                 : reportType
-                ? reportType
-                : placeHolder && placeHolder}
+                  ? reportType
+                  : placeHolder && placeHolder}
             </Text>
 
             {serviceDD ? (
               <Image
                 source={require('../../Assets/Images/up.png')}
-                style={{width: 15, height: 20}}
+                style={{ width: 15, height: 20 }}
                 resizeMode="contain"
               />
             ) : (
               <Image
                 source={require('../../Assets/Images/down.png')}
-                style={{width: 20, height: 20}}
+                style={{ width: 20, height: 20 }}
               />
             )}
           </View>
@@ -172,9 +181,9 @@ const DropDownModalView = ({
                 option.map((e: any, i: number) => {
                   return (
                     <>
-                    <View  style={{
-                          paddingTop:10
-                        }}></View>
+                      <View style={{
+                        paddingTop: 10
+                      }}></View>
                       <TouchableOpacity
                         key={i}
                         onPress={() => setReportTypeChange(e)}
@@ -183,40 +192,40 @@ const DropDownModalView = ({
                           flexDirection: 'row',
                           alignItems: 'center',
                           width: '100%',
-                          gap:10
+                          gap: 10
                         }}>
-                          {['Pending', 'Approved', 'Rejected','Dispute','InComplete','Attended'].includes(e.option) && (
-                        <Text>
-                          <FontAwesome
-                            name="dot-circle-o"
-                            size={22}
-                            color={(() => {
-                              switch (e.option) {
-                                case 'Pending':
-                                  return '#FEBC2A';
-                                case 'Dispute':
-                                  return 'orange';
-                                case 'Attended':
-                                  return '#1FC07D';
-                                case 'InComplete':
-                                  return '#FF0000';
-                                case 'Approved':
-                                  return '#1FC07D';
-                                case    'Rejected':
-                                  return '#FF0000';
-                                default:
-                                  return '#298CFF33';
-                              }
-                            })()}
-                          />
-                        </Text>
-                          )}
+                        {['Pending', 'Approved', 'Rejected', 'Dispute', 'InComplete', 'Attended'].includes(e.option) && (
+                          <Text>
+                            <FontAwesome
+                              name="dot-circle-o"
+                              size={22}
+                              color={(() => {
+                                switch (e.option) {
+                                  case 'Pending':
+                                    return '#FEBC2A';
+                                  case 'Dispute':
+                                    return 'orange';
+                                  case 'Attended':
+                                    return '#1FC07D';
+                                  case 'InComplete':
+                                    return '#FF0000';
+                                  case 'Approved':
+                                    return '#1FC07D';
+                                  case 'Rejected':
+                                    return '#FF0000';
+                                  default:
+                                    return '#298CFF33';
+                                }
+                              })()}
+                            />
+                          </Text>
+                        )}
                         <Text
                           style={{
                             fontSize: 16,
                             color: 'black',
                             fontFamily: 'Circular Std Medium',
-                            textTransform:'capitalize'
+                            textTransform: 'capitalize'
                           }}>
                           {e.option}
                         </Text>
@@ -225,7 +234,7 @@ const DropDownModalView = ({
                         style={{
                           borderBottomWidth: 1,
                           borderBottomColor: '#eee',
-                          paddingBottom:10
+                          paddingBottom: 10
                         }}></View>
                     </>
                   );

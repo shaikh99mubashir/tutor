@@ -10,6 +10,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 import { Base_Uri } from '../../constant/BaseUri'
 import CustomLoader from '../../Component/CustomLoader'
+import SubjectIcon from '../../SVGs/SubjectIcon'
+import Toast from 'react-native-toast-message'
 
 
 
@@ -112,10 +114,12 @@ const AttendedClassRecords = ({navigation,route}:any) => {
             setLoading(false);
           })
           .catch((error) => {
-            ToastAndroid.show(
-              'Internal Server Error getClassAttendedTime filter DATA',
-              ToastAndroid.SHORT,
-            );
+            Toast.show({
+              type: 'info',
+              // text1: 'Request timeout:',
+              text2:  `Network Error`,
+              position:'bottom'
+            });
             setLoading(false);
           });
         return;
@@ -130,7 +134,13 @@ const AttendedClassRecords = ({navigation,route}:any) => {
           })
           .catch((error)=>{
             // console.log("error",error);
-            ToastAndroid.show('Network Error', ToastAndroid.LONG);
+            // ToastAndroid.show('Network Error', ToastAndroid.LONG);
+            Toast.show({
+              type: 'info',
+              // text1: 'Request timeout:',
+              text2:  `Network Error`,
+              position:'bottom'
+            });
             setLoading(false)
           })
     }
@@ -205,7 +215,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                   {item?.classMode?.toLowerCase() == 'physical' &&
                   <View
                     style={{ flexDirection: 'row', gap: 10, alignItems: 'center' }}>
-                    <Feather name="map-pin" size={18} color={'#298CFF'} />
+                    <Feather name="map-pin" size={18} color={Theme.darkGray} />
                     <Text
                       style={[
                         styles.textType3,
@@ -253,7 +263,8 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                       flexDirection: 'row',
                       gap: 10,
                     }}>
-                    <AntDesign name="copy1" size={18} color={'#298CFF'} />
+                      <SubjectIcon/>
+                    {/* <AntDesign name="copy1" size={18} color={Theme.darkGray} /> */}
                     <Text style={styles.textType3}>Subject</Text>
                   </View>
                   <Text
@@ -278,7 +289,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                       flexDirection: 'row',
                       gap: 10,
                     }}>
-                    <FontAwesome name="user-o" size={18} color={'#298CFF'} />
+                    <FontAwesome name="user-o" size={18} color={Theme.darkGray} />
                     <Text style={styles.textType3}>Student</Text>
                   </View>
                   <Text
@@ -303,7 +314,7 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                       flexDirection: 'row',
                       gap: 12,
                     }}>
-                    <FontAwesome name="level-up" size={18} color={'#298CFF'} />
+                    <FontAwesome name="level-up" size={18} color={Theme.darkGray} />
                     <Text style={styles.textType3}>Level</Text>
                   </View>
                   <Text
@@ -331,11 +342,11 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                       gap: 10,
                       paddingHorizontal: 10,
                     }}>
-                    <AntDesign name="calendar" size={20} color={'#298CFF'} />
+                    <AntDesign name="calendar" size={20} color={Theme.darkGray} />
                     <Text
                       style={[
                         styles.textType3,
-                        { color: '#298CFF', textTransform: 'capitalize' },
+                        { color: Theme.darkGray, textTransform: 'capitalize' },
                       ]}>
                       {item?.classDate}
                     </Text>
@@ -355,11 +366,11 @@ const AttendedClassRecords = ({navigation,route}:any) => {
                       flexDirection: 'row',
                       gap: 10,
                     }}>
-                    <AntDesign name="clockcircleo" size={20} color={'#298CFF'} />
+                    <AntDesign name="clockcircleo" size={20} color={Theme.darkGray} />
                     <Text
                       style={[
                         styles.textType3,
-                        { color: '#298CFF', textTransform: 'capitalize' },
+                        { color: Theme.darkGray, textTransform: 'capitalize' },
                       ]}>
                       {item?.totalTime} Hrs
                     </Text>

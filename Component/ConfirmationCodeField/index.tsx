@@ -68,6 +68,6 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     focusCell: {
-        borderColor: '#1FC07D1A',
+        borderColor: Theme.jobticketBG,
     }
 });

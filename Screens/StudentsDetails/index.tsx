@@ -29,8 +29,8 @@ const StudentsDetails = ({ navigation, route }: any) => {
 
   }, [focus])
 
-  console.log("data",data);
-  
+  console.log("data", data);
+
 
   const makeCall = () => {
 
@@ -65,27 +65,24 @@ const StudentsDetails = ({ navigation, route }: any) => {
   }
 
   return (
-    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+    <View style={{ backgroundColor: Theme.GhostWhite, height: '100%' }}>
       <Header title="Student Details" backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{ paddingHorizontal: 15 }}>
-          <Text
-            style={{
-              paddingVertical: 10,
-              fontSize: 18,
-              fontWeight: '700',
-              color: Theme.darkGray,
-            }}>
-            Profile
-          </Text>
-          <View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#eee' }}>
+        <View style={{ paddingHorizontal: 25 }}>
+          <View style={{margin:10}}></View>
+        <Text style={styles.textType1}>Profile</Text>
+          <View style={{ backgroundColor: Theme.white,
+                paddingHorizontal: 15,
+                paddingVertical: 10,
+                marginTop: 10,
+                borderRadius: 20,}}>
             {/* Student Name */}
             <View style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
               <Text
                 style={{
                   color: Theme.black,
                   fontSize: 16,
-                  fontFamily:'Circular Std Medium'
+                  fontFamily: 'Circular Std Medium'
                 }}>
                 Student Name
               </Text>
@@ -93,9 +90,9 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.gray,
                   fontSize: 18,
-                  fontFamily:'Circular Std Medium',
+                  fontFamily: 'Circular Std Medium',
                   marginTop: 5,
-                  textTransform:'capitalize',
+                  textTransform: 'capitalize',
                 }}>
                 {data.studentName}
               </Text>
@@ -106,7 +103,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.black,
                   fontSize: 16,
-                  fontFamily:'Circular Std Medium'
+                  fontFamily: 'Circular Std Medium'
                 }}>
                 Student ID
               </Text>
@@ -114,7 +111,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.gray,
                   fontSize: 18,
-                  fontFamily:'Circular Std Medium',
+                  fontFamily: 'Circular Std Medium',
                   marginTop: 5,
                 }}>
                 {data.studentID}
@@ -126,7 +123,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.black,
                   fontSize: 16,
-                  fontFamily:'Circular Std Medium'
+                  fontFamily: 'Circular Std Medium'
                 }}>
                 Gender
               </Text>
@@ -134,9 +131,9 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.gray,
                   fontSize: 18,
-                  fontFamily:'Circular Std Medium',
+                  fontFamily: 'Circular Std Medium',
                   marginTop: 5,
-                  textTransform:'capitalize',
+                  textTransform: 'capitalize',
                 }}>
                 {data.studentGender ? data.studentGender : "not provided"}
               </Text>
@@ -147,7 +144,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.black,
                   fontSize: 16,
-                  fontFamily:'Circular Std Medium'
+                  fontFamily: 'Circular Std Medium'
                 }}>
                 Age
               </Text>
@@ -155,10 +152,10 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.gray,
                   fontSize: 18,
-                  fontFamily:'Circular Std Medium',
+                  fontFamily: 'Circular Std Medium',
                   marginTop: 5,
                 }}>
-                {data.studentAge ? `${ data.studentAge} y/o`  : "not provided"}
+                {data.studentAge ? `${data.studentAge} y/o` : "not provided"}
               </Text>
             </View>
             <View style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
@@ -166,7 +163,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.black,
                   fontSize: 16,
-                  fontFamily:'Circular Std Medium'
+                  fontFamily: 'Circular Std Medium'
                 }}>
                 Status
               </Text>
@@ -174,9 +171,9 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.gray,
                   fontSize: 18,
-                  fontFamily:'Circular Std Medium',
+                  fontFamily: 'Circular Std Medium',
                   marginTop: 5,
-                  textTransform:'capitalize',
+                  textTransform: 'capitalize',
                 }}>
                 {data.studentStatus ? data.studentStatus : "Newly Active"}
               </Text>
@@ -187,7 +184,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.black,
                   fontSize: 16,
-                  fontFamily:'Circular Std Medium'
+                  fontFamily: 'Circular Std Medium'
                 }}>
                 Redistration Date
               </Text>
@@ -195,31 +192,31 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.gray,
                   fontSize: 18,
-                  fontFamily:'Circular Std Medium',
+                  fontFamily: 'Circular Std Medium',
                   marginTop: 5,
                 }}>
                 {data.studentRegisterDate ? data.studentRegisterDate : "not provided"}
               </Text>
             </View>
           </View>
+          <View style={{margin:10}}></View>
           <Text
-            style={{
-              paddingVertical: 10,
-              fontSize: 18,
-              fontWeight: '700',
-              color: Theme.darkGray,
-              marginTop: 10,
-            }}>
+            style={styles.textType1}>
             Contact Person
           </Text>
-          <View style={{ borderWidth: 1, borderRadius: 5, borderColor: '#eee', marginBottom: 20 }}>
+          <View style={{backgroundColor: Theme.white,
+                paddingHorizontal: 20,
+                paddingVertical: 15,
+                marginTop: 10,
+                borderRadius: 20,
+                 marginBottom: 20 }}>
             {/*  Name */}
             <View style={{ paddingVertical: 10, paddingHorizontal: 10 }}>
               <Text
                 style={{
                   color: Theme.black,
                   fontSize: 16,
-                  fontFamily:'Circular Std Medium'
+                  fontFamily: 'Circular Std Medium'
                 }}>
                 Name
               </Text>
@@ -227,9 +224,9 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.gray,
                   fontSize: 18,
-                  fontFamily:'Circular Std Medium',
+                  fontFamily: 'Circular Std Medium',
                   marginTop: 5,
-                  textTransform:'capitalize',
+                  textTransform: 'capitalize',
                 }}>
                 {data.studentName}
               </Text>
@@ -240,7 +237,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.black,
                   fontSize: 16,
-                  fontFamily:'Circular Std Medium'
+                  fontFamily: 'Circular Std Medium'
                 }}>
                 Email
               </Text>
@@ -248,7 +245,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.gray,
                   fontSize: 18,
-                  fontFamily:'Circular Std Medium',
+                  fontFamily: 'Circular Std Medium',
                   marginTop: 5,
                 }}>
                 {data.studentEmail ? data.studentEmail : "Not provided"}
@@ -260,7 +257,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.black,
                   fontSize: 16,
-                  fontFamily:'Circular Std Medium'
+                  fontFamily: 'Circular Std Medium'
                 }}>
                 Contact No
               </Text>
@@ -268,7 +265,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.gray,
                   fontSize: 18,
-                  fontFamily:'Circular Std Medium',
+                  fontFamily: 'Circular Std Medium',
                   marginTop: 5,
                 }}>
                 {data?.studentPhone ? data.studentPhone : "not provided"}
@@ -280,7 +277,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.black,
                   fontSize: 16,
-                  fontFamily:'Circular Std Medium'
+                  fontFamily: 'Circular Std Medium'
                 }}>
                 Address
               </Text>
@@ -288,10 +285,10 @@ const StudentsDetails = ({ navigation, route }: any) => {
                 style={{
                   color: Theme.gray,
                   fontSize: 18,
-                  fontFamily:'Circular Std Medium',
-                  lineHeight:22,
+                  fontFamily: 'Circular Std Medium',
+                  lineHeight: 22,
                   marginTop: 5,
-                  textTransform:'capitalize',
+                  textTransform: 'capitalize',
                 }}>
                 {data.studentAddress1 ?? data.studentAddress2}
               </Text>
@@ -348,8 +345,8 @@ const StudentsDetails = ({ navigation, route }: any) => {
               </TouchableOpacity>
             </View>
           </View>
-          <CustomButton btnTitle='Edit Status'  onPress={() => navigation.navigate('Status', data)} />
-              <View style={{marginBottom:20}}></View>
+          <CustomButton btnTitle='Edit Status' onPress={() => navigation.navigate('Status', data)} />
+          <View style={{ marginBottom: 20 }}></View>
         </View>
       </ScrollView>
       {/* Submit Button */}
@@ -373,7 +370,7 @@ const StudentsDetails = ({ navigation, route }: any) => {
             style={{
               alignItems: 'center',
               padding: 10,
-              backgroundColor: Theme.darkGray,
+              backgroundColor: Theme.Black,
               borderRadius: 10,
             }}>
             <Text
@@ -393,4 +390,19 @@ const StudentsDetails = ({ navigation, route }: any) => {
 
 export default StudentsDetails;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  
+  textType1: {
+    fontWeight: '500',
+    fontSize: 24,
+    color: Theme.Dune,
+    fontFamily: 'Circular Std Medium',
+    lineHeight: 24,
+    fontStyle: 'normal',
+  },
+  textType3: {
+    color: Theme.Dune,
+    fontSize: 16,
+    fontFamily: 'Circular Std Medium',
+  },
+});

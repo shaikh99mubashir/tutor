@@ -26,6 +26,11 @@ import TutorDetailsContext from '../../context/tutorDetailsContext';
 import CustomLoader from '../../Component/CustomLoader';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomButton from '../../Component/CustomButton';
+import ScheduleIcon from '../../SVGs/ScheduleIcon';
+import Schedule from '../../SVGs/Schedule';
+import Clock from '../../SVGs/Clock';
+import DeleteIcon from '../../SVGs/DeleteIcon';
+import Toast from 'react-native-toast-message';
 
 function AddClass({navigation}: any) {
   const [student, setStudent] = useState([]);
@@ -104,7 +109,12 @@ function AddClass({navigation}: any) {
       .catch(error => {
         console.log('error', error);
         setLoading(false);
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        Toast.show({
+          type: 'error',
+          text1: 'Request timeout:',
+          text2: 'Please check your internet connection',
+          position:'bottom'
+        });
       });
   };
 
@@ -287,11 +297,12 @@ function AddClass({navigation}: any) {
             Session {index + 1}
           </Text>
           <TouchableOpacity  activeOpacity={0.8} style={{paddingRight:15, }} onPress={() => handleFilterPress(index)}>
-            <Image
+            {/* <Image
               source={require('../../Assets/Images/delicon.png')}
               resizeMode="contain"
               style={{width: 20, height: 20,}}
-            />
+            /> */}
+            <DeleteIcon/>
           </TouchableOpacity>
         </View>
         <View>
@@ -318,10 +329,11 @@ function AddClass({navigation}: any) {
             <TouchableOpacity
               activeOpacity={0.8}
               onPress={() => setClassDate('date', index)}>
-              <Image
+              {/* <Image
                 source={require('../../Assets/Images/ScheduleIcon.png')}
                 style={{width: 20, height: 20}}
-              />
+              /> */}
+              <Schedule width={25} height={25} />
             </TouchableOpacity>
           </View>
         </View>
@@ -355,10 +367,11 @@ function AddClass({navigation}: any) {
               <TouchableOpacity
                 activeOpacity={0.8}
                 onPress={() => setClassDate('time', index, true)}>
-                <Image
+                {/* <Image
                   source={require('../../Assets/Images/ClockiconCopy.png')}
                   style={{width: 20, height: 20}}
-                />
+                /> */}
+                  <Clock width={25} height={25} />
               </TouchableOpacity>
             </View>
           </View>
@@ -394,10 +407,11 @@ function AddClass({navigation}: any) {
                 activeOpacity={0.8}
                 // onPress={() => setClassDate('time', index)}
               >
-                <Image
+                {/* <Image
                   source={require('../../Assets/Images/ClockiconCopy.png')}
                   style={{width: 20, height: 20}}
-                />
+                /> */}
+                <Clock width={25} height={25} />
               </TouchableOpacity>
             </View>
           </View>
@@ -442,12 +456,20 @@ function AddClass({navigation}: any) {
         const currentTime = new Date();
         const startTime = classesObject?.startTime;
         if (startTime == '-') {
-          ToastAndroid.show(
-            `Please select both start time and end time for Class No ${
+          // ToastAndroid.show(
+          //   `Please select both start time and end time for Class No ${
+          //     classesIndex + 1
+          //   }.`,
+          //   ToastAndroid.SHORT,
+          // );
+          Toast.show({
+            type: 'info',
+            // text1: 'Request timeout:',
+            text2:  `Please select both start time and end time for Class No ${
               classesIndex + 1
             }.`,
-            ToastAndroid.SHORT,
-          );
+            position:'bottom'
+          });
           return;
         }
         setClasses([...classes, newClass]);
@@ -463,12 +485,20 @@ function AddClass({navigation}: any) {
       classes?.map((classesObject: any, classesIndex: number) => {
         const startTime = classesObject?.startTime;
         if (startTime == '-') {
-          ToastAndroid.show(
-            `Please select both start time and end time for Class No ${
+          // ToastAndroid.show(
+          //   `Please select both start time and end time for Class No ${
+          //     classesIndex + 1
+          //   }.`,
+          //   ToastAndroid.SHORT,
+          // );
+          Toast.show({
+            type: 'info',
+            // text1: 'Request timeout:',
+            text2:  `Please select both start time and end time for Class No ${
               classesIndex + 1
             }.`,
-            ToastAndroid.SHORT,
-          );
+            position:'bottom'
+          });
           return;
         }
       });
@@ -493,10 +523,16 @@ function AddClass({navigation}: any) {
             (classB.startTime <= classA.endTime &&
               classA.startTime <= classB.endTime))
         ) {
-          ToastAndroid.show(
-            'Classes have overlapping time slots',
-            ToastAndroid.SHORT,
-          );
+          // ToastAndroid.show(
+          //   'Classes have overlapping time slots',
+          //   ToastAndroid.SHORT,
+          // );
+          Toast.show({
+            type: 'info',
+            // text1: 'Request timeout:',
+            text2:  `PClasses have overlapping time slots`,
+            position:'bottom'
+          });
           setLoading(false);
           return;
         }
@@ -566,7 +602,13 @@ function AddClass({navigation}: any) {
     let flag = classesToAdd.some((e: any, i: number) => e == 'false');
 
     if (flag) {
-      ToastAndroid.show('Required Field are missing', ToastAndroid.SHORT);
+      // ToastAndroid.show('Required Field are missing', ToastAndroid.SHORT);
+      Toast.show({
+        type: 'info',
+        // text1: 'Request timeout:',
+        text2:  `Required Field are missing`,
+        position:'bottom'
+      });
       setLoading(false);
       return;
     }
@@ -583,12 +625,24 @@ function AddClass({navigation}: any) {
         if (res?.data?.message?.includes('slot')) {
           // console.log("res.data.message",res.data.message);
 
-          ToastAndroid.show(res.data.message, ToastAndroid.SHORT);
+          // ToastAndroid.show(res.data.message, ToastAndroid.SHORT);
+          Toast.show({
+            type: 'info',
+            // text1: 'Request timeout:',
+            text2:  `${res.data.message}`,
+            position:'bottom'
+          });
           return;
         }
         navigation.navigate('ScheduleSuccessfully')
         // navigation.navigate('Schedule', classesss?.classes[0]?.startTime);
-        ToastAndroid.show(res?.data?.message, ToastAndroid.SHORT);
+        // ToastAndroid.show(res?.data?.message, ToastAndroid.SHORT);
+        Toast.show({
+          type: 'info',
+          // text1: 'Request timeout:',
+          text2:  `${res?.data?.message}`,
+          position:'bottom'
+        });
       })
       .catch(error => {
         setLoading(false);
@@ -598,10 +652,16 @@ function AddClass({navigation}: any) {
           console.error('Status Code:', error.response.status);
           console.error('Headers:', error.response.headers);
         }
-        ToastAndroid.show(
-          `Sorry classes added unsuccessfull ${error}`,
-          ToastAndroid.SHORT,
-        );
+        // ToastAndroid.show(
+        //   `Sorry classes added unsuccessfull ${error}`,
+        //   ToastAndroid.SHORT,
+        // );
+        Toast.show({
+          type: 'info',
+          // text1: 'Request timeout:',
+          text2:  `Sorry classes added unsuccessfull ${error}`,
+          position:'bottom'
+        });
       });
   };
   // Get the name of the previous screen
@@ -756,7 +816,48 @@ const previousRouteName = navigation.getState().routes[navigation.getState().rou
 
       <CustomLoader visible={loading} />
       <Modal visible={modalVisible} animationType="fade" transparent={true}>
-        <View
+      <View
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            backgroundColor: 'rgba(0,0,0,0.9)',
+          }}>
+          <View
+            style={[
+              styles.modalContainer,
+              {padding: 30, marginHorizontal: 20,},
+            ]}>
+            <Text style={styles.textType1}>Remove this Class?</Text>
+            
+            <View style={{margin: 15}}></View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                gap: 8,
+              }}>
+              <View style={{width: '48%'}}>
+                <CustomButton
+                  btnTitle="No"
+                  backgroundColor={Theme.WhiteSmoke}
+                  color={Theme.Black}
+                  onPressIn={() => setCancel(true)}
+                  onPressOut={() => setCancel(false)}
+                  onPress={CancelButton}
+                />
+              </View>
+              <View style={{width: '48%'}}>
+                <CustomButton btnTitle="Yes"   
+                onPressIn={() => setApply(true)}
+                onPressOut={() => setApply(false)}
+                onPress={ApplyButton}
+                 />
+                
+              </View>
+            </View>
+          </View>
+        </View>
+        {/* <View
           style={{
             flex: 1,
             justifyContent: 'center',
@@ -834,7 +935,7 @@ const previousRouteName = navigation.getState().routes[navigation.getState().rou
               </TouchableOpacity>
             </View>
           </View>
-        </View>
+        </View> */}
       </Modal>
     </View>
   );

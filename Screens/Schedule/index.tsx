@@ -38,11 +38,13 @@ import CustomLoader from '../../Component/CustomLoader';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import ScheduleIcon from '../../SVGs/ScheduleIcon';
 import CustomButton from '../../Component/CustomButton';
+import SubjectIcon from '../../SVGs/SubjectIcon';
+import Toast from 'react-native-toast-message';
 
 // import { ScrollView } from "react-native-gesture-handler"
 
 function Schedule({ navigation, route }: any) {
-  let data = route.params;
+  let data = route?.params;
 
   let focus = useIsFocused();
 
@@ -131,7 +133,7 @@ function Schedule({ navigation, route }: any) {
       .then(({ data }) => {
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
@@ -181,7 +183,7 @@ function Schedule({ navigation, route }: any) {
         })
         .catch(error => {
           setLoading(false);
-          ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+          // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
         });
       return;
     }
@@ -232,7 +234,7 @@ function Schedule({ navigation, route }: any) {
       })
       .catch(error => {
         setLoading(false);
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
@@ -486,10 +488,16 @@ function Schedule({ navigation, route }: any) {
     data = JSON.parse(data);
 
     if (data && Object.keys(data).length > 0) {
-      ToastAndroid.show(
-        'Cannot attend another class your class is already in process',
-        ToastAndroid.SHORT,
-      );
+      // ToastAndroid.show(
+      //   'Cannot attend another class your class is already in process',
+      //   ToastAndroid.SHORT,
+      // );
+      Toast.show({
+        type: 'info',
+        // text1: 'Request timeout:',
+        text2:  `Cannot attend another class your class is already in process`,
+        position:'bottom'
+      });
     } else {
       navigation.navigate('ClockIn', item);
     }
@@ -577,8 +585,8 @@ function Schedule({ navigation, route }: any) {
         activeOpacity={0.8}
         onPress={() => handleSelectPress(index, item)}
         style={{
-          // borderWidth: 1,
-          // borderColor: item.selected ? Theme.darkGray : Theme.lightGray,
+          borderWidth: 1,
+          borderColor: item.selected ? Theme.darkGray : Theme.lightGray,
           // borderColor:  'silver',
           paddingHorizontal: 20,
           paddingVertical: 10,
@@ -634,7 +642,7 @@ function Schedule({ navigation, route }: any) {
                       textTransform: 'capitalize',
                       fontFamily: 'Circular Std Medium',
                       width: 150,
-                      fontSize: 20,
+                      fontSize: 18,
                     },
                   ]}>
                   {item?.studentName}
@@ -698,12 +706,13 @@ function Schedule({ navigation, route }: any) {
                 flexDirection: 'row',
                 gap: 10,
               }}>
-              <AntDesig name="copy1" size={20} color={'#298CFF'} />
+              {/* <AntDesig name="copy1" size={20} color={Theme.darkGray} /> */}
+              <SubjectIcon/>
               <Text style={[styles.textType3, { color: Theme.ironsidegrey1 }]}>
                 Subject
               </Text>
             </View>
-            <Text style={[styles.textType1, { fontSize: 18 }]}>
+            <Text style={[styles.textType1, { fontSize: 16 }]}>
               {' '}
               {item.subjectName ?? item?.subject_name}
             </Text>
@@ -722,12 +731,12 @@ function Schedule({ navigation, route }: any) {
                 flexDirection: 'row',
                 gap: 10,
               }}>
-              <AntDesig name="carryout" size={20} color={'#298CFF'} />
+              <AntDesig name="carryout" size={20} color={Theme.darkGray} />
               <Text style={[styles.textType3, { color: Theme.ironsidegrey1 }]}>
                 Day
               </Text>
             </View>
-            <Text style={[styles.textType1, { fontSize: 18 }]}>
+            <Text style={[styles.textType1, { fontSize: 16 }]}>
               {convertDateDayFormat(item.date)}
             </Text>
           </View>
@@ -745,12 +754,12 @@ function Schedule({ navigation, route }: any) {
                 flexDirection: 'row',
                 gap: 10,
               }}>
-              <AntDesig name="clockcircleo" size={20} color={'#298CFF'} />
+              <AntDesig name="clockcircleo" size={20} color={Theme.darkGray} />
               <Text style={[styles.textType3, { color: Theme.ironsidegrey1 }]}>
                 Time
               </Text>
             </View>
-            <Text style={[styles.textType1, { fontSize: 18 }]}>
+            <Text style={[styles.textType1, { fontSize: 16 }]}>
               {startTime12Hour} - {endTime12Hour}
             </Text>
           </View>
@@ -769,7 +778,7 @@ function Schedule({ navigation, route }: any) {
                 gap: 10,
               }}>
               {/* <Image source={require('../../Assets/Images/level.png')} /> */}
-              <MaterialIcons name="schedule-send" size={20} color={'#298CFF'} />
+              <MaterialIcons name="schedule-send" size={20} color={Theme.darkGray} />
               <Text style={[styles.textType3, { color: Theme.ironsidegrey1 }]}>
                 Status
               </Text>
@@ -777,7 +786,7 @@ function Schedule({ navigation, route }: any) {
             <Text
               style={[
                 styles.textType1,
-                { fontSize: 18, textTransform: 'capitalize' },
+                { fontSize: 16, textTransform: 'capitalize' },
               ]}>
               {item.status}
             </Text>
@@ -956,7 +965,7 @@ function Schedule({ navigation, route }: any) {
         updateStudent(tutorStudents);
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
@@ -1287,7 +1296,7 @@ const styles = StyleSheet.create({
   textType3: {
     color: Theme.Dune,
     fontWeight: '500',
-    fontSize: 16,
+    fontSize: 15,
     fontFamily: 'Circular Std Medium',
     fontStyle: 'normal',
   },

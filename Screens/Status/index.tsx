@@ -114,13 +114,10 @@ const Status = ({navigation, route}: any) => {
   };
 
   return (
-    // loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
-    //   <ActivityIndicator size={"large"} color={Theme.black} />
-    // </View> :
-    <View style={{backgroundColor: Theme.white, height: '100%'}}>
+    <View style={{backgroundColor: Theme.GhostWhite, height: '100%'}}>
       <Header title="Status" backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{paddingHorizontal: 15}}>
+        <View style={{paddingHorizontal: 25}}>
           <View style={{paddingVertical: 10}}>
             <Text
               style={{
@@ -130,26 +127,38 @@ const Status = ({navigation, route}: any) => {
               }}>
               Student Name
             </Text>
-            <Text
+            <View
               style={{
-                color: Theme.gray,
-                fontSize: 18,
-                fontFamily: 'Circular Std Medium',
-                marginTop: 5,
+                backgroundColor: Theme.white,
+                paddingHorizontal: 20,
+                paddingVertical: 10,
+                borderRadius: 12,
+                marginVertical: 5,
+                height: 60
               }}>
-              {data?.studentName}
-            </Text>
+              <Text
+                style={{
+                  color: Theme.black,
+                  fontFamily: 'Circular Std Book',
+                  fontSize: 16,
+                  marginTop: 8,
+                }}>
+                {data?.studentName}
+              </Text>
+            </View>
+           
           </View>
 
           <CustomDropDown
             setSelectedSubject={setSelectedStatus}
             selectedSubject={selectedStatus}
             ddTitle="Status"
-            headingStyle={{color: Theme.black}}
+            headingStyle={{color: Theme.black, marginHorizontal: 0,}}
             dropdownPlace={'Select Status'}
             dropdownContainerStyle={{
-              paddingVertical: 15,
-              backgroundColor: Theme.lightGray,
+              // paddingVertical: 15,
+              borderRadius: 12,
+              backgroundColor: Theme.white,
             }}
             subject={status}
             categoryShow={'subject'}
@@ -158,11 +167,12 @@ const Status = ({navigation, route}: any) => {
             setSelectedSubject={setSelectedReasonCategory}
             selectedSubject={selectedReasonCategory}
             ddTitle="Reason Category"
-            headingStyle={{color: Theme.black}}
+            headingStyle={{color: Theme.black, marginHorizontal: 0,}}
             dropdownPlace={'Select Status'}
             dropdownContainerStyle={{
-              paddingVertical: 15,
-              backgroundColor: Theme.lightGray,
+              // paddingVertical: 15,
+              backgroundColor: Theme.white,
+              borderRadius:12
             }}
             ddTextStyle="none"
             subject={reasonCategory}
@@ -170,7 +180,7 @@ const Status = ({navigation, route}: any) => {
           />
 
           {/* Comment */}
-          <View style={{marginBottom: 20}}>
+          <View style={{marginBottom: 30}}>
             <Text
               style={{
                 color: Theme.black,
@@ -197,7 +207,7 @@ const Status = ({navigation, route}: any) => {
                 style={[
                   styles.textArea,
                   {
-                    backgroundColor: Theme.lightGray,
+                    backgroundColor: Theme.white,
                     padding: 12,
                     color: Theme.black,
                     fontSize: 16,

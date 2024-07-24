@@ -25,6 +25,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import CustomLoader from '../../Component/CustomLoader';
 import CustomButton from '../../Component/CustomButton';
+import Toast from 'react-native-toast-message';
 
 const ReportSubmission = ({ navigation, route }: any): any => {
   let data = route.params;
@@ -384,7 +385,7 @@ const ReportSubmission = ({ navigation, route }: any): any => {
       option: 'Solves many different questions correctly on their own.',
     },
     {
-      option: ' Solves most questions correctly with little guidance.',
+      option: 'Solves most questions correctly with little guidance.',
     },
     {
       option: 'Answers some questions correctly but needs a lot of guidance.',
@@ -527,15 +528,10 @@ const ReportSubmission = ({ navigation, route }: any): any => {
 
   const submitReport = () => {
     if (evaluation.option == 'Progress Report') {
-      console.log('tutorId', tutorId);
-      console.log('data?.studentID', data?.studentID);
-      console.log('data?.subjectID', data?.subjectID);
-      console.log('selectedMonth', selectedMonth);
-
       if (
         !tutorId ||
         !data?.studentID ||
-        !selectedMonth ||
+        !data?.notificationProgressReportMonth ||
         !obQ1 ||
         !obQ2 ||
         !obQ3 ||
@@ -557,19 +553,26 @@ const ReportSubmission = ({ navigation, route }: any): any => {
         !rulQ3 ||
         !rulQ4
       ) {
-        ToastAndroid.show('Required Fields are missing', ToastAndroid.SHORT);
+        // ToastAndroid.show('Required Fields are missing', ToastAndroid.SHORT);
+        Toast.show({
+          type: 'info',
+          // text1: 'Request timeout:',
+          text2:  `Required Fields are missing`,
+          position:'bottom'
+        });
         return;
       }
 
       setLoading(true);
 
       let formData = new FormData();
-
+      console.log("formData",formData);
+      
       formData.append('tutorID', tutorId);
       formData.append('studentID', data?.studentID);
       formData.append('subjectID', data?.subjectID);
       formData.append('reportType', evaluation?.option);
-      formData.append('month', selectedMonth?.option);
+      formData.append('month', data?.notificationProgressReportMonth);
       formData.append(
         'observation',
         obQ1?.option,
@@ -658,6 +661,12 @@ const ReportSubmission = ({ navigation, route }: any): any => {
         .then(res => {
           setLoading(false);
           ToastAndroid.show(res?.data?.successMessage, ToastAndroid.SHORT);
+          Toast.show({
+            type: 'info',
+            // text1: 'Request timeout:',
+            text2:  `${res?.data?.successMessage}`,
+            position:'bottom'
+          });
           navigation.navigate('BackToDashboard', data);
 
           setObQ1('')
@@ -699,7 +708,13 @@ const ReportSubmission = ({ navigation, route }: any): any => {
             // Something happened in setting up the request that triggered an Error
             console.log('Error setting up the request:', error.message);
           }
-          ToastAndroid.show('Failed To Submit Report', ToastAndroid.SHORT);
+          // ToastAndroid.show('Failed To Submit Report', ToastAndroid.SHORT);
+          Toast.show({
+            type: 'info',
+            // text1: 'Request timeout:',
+            text2:  `Failed To Submit Report`,
+            position:'bottom'
+          });
           console.log(error, 'error');
         });
       return;
@@ -723,6 +738,12 @@ const ReportSubmission = ({ navigation, route }: any): any => {
       !observationEReport?.option
     ) {
       ToastAndroid.show('Required Fields are missing', ToastAndroid.SHORT);
+      Toast.show({
+        type: 'info',
+        // text1: 'Request timeout:',
+        text2:  `Required Fields are missing`,
+        position:'bottom'
+      });
       return;
     }
     setLoading(true);
@@ -753,10 +774,16 @@ const ReportSubmission = ({ navigation, route }: any): any => {
         },
       })
       .then(res => {
-        ToastAndroid.show(
-          'Report has been submitted successfully',
-          ToastAndroid.SHORT,
-        );
+        // ToastAndroid.show(
+        //   'Report has been submitted successfully',
+        //   ToastAndroid.SHORT,
+        // );
+        Toast.show({
+          type: 'info',
+          // text1: 'Request timeout:',
+          text2:  `Report has been submitted successfully`,
+          position:'bottom'
+        });
         setLoading(false);
         navigation.navigate('BackToDashboard');
         setKnowledgeAnswer('')
@@ -769,10 +796,16 @@ const ReportSubmission = ({ navigation, route }: any): any => {
       })
       .catch(error => {
         setLoading(false);
-        ToastAndroid.show(
-          'Report submission unSuccessfull',
-          ToastAndroid.SHORT,
-        );
+        // ToastAndroid.show(
+        //   'Report submission unSuccessfull',
+        //   ToastAndroid.SHORT,
+        // );
+        Toast.show({
+          type: 'info',
+          // text1: 'Request timeout:',
+          text2:  `Report has been submitted unsuccessfully`,
+          position:'bottom'
+        });
         if (error.response) {
           // The request was made and the server responded with a status code
           console.log('Server responded with data:', error.response.data);
@@ -796,63 +829,55 @@ const ReportSubmission = ({ navigation, route }: any): any => {
   console.log("evaluation.option", evaluation.option);
 
   return (
-    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+    <View style={{ backgroundColor: Theme.GhostWhite, height: '100%' }}>
       <CustomLoader visible={loading} />
-      <Header title={evaluation.option} navigation={navigation} containerStyle={{ height: 80, flexDirection: 'column', paddingTop:15, }}/>
+      <Header title={evaluation.option} navigation={navigation} containerStyle={{ height: 80, flexDirection: 'column', paddingTop: 15, }} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{ paddingHorizontal: 15, marginBottom: 60 }}>
+        <View style={{ paddingHorizontal: 25, marginBottom: 60 }}>
           {/* Report Type */}
-          {/* <DropDownModalView
-            title="Report Type"
-            placeHolder="Evaluation Report"
-            selectedValue={setEvaluationReport}
-            value={evaluation.option}
-            option={EvalutionOption}
-            modalHeading="Select Report Type"
-          /> */}
-          {/* <View style={{ marginTop: 8 }}>
-            <Text
-              style={{
-                fontSize: 16,
-                color: 'black',
-                fontFamily: 'Circular Std Bold',
-              }}>
-              Submit Report
-            </Text>
-            <View
-              // onPress={() => setShow(true)}
-              style={{
-                marginTop: 5,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                paddingVertical: 15,
-                paddingHorizontal: 15,
-                borderRadius: 15,
-                backgroundColor: Theme.liteBlue,
-                alignItems: 'center',
-              }}>
-              <Text
-                style={{
-                  color: Theme.black,
-                  fontFamily: 'Circular Std Medium',
-                  fontSize: 16,
-                }}>
-                {evaluation.option}
-              </Text>
-            </View>
-          </View> */}
 
           {/* First Class Date */}
           {evaluation.option == 'Progress Report' ? (
+            // <View style={{ marginTop: 8 }}>
+            //   <DropDownModalView
+            //     title="Month"
+            //     placeHolder="Select Report Type"
+            //     selectedValue={setSelectedMonth}
+            //     value={selectedMonth.option}
+            //     option={months}
+            //     modalHeading="Select Month"
+            //   />
+            // </View>
             <View style={{ marginTop: 8 }}>
-              <DropDownModalView
-                title="Month"
-                placeHolder="Select Report Type"
-                selectedValue={setSelectedMonth}
-                value={selectedMonth.option}
-                option={months}
-                modalHeading="Select Month"
-              />
+              <Text
+                style={{
+                  fontSize: 16,
+                  color: 'black',
+                  fontFamily: 'Circular Std Bold',
+                }}>
+                Month
+              </Text>
+              <View
+                style={{
+                  marginTop: 5,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  paddingVertical: 15,
+                  paddingHorizontal: 15,
+                  borderRadius: 16,
+                  backgroundColor: Theme.white,
+                  alignItems: 'center',
+                  height: 60
+                }}>
+                <Text
+                  style={{
+                    color: Theme.IronsideGrey,
+                    fontFamily: 'Circular Std Medium',
+                    fontSize: 16,
+                  }}>
+                  {data?.notificationProgressReportMonth}
+                </Text>
+              </View>
             </View>
           ) : (
             <View style={{ marginTop: 8 }}>
@@ -865,20 +890,20 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 First Class Date
               </Text>
               <View
-                // onPress={() => setShow(true)}
                 style={{
                   marginTop: 5,
                   flexDirection: 'row',
                   justifyContent: 'space-between',
                   paddingVertical: 15,
                   paddingHorizontal: 15,
-                  borderRadius: 15,
-                  backgroundColor: Theme.liteBlue,
+                  borderRadius: 16,
+                  backgroundColor: Theme.white,
                   alignItems: 'center',
+                  height: 60
                 }}>
                 <Text
                   style={{
-                    color: Theme.black,
+                    color: Theme.IronsideGrey,
                     fontFamily: 'Circular Std Medium',
                     fontSize: 16,
                   }}>
@@ -905,13 +930,14 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 justifyContent: 'space-between',
                 paddingVertical: 15,
                 paddingHorizontal: 15,
-                borderRadius: 15,
-                backgroundColor: Theme.liteBlue,
+                borderRadius: 16,
+                backgroundColor: Theme.white,
                 alignItems: 'center',
+                height: 60
               }}>
               <Text
                 style={{
-                  color: Theme.black,
+                  color: Theme.IronsideGrey,
                   fontFamily: 'Circular Std Medium',
                   fontSize: 16,
                 }}>
@@ -924,7 +950,7 @@ const ReportSubmission = ({ navigation, route }: any): any => {
             <Text
               style={{
                 fontSize: 16,
-                color: 'black',
+                color: Theme.black,
                 fontFamily: 'Circular Std Bold',
               }}>
               Subject
@@ -937,13 +963,14 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 justifyContent: 'space-between',
                 paddingVertical: 15,
                 paddingHorizontal: 15,
-                borderRadius: 15,
-                backgroundColor: Theme.liteBlue,
+                borderRadius: 16,
+                backgroundColor: Theme.white,
                 alignItems: 'center',
+                height: 60
               }}>
               <Text
                 style={{
-                  color: Theme.black,
+                  color: Theme.IronsideGrey,
                   fontFamily: 'Circular Std Medium',
                   fontSize: 16,
                 }}>
@@ -957,10 +984,16 @@ const ReportSubmission = ({ navigation, route }: any): any => {
               <DropDownModalView
                 title="A. OBSERVATION"
                 selectedValue={setObQ1}
-                subTitle=" Did you (tutor) hold or carried out any form of examination/test/quiz for the student within this 3 months?"
+                subTitle="Did you (tutor) hold or carried out any form of examination/test/quiz for the student within this 3 months?"
                 placeHolder="Select Answer"
                 option={OB1}
                 modalHeading="Select Answer"
+                value={obQ1?.option?.length > 33 ?
+                  `${obQ1?.option?.slice(0, 33)}...` : obQ1?.option}
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
               />
               <DropDownModalView
                 selectedValue={setObQ2}
@@ -968,13 +1001,19 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 placeHolder="Select Answer"
                 option={OB2}
                 modalHeading="Select Answer"
+                value={obQ2?.option?.length > 33 ?
+                  `${obQ2?.option?.slice(0, 33)}...` : obQ2?.option}
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
               />
               <>
                 <Text
                   style={{
-                    color: Theme.gray,
+                    color: Theme.Black,
                     fontFamily: 'Circular Std Medium',
-                    fontSize: 14,
+                    fontSize: 16,
                     marginTop: 8,
                   }}>
                   What significant improvement do you see in the student's
@@ -986,7 +1025,7 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                     {
                       width: '100%',
                       // borderWidth: 1,
-                      borderRadius: 10,
+                      borderRadius: 20,
                       marginTop: 5,
                     },
                   ]}>
@@ -1000,7 +1039,6 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                       {
                         height: 80,
                         padding: 8,
-                        color: 'black',
                         fontFamily: 'Circular Std Medium',
                       },
                     ]}
@@ -1012,9 +1050,9 @@ const ReportSubmission = ({ navigation, route }: any): any => {
               <>
                 <Text
                   style={{
-                    color: Theme.gray,
+                    color: Theme.Black,
                     fontFamily: 'Circular Std Medium',
-                    fontSize: 14,
+                    fontSize: 16,
                     marginTop: 8,
                   }}>
                   Please suggest the parts that the student should improve and
@@ -1026,7 +1064,7 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                     {
                       width: '100%',
                       // borderWidth: 1,
-                      borderRadius: 10,
+                      borderRadius: 20,
                       marginTop: 5,
                     },
                   ]}>
@@ -1040,7 +1078,6 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                       {
                         height: 80,
                         padding: 8,
-                        color: 'black',
                         fontFamily: 'Circular Std Medium',
                       },
                     ]}
@@ -1052,9 +1089,9 @@ const ReportSubmission = ({ navigation, route }: any): any => {
               <>
                 <Text
                   style={{
-                    color: Theme.gray,
+                    color: Theme.Black,
                     fontFamily: 'Circular Std Medium',
-                    fontSize: 14,
+                    fontSize: 16,
                     marginTop: 8,
                   }}>
                   Please elaborate your plans for the student in 3 months' time
@@ -1066,7 +1103,7 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                     {
                       width: '100%',
                       // borderWidth: 1,
-                      borderRadius: 10,
+                      borderRadius: 20,
                       marginTop: 5,
                     },
                   ]}>
@@ -1080,7 +1117,6 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                       {
                         height: 80,
                         padding: 8,
-                        color: 'black',
                         fontFamily: 'Circular Std Medium',
                       },
                     ]}
@@ -1092,9 +1128,9 @@ const ReportSubmission = ({ navigation, route }: any): any => {
               <>
                 <Text
                   style={{
-                    color: Theme.gray,
+                    color: Theme.Black,
                     fontFamily: 'Circular Std Medium',
-                    fontSize: 14,
+                    fontSize: 16,
                     marginTop: 8,
                   }}>
                   Comment (Additional)
@@ -1105,7 +1141,7 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                     {
                       width: '100%',
                       // borderWidth: 1,
-                      borderRadius: 10,
+                      borderRadius: 20,
                       marginTop: 5,
                     },
                   ]}>
@@ -1119,7 +1155,7 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                       {
                         height: 80,
                         padding: 8,
-                        color: 'black',
+                      
                         fontFamily: 'Circular Std Medium',
                       },
                     ]}
@@ -1138,15 +1174,25 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 placeHolder="Select Answer"
                 option={knowledge}
                 modalHeading="Knowledge"
-                value={knowledgeAnswer?.option}
+                value={knowledgeAnswer?.option?.length > 33 ?
+                  `${knowledgeAnswer?.option?.slice(0, 33)}...` : knowledgeAnswer?.option}
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
               />
               <DropDownModalView
                 selectedValue={setKnowledgeAnswer2}
                 subTitle="How well does the student share their ideas on the topics under discussion?"
                 placeHolder="Select Answer"
                 option={knowledge2}
-                value={knowledgeAnswer2?.option}
+                value={knowledgeAnswer2?.option?.length > 35 ?
+                  `${knowledgeAnswer2?.option?.slice(0, 35)}...` : knowledgeAnswer2?.option}
                 modalHeading="Knowledge"
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
               />
             </>
           )}
@@ -1160,6 +1206,12 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 placeHolder="Select Answer"
                 option={performanceOption}
                 modalHeading="Select Answer"
+                value={perQ1?.option?.length > 33 ?
+                  `${perQ1?.option?.slice(0, 33)}...` : perQ1?.option}
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
               />
               <DropDownModalView
                 selectedValue={setPerQ2}
@@ -1167,6 +1219,12 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 placeHolder="Select Answer"
                 option={performanceOption2}
                 modalHeading="Select Answer"
+                value={perQ2?.option?.length > 33 ?
+                  `${perQ2?.option?.slice(0, 33)}...` : perQ2?.option}
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
               />
               <DropDownModalView
                 selectedValue={setPerQ3}
@@ -1174,6 +1232,12 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 placeHolder="Select Answer"
                 option={performanceOption3}
                 modalHeading="Select Answer"
+                value={perQ3?.option?.length > 33 ?
+                  `${perQ3?.option?.slice(0, 33)}...` : perQ3?.option}
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
               />
               <DropDownModalView
                 selectedValue={setPerQ4}
@@ -1181,6 +1245,12 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 placeHolder="Select Answer"
                 option={performanceOption4}
                 modalHeading="Select Answer"
+                value={perQ4?.option?.length > 33 ?
+                  `${perQ4?.option?.slice(0, 33)}...` : perQ4?.option}
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
               />
               <DropDownModalView
                 selectedValue={setPerQ5}
@@ -1188,13 +1258,19 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 placeHolder="Select Answer"
                 option={performanceOption5}
                 modalHeading="Select Answer"
+                value={perQ5?.option?.length > 33 ?
+                  `${perQ5?.option?.slice(0, 33)}...` : perQ5?.option}
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
               />
               <>
                 <Text
                   style={{
-                    color: Theme.gray,
+                    color: Theme.Black,
                     fontFamily: 'Circular Std Medium',
-                    fontSize: 14,
+                    fontSize: 16,
                     marginTop: 8,
                   }}>
                   Comment (Additional)
@@ -1205,7 +1281,7 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                     {
                       width: '100%',
                       // borderWidth: 1,
-                      borderRadius: 10,
+                      borderRadius:20,
                       marginTop: 5,
                     },
                   ]}>
@@ -1219,8 +1295,8 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                       {
                         height: 80,
                         padding: 8,
-                        color: 'black',
                         fontFamily: 'Circular Std Medium',
+                        
                       },
                     ]}
                     underlineColorAndroid="transparent"
@@ -1238,7 +1314,12 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 placeHolder="Select Answer"
                 option={understanding}
                 modalHeading="Understanding"
-                value={understandingAnswer?.option}
+                value={understandingAnswer?.option?.length > 35 ?
+                  `${understandingAnswer?.option?.slice(0, 35)}...` : understandingAnswer?.option}
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
               />
               <DropDownModalView
                 selectedValue={setUnderstandingAnswer2}
@@ -1246,7 +1327,12 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 placeHolder="Select Answer"
                 option={understanding2}
                 modalHeading="Understanding"
-                value={understandingAnswer2?.option}
+                value={understandingAnswer2?.option?.length > 35 ?
+                  `${understandingAnswer2?.option?.slice(0, 35)}...` : understandingAnswer2?.option}
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
               />
             </>
           )}
@@ -1260,6 +1346,12 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 placeHolder="Select Answer"
                 option={attitudeOption}
                 modalHeading="Select Answer"
+                value={attQ1?.option?.length > 33 ?
+                  `${attQ1?.option?.slice(0, 33)}...` : attQ1?.option}
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
               />
               <DropDownModalView
                 selectedValue={setattQ2}
@@ -1267,6 +1359,12 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 placeHolder="Select Answer"
                 option={attitudeOption2}
                 modalHeading="Select Answer"
+                value={attQ2?.option?.length > 33 ?
+                  `${attQ2?.option?.slice(0, 33)}...` : attQ2?.option}
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
               />
               <DropDownModalView
                 selectedValue={setattQ3}
@@ -1274,6 +1372,12 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 placeHolder="Select Answer"
                 option={attitudeOption3}
                 modalHeading="Select Answer"
+                value={attQ3?.option?.length > 33 ?
+                  `${attQ3?.option?.slice(0, 33)}...` : attQ3?.option}
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
               />
               <DropDownModalView
                 selectedValue={setattQ4}
@@ -1281,6 +1385,12 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 placeHolder="Select Answer"
                 option={attitudeOption4}
                 modalHeading="Select Answer"
+                value={attQ4?.option?.length > 33 ?
+                  `${attQ4?.option?.slice(0, 33)}...` : attQ4?.option}
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
               />
               <DropDownModalView
                 selectedValue={setattQ5}
@@ -1288,13 +1398,19 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 placeHolder="Select Answer"
                 option={attitudeOption5}
                 modalHeading="Select Answer"
+                value={attQ5?.option?.length > 33 ?
+                  `${attQ5?.option?.slice(0, 33)}...` : attQ5?.option}
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
               />
               <>
                 <Text
                   style={{
-                    color: Theme.gray,
+                    color: Theme.Black,
                     fontFamily: 'Circular Std Medium',
-                    fontSize: 14,
+                    fontSize: 16,
                     marginTop: 8,
                   }}>
                   Comment (Additional)
@@ -1305,7 +1421,7 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                     {
                       width: '100%',
                       // borderWidth: 1,
-                      borderRadius: 10,
+                      borderRadius: 20,
                       marginTop: 5,
                     },
                   ]}>
@@ -1319,7 +1435,6 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                       {
                         height: 80,
                         padding: 8,
-                        color: 'black',
                         fontFamily: 'Circular Std Medium',
                       },
                     ]}
@@ -1338,7 +1453,13 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 placeHolder="Select Answer"
                 option={CT}
                 modalHeading="Critical Thinking"
-                value={ctAnswer?.option}
+                value={ctAnswer?.option?.length > 35 ?
+                  `${ctAnswer?.option?.slice(0, 35)}...` : ctAnswer?.option}
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
+
 
               />
               <DropDownModalView
@@ -1347,7 +1468,12 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 placeHolder="Select Answer"
                 option={CT2}
                 modalHeading="Critical Thinking"
-                value={ctAnswer2?.option}
+                value={ctAnswer2?.option?.length > 35 ?
+                  `${ctAnswer2?.option?.slice(0, 35)}...` : ctAnswer2?.option}
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
               />
             </>
           )}
@@ -1362,6 +1488,12 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 placeHolder="Select Answer"
                 option={resultOption}
                 modalHeading="Select Answer"
+                value={rulQ1?.option?.length > 33 ?
+                  `${rulQ1?.option?.slice(0, 33)}...` : rulQ1?.option}
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
               />
               <DropDownModalView
                 selectedValue={setRulQ2}
@@ -1369,6 +1501,12 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 placeHolder="Select Answer"
                 option={resultOption2}
                 modalHeading="Select Answer"
+                value={rulQ2?.option?.length > 33 ?
+                  `${rulQ2?.option?.slice(0, 33)}...` : rulQ2?.option}
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
               />
               <DropDownModalView
                 selectedValue={setRulQ3}
@@ -1376,13 +1514,19 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 placeHolder="Select Answer"
                 option={resultOption3}
                 modalHeading="Select Answer"
+                value={rulQ3?.option?.length > 33 ?
+                  `${rulQ3?.option?.slice(0, 33)}...` : rulQ3?.option}
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
               />
               <>
                 <Text
                   style={{
-                    color: Theme.gray,
+                    color: Theme.Black,
                     fontFamily: 'Circular Std Medium',
-                    fontSize: 14,
+                    fontSize: 16,
                     marginTop: 8,
                   }}>
                   Comment (Additional)
@@ -1393,7 +1537,7 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                     {
                       width: '100%',
                       // borderWidth: 1,
-                      borderRadius: 10,
+                      borderRadius: 20,
                       marginTop: 5,
                     },
                   ]}>
@@ -1407,7 +1551,6 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                       {
                         height: 80,
                         padding: 8,
-                        color: 'black',
                         fontFamily: 'Circular Std Medium',
                       },
                     ]}
@@ -1426,7 +1569,12 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                 placeHolder="Select Answer"
                 option={Observation}
                 modalHeading="Observation"
-                value={observationEReport?.option}
+                value={observationEReport?.option?.length > 35 ?
+                  `${observationEReport?.option?.slice(0, 35)}...` : observationEReport?.option}
+                titleHeading={{ marginBottom: 10, marginTop: 10 }}
+                titleStyle={{ fontSize: 18 }}
+                subTitleText={{ fontSize: 16, color: Theme.Black }}
+                valueText={{ fontSize: 16, color: Theme.IronsideGrey }}
               />
             </>
           )}
@@ -1436,19 +1584,21 @@ const ReportSubmission = ({ navigation, route }: any): any => {
             </>
           ) : (
             <>
+              <View style={{ marginTop: 10, marginBottom: 10 }}>
+                <Text
+                  style={{
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    color: 'black',
+                    marginTop: 8,
+                    fontFamily: 'Circular Std Medium',
+                  }}>
+                  E. ADDITIONAL ASSESSMENT
+                </Text>
+              </View>
               <Text
                 style={{
-                  fontSize: 16,
-                  fontWeight: 'bold',
-                  color: 'black',
-                  marginTop: 8,
-                  fontFamily: 'Circular Std Medium',
-                }}>
-                E. ADDITIONAL ASSESSMENT
-              </Text>
-              <Text
-                style={{
-                  color: Theme.gray,
+                  color: Theme.black,
                   fontFamily: 'Circular Std Medium',
                   fontSize: 14,
                 }}>
@@ -1471,7 +1621,7 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                     setQuestions({ ...questions, addationalAssessments: e })
                   }
                   style={{
-                    color: 'black', fontSize: 16,
+                    color: Theme.IronsideGrey, fontSize: 16,
                     fontFamily: 'Circular Std Medium',
                   }}
                   value={questions?.addationalAssessments}
@@ -1481,7 +1631,7 @@ const ReportSubmission = ({ navigation, route }: any): any => {
               </View>
               <Text
                 style={{
-                  color: Theme.gray,
+                  color: Theme.Black,
                   fontFamily: 'Circular Std Medium',
                   fontSize: 14,
                   marginTop: 8,
@@ -1508,7 +1658,7 @@ const ReportSubmission = ({ navigation, route }: any): any => {
                     {
                       height: 80,
                       padding: 8,
-                      color: 'black',
+                      color: Theme.IronsideGrey,
                       fontFamily: 'Circular Std Medium',
                     },
                   ]}
@@ -1519,8 +1669,8 @@ const ReportSubmission = ({ navigation, route }: any): any => {
               </View>
             </>
           )}
-          <View style={{margin:15}}/>
-          <CustomButton btnTitle='Submit Report' onPress={() => submitReport()}/>
+          <View style={{ margin: 15 }} />
+          <CustomButton btnTitle='Submit Report' onPress={() => submitReport()} />
         </View>
       </ScrollView>
       {/* Submit Button */}
@@ -1578,12 +1728,15 @@ export default ReportSubmission;
 const styles = StyleSheet.create({
   textAreaContainer: {
     // borderWidth: 1,
-    backgroundColor: Theme.lightGray,
+    backgroundColor: Theme.white,
     padding: 10,
+    borderRadius: 20,
   },
   textArea: {
     height: 120,
     justifyContent: 'flex-start',
     textAlignVertical: 'top',
+    color: Theme.IronsideGrey,
+    fontSize:16,
   },
 });

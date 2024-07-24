@@ -36,6 +36,7 @@ import CustomLoader from '../../Component/CustomLoader';
 import BackToDashboard from '../../Component/BackToDashboard';
 import subscribeToChannel from '../../Component/subscribeToChannel';
 import SubjectIcon from '../../SVGs/SubjectIcon';
+import Toast from 'react-native-toast-message';
 interface LoginAuth {
   status: Number;
   tutorID: Number;
@@ -239,7 +240,13 @@ function JobTicket({ navigation, route }: any) {
           AsyncStorage.removeItem('loginAuth');
           navigation.replace('Login');
           setTutorDetail('')
-          ToastAndroid.show('Terminated', ToastAndroid.SHORT);
+          // ToastAndroid.show('Terminated', ToastAndroid.SHORT);
+          Toast.show({
+            type: 'info',
+            // text1: 'Request timeout:',
+            text2:  `Terminated`,
+            position:'bottom'
+          });
           return;
         }
         let details = {
@@ -1063,7 +1070,7 @@ function JobTicket({ navigation, route }: any) {
           <View
             style={{
               width: '100%',
-              backgroundColor: Theme.lightGray,
+              backgroundColor: Theme.white,
               borderRadius: 10,
               display: 'flex',
               flexDirection: 'row',

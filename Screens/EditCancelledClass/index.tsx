@@ -9,6 +9,7 @@ import axios from "axios";
 import { Base_Uri } from "../../constant/BaseUri";
 import CustomLoader from "../../Component/CustomLoader";
 import CustomButton from "../../Component/CustomButton";
+import Toast from "react-native-toast-message";
 
 function EditCancelledClass({ navigation, route }: any) {
 
@@ -24,7 +25,13 @@ console.log(cancelledReason,"reason")
     const editTutorCancelledClass = () => {
 
         if (!cancelledReason) {
-            ToastAndroid.show("Kindly Enter Cancelled Reason", ToastAndroid.SHORT)
+            // ToastAndroid.show("Kindly Enter Cancelled Reason", ToastAndroid.SHORT)
+            Toast.show({
+                type: 'info',
+                // text1: 'Request timeout:',
+                text2:  `Kindly Enter Cancelled Reason`,
+                position:'bottom'
+              });
             return
         }
         setLoading(true)
@@ -33,7 +40,13 @@ console.log(cancelledReason,"reason")
             console.log(res,"ress")
 
             setLoading(false)
-            ToastAndroid.show(res?.data?.SuccessMessage, ToastAndroid.SHORT)
+            // ToastAndroid.show(res?.data?.SuccessMessage, ToastAndroid.SHORT)
+            Toast.show({
+                type: 'info',
+                // text1: 'Request timeout:',
+                text2:  `${res?.data?.SuccessMessage}`,
+                position:'bottom'
+              });
             navigation.navigate("Schedule", data.id)
 
         }).catch((error) => {
@@ -43,7 +56,13 @@ console.log(cancelledReason,"reason")
                 console.error('Status Code:', error.response.status);
                 console.error('Headers:', error.response.headers);
               }
-            ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT)
+            // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT)
+            Toast.show({
+                type: 'info',
+                // text1: 'Request timeout:',
+                text2:  `Network Error`,
+                position:'bottom'
+              });
         })
     }
 

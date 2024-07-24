@@ -47,7 +47,7 @@ const FAQs = ({ navigation }: any) => {
       })
       .catch(error => {
         setLoading(false)
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   }
  
@@ -70,7 +70,7 @@ const FAQs = ({ navigation }: any) => {
       .then(({ data }) => {
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
@@ -150,11 +150,11 @@ const FAQs = ({ navigation }: any) => {
   
 
   return (
-    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+    <View style={{ backgroundColor: Theme.GhostWhite, height: '100%' }}>
       <Header title="FAQs" backBtn navigation={navigation} />
      
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{ paddingHorizontal: 15, marginVertical: 15 }}>
+        <View style={{ paddingHorizontal: 25, marginVertical: 15 }}>
 
           <FlatList
             data={faqsData ?? []}

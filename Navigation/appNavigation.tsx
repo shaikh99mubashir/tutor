@@ -72,7 +72,12 @@ function BottomNavigation({ navigation, route }: any) {
             AsyncStorage.removeItem('loginAuth');
             navigation.replace('Login');
             setTutorDetail('')
-            ToastAndroid.show('Terminated', ToastAndroid.SHORT);
+            Toast.show({
+              type: 'info',
+              text1: 'Logout',
+              text2: 'Terminated',
+              position:'bottom'
+            });
             return;
           }
           let tutorData = res.data;

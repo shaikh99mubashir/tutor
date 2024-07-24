@@ -19,6 +19,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
+import Toast from 'react-native-toast-message';
 
 const AppliedDetails = ({ route, navigation }: any) => {
   const data = route.params;
@@ -66,27 +67,45 @@ const AppliedDetails = ({ route, navigation }: any) => {
 
         if (data?.result?.status == 'pending') {
           setLoading(false);
-          ToastAndroid.show(
-            'You have successfully applied for this ticket',
-            ToastAndroid.SHORT,
-          );
+          // ToastAndroid.show(
+          //   'You have successfully applied for this ticket',
+          //   ToastAndroid.SHORT,
+          // );
+          Toast.show({
+            type: 'info',
+            // text1: 'Request timeout:',
+            text2:  `You have successfully applied for this ticket`,
+            position:'bottom'
+          });
           navigation.navigate('Job Ticket', ticketID);
         } else {
           console.log(data, 'dataaa');
-          ToastAndroid.show(data?.result, ToastAndroid.SHORT);
+          // ToastAndroid.show(data?.result, ToastAndroid.SHORT);
+          Toast.show({
+            type: 'info',
+            // text1: 'Request timeout:',
+            text2:  `${data?.result}`,
+            position:'bottom'
+          });
           setLoading(false);
         }
       })
       .catch(error => {
         setLoading(false);
         console.log(error, 'error');
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        Toast.show({
+          type: 'info',
+          // text1: 'Request timeout:',
+          text2:  `Network Error`,
+          position:'bottom'
+        });
       });
   };
   // console.log('data=============>', data);
 
   return (
-    <View style={{ backgroundColor: Theme.white, height: '100%' }}>
+    <View style={{ backgroundColor: Theme.GhostWhite, height: '100%' }}>
       <Header title={data?.jtuid} backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <View style={{ paddingHorizontal: 15 }}>
@@ -152,10 +171,10 @@ const AppliedDetails = ({ route, navigation }: any) => {
 
             <View
               style={{
-                backgroundColor: Theme.liteBlue,
+                backgroundColor: Theme.white,
                 padding: 15,
                 marginTop: 10,
-                borderRadius: 12,
+                borderRadius: 20,
               }}>
                 <View
                 style={{
@@ -175,7 +194,7 @@ const AppliedDetails = ({ route, navigation }: any) => {
                   <FontAwesome
                     name="user-o"
                     size={18}
-                    color={'#298CFF'}
+                    color={Theme.darkGray}
                   />
                   <Text style={styles.textType3}>Student Name</Text>
                 </View>
@@ -199,7 +218,7 @@ const AppliedDetails = ({ route, navigation }: any) => {
                   <FontAwesome
                     name="graduation-cap"
                     size={18}
-                    color={'#298CFF'}
+                    color={Theme.darkGray}
                   />
                   <Text style={styles.textType3}>Student Detail</Text>
                 </View>
@@ -224,7 +243,7 @@ const AppliedDetails = ({ route, navigation }: any) => {
                   <Feather
                     name="hash"
                     size={18}
-                    color={'#298CFF'}
+                    color={Theme.darkGray}
                   />
                   <Text style={styles.textType3}>No. of Sessions</Text>
                 </View>
@@ -252,10 +271,10 @@ const AppliedDetails = ({ route, navigation }: any) => {
 
             <View
               style={{
-                backgroundColor: Theme.liteBlue,
+                backgroundColor: Theme.white,
                 padding: 15,
                 marginTop: 10,
-                borderRadius: 12,
+                borderRadius: 20,
               }}>
                  <View
                 style={{
@@ -274,7 +293,7 @@ const AppliedDetails = ({ route, navigation }: any) => {
                   <FontAwesome
                     name="level-up"
                     size={22}
-                    color={'#298CFF'}
+                    color={Theme.darkGray}
                   />
                   <Text style={styles.textType3}>Level</Text>
                 </View>
@@ -298,7 +317,7 @@ const AppliedDetails = ({ route, navigation }: any) => {
                   <AntDesign
                     name="copy1"
                     size={18}
-                    color={'#298CFF'}
+                    color={Theme.darkGray}
                   />
                   <Text style={styles.textType3}>Subject</Text>
                 </View>
@@ -325,7 +344,7 @@ const AppliedDetails = ({ route, navigation }: any) => {
                   <FontAwesome
                     name="user-o"
                     size={18}
-                    color={'#298CFF'}
+                    color={Theme.darkGray}
                   />
                   <Text style={styles.textType3}>Pref. Tutor</Text>
                 </View>
@@ -340,9 +359,9 @@ const AppliedDetails = ({ route, navigation }: any) => {
                     <AntDesign
                       name="calendar"
                       size={20}
-                      color={'#298CFF'}
+                      color={Theme.darkGray}
                     />
-                    <Text style={[styles.textType3, { color: '#298CFF' }]}>{data?.classDay}</Text>
+                    <Text style={[styles.textType3, { color: Theme.darkGray }]}>{data?.classDay}</Text>
                   </View>
                 </View>
                 <View style={{ backgroundColor: "#E6F2FF", paddingVertical: 10, borderRadius: 10, paddingHorizontal: 10 }}>
@@ -350,9 +369,9 @@ const AppliedDetails = ({ route, navigation }: any) => {
                     <AntDesign
                       name="clockcircleo"
                       size={20}
-                      color={'#298CFF'}
+                      color={Theme.darkGray}
                     />
-                    <Text style={[styles.textType3, { color: '#298CFF' }]}>{data?.classTime}</Text>
+                    <Text style={[styles.textType3, { color: Theme.darkGray }]}>{data?.classTime}</Text>
                   </View>
                 </View>
 
@@ -372,7 +391,7 @@ const AppliedDetails = ({ route, navigation }: any) => {
                 </Text>
                 <View
                   style={{
-                    backgroundColor: Theme.liteBlue,
+                    backgroundColor: Theme.white,
                     paddingHorizontal: 10,
                     paddingVertical: 12,
                     borderRadius: 10,
@@ -395,7 +414,7 @@ const AppliedDetails = ({ route, navigation }: any) => {
                 </Text>
                 <View
                   style={{
-                    backgroundColor: Theme.liteBlue,
+                    backgroundColor: Theme.white,
                     paddingHorizontal: 10,
                     paddingVertical: 12,
                     borderRadius: 10,
@@ -420,7 +439,7 @@ const AppliedDetails = ({ route, navigation }: any) => {
                   <View
                   key={i}
                     style={{
-                      backgroundColor: Theme.liteBlue,
+                      backgroundColor: Theme.white,
                       paddingHorizontal: 10,
                       paddingVertical: 12,
                       borderRadius: 10,

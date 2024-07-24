@@ -75,7 +75,7 @@ function Index({ navigation }: any) {
       })
       .catch(error => {
         setLoading(false);
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
@@ -93,7 +93,7 @@ function Index({ navigation }: any) {
         console.log('res', data.bannerAds);
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 

@@ -75,8 +75,8 @@ const Verification = ({ navigation, route }: any) => {
   };
   const handleCodeCompleted = async (enteredCode: any) => {
     if (enteredCode.length === CELL_COUNT) {
+      // setLoading(true);
       try {
-        setLoading(true);
         let formData = new FormData();
         formData.append("code", enteredCode);
         formData.append("id", data?.tutorDetail?.id);
@@ -168,6 +168,7 @@ const Verification = ({ navigation, route }: any) => {
         console.log('error', error);
       }
     }
+    
     };
 
     const handleResendPress = () => {

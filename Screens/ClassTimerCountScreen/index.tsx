@@ -12,6 +12,7 @@ import { useIsFocused } from "@react-navigation/native"
 import moment from "moment"
 import CustomLoader from "../../Component/CustomLoader"
 import messaging from '@react-native-firebase/messaging';
+import Toast from "react-native-toast-message"
 
 
 function ClassTimerCount({ navigation, route }: any) {
@@ -259,9 +260,21 @@ function ClassTimerCount({ navigation, route }: any) {
         };
         launchCamera(options, (res: any) => {
           if (res.didCancel) {
-            ToastAndroid.show(`User cancelled image picker`, ToastAndroid.LONG);
+            // ToastAndroid.show(`User cancelled image picker`, ToastAndroid.LONG);
+            Toast.show({
+              type: 'info',
+              // text1: 'Request timeout:',
+              text2:  `User cancelled image picker`,
+              position:'bottom'
+            });
           } else if (res.error) {
-            ToastAndroid.show(`ImagePicker Error: ${res?.error}`, ToastAndroid.LONG);
+            // ToastAndroid.show(`ImagePicker Error: ${res?.error}`, ToastAndroid.LONG);
+            Toast.show({
+              type: 'info',
+              // text1: 'Request timeout:',
+              text2:  `ImagePicker Error: ${res?.error}`,
+              position:'bottom'
+            });
           } else {
             try {
               const startHour = item.startMinutes;
@@ -299,20 +312,32 @@ function ClassTimerCount({ navigation, route }: any) {
               AsyncStorage.removeItem('timer');
               navigation.replace('ClockOut', data);
             } catch (error) {
-              ToastAndroid.show(`Error in handleClockOut: ${error}`, ToastAndroid.LONG);
+              // ToastAndroid.show(`Error in handleClockOut: ${error}`, ToastAndroid.LONG);
+              Toast.show({
+                type: 'info',
+                // text1: 'Request timeout:',
+                text2:  `Error in handleClockOut: ${error}`,
+                position:'bottom'
+              });
             }
           }
         });
       }
     } catch (permissionError) {
-      ToastAndroid.show(`Error requesting camera permission: ${permissionError}`, ToastAndroid.LONG);
+      // ToastAndroid.show(`Error requesting camera permission: ${permissionError}`, ToastAndroid.LONG);
+      Toast.show({
+        type: 'info',
+        // text1: 'Request timeout:',
+        text2:  `Error requesting camera permission: ${permissionError}`,
+        position:'bottom'
+      });
     }
   };
 
 
   return (
-    <View style={{ flex: 1, backgroundColor: Theme.white, }} >
-      <Header backBtn navigation={navigation} title='Class In Progress' containerStyle={{ height: 75, flexDirection: 'column', paddingTop: 20 }} />
+    <View style={{ flex: 1, backgroundColor: Theme.GhostWhite, }} >
+      <Header backBtn navigation={navigation} title='Class In Progress' containerStyle={{ height: 90, flexDirection: 'column', paddingTop: 20 }} />
       {/* <TouchableOpacity onPress={() => { handleClockOut() }} >
                 <ActivityIndicator size={220} color={Theme.darkGray} style={{ marginTop: 30 }} />
 

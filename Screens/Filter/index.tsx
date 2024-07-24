@@ -20,6 +20,7 @@ import { stat } from 'react-native-fs';
 import DropDownModalView from '../../Component/DropDownModalView';
 import CustomButton from '../../Component/CustomButton';
 import CustomDropDown2 from '../../Component/CustomDropDown2';
+import Toast from 'react-native-toast-message';
 
 
 const Filter = ({ navigation, route }: any) => {
@@ -113,7 +114,13 @@ console.log('selectedStatus',selectedStatus);
     let myFilter = JSON.stringify(jobFilter)
     navigation.navigate("Job Ticket", jobFilter)
     await AsyncStorage.setItem('filter', myFilter)
-    ToastAndroid.show('your data has been successfully filtered', ToastAndroid.SHORT)
+    // ToastAndroid.show('your data has been successfully filtered', ToastAndroid.SHORT)
+    Toast.show({
+      type: 'info',
+      // text1: 'Request timeout:',
+      text2:  `your data has been successfully filtered'`,
+      position:'bottom'
+    });
 
   }
 
@@ -122,7 +129,13 @@ console.log('selectedStatus',selectedStatus);
 
     if (!selectedAttendedStatus) {
 
-      ToastAndroid.show("Kindly Select Status", ToastAndroid.SHORT)
+      // ToastAndroid.show("Kindly Select Status", ToastAndroid.SHORT)
+      Toast.show({
+        type: 'info',
+        // text1: 'Request timeout:',
+        text2:  `Kindly Select Status`,
+        position:'bottom'
+      });
       return
     }
 
@@ -130,7 +143,13 @@ console.log('selectedStatus',selectedStatus);
 
     await AsyncStorage.setItem("ClassRecordsFilter", data)
 
-    ToastAndroid.show("Filter has been succesfully Applied", ToastAndroid.SHORT)
+    // ToastAndroid.show("Filter has been succesfully Applied", ToastAndroid.SHORT)
+    Toast.show({
+      type: 'info',
+      // text1: 'Request timeout:',
+      text2:  `Filter has been succesfully Applied`,
+      position:'bottom'
+    });
 
     navigation.navigate("AttendedClassRecords", selectedAttendedStatus)
   }
@@ -138,10 +157,22 @@ console.log('selectedStatus',selectedStatus);
   const resetFilter = async () => {
     await AsyncStorage.removeItem('filter').then((res) => {
       navigation.navigate("Job Ticket", "remove filter")
-      ToastAndroid.show('Filtered has been Successfully reset', ToastAndroid.SHORT)
+      // ToastAndroid.show('Filtered has been Successfully reset', ToastAndroid.SHORT)
+      Toast.show({
+        type: 'info',
+        // text1: 'Request timeout:',
+        text2:  `Filtered has been Successfully reset`,
+        position:'bottom'
+      });
 
     }).catch((error) => {
-      ToastAndroid.show('Filter reset unsuccessfull', ToastAndroid.SHORT)
+      // ToastAndroid.show('Filter reset unsuccessfull', ToastAndroid.SHORT)
+      Toast.show({
+        type: 'info',
+        // text1: 'Request timeout:',
+        text2:  `'Filter reset unsuccessfull`,
+        position:'bottom'
+      });
     })
 
   }
@@ -203,7 +234,13 @@ console.log('selectedStatus',selectedStatus);
 
     if (!selectedStatus) {
 
-      ToastAndroid.show("Kindly Select Status", ToastAndroid.SHORT)
+      // ToastAndroid.show("Kindly Select Status", ToastAndroid.SHORT)
+      Toast.show({
+        type: 'info',
+        // text1: 'Request timeout:',
+        text2:  `Kindly Select Status`,
+        position:'bottom'
+      });
       return
     }
 
@@ -211,7 +248,13 @@ console.log('selectedStatus',selectedStatus);
 
     await AsyncStorage.setItem("statusFilter", data)
 
-    ToastAndroid.show("Filter has been succesfully Applied", ToastAndroid.SHORT)
+    // ToastAndroid.show("Filter has been succesfully Applied", ToastAndroid.SHORT)
+    Toast.show({
+      type: 'info',
+      // text1: 'Request timeout:',
+      text2:  `Filter has been succesfully Applied`,
+      position:'bottom'
+    });
 
     navigation.navigate("Job Ticket", selectedStatus)
 
@@ -219,13 +262,25 @@ console.log('selectedStatus',selectedStatus);
 
   const resetStatusFilter = async () => {
     await AsyncStorage.removeItem("statusFilter")
-    ToastAndroid.show("Filter has been succesfully reset", ToastAndroid.SHORT)
+    // ToastAndroid.show("Filter has been succesfully reset", ToastAndroid.SHORT)
+    Toast.show({
+      type: 'info',
+      // text1: 'Request timeout:',
+      text2:  `Filter has been succesfully reset`,
+      position:'bottom'
+    });
     navigation.navigate("Job Ticket", "reset")
   }
 
   const resetRecordStatusFilter = async () => {
     await AsyncStorage.removeItem("ClassRecordsFilter")
-    ToastAndroid.show("Filter has been succesfully reset", ToastAndroid.SHORT)
+    // ToastAndroid.show("Filter has been succesfully reset", ToastAndroid.SHORT)
+    Toast.show({
+      type: 'info',
+      // text1: 'Request timeout:',
+      text2:  `Filter has been succesfully reset`,
+      position:'bottom'
+    });
     navigation.navigate("AttendedClassRecords", "reset")
   }
   const [alreadyFilterStatus, setAlreadyFilterStatus] = useState('')

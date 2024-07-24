@@ -3,7 +3,7 @@ import React from 'react'
 import { Theme } from '../../constant/theme'
 
 
-const CustomButton = ({ onPress,onPressIn,opacity,disabled,onPressOut, btnTitle, color, backgroundColor, height, loading }: any) => {
+const CustomButton = ({ onPress,onPressIn,opacity,disabled,onPressOut, btnTitle, color, backgroundColor, height, loading ,fontSize}: any) => {
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -11,12 +11,12 @@ const CustomButton = ({ onPress,onPressIn,opacity,disabled,onPressOut, btnTitle,
       onPressOut={onPressOut}
       activeOpacity={0.8}
       disabled={disabled}
-      style={[styles.btn, { marginVertical: 0, backgroundColor: backgroundColor ? backgroundColor : Theme.darkGray,opacity: opacity ?opacity :'' }]}
+      style={[styles.btn, { height: height ? height : 55 ,marginVertical: 0, backgroundColor: backgroundColor ? backgroundColor : Theme.darkGray,opacity: opacity ?opacity :'' }]}
     >
       {loading ? (
         <ActivityIndicator color={Theme.white} size="small" />
       ) : (
-        <Text style={[styles.textType1, { color: color ? color : Theme.white, textAlign: 'center' }]}>{btnTitle}</Text>
+        <Text style={[styles.textType1, { color: color ? color : Theme.white, textAlign: 'center',fontSize: fontSize? fontSize:24 }]}>{btnTitle}</Text>
       )}
     </TouchableOpacity>
 

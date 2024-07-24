@@ -25,6 +25,7 @@ import StudentReportIcon from '../../SVGs/StudentReportIcon';
 import LogoutIcon from '../../SVGs/LogoutIcon';
 import CustomButton from '../../Component/CustomButton';
 import StudentOverviewIcon from '../../SVGs/StudentOverviewIcon';
+import Toast from 'react-native-toast-message';
 
 function More({ navigation }: any) {
   const context = useContext(TutorDetailsContext);
@@ -60,7 +61,13 @@ function More({ navigation }: any) {
           AsyncStorage.removeItem('loginAuth');
           navigation.replace('Login');
           setTutorDetail('')
-          ToastAndroid.show('Terminated', ToastAndroid.SHORT);
+          // ToastAndroid.show('Terminated', ToastAndroid.SHORT);
+          Toast.show({
+            type: 'info',
+            // text1: 'Request timeout:',
+            text2:  `Terminated`,
+            position:'bottom'
+          });
           return;
         }
         let { tutorDetailById } = data;
@@ -85,7 +92,7 @@ function More({ navigation }: any) {
         setTutorDetail(details);
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
   const focus = useIsFocused();
@@ -144,7 +151,7 @@ function More({ navigation }: any) {
         setTutorImage(tutorDetails.tutorImage)
       })
       .catch(error => {
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
   useEffect(() => {
@@ -153,7 +160,7 @@ function More({ navigation }: any) {
 
   return (
     <View style={{ backgroundColor: Theme.GhostWhite, height: '100%' }}>
-      <Header title="Profile" navigation={navigation} />
+      <Header title="Profile" navigation={navigation} containerStyle={{paddingHorizontal: 25,}}/>
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
         <View style={{ paddingHorizontal: 25 }}>
           {/* Profile */}

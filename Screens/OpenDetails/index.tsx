@@ -9,12 +9,12 @@ import {
   ToastAndroid,
   Image,
 } from 'react-native';
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from 'react';
 import Header from '../../Component/Header';
-import {Theme} from '../../constant/theme';
+import { Theme } from '../../constant/theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import {Base_Uri} from '../../constant/BaseUri';
+import { Base_Uri } from '../../constant/BaseUri';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
@@ -22,8 +22,9 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import TutorDetailsContext from '../../context/tutorDetailsContext';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomButton from '../../Component/CustomButton';
+import Toast from 'react-native-toast-message';
 
-const OpenDetails = ({route, navigation}: any) => {
+const OpenDetails = ({ route, navigation }: any) => {
   const data = route.params;
   console.log('data', data);
 
@@ -32,7 +33,7 @@ const OpenDetails = ({route, navigation}: any) => {
   });
 
   const tutor = useContext(TutorDetailsContext);
-  let {tutorDetails, updateTutorDetails} = tutor;
+  let { tutorDetails, updateTutorDetails } = tutor;
   console.log('tutorDetails', tutorDetails);
 
   const [loading, setLoading] = useState(false);
@@ -55,37 +56,49 @@ const OpenDetails = ({route, navigation}: any) => {
     console.log(tutor_id, 'tutor_id');
     console.log(comment, 'comment');
 
-    
+
     axios
       .get(
         `${Base_Uri}offerSendByTutor/${subjectId}/${tutor_id}/${ticketID}/${comment}`,
       )
-      .then(({data}) => {
+      .then(({ data }) => {
         if (data?.result?.status == 'pending') {
           setLoading(false);
-          ToastAndroid.show(
-            'You have successfully applied for this ticket',
-            ToastAndroid.SHORT,
-          );
+          // ToastAndroid.show(
+          //   'You have successfully applied for this ticket',
+          //   ToastAndroid.SHORT,
+          // );
+          Toast.show({
+            type: 'info',
+            // text1: 'Request timeout:',
+            text2:  `You have successfully applied for this ticket`,
+            position:'bottom'
+          });
           navigation.navigate('Job Ticket', ticketID);
         } else {
           console.log(data, 'dataaa');
-          ToastAndroid.show(data?.result, ToastAndroid.SHORT);
+          // ToastAndroid.show(data?.result, ToastAndroid.SHORT);
+          Toast.show({
+            type: 'info',
+            // text1: 'Request timeout:',
+            text2:  `${data?.result}`,
+            position:'bottom'
+          });
           setLoading(false);
         }
       })
       .catch(error => {
         setLoading(false);
         console.log(error, 'error');
-        ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
+        // ToastAndroid.show('Internal Server Error', ToastAndroid.SHORT);
       });
   };
 
   return (
-    <View style={{backgroundColor: Theme.GhostWhite, height: '100%'}}>
+    <View style={{ backgroundColor: Theme.GhostWhite, height: '100%' }}>
       <Header title={data?.jtuid} backBtn navigation={navigation} />
       <ScrollView showsVerticalScrollIndicator={false} nestedScrollEnabled>
-        <View style={{paddingHorizontal: 25}}>
+        <View style={{ paddingHorizontal: 25 }}>
           <View
             style={{
               backgroundColor: Theme.darkGray,
@@ -96,22 +109,22 @@ const OpenDetails = ({route, navigation}: any) => {
               justifyContent: 'space-between',
             }}>
             <View>
-              <Text style={[styles.textType3, {color: 'white'}]}>
+              <Text style={[styles.textType3, { color: 'white' }]}>
                 {data?.jtuid}
               </Text>
               <Text
-                style={[styles.textType1, {lineHeight: 30, color: 'white'}]}>
+                style={[styles.textType1, { lineHeight: 30, color: 'white' }]}>
                 RM {data?.price}
               </Text>
               <View
-                style={{flexDirection: 'row', gap: 5, alignItems: 'center'}}>
+                style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
                 <Feather name="map-pin" size={18} color={'#fff'} />
-                <Text style={[styles.textType3, {color: 'white'}]}>
+                <Text style={[styles.textType3, { color: 'white' }]}>
                   {data?.city}
                 </Text>
               </View>
             </View>
-            <View style={{alignItems: 'center', justifyContent: 'center'}}>
+            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
               <Text
                 style={[
                   styles.textType3,
@@ -128,7 +141,7 @@ const OpenDetails = ({route, navigation}: any) => {
               </Text>
             </View>
           </View>
-          <View style={{marginVertical: 20}}>
+          <View style={{ marginVertical: 20 }}>
             <Text style={styles.textType1}>Details</Text>
 
             <View
@@ -145,6 +158,7 @@ const OpenDetails = ({route, navigation}: any) => {
                   flexDirection: 'row',
                   alignItems: 'center',
                   paddingBottom: 15,
+                  width: '100%'
                 }}>
                 <View
                   style={{
@@ -159,9 +173,9 @@ const OpenDetails = ({route, navigation}: any) => {
                 <Text
                   style={[
                     styles.textType1,
-                    {fontSize: 18, textTransform: 'capitalize'},
+                    { fontSize: 18, textTransform: 'capitalize', },
                   ]}>
-                  {data?.studentName}
+                  {data?.studentName.length > 14 ? `${data?.studentName.slice(0, 14)}..` : data?.studentName}
                 </Text>
               </View>
               <View
@@ -184,7 +198,7 @@ const OpenDetails = ({route, navigation}: any) => {
                   />
                   <Text style={styles.textType3}>Student Detail</Text>
                 </View>
-                <Text style={[styles.textType1, {fontSize: 18}]}>
+                <Text style={[styles.textType1, { fontSize: 18 }]}>
                   {data?.studentGender} ({data?.student_age} y/o)
                 </Text>
               </View>
@@ -266,7 +280,7 @@ const OpenDetails = ({route, navigation}: any) => {
               style={{
                 backgroundColor: Theme.white,
                 paddingHorizontal: 25,
-                paddingVertical:15,
+                paddingVertical: 15,
                 marginTop: 10,
                 borderRadius: 20,
               }}>
@@ -287,7 +301,7 @@ const OpenDetails = ({route, navigation}: any) => {
                   <FontAwesome name="level-up" size={22} color={Theme.darkGray} />
                   <Text style={styles.textType3}>Level</Text>
                 </View>
-                <Text style={[styles.textType1, {fontSize: 18}]}>
+                <Text style={[styles.textType1, { fontSize: 18 }]}>
                   {data?.categoryName}
                 </Text>
               </View>
@@ -308,7 +322,7 @@ const OpenDetails = ({route, navigation}: any) => {
                   <Ionicons name="recording-sharp" size={18} color={Theme.darkGray} />
                   <Text style={styles.textType3}>Subscription</Text>
                 </View>
-                <Text style={[styles.textType1, {fontSize: 18}]}>
+                <Text style={[styles.textType1, { fontSize: 18 }]}>
                   {data?.subscription}
                 </Text>
               </View>
@@ -329,7 +343,7 @@ const OpenDetails = ({route, navigation}: any) => {
                   <AntDesign name="copy1" size={18} color={Theme.darkGray} />
                   <Text style={styles.textType3}>Subject</Text>
                 </View>
-                <Text style={[styles.textType1, {fontSize: 18}]}>
+                <Text style={[styles.textType1, { fontSize: 18 }]}>
                   {data?.subject_name}
                 </Text>
               </View>
@@ -355,7 +369,7 @@ const OpenDetails = ({route, navigation}: any) => {
                 <Text
                   style={[
                     styles.textType1,
-                    {fontSize: 18, textTransform: 'capitalize'},
+                    { fontSize: 18, textTransform: 'capitalize' },
                   ]}>
                   {data?.tutorPereference}
                 </Text>
@@ -384,7 +398,7 @@ const OpenDetails = ({route, navigation}: any) => {
                       paddingHorizontal: 10,
                     }}>
                     <AntDesign name="calendar" size={20} color={Theme.darkGray} />
-                    <Text style={[styles.textType3, {color: Theme.darkGray}]}>
+                    <Text style={[styles.textType3, { color: Theme.darkGray }]}>
                       {data?.classDay}
                     </Text>
                   </View>
@@ -408,7 +422,7 @@ const OpenDetails = ({route, navigation}: any) => {
                       size={20}
                       color={Theme.darkGray}
                     />
-                    <Text style={[styles.textType3, {color: Theme.darkGray}]}>
+                    <Text style={[styles.textType3, { color: Theme.darkGray }]}>
                       {data?.classTime}
                     </Text>
                   </View>
@@ -419,7 +433,7 @@ const OpenDetails = ({route, navigation}: any) => {
             {/*Adress */}
 
             {data.specialRequest && (
-              <View style={{marginVertical: 20}}>
+              <View style={{ marginVertical: 20 }}>
                 <Text style={styles.textType1}>Special Need</Text>
                 <View
                   style={{
@@ -432,7 +446,7 @@ const OpenDetails = ({route, navigation}: any) => {
                   <Text
                     style={[
                       styles.textType3,
-                      {fontFamily: 'Circular Std Book'},
+                      { fontFamily: 'Circular Std Book' },
                     ]}>
                     {data.specialRequest}
                   </Text>
@@ -444,7 +458,7 @@ const OpenDetails = ({route, navigation}: any) => {
             {tutorDetails?.status?.toLowerCase() == 'verified' &&
               data?.mode?.toLowerCase() == 'physical' &&
               data?.studentAddress && (
-                <View style={{marginVertical: 5}}>
+                <View style={{ marginVertical: 5 }}>
                   <Text style={styles.textType1}>Student Address</Text>
                   <View
                     style={{
@@ -457,7 +471,7 @@ const OpenDetails = ({route, navigation}: any) => {
                     <Text
                       style={[
                         styles.textType3,
-                        {fontFamily: 'Circular Std Book'},
+                        { fontFamily: 'Circular Std Book' },
                       ]}>
                       {data.studentAddress}
                     </Text>
@@ -466,7 +480,7 @@ const OpenDetails = ({route, navigation}: any) => {
               )}
             {/* Avaiable student */}
             {data?.jobTicketExtraStudents.length > 0 && (
-              <View style={{marginVertical: 15}}>
+              <View style={{ marginVertical: 15 }}>
                 <Text style={styles.textType1}>Extra Students</Text>
 
                 {data?.jobTicketExtraStudents?.map((e: any, i: number) => (
@@ -531,7 +545,7 @@ const OpenDetails = ({route, navigation}: any) => {
               </View>
             )}
             {/* Comment */}
-            <View style={{marginBottom: 20, marginTop: 0}}>
+            <View style={{ marginBottom: 20, marginTop: 10 }}>
               <Text style={styles.textType1}>Comment</Text>
               <View
                 style={[
@@ -541,7 +555,7 @@ const OpenDetails = ({route, navigation}: any) => {
                     marginTop: 5,
                     borderRadius: 20,
                     marginHorizontal: 2,
-                    
+
                   },
                 ]}>
                 <TextInput
@@ -549,17 +563,17 @@ const OpenDetails = ({route, navigation}: any) => {
                   multiline={true}
                   maxLength={300}
                   onChangeText={e =>
-                    setopenDetailItem({...openDetailItem, comment: e})
+                    setopenDetailItem({ ...openDetailItem, comment: e })
                   }
                   style={[
                     styles.textArea,
                     {
                       backgroundColor: Theme.white,
                       paddingHorizontal: 20,
-                      paddingVertical:20,
+                      paddingVertical: 20,
                       color: Theme.black,
                       fontFamily: 'Circular Std Book',
-                      borderRadius:20,
+                      borderRadius: 20,
                     },
                   ]}
                   underlineColorAndroid="transparent"
@@ -568,12 +582,12 @@ const OpenDetails = ({route, navigation}: any) => {
               </View>
             </View>
 
-      {/* Submit Button */}
-      <CustomButton btnTitle={'Apply'}  onPress={sendOpenDetailData}/>
+            {/* Submit Button */}
+            <CustomButton btnTitle={'Apply'} onPress={sendOpenDetailData} />
           </View>
         </View>
       </ScrollView>
-      
+
       {/* <View
         style={{
           backgroundColor: Theme.white,
