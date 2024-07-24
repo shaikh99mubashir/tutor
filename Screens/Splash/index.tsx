@@ -22,6 +22,9 @@ const Splash = ({navigation}: any) => {
     setTimeout(async () => {
       let data = await AsyncStorage.getItem('login');
       let authData = await AsyncStorage.getItem('loginAuth');
+      let routeToNotiScreen = await AsyncStorage.getItem('notiScreenRoute');
+      console.log("notiScreenRoute",routeToNotiScreen);
+      
 
       if (authData) {
         let tutorData:any = JSON.parse(authData);
@@ -54,9 +57,17 @@ const Splash = ({navigation}: any) => {
 
             if (tutorData?.tutorDetailById[0].phoneNumber != tutorData.contact && tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'unverified' || 
             tutorData?.tutorDetailById[0]?.status.toLowerCase() === 'verified') {
-              navigation.replace('Main', {
-                screen: 'Home',
-              });
+              if(routeToNotiScreen == 'jobTicket'){
+                navigation.replace('Main', {
+                  screen: 'jobTicket',
+                });
+                AsyncStorage.removeItem('notiScreenRoute')
+              }
+              else{
+                navigation.replace('Main', {
+                  screen: 'Home',
+                });
+              }
             }
             else{
               AsyncStorage.removeItem('loginAuth');

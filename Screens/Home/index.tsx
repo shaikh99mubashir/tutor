@@ -15,7 +15,7 @@ import {
   Linking,
 } from 'react-native';
 import {Theme} from '../../constant/theme';
-import notifee, {AndroidImportance} from '@notifee/react-native';
+import notifee, {AndroidImportance, EventType} from '@notifee/react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import {Base_Uri} from '../../constant/BaseUri';
@@ -1015,7 +1015,7 @@ function Home({navigation, route}: any) {
 
 const getNotificationScreenName = async () => {
   try {
-    let notiRoute: any = await AsyncStorage.getItem('notiRoute');
+    let notiRoute: any = await AsyncStorage.getItem('notiScreenRoute');
     if (notiRoute) {
       let notiScreenName = JSON.parse(notiRoute);
       console.log("notiRoute====>", notiScreenName);
@@ -1031,11 +1031,40 @@ const getNotificationScreenName = async () => {
 
 
   useEffect(() => {
-    getFcmToken();
+    // getFcmToken();
     getNotificationScreenName();
   }, [focus]);
+
+  notifee.onForegroundEvent(({type, detail}) => {
+    switch (type) {
+      case EventType.DISMISSED:
+        console.log('User dismissed notification', detail.notification);
+        break;
+      case EventType.PRESS:
+        console.log('User pressed notification', detail.notification);
+        let screenName = detail?.notification?.data?.sender
+        if(screenName =='jobTicket')
+        navigation.replace('Main', {
+          screen: 'jobTicket',
+        });
+        break;
+    }
+  });
  
 
+  notifee.onBackgroundEvent(async ({ type, detail }) => {
+    const { notification, pressAction } = detail;
+  
+    // Check if the user pressed the "Mark as read" action
+    if (type === EventType.ACTION_PRESS) {
+      // Update external API
+      let screenName = detail?.notification?.data?.sender
+        if(screenName =='jobTicket')
+        navigation.replace('Main', {
+          screen: 'jobTicket',
+        });
+    }
+  });
 
   return (
     <View style={{flex: 1, backgroundColor: Theme.GhostWhite}}>

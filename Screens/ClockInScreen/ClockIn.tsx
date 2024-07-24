@@ -452,7 +452,7 @@ function ClockIn({ navigation, route }: any) {
               <Text style={[styles.textType3, { color: Theme.darkGray }]}>
                 {item.jtuid}
               </Text>
-              <Text style={[styles.textType3]}>{item.studentName}</Text>
+              <Text style={[styles.textType3]}>{item?.studentName.length > 14 ? `${item?.studentName.slice(0, 14)}..` : item?.studentName}</Text>
             </View>
           </View>
           <View style={{ alignItems: 'center', justifyContent: 'center' }}>

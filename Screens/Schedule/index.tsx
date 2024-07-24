@@ -641,11 +641,11 @@ function Schedule({ navigation, route }: any) {
                       lineHeight: 30,
                       textTransform: 'capitalize',
                       fontFamily: 'Circular Std Medium',
-                      width: 150,
+                      width: 100,
                       fontSize: 18,
                     },
                   ]}>
-                  {item?.studentName}
+                  {/* {item?.studentName} */}
                 </Text>
                 {item?.mode.toLowerCase() == 'physical' && (
                   <View
